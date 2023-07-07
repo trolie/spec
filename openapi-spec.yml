@@ -5,11 +5,18 @@ info:
   title: Transmission Facility Ratings and Operating Limits Information Exchange (TROLIE)
   description: |
     Pursuant to FERC Order 881, Transmission Providers are required to support
-    Ambient Adjusted Ratings (AARs) for most Transmission Facilities in their footprint.
+    Ambient Adjusted Ratings (AARs) for most Transmission Facilities in their footprint.  
+    
+    In this context, Transmission Providers refers roughly to the FERC definition of Transmission 
+    Provider as any public utility that owns, operates, or controls facilities used for the
+    transmission of electric energy in interstate commerce.  This could be said to apply to any entity that operates the transmission grid, including ISOs.  
+    
+    For the purpose of this API, Transmission Provider may be assumed to be more generic- it is 
+    really any entity that can recieve AARs.  
 
     This API specification supports the information exchange necessary to
     coordinate forecasted and base facility ratings between a Transmission Provider
-    and Ratings Providers.
+    and Ratings Providers. 
 
     The Transmission Provider is assumed to be the host of this information exchange.
 
@@ -19,11 +26,14 @@ info:
     known to the Transmission Provider. That pre-coordination is out-of-scope for
     this specification.
 
-    Additionally, all Ratings Providers are assumed to have an `entity-id`
-    and pre-defined Monitoring Set associated with the `entity-id`. A Monitoring Set
-    is defined by this specification to mean a set of Transmission Facilities
-    known to the Transmission Provider that may or may not have AARs. The method
-    used to define a Monitoring Set is out-of-scope for this specification.
+    The language of this API makes a strict distinction between the terms rating and limit.  
+    A limit is a validated value that is actively used to make operational decisions on the power grid.  
+    This could be limits used by the EMS or real-time market in real-time, or it could be forecast limits 
+    used by look-ahead processes such as EMS study applications or the day-ahead market. 
+    A rating, in contrast, is a calculated value from some process that is input to TROLIE 
+    (and by extension operating power systems at large) and may be selected for use as a 
+    limit after validation and dependent on operating conditions, timeframe and the operational 
+    decisions being made.  Seasonal ratings, forecast rating submittals, and real-time rating submittals are all examples of ratings.  
 
     <img src="images/TROLIE interactions.svg" alt="TROLIE Interactions" />
 
@@ -38,46 +48,68 @@ tags:
   - name: Operating Snapshots
     description: |
       Two snapshots are provided:
-      * **Operating Ratings Forecast Snapshot** is the forecast of Transmission
+      * **Operating Limits Forecast Snapshot** is the forecast of Transmission
         Facility ratings that is in-use by the Transmission Provider at the time
-        of the request for this resource.
-      * **Operating Limits Snapshot** is the set of System Operating Limits the
+        of the request for this resource.  These are actively used for look-ahead operational decisions, such as the
+        day-ahead market, in addition to their role as recourse limits if real-time ratings
+        submissions are missing.  
+      * **Operating Limits Real-Time Snapshot** is the set of System Operating Limits the
         Transmission Provider is operating to at the time of the request for
-        this resource.
-  - name: Ratings Clearinghouse
+        this resource.  
+  - name: Recourse Rating Snapshots
     description: |
-      The Transmission Provider receives Ratings Forecasts from Ratings Providers
-      during a Forecast Window and incorporates those forecasts along with other
-      information like outages, overrides, and non-thermal limits to produce the
-      Operating Ratings Forecast Snapshot.
+      While not typically used directly in operational decisions, recourse ratings are provided for two purposes:
+      1.  They are used when applicable forecast ratings are not available.  
+      2.  They may be used in future-looking studies that look out (potentially far) beyond the time 
+          window where forecast ratings are available.  
+      A snapshot is provided of the resource ratings configured by the system, as well as their relationship to upcoming seasons.  
 
-      Additionally, a Ratings Provider can obtain the base ratings, i.e., the nominal
-      and seasonal ratings, of all the facilities in their monitoring set.
+  - name: Rating Submissions
+    description: |
+      Ratings Providers may submit ratings for three separate time horizons:
+      * **Forecast Ratings** are at minimum hourly forecasts of ratings for a particular segment.  
+      * **Real-Time Ratings** are provided for current operating conditions.  Ratings provided in this manner
+        are an alternative for segments where ICCP communications are not available.  
+      * **Seasonal Recourse Ratings** are recourse ratings for when applicable forecast ratings are not available.  
+        This includes ratings for scheduled calendar seasons, as well as to rating sets that apply in special named 
+        scenarios defined by the Transmission Provider, such as an extreme winter day.  
+
+  - name: Monitoring Sets
+    description: | 
+      The set of network elements      
+  - name: Reference Data
+    description: | 
+      The set of network elements   
 paths:
-  /ratings-forecast-snapshot:
+  /limits/forecast-snapshot:
     get:
-      operationId: getRatingsForecast
+      operationId: getLimitsForecastSnapshot
       description: >
-        Obtain the Ratings Forecast the Transmission Provider is currently using in Operations.
+        Obtain the Limits Forecast the Transmission Provider is currently using in Operations, 
+        relative to the current time.  
         Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
         and the `ETag` of a previous `GET` response.
       tags:
         - Operating Snapshots
       parameters:
-        - $ref: '#/components/parameters/offset-hour-ending'
+        - $ref: '#/components/parameters/offset-period-start'
         - $ref: '#/components/parameters/forecast-length'
         - $ref: '#/components/parameters/monitoring-set-filter'
-      responses:
-        200:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: &forecastSnapshotReadResponses
+        200: 
           description: >
             The requested operating forecast snapshot is returned.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/coordinated-forecast-set'
-            application/vnd.regional-rating-forecast-set.v1+json:
+                $ref: '#/components/schemas/forecast-limit-set'
+            application/vnd.trolie.forecast-limit-set.v1+json:
               schema:
-                $ref: '#/components/schemas/coordinated-forecast-set'
+                $ref: '#/components/schemas/forecast-limit-set'
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -85,18 +117,24 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'
             ETag:
               $ref: '#/components/headers/ETag'
-        304:
+        304: &common304
           $ref: '#/components/responses/not-modified'
-        400:
+        400: &query400
           description: >
-            Malformed request. Possible reasons include `forecast-length` or
-            `offset-hour-ending` being out of range as well as an invalid `monitoring-set-filter`.
+            Malformed request, based on misuse of filters.
           content:
-            'application/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/empty'
+                $ref: '#/components/schemas/validation-messages'
+            application/vnd.trolie.validation-messages.v1+json:
+              schema:
+                $ref: '#/components/schemas/validation-messages'
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -104,32 +142,34 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
-        401:
+        401: &common401
           $ref: '#/components/responses/unauthorized'
-        403:
+        403: &common403
           $ref: '#/components/responses/forbidden'
-        406:
+        406: &common406
           $ref: '#/components/responses/not-acceptable'
-        429:
+        429: &common429
           $ref: '#/components/responses/rate-limited'
-        default:
+        default: &commonDefaultErr
           $ref: '#/components/responses/unexpected-error'
-      security:
+      security: &snapshotReadSecurity
         - oauth2-cert-flow:
           - "read:operating-snapshot"
     head:
-      operationId: getRatingsForecastHeaders
+      operationId: getLimitsForecastSnapshot
       description: >
         Use to obtain the headers that would be returned for 
-        `getRatingsForecast`. Useful for cache invalidation.
+        `getLimitsForecastSnapshot`. Useful for cache invalidation.
       tags:
         - Operating Snapshots
       parameters:
-        - $ref: '#/components/parameters/offset-hour-ending'
+        - $ref: '#/components/parameters/offset-period-start'
         - $ref: '#/components/parameters/forecast-length'
         - $ref: '#/components/parameters/monitoring-set-filter'
-      responses:
-        200:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'        
+      responses: &headResponses
+        200: 
           description: OK
           headers:
             X-Rate-Limit-Limit:
@@ -140,43 +180,64 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
             ETag:
               $ref: '#/components/headers/ETag'
-        304:
-          $ref: '#/components/responses/not-modified'
-        400:
-          description: >
-            Malformed request. Possible reasons include `forecast-length` or
-            `offset-hour-ending` being out of range as well as an invalid `monitoring-set-filter`.
-          headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
-        401:
-          $ref: '#/components/responses/unauthorized-head'
-        403:
-          $ref: '#/components/responses/forbidden-head'
-        406:
-          $ref: '#/components/responses/not-acceptable-head'
-        429:
-          $ref: '#/components/responses/rate-limited-head'
-        default:
-          $ref: '#/components/responses/unexpected-error-head'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
 
-      security:
-        - oauth2-cert-flow:
-          - "read:operating-snapshot"
+      security: *snapshotReadSecurity
 
-  /limits-snapshot:
+  /limits/forecast-snapshot/period/{period-start}:
     get:
-      operationId: getLimits
+      operationId: getLimitsForecastByPeriod
+      description: >
+        Obtain the Limits Forecast the Transmission Provider is currently using in Operations, narrowed in scope
+        for a particular period.  
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/period-start'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units' 
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                  
+      responses: *forecastSnapshotReadResponses
+    head:
+      operationId: getLimitsForecastHeadersByPeriod
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getLimitsForecastByPeriodId`. Useful for cache invalidation.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/period-start'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'       
+      responses: *headResponses
+
+      security: *snapshotReadSecurity
+
+
+  /limits/realtime-snapshot:
+    get:
+      operationId: getRealTimeLimits
       description: >
         Obtain the System Operating Limits in-use by the Transmission Provider.
         Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
         and the `ETag` of a previous `GET` response.
       parameters:
         - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units' 
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
       tags:
         - Operating Snapshots
       responses:
@@ -186,7 +247,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/effective-limit-set'
+                $ref: '#/components/schemas/realtime-limit-set'
+            application/vnd.trolie.realtime-limit-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/realtime-limit-set'                
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -194,89 +258,46 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304:
-          $ref: '#/components/responses/not-modified'
-        400:
-          description: >
-            Malformed request. Possible reasons include an invalid `monitoring-set-filter`.
-          content:
-            'application/*':
-              schema:
-                $ref: '#/components/schemas/empty'
-          headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
-        401:
-          $ref: '#/components/responses/unauthorized'
-        403:
-          $ref: '#/components/responses/forbidden'
-        406:
-          $ref: '#/components/responses/not-acceptable'
-        429:
-          $ref: '#/components/responses/rate-limited'
-        default:
-          $ref: '#/components/responses/unexpected-error'
-      security:
-        - oauth2-cert-flow:
-          - "read:operating-snapshot"
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *snapshotReadSecurity
     head:
-      operationId: getLimitsHeaders
+      operationId: getRealTimeLimitsHeaders
       description: >
-        Use to obtain the headers that would be returned for `getLimits`.
+        Use to obtain the headers that would be returned for `getRealTimeLimits`.
         Useful for cache invalidation.
       tags:
         - Operating Snapshots
       parameters:
         - $ref: '#/components/parameters/monitoring-set-filter'
-      responses:
-        200:
-          description: OK
-          headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
-            ETag:
-              $ref: '#/components/headers/ETag'
-        304:
-          $ref: "#/components/responses/not-modified"
-        400:
-          description: >
-            Malformed request. Possible reasons include an invalid `monitoring-set-filter`.
-          content:
-            'application/*':
-              schema:
-                $ref: '#/components/schemas/empty'
-        401:
-          $ref: '#/components/responses/unauthorized-head'
-        403:
-          $ref: '#/components/responses/forbidden-head'
-        406:
-          $ref: '#/components/responses/not-acceptable-head'
-        429:
-          $ref: '#/components/responses/rate-limited-head'
-        default:
-          $ref: '#/components/responses/empty'
-      security:
-        - oauth2-cert-flow:
-          - "read:operating-snapshot"
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'         
+      responses: *headResponses
+      security: *snapshotReadSecurity
   
-  /base-ratings/{monitoring-set}:
+  /recourse-ratings/snapshot:
     get:
-      operationId: getBaseRatings
+      operationId: getResourceRatingsSnapshot
       description: Retrieve the nominal and seasonal ratings for all facilities in the `monitoring-set`.
       tags:
-        - Ratings Clearinghouse
+        - Recourse Rating Snapshots
       parameters:
-        - $ref: '#/components/parameters/monitoring-set'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'        
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'              
       responses:
         200:
           description: OK
@@ -300,146 +321,23 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304:
-          $ref: '#/components/responses/not-modified'
-        401:
-          $ref: '#/components/responses/unauthorized'
-        403:
-          $ref: '#/components/responses/forbidden'
-        406:
-          $ref: '#/components/responses/not-acceptable'
-        429:
-          $ref: '#/components/responses/rate-limited'
-        default:
-          $ref: '#/components/responses/unexpected-error'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
       security:
         - oauth2-cert-flow:
-          - "read:monitoring-set"
-  
-  /recourse-ratings/{ratings-provider}:
-    patch:
-      operationId: updateSeasonalRatings
-      description: >
-        Updates the seasonal ratings for a subset of facilities for the given
-        `ratings-provider`. Seasonal ratings are utilized in the recourse rating
-        methodology of the Transmission Provider.
-      tags:
-        - Ratings Clearinghouse
-      parameters:
-        - $ref: '#/components/parameters/ratings-provider'
-      requestBody:
-        content:
-          application/vnd.recourse-ratings.v1+json:
-            schema:
-              $ref: '#/components/schemas/recourse-ratings'
-      responses:
-        202:
-          description: >
-            The update was accepted for later processing. Updates to seasonal
-            ratings may need to undergo additional validation and propagation
-            to other systems.
-          content:
-            application/*:
-              schema:
-                $ref: '#/components/schemas/empty'
-          headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
-            ETag:
-              $ref: '#/components/headers/ETag'
-        401:
-          $ref: '#/components/responses/unauthorized'
-        403:
-          $ref: '#/components/responses/forbidden'
-        406:
-          $ref: '#/components/responses/not-acceptable'
-        415:
-          $ref: '#/components/responses/unsupported-patch'
-        429:
-          $ref: '#/components/responses/rate-limited'
-        default:
-          $ref: '#/components/responses/unexpected-error'
-      security:
-        - oauth2-cert-flow:
-          - "write:recourse-ratings"
+          - "read:recourse-ratings"
 
-  /forecasts/{ratings-provider}/{first-hour-ends}:
-    patch:
-      operationId: updateProviderForecast
-      description: >
-        Submit a Ratings Forecast for the given `ratings-provider`.
-      tags:
-        - Ratings Clearinghouse
-      parameters:
-        - $ref: '#/components/parameters/ratings-provider'
-        - $ref: '#/components/parameters/first-hour-ends'
-      requestBody:
-        content:
-          application/vnd.local-rating-forecast.v1+json:
-            schema:
-              $ref: '#/components/schemas/forecast-submission'
-          application/vnd.regional-rating-forecast-set.v1+json:
-            schema:
-              $ref: '#/components/schemas/coordinated-forecast-set'
-      responses:
-        200:
-          description: >
-            The submitted forecast information was accepted and incorporated
-            into the coordinated forecast for the forecast window beginning with
-            `first-hour-ends`.
-          content:
-            'application/*':
-              schema:
-                $ref: '#/components/schemas/forecast-submission-response'
-          headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
-            ETag:
-              $ref: '#/components/headers/ETag'
-        400:
-          description: Malformed request. Check the payload schema.
-          content:
-            'application/*':
-              schema:
-                $ref: '#/components/schemas/validation-message'
-          headers:
-            X-Rate-Limit-Limit:
-              $ref: '#/components/headers/X-Rate-Limit-Limit'
-            X-Rate-Limit-Remaining:
-              $ref: '#/components/headers/X-Rate-Limit-Remaining'
-            X-Rate-Limit-Reset:
-              $ref: '#/components/headers/X-Rate-Limit-Reset'
-        403:
-          $ref: '#/components/responses/forbidden'
-        406:
-          $ref: '#/components/responses/not-acceptable'
-        409:
-          $ref: '#/components/responses/forecast-not-yet-available'
-        410:
-          $ref: '#/components/responses/archived'
-        413:
-          $ref: '#/components/responses/payload-too-large'
-        415:
-          $ref: '#/components/responses/unsupported-patch'
-        422:
-          $ref: '#/components/responses/invalid-forecast'
-        429:
-          $ref: '#/components/responses/rate-limited'
-        default:
-          $ref: '#/components/responses/unexpected-error'
-      security:
-        - oauth2-cert-flow:
-          - "write:forecasts"
 
 components:
   parameters:
@@ -458,6 +356,42 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/entity-id'
+    period-start:
+      name: period-start
+      description: >
+        Defines the start of an applicable operating period.  
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/period-start'  
+    max-records:
+      name: max-records
+      description: >
+        Optionally specify a maximum number of records to return in a query operation.  Allows for paged query results.  
+      in: query
+      required: false
+      schema: 
+        type: integer
+        format: uint16
+    record-offset:
+      name: record-offset
+      description: >
+        Specify an offset for the records returned in a query operation.  Along with max-records, allows for paged query results.  
+      in: query
+      required: false
+      schema:
+        type: integer
+
+    offset-period-start:
+      name: offset-period-start
+      description: >
+        Rather than return the entire forecast from the beginning, i.e., the next
+        operating period, instead return a subset of the forecast starting with
+        the period starting at `offset-period-start`.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/period-start'
     offset-hour-ending:
       name: offset-hour-ending
       description: >
@@ -499,14 +433,179 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/entity-id'
+
+    naming-scheme:
+      name: X-TROLIE-Naming-Scheme
+      description: |
+        Indicates the naming scheme used by this operation.  The names of elements and segments
+        will vary depending on their use.  CIM Master Resource Identifiers (mRIDs) may be used, as well
+        as names used by the EMS or other systems.  The list of naming schemes supported, as well as the current default, 
+        is a function of the TROLIE implementation.  All names of all elements are available in the getNetworkSegments and 
+        getNetworkElements operations.  The list of all naming conventions and the configured default is available in the 
+        getNetworkNamingConventions operation.        
+      in: header
+      required: false
+      schema:
+        type: string
+
+    limit-units:
+      name: X-TROLIE-Limit-Units
+      description: |
+        By default, all limits and ratings are assumed to be in megavolt-amperes (MVA).  However, TROLIE implementations _may_ support 
+        alternative units, for both submittal and query, under the following circumstances:
+
+        * Current (amps) may be used if the given segment or element has a nominal voltage configured in the model.  
+          Conversion from/to MVA will be done assuming this nominal voltage.  Submittals in amps for segments without 
+          a nominal voltage in amps will return null, and submittals in amps will not be allowed for such segments.  
+        * A combination of actual power in megawatts (MW) and an assumed power factor (PF) in MW/MVA.  The MW and PF pairs must be offered together
+          in submittals.  Queries for this form will return null for ratings/limits that were not originally submitted in this form.  
+
+        The ability to negotiate limit units in this way is an optional feature of the TROLIE implementation. 
+      in: header
+      required: false
+      schema:
+        $ref: '#/components/schemas/limit-units'
+
   schemas:
-    effective-limit-set:
+    hal-link:
+      type: object
+      description: Link object in HAL, using a subset of what is defined in https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+      properties:
+        href:
+          type: string
+          format: uri
+        templated:
+          type: boolean
+        type:
+          type: string
+        name: 
+          type: string
+        deprecation:
+          type: boolean
+      required:
+        - href
+    
+    hal-links-block:
+      type: object 
+      description: Common components of a HAL links block, as described in https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+      properties:
+        self: 
+          $ref: '#/components/schemas/hal-link'
+        curies: 
+          type: array
+          items:
+            $ref: '#/components/schemas/hal-link'
+
+    paged-links-block:
+      allOf:
+      - $ref: '#/components/schemas/hal-links-block'
+      - type: object 
+        description: Extends the HAL Links block with some additional links for paging.  
+        properties:               
+          next: 
+            $ref: '#/components/schemas/hal-link'
+          previous: 
+            $ref: '#/components/schemas/hal-link'  
+
+    paged-resource:
+      type: object
+      description: |
+        Common resource definition for paged resources.  Assumes the resource content is included as an
+        array in an _embedded block, and a _links section is also declared separately containing any useful references. 
+      properties:
+        _links: 
+          $ref: '#/components/schemas/paged-links-block'      
+        total-count:
+          description: the total count returned by the query.  
+          type: integer
+          format: uint16
+        offset:
+          description: the offset from 0 if this query is beyond the first page.  
+          type: integer 
+          format: uint16
+    
+    limit-value-set: 
       type: array
-      maxItems: 50000
+      description: |
+        A set of general limit or rating values, each mapped to the various limit bands defined by the Transmission Provider's 
+        operating manual.  This typically consists of a "normal" limit, as well as limits for various levels of emergency conditions
+        (typically 2-4) defined in the operations manual.  The list of supported limit types may be fetched from getSupportedLimitTypes.  
+        The value of the limits are in units as defined by the X-TROLIE-Limit-Units header.  
       items:
         allOf:
-          - $ref: '#/components/schemas/facility-info'
-          - $ref: '#/components/schemas/last-known-effective-limits'
+        - type: object
+          properties: 
+            type: 
+              $ref: '#/components/schemas/limit-type'
+        - oneOf:
+          - $ref: '#/components/schemas/apparent-power-value'
+          - $ref: '#/components/schemas/current-value'
+          - $ref: '#/components/schemas/actual-power-and-factor-value'
+            
+    
+    apparent-power-value:
+      type: object
+      description: Representation of a limit in megavolt-amperes.  This is the recommended default for limits in TROLIE  
+      properties:
+        mva:
+          type: number
+          format: float
+          minimum: 1 # MIN_MVA
+          maximum: 10000 # MAX_MVA          
+
+    current-value:
+      type: object
+      description: Representation of a limit in amps.  Assumes that TROLIE has a nominal voltage in its model.  
+      properties:
+        amps:
+          type: number
+          format: float
+          minimum: 1 
+          maximum: 100000 
+
+    actual-power-and-factor-value:
+      type: object
+      description: Representation of a limit using a combination of actual power in MW and an assumed power factor in MVA/MW
+      properties:
+        mw:
+          type: number
+          format: float
+          minimum: 1 
+          maximum: 10000   
+        pf:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1                                   
+
+
+    realtime-limit-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/realtime-limit-item'
+
+    realtime-limit-item:
+      type: object
+      properties:
+        element-id: 
+          $ref: '#/components/schemas/modeled-object-identifier'
+        updated-time:
+          $ref: '#/components/schemas/timestamp'
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+
+
     last-known-effective-limits:
       type: object
       properties:
@@ -538,26 +637,99 @@ components:
           - $ref: '#/components/schemas/facility-info'
           - $ref: '#/components/schemas/last-known-effective-limits'
 
-    coordinated-forecast-set:
+    forecast-limit-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/forecast-limit-item'
+
+    forecast-limit-item:
+      type: object 
+      additionalProperties: false
+      properties:
+        _links: 
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block'
+          - type: object
+            properties:
+              provenant-submissions:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/hal-link"      
+        element-id: 
+          $ref: '#/components/schemas/modeled-object-identifier'
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/forecast-limit-period'
+          
+    
+    forecast-limit-period:
+      type: object
+      additionalProperties: false
+      properties: 
+        period-start:
+          $ref: '#/components/schemas/period-start'
+        updated-time:
+          $ref: '#/components/schemas/timestamp'
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+        
+    recourse-rating-snapshot: 
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/recourse-rating-snapshot-item'     
+
+    recourse-rating-snapshot-item:
       type: object
       additionalProperties: false
       properties:
-        provenance:
-          $ref: '#/components/schemas/provenance'
-        forecast-sources:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/coordinated-source'
-        forecasts:
-          type: array
-          minItems: 0
-          maxItems: 50000 # MAX_COORDINATED_FACILITIES
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block' 
+        element: 
+          $ref: '#/components/schemas/hal-link'
+        ratings:
+          type: array 
           items:
-            $ref: '#/components/schemas/coordinated-forecast'
-      required:
-        - provenance
-        - forecast-sources
-        - forecasts
+            $ref: '#/components/schemas/recourse-rating-snapshot-value'
+          maxItems: 100
+          minItems: 0
+
+    recourse-rating-snapshot-value:
+      type: object
+      additionalProperties: false
+      properties:
+        season-instance: 
+          $ref: '#/components/schemas/hal-link'
+        effective-date:
+          description: The effective date of the season, if applicable, is inherited from the season instance.  
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+        
+
+
 
     forecast-submission:
       type: object
@@ -626,10 +798,27 @@ components:
         - data-owner
         - facility-names
 
+    validation-messages:
+      type: array
+      items: 
+        $ref: '#/components/schemas/validation-message'
+
+
     validation-message:
-      type: string
-      pattern: '^(.){1,500}$'
-      maxLength: 500
+      type: object
+      additionalProperties: false
+      properties:
+        level:
+          type: string
+          enum: 
+          - warning
+          - error
+        message:
+          type: string
+          pattern: '^(.){1,500}$'
+          maxLength: 500
+
+    
 
     facility-rating-forecast:
       allOf:
@@ -815,6 +1004,9 @@ components:
       required:
         - source
         - condition-id
+
+    
+
     condition-id:
       description: An identifier of the topology condition associated with this forecasted AAR.
       type: string
@@ -856,6 +1048,18 @@ components:
       required:
         - name
         - authority
+
+    modeled-object-identifier:
+      description: |
+        Identifier for an object included in the network model of the Transmission Provider.   
+        TROLIE may be able to support multiple conventions, to handle the use of CIM MRIDs as well as
+        identifiers that may be unique to certain systems, such as the Transmission Provider's EMS, 
+        asset registration, or planning systems.  TROLIE will map these conventions based on use of the 
+        X-TROLIE-Naming-Scheme header.  Available naming conventions for a particular TROLIE implementation
+        are available from getNetworkNamingConventions.  
+      type: string
+      maxLength: 100
+      pattern: ^(.){0,100}$
 
     generic-identifier:
       type: string
@@ -913,6 +1117,34 @@ components:
       maxLength: 10
       pattern: ^[A-Z]{3,10}$
       example: 'MISO'
+
+    limit-type:
+      description: |
+        A type of limit as defined in the Transmission Provider's operating manual, usually indicating specific scenarios 
+        under which the limit may be used as well as a maximum period for which the limit may be safely applied.  The supported limit types
+        an instance of TROLIE may be introspected via the getSupportedLimitTypes operation.  
+      type: string
+      maxLength: 20
+      pattern: ^[A-Z]{3,10}$
+      example: 'normal'    
+    period-start: 
+      description: |
+        RFC 3339 date-time string with *no fractional seconds component* that designates an operating period (such as an hour) that
+        starts at a specified time. This will frequently be at the start of an hour, but may be finer-grained, such as 
+        every 30 minutes, should the Transmission Provider choose.
+        If the Transmission Provider is operating in EST, these are
+        valid and equivalent values:
+        * 2023-01-01T06:00Z
+        * 2023-01-01T01:00-5:00
+        * 2023-01-01T00:00-6:00
+        * 2023-01-01T11:30+5:30
+
+        The server should uniformly represent date-times in the operational time zone of the Transmission Provider.
+      type: string
+      format: date-time
+      maxLength: 25
+      pattern: '^([0-9]{4})-([0-9]{2})-([0-9]{2})[Tt]([0-9]{2}):([0-9]{2}):([0-9]{2})([Zz]|([+-])([0-9]{2}):([0-9]{2}))$'
+      example: '2025-01-01T03:00:00-05:00'
     hour-ending:
       description: |
         RFC 3339 date-time string with *no fractional seconds component* that designates the hour that ends at the specified time. The hour must align with
@@ -945,6 +1177,13 @@ components:
       minimum: 0
       maximum: 240 # MAX_HOURS
       default: 240 # MAX_HOURS
+    limit-units:
+      type: string
+      enum:
+      - mva
+      - amps
+      - pfmw    
+      
     empty:
       description: Intended to proactively avoid information disclosure
       type: string
@@ -956,11 +1195,6 @@ components:
     unauthorized-head:
       description: Unauthorized
       headers:
-        WWW-Authenticate:
-          schema:
-            type: string
-            pattern: ^Mutual.*
-            maxLength: 100
         X-Rate-Limit-Limit:
           $ref: '#/components/headers/X-Rate-Limit-Limit'
         X-Rate-Limit-Remaining:
@@ -974,11 +1208,6 @@ components:
           schema:
             $ref: '#/components/schemas/empty'
       headers:
-        WWW-Authenticate:
-          schema:
-            type: string
-            pattern: ^Mutual.*
-            maxLength: 100
         X-Rate-Limit-Limit:
           $ref: '#/components/headers/X-Rate-Limit-Limit'
         X-Rate-Limit-Remaining:
@@ -1215,6 +1444,30 @@ components:
         anyOf:
           - $ref: '#/components/schemas/hash'
           - $ref: '#/components/schemas/origin-id'
+    X-TROLIE-Naming-Scheme:
+      description: |
+        Indicates the naming scheme used by this operation.  The names of elements and segments
+        will vary depending on their use.  CIM Master Resource Identifiers (mRIDs) may be used, as well
+        as names used by the EMS or other systems.  The list of naming schemes supported, as well as the current default, 
+        is a function of the TROLIE implementation.  All names of all elements are available in the getNetworkSegments and 
+        getNetworkElements operations.  The list of all naming conventions and the configured default is available in the 
+        getNetworkNamingConventions operation.              
+      schema:
+        type: string    
+    X-TROLIE-Limit-Units:
+      description: |
+        By default, all limits and ratings are assumed to be in megavolt-amperes (MVA).  However, TROLIE implementations _may_ support 
+        alternative units, for both submittal and query, under the following circumstances:
+
+        * Current (amps) may be used if the given segment or element has a nominal voltage configured in the model.  
+          Conversion from/to MVA will be done assuming this nominal voltage.  Submittals in amps for segments without 
+          a nominal voltage in amps will return null, and submittals in amps will not be allowed for such segments.  
+        * A combination of actual power in megawatts (MW) and an assumed power factor (PF) in MW/MVA.  The MW and PF pairs must be offered together
+          in submittals.  Queries for this form will return null for ratings/limits that were not originally submitted in this form.  
+
+        The ability to negotiate limit units in this way is an optional feature of the TROLIE implementation.  
+      schema:
+        $ref: '#/components/schemas/limit-units'
 
   securitySchemes:
     oauth2-cert-flow:
