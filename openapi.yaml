@@ -1,0 +1,3306 @@
+openapi: '3.0.3'
+info:
+  title: Transmission Facility Ratings and Operating Limits Information Exchange (TROLIE)
+  description: |
+    Pursuant to FERC Order 881, Transmission Providers are required to support
+    Ambient Adjusted Ratings (AARs) for most Transmission Facilities in their footprint.  
+    
+    In this context, Transmission Providers refers roughly to the FERC definition of Transmission 
+    Provider as any public utility that owns, operates, or controls facilities used for the
+    transmission of electric energy in interstate commerce.  This could be said to apply to any entity that operates the transmission grid, including ISOs.  
+    
+    For the purpose of this API, Transmission Provider may be assumed to be more generic- it is 
+    really any entity that can recieve AARs.  
+
+    This API specification supports the information exchange necessary to
+    coordinate forecasted and base facility ratings between a Transmission Provider
+    and Ratings Providers. 
+
+    The Transmission Provider is assumed to be the host of this information exchange.
+
+    A Ratings Provider is defined by this specification to be any entity that
+    has pre-coordinated with the Transmission Provider hosting this information exchange
+    to be the entity responsible for providing AARs on some set of Transmission Facilities
+    known to the Transmission Provider. That pre-coordination is out-of-scope for
+    this specification.
+
+    The language of this API makes a strict distinction between the terms rating and limit.  
+    A limit is a validated value that is actively used to make operational decisions on the power grid.  
+    This could be limits used by the EMS or real-time market in real-time, or it could be forecast limits 
+    used by look-ahead processes such as EMS study applications or the day-ahead market. 
+    A rating, in contrast, is a calculated value from some process that is input to TROLIE 
+    (and by extension operating power systems at large) and may be selected for use as a 
+    limit after validation and dependent on operating conditions, timeframe and the operational 
+    decisions being made.  Seasonal ratings, forecast rating submittals, and real-time rating submittals are all examples of ratings.  
+
+    <img src="images/TROLIE interactions.svg" alt="TROLIE Interactions" />
+
+
+  version: '1.0.0-alpha.1'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.txt
+servers:
+  - url: https://no-server/trolie
+tags:
+  - name: Operating Snapshots
+    description: |
+      Two snapshots are provided:
+      * **Operating Limits Forecast Snapshot** is the forecast of Transmission
+        Facility ratings that is in-use by the Transmission Provider at the time
+        of the request for this resource.  These are actively used for look-ahead operational decisions, such as the
+        day-ahead market, in addition to their role as recourse limits if real-time ratings
+        submissions are missing.  
+      * **Operating Limits Real-Time Snapshot** is the set of System Operating Limits the
+        Transmission Provider is operating to at the time of the request for
+        this resource.  
+  - name: Recourse Rating Snapshots
+    description: |
+      While not typically used directly in operational decisions, recourse ratings are provided for two purposes:
+      1.  They are used when applicable forecast ratings are not available.  
+      2.  They may be used in future-looking studies that look out (potentially far) beyond the time 
+          window where forecast ratings are available.  
+      A snapshot is provided of the resource ratings configured by the system, as well as their relationship to upcoming seasons.  
+
+  - name: Rating Submissions
+    description: |
+      Ratings Providers may submit ratings for three separate time horizons:
+      * **Forecast Ratings** are at minimum hourly forecasts of ratings for a particular segment.  
+      * **Real-Time Ratings** are provided for current operating conditions.  Ratings provided in this manner
+        are an alternative for segments where ICCP communications are not available.  
+      * **Seasonal Recourse Ratings** are recourse ratings for when applicable forecast ratings are not available.  
+        This includes ratings for scheduled calendar seasons, as well as to rating sets that apply in special named 
+        scenarios defined by the Transmission Provider, such as an extreme winter day.  
+
+  - name: Monitoring Sets
+    description: | 
+      Monitoring sets are arbitrarily defined sets of network components, both segments and elements, 
+      that may be used to filter ratings and limits returned by queries against this API.  These are stored sets that may be defined
+      arbitrarily by users of the API, so long as those users have permission to view relevant components.  
+
+  - name: Reference Data
+    description: | 
+      Reference to sets of data that are referenced by ratings, limits and monitoring sets.  This includes:
+      * List of segmenets and elements defined in TROLIE's network model.  
+      * From an IEC CIM perspective, the list of GeographicalRegions and SubGeographicalRegions defined in the model, and their 
+        association to elements and segments.  
+      * A list of supported seasons.  
+      * A list of supported limit types.  
+      * A list of supported naming schemes.  
+paths:
+  /limits/forecast-snapshot:
+    get:
+      operationId: getLimitsForecastSnapshot
+      description: >
+        Obtain the Limits Forecast the Transmission Provider is currently using in Operations, 
+        relative to the current time.  
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: &forecastSnapshotReadResponses
+        200: 
+          description: >
+            The requested operating forecast snapshot is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-limit-set'
+            application/vnd.trolie.forecast-limit-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/forecast-limit-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: &common304
+          $ref: '#/components/responses/not-modified'
+        400: &query400
+          description: >
+            Malformed request, based on misuse of filters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation-messages'
+            application/vnd.trolie.validation-messages.v1+json:
+              schema:
+                $ref: '#/components/schemas/validation-messages'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+        401: &common401
+          $ref: '#/components/responses/unauthorized'
+        403: &common403
+          $ref: '#/components/responses/forbidden'
+        404: &common404
+          $ref: '#/components/responses/no-data-found'          
+        406: &common406
+          $ref: '#/components/responses/not-acceptable'
+        429: &common429
+          $ref: '#/components/responses/rate-limited'
+        default: &commonDefaultErr
+          $ref: '#/components/responses/unexpected-error'
+      security: &snapshotReadSecurity
+        - oauth2-primary-flow:
+          - "read:operating-snapshot"
+    head:
+      operationId: getLimitsForecastSnapshot
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getLimitsForecastSnapshot`. Useful for cache invalidation.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'        
+      responses: &headResponses
+        200: 
+          description: OK
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404      
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+
+      security: *snapshotReadSecurity
+
+  /limits/forecast-snapshot/period/{period-start}:
+    get:
+      operationId: getLimitsForecastByPeriod
+      description: >
+        Obtain the Limits Forecast the Transmission Provider is currently using in Operations, narrowed in scope
+        for a particular period.  
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/period-start'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units' 
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                  
+      responses: *forecastSnapshotReadResponses
+    head:
+      operationId: getLimitsForecastHeadersByPeriod
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getLimitsForecastByPeriodId`. Useful for cache invalidation.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/period-start'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'       
+      responses: *headResponses
+
+      security: *snapshotReadSecurity
+
+
+  /limits/realtime-snapshot:
+    get:
+      operationId: getRealTimeLimits
+      description: >
+        Obtain the System Operating Limits in-use by the Transmission Provider.
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units' 
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      tags:
+        - Operating Snapshots
+      responses:
+        200:
+          description: >
+            The System Operating Limits snapshot is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-limit-set'
+            application/vnd.trolie.realtime-limit-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/realtime-limit-set'                
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *snapshotReadSecurity
+    head:
+      operationId: getRealTimeLimitsHeaders
+      description: >
+        Use to obtain the headers that would be returned for `getRealTimeLimits`.
+        Useful for cache invalidation.
+      tags:
+        - Operating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'         
+      responses: *headResponses
+      security: *snapshotReadSecurity
+  
+  /recourse-ratings/snapshot:
+    get:
+      operationId: getResourceRatingsSnapshot
+      description: Retrieve the nominal and seasonal ratings for all facilities in the `monitoring-set`.
+      tags:
+        - Recourse Rating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'        
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'              
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-snapshot'
+            application/vnd.trolie.recourse-rating-snapshot.v1+json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-snapshot'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *snapshotReadSecurity
+    head:
+      operationId: getResourceRatingsSnapshotHeaders
+      description: >
+        Use to obtain the headers that would be returned for `getResourceRatingsSnapshot`.
+        Useful for cache invalidation.
+      tags:
+        - Recourse Rating Snapshots
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/element-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'         
+      responses: *headResponses
+      security: *snapshotReadSecurity
+
+  /recourse-ratings/season-instances:
+    get:
+      operationId: getSeasonInstances
+      description: Recourse ratings are always bound against season instances, with effective dates.  
+      tags:
+        - Recourse Rating Snapshots           
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season-instance-set'
+            application/vnd.trolie.season-instance-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/season-instance-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *snapshotReadSecurity
+    head:
+      operationId: getSeasonInstancesHeaders
+      description: >
+        Use to obtain the headers that would be returned for `getSeasonInstances`.
+        Useful for cache invalidation.
+      tags:
+        - Recourse Rating Snapshots      
+      responses: *headResponses
+      security: *snapshotReadSecurity
+
+  /recourse-ratings/season-instances/{id}:
+    get:
+      operationId: getSeasonInstance
+      description: Gets a single season instance.  
+      tags:
+        - Recourse Rating Snapshots      
+      parameters:
+      - $ref: '#/components/parameters/id'     
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season-instance'
+            application/vnd.trolie.season-instance.v1+json:
+              schema:
+                $ref: '#/components/schemas/season-instance'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *snapshotReadSecurity
+
+
+  /rating-submissions/forecasts:
+    get:
+      operationId: getRatingForecastSubmissions
+      description: >
+        Obtain the Ratings Forecasts the Ratings Provider has submitted.  
+        Note that the offset-period-start and forecast-length parameters work in a similar fashion to 
+        getLimitsForecastSnapshot, except that it will return any submission that overlaps with the implied period.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/segment-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'        
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-set'
+            application/vnd.trolie.rating-forecast-submission-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: &forecastsubmissionReadSecurity
+        - oauth2-primary-flow:
+          - "read:forecast-submissions"       
+    head:
+      operationId: getRatingForecastSubmissionsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getRatingForecastSubmissions`. Useful for cache invalidation.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/segment-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'             
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: *headResponses
+
+      security: *forecastsubmissionReadSecurity
+
+    post:
+      operationId: postRatingForecastSubmission
+      description: >
+        Post a new Rating Forecast Submission 
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/forecast-rating-submission'
+          application/vnd.trolie.rating-forecast-submission.v1+json:
+            schema:
+              $ref: '#/components/schemas/forecast-rating-submission'                            
+      responses: 
+        202: 
+          description: >
+            The update was accepted for later processing. Updates to 
+            ratings may need to undergo additional validation and propagation
+            to other systems.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-submission'
+            application/vnd.trolie.rating-forecast-submission.v1+json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-submission'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: &submit400
+          description: >
+            Malformed request, submission is invalid.  Details are in error messages.  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation-messages'
+            application/vnd.trolie.validation-messages.v1+json:
+              schema:
+                $ref: '#/components/schemas/validation-messages'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: 
+        - oauth2-primary-flow:
+          - "write:forecast-submissions"  
+
+  /rating-submissions/forecasts/{submission-id}:
+    get:
+      operationId: getRatingForecastSubmission
+      description: >
+        Obtain a specific rating submission by Id.  
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/submission-id'   
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'                      
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-submission'
+            application/vnd.trolie.rating-forecast-submission.v1+json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-submission'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *forecastsubmissionReadSecurity
+
+  /rating-submissions/missing/forecasts:
+    get:
+      operationId: getMissingRatingForecastPeriods
+      description: >
+        Given an operations window, returns the missing forecasts for segments owned by this ratings provider.  
+        If no forecast-length is provided, then this will default to the configured "required" periods for this
+        instance of TROLIE, typically assumed to be the 10-day ahead set of hours required by FERC order 881.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/missing-forecast-rating-set'
+            application/vnd.trolie.missing-forecast-rating-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/missing-forecast-rating-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *forecastsubmissionReadSecurity
+   
+    head:
+      operationId: getMissingRatingForecastPeriodsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getMissingRatingForecastPeriods`. Useful for cache invalidation.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: *headResponses
+
+      security: *forecastsubmissionReadSecurity
+
+  /rating-submissions/missing/forecasts/{ratings-provider}:
+    get:
+      operationId: getMissingRatingForecastPeriodsForProvider
+      description: >
+        Given an operations window, returns the missing forecasts for segments owned by the selected ratings provider.  
+        If no forecast-length is provided, then this will default to the configured "required" periods for this
+        instance of TROLIE, typically assumed to be the 10-day ahead set of hours required by FERC order 881.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/ratings-provider'
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/missing-forecast-rating-set'
+            application/vnd.trolie.missing-forecast-rating-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/missing-forecast-rating-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *forecastsubmissionReadSecurity
+   
+    head:
+      operationId: getMissingRatingForecastPeriodsForProviderHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getMissingRatingForecastPeriodsForProvider`. Useful for cache invalidation.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/ratings-provider'      
+        - $ref: '#/components/parameters/offset-period-start'
+        - $ref: '#/components/parameters/forecast-length'
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: *headResponses
+
+      security: *forecastsubmissionReadSecurity      
+
+  /rating-submissions/realtime:
+    get:
+      operationId: getRealTimeRatingSubmissions
+      description: >
+        Obtain the latest Real-Time Ratings the Ratings Provider has submitted.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/segment-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'             
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-set'
+            application/vnd.trolie.realtime-rating-submission-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: &realtimesubmissionReadSecurity
+        - oauth2-primary-flow:
+          - "read:realtime-submissions"       
+    head:
+      operationId: getRealTimeRatingSubmissionsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getRealTimeSubmissions`. Useful for cache invalidation.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/segment-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'             
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: *headResponses
+
+      security: *realtimesubmissionReadSecurity
+
+    post:
+      operationId: postRealTimeSubmission
+      description: >
+        Post a new RealTime Rating Submission 
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/realtime-rating-submission'
+          application/vnd.trolie.realtime-rating-submission.v1+json:
+            schema:
+              $ref: '#/components/schemas/realtime-rating-submission'                            
+      responses: 
+        202: 
+          description: >
+            The update was accepted for later processing. Updates to 
+            ratings may need to undergo additional validation and propagation
+            to other systems.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-submission'
+            application/vnd.trolie.realtime-submission.v1+json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-submission'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *submit400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: 
+        - oauth2-primary-flow:
+          - "write:realtime-submissions"  
+
+  /rating-submissions/realtime/{submission-id}:
+    get:
+      operationId: getRealTimeSubmission
+      description: >
+        Obtain a specific rating submission by Id.  
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/submission-id'   
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'                      
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-submission'
+            application/vnd.trolie.realtime-rating-submission.v1+json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-submission'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *realtimesubmissionReadSecurity
+
+  /rating-submissions/recourse:
+    get:
+      operationId: getRecourseRatingSubmissions
+      description: >
+        Obtain the latest Recourse / Seasonal Ratings the Ratings Provider has submitted.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/segment-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'             
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-set'
+            application/vnd.trolie.recourse-rating-submission-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: &recoursesubmissionReadSecurity
+        - oauth2-primary-flow:
+          - "read:recourse-submissions"       
+    head:
+      operationId: getRecourseRatingSubmissionsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getRecourseSubmissions`. Useful for cache invalidation.
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/monitoring-set-filter'
+        - $ref: '#/components/parameters/segment-filter'
+        - $ref: '#/components/parameters/geographical-region-filter'
+        - $ref: '#/components/parameters/subgeographical-region-filter'     
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: *headResponses
+
+      security: *recoursesubmissionReadSecurity
+
+    post:
+      operationId: postRecourseSubmission
+      description: >
+        Post a new Recourse Rating Submission 
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recourse-rating-submission'
+          application/vnd.trolie.recourse-rating-submission.v1+json:
+            schema:
+              $ref: '#/components/schemas/recourse-rating-submission'                            
+      responses: 
+        202: 
+          description: >
+            The update was accepted for later processing. Updates to 
+            ratings may need to undergo additional validation and propagation
+            to other systems.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-submission'
+            application/vnd.trolie.recourse-submission.v1+json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-submission'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *submit400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: 
+        - oauth2-primary-flow:
+          - "write:recourse-submissions"  
+
+  /rating-submissions/recourse/{submission-id}:
+    get:
+      operationId: getRecourseSubmission
+      description: >
+        Obtain a specific rating submission by Id.  
+      tags:
+        - Rating Submissions
+      parameters:
+        - $ref: '#/components/parameters/submission-id'   
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'                      
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-submission'
+            application/vnd.trolie.recourse-rating-submission.v1+json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-submission'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Limit-Units:
+              $ref: '#/components/headers/X-TROLIE-Limit-Units'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *recoursesubmissionReadSecurity
+
+  /monitoring-sets:
+    get:
+      operationId: getMonitoringSets
+      description: >
+        Obtain the list of monitoring sets visible to this user.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Monitoring Sets
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set-list'
+            application/vnd.trolie.monitoring-set-list.v1+json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set-list'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: &readMonSetSecurity
+        - oauth2-primary-flow:
+          - "read:monitoring-sets"       
+    head:
+      operationId: getMonitoringSetsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getMonitoringSets`. Useful for cache invalidation.
+      tags:
+        - Monitoring Sets
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'        
+      responses: *headResponses
+
+      security: *readMonSetSecurity
+
+    post:
+      operationId: createMonitoringSet
+      description: >
+        Create a new Monitoring Set
+      tags:
+        - Monitoring Sets
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/monitoring-set'
+          application/vnd.trolie.monitoring-set.v1+json:
+            schema:
+              $ref: '#/components/schemas/monitoring-set'                            
+      responses: 
+        201: 
+          description: >
+            The update was accepted for later processing. Updates to 
+            ratings may need to undergo additional validation and propagation
+            to other systems.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set'
+            application/vnd.trolie.monitoring-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *submit400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: &writeMonSetSecurity
+        - oauth2-primary-flow:
+          - "write:monitoring-sets"  
+
+  /monitoring-sets/{id}:
+    get:
+      operationId: getMonitoringSet
+      description: >
+        Obtain a specific monitoring set by Id.  
+      tags:
+        - Monitoring Sets
+      parameters:
+        - $ref: '#/components/parameters/id'   
+        - $ref: '#/components/parameters/naming-scheme'                    
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set'
+            application/vnd.trolie.monitoring-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'
+            X-TROLIE-Naming-Scheme:
+              $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *writeMonSetSecurity   
+    delete:
+      operationId: deleteMonitoringSet
+      description: >
+        Delete a specific monitoring set by Id.  
+      tags:
+        - Monitoring Sets
+      parameters:
+        - $ref: '#/components/parameters/id'                      
+      responses: 
+        200:
+          description: OK
+        304: *common304
+        400: *submit400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *writeMonSetSecurity         
+    put:
+      operationId: updateMonitoringSet
+      description: >
+        Updates an existing Monitoring Set
+      tags:
+        - Monitoring Sets
+      parameters:
+        - $ref: '#/components/parameters/naming-scheme'  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/monitoring-set'
+          application/vnd.trolie.monitoring-set.v1+json:
+            schema:
+              $ref: '#/components/schemas/monitoring-set'                            
+      responses: 
+        200: 
+          description: >
+            The monitoring set was updated
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *submit400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *writeMonSetSecurity          
+
+  /reference-data/geographical-regions:
+    get:
+      operationId: getGeographicalRegions
+      description: >
+        Obtain Geographical Regions referenced in TROLIE.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Reference Data             
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geographical-region-set'
+            application/vnd.trolie.geographical-region-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/geographical-region-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: &refReadSecurity
+        - oauth2-primary-flow:
+          - "read:reference-data"       
+    head:
+      operationId: getGeographicalRegionsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getGeographicalRegions`. Useful for cache invalidation.
+      tags:
+        - Reference Data 
+      responses: *headResponses
+
+      security: *refReadSecurity
+
+  /reference-data/geographical-regions/{id}:
+    get:
+      operationId: getGeographicalRegion
+      description: >
+        Obtain a specific Geographical region by Id.  
+      tags:
+        - Reference Data
+      parameters:
+        - $ref: '#/components/parameters/id'   
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'                      
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geographical-region'
+            application/vnd.trolie.geographical-region.v1+json:
+              schema:
+                $ref: '#/components/schemas/geographical-region'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'      
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *refReadSecurity   
+
+  /reference-data/sub-geographical-regions:
+    get:
+      operationId: getSubGeographicalRegions
+      description: >
+        Obtain SubGeographical Regions referenced in TROLIE.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Reference Data             
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sub-geographical-region-set'
+            application/vnd.trolie.sub-geographical-region-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/sub-geographical-region-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity
+   
+    head:
+      operationId: getSubGeographicalRegionsHeaders
+      description: >
+        Use to obtain the headers that would be returned for 
+        `getSubGeographicalRegions`. Useful for cache invalidation.
+      tags:
+        - Reference Data 
+      responses: *headResponses
+
+      security: *refReadSecurity
+
+  /reference-data/sub-geographical-regions/{id}:
+    get:
+      operationId: getSubGeographicalRegion
+      description: >
+        Obtain a specific SubGeographical region by Id.  
+      tags:
+        - Reference Data
+      parameters:
+        - $ref: '#/components/parameters/id'   
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'                      
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sub-geographical-region'
+            application/vnd.trolie.sub-geographical-region.v1+json:
+              schema:
+                $ref: '#/components/schemas/sub-geographical-region'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'      
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404  
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *refReadSecurity       
+
+  /reference-data/network-segments:
+    get:
+      operationId: getNetworkSegments
+      description: Get network segments in the model with effective dates
+      tags:
+        - Reference Data    
+      parameters:
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'               
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-segment-set'
+            application/vnd.trolie.network-segment-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/network-segment-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity
+    head:
+      operationId: getNetworkSegmentsHeaders
+      description: >
+        Use to obtain the headers that would be returned for `getNetworkSegments`.
+        Useful for cache invalidation.
+      parameters:
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'            
+      tags:
+        - Reference Data   
+      responses: *headResponses
+      security: *refReadSecurity
+
+  /reference-data/network-segments/{id}:
+    get:
+      operationId: getNetworkSegment
+      description: Gets a single segment instance.  
+      tags:
+        - Reference Data
+      parameters:
+      - $ref: '#/components/parameters/id'     
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-segment'
+            application/vnd.trolie.network-segment.v1+json:
+              schema:
+                $ref: '#/components/schemas/network-segment'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity      
+
+  /reference-data/network-elements:
+    get:
+      operationId: getNetworkElements
+      description: Get network elements in the model with effective dates
+      tags:
+        - Reference Data    
+      parameters:
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'               
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-element-set'
+            application/vnd.trolie.network-element-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/network-element-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity
+    head:
+      operationId: getNetworkElementsHeaders
+      description: >
+        Use to obtain the headers that would be returned for `getNetworkElements`.
+        Useful for cache invalidation.
+      parameters:
+        - $ref: '#/components/parameters/max-records'
+        - $ref: '#/components/parameters/record-offset'            
+      tags:
+        - Reference Data   
+      responses: *headResponses
+      security: *refReadSecurity
+
+  /reference-data/network-elements/{id}:
+    get:
+      operationId: getNetworkElement
+      description: Gets a single element instance.  
+      tags:
+        - Reference Data
+      parameters:
+      - $ref: '#/components/parameters/id'     
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-element'
+            application/vnd.trolie.network-element.v1+json:
+              schema:
+                $ref: '#/components/schemas/network-element'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity    
+           
+
+  /reference-data/seasons:
+    get:
+      operationId: getSeasons
+      description: >
+        Obtain Seasons referenced in TROLIE.  These are assumed to be a relatively 
+        static part of configuration.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Reference Data             
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season-set'
+            application/vnd.trolie.season-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/season-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity
+  
+
+  /reference-data/seasons/{id}:
+    get:
+      operationId: getSeason
+      description: >
+        Obtain a specific SubGeographical region by Id.  
+      tags:
+        - Reference Data
+      parameters:
+        - $ref: '#/components/parameters/id'   
+        - $ref: '#/components/parameters/naming-scheme'
+        - $ref: '#/components/parameters/limit-units'                      
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season'
+            application/vnd.trolie.season.v1+json:
+              schema:
+                $ref: '#/components/schemas/season'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'      
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        404: *common404          
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr   
+      security: *refReadSecurity
+
+  /reference-data/limit-types:
+    get:
+      operationId: getLimitTypes
+      description: >
+        Obtain Limit types referenced in TROLIE.  These are assumed to be a relatively 
+        static part of configuration.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Reference Data             
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/limit-type-set'
+            application/vnd.trolie.limit-type-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/limit-type-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403         
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity      
+
+  /reference-data/namimg-schemes:
+    get:
+      operationId: getNamingSchemes
+      description: >
+        Obtain naming schemes supported in TROLIE.  These are assumed to be a relatively 
+        static part of configuration.  
+
+        Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+        and the `ETag` of a previous `GET` response.
+      tags:
+        - Reference Data             
+      responses: 
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/naming-scheme-set'
+            application/vnd.trolie.naming-scheme-set.v1+json:
+              schema:
+                $ref: '#/components/schemas/naming-scheme-set'
+          headers:
+            X-Rate-Limit-Limit:
+              $ref: '#/components/headers/X-Rate-Limit-Limit'
+            X-Rate-Limit-Remaining:
+              $ref: '#/components/headers/X-Rate-Limit-Remaining'
+            X-Rate-Limit-Reset:
+              $ref: '#/components/headers/X-Rate-Limit-Reset'           
+            ETag:
+              $ref: '#/components/headers/ETag'
+        304: *common304
+        400: *query400
+        401: *common401
+        403: *common403
+        406: *common406
+        429: *common429
+        default: *commonDefaultErr
+      security: *refReadSecurity           
+
+components:
+  parameters:
+
+    id:
+      name: id
+      description: >
+        ID of the associated object
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/generic-identifier' 
+
+    ratings-provider:
+      name: ratings-provider
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/entity-id'
+    period-start:
+      name: period-start
+      description: >
+        Defines the start of an applicable operating period.  
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/period-start'  
+
+
+    submission-id:
+      name: submission-id
+      description: >
+        ID of the associated submission
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/generic-identifier'  
+
+    max-records:
+      name: max-records
+      description: >
+        Optionally specify a maximum number of records to return in a query operation.  Allows for paged query results.  
+      in: query
+      required: false
+      schema: 
+        type: integer
+        format: uint16
+    record-offset:
+      name: record-offset
+      description: >
+        Specify an offset for the records returned in a query operation.  Along with max-records, allows for paged query results.  
+      in: query
+      required: false
+      schema:
+        type: integer
+
+    offset-period-start:
+      name: offset-period-start
+      description: >
+        Rather than return the entire forecast from the beginning, i.e., the next
+        operating period, instead return a subset of the forecast starting with
+        the period starting at `offset-period-start`.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/period-start'
+    forecast-length:
+      name: forecast-length
+      description: Specifies the number of sequential forecasted hours to return.
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/forecast-length'
+    monitoring-set-filter:
+      name: monitoring-set
+      description: >
+        Only return ratings or limits for facilities of the associated `monitoring-set`
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/entity-id'
+    element-filter:
+      name: element
+      description: >
+        Only return limits for this element.  Respects `X-TROLIE-Naming-Scheme` header for looking up name.  
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/entity-id'
+    segment-filter:
+      name: segment
+      description: >
+        Only return limits for this segment.  Respects `X-TROLIE-Naming-Scheme` header for looking up name.  
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/entity-id'     
+    geographical-region-filter:
+      name: geographical-region
+      description: >
+        Only return limits or ratings for facilities within this `GeographicalRegion``.    
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/entity-id'    
+    subgeographical-region-filter:
+      name: subgeographical-region
+      description: >
+        Only return limits or ratings for facilities within this `SubGeographicalRegion`.    
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/entity-id'                   
+
+    monitoring-set:
+      name: monitoring-set
+      description: >
+        A collection of Transmission Facilities associated with a Ratings Provider.
+        The Ratings Provider determines which facilities are in the collection,
+        but it must include every facility associated with a Ratings Requirement
+        assigned to the Ratings Provider. The ratings and other associated information for
+        the facilities in the Monitoring Set can be obtained by the Ratings Provider
+        by requesting the appropriate object from TROLIE using their entity id.
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/entity-id'
+
+    naming-scheme:
+      name: X-TROLIE-Naming-Scheme
+      description: |
+        Indicates the naming scheme used by this operation.  The names of elements and segments
+        will vary depending on their use.  CIM Master Resource Identifiers (mRIDs) may be used, as well
+        as names used by the EMS or other systems.  The list of naming schemes supported, as well as the current default, 
+        is a function of the TROLIE implementation.  All names of all elements are available in the getNetworkSegments and 
+        getNetworkElements operations.  The list of all naming conventions and the configured default is available in the 
+        getNetworkNamingConventions operation.        
+      in: header
+      required: false
+      schema:
+        type: string
+
+    limit-units:
+      name: X-TROLIE-Limit-Units
+      description: |
+        By default, all limits and ratings are assumed to be in megavolt-amperes (MVA).  However, TROLIE implementations _may_ support 
+        alternative units, for both submittal and query, under the following circumstances:
+
+        * Current (amps) may be used if the given segment or element has a nominal voltage configured in the model.  
+          Conversion from/to MVA will be done assuming this nominal voltage.  Submittals in amps for segments without 
+          a nominal voltage in amps will return null, and submittals in amps will not be allowed for such segments.  
+        * A combination of actual power in megawatts (MW) and an assumed power factor (PF) in MW/MVA.  The MW and PF pairs must be offered together
+          in submittals.  Queries for this form will return null for ratings/limits that were not originally submitted in this form.  
+
+        The ability to negotiate limit units in this way is an optional feature of the TROLIE implementation. 
+      in: header
+      required: false
+      schema:
+        $ref: '#/components/schemas/limit-units'
+
+
+  schemas:
+    hal-link:
+      type: object
+      description: Link object in HAL, using a subset of what is defined in https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+      properties:
+        href:
+          type: string
+          format: uri
+        templated:
+          type: boolean
+        type:
+          type: string
+        name: 
+          type: string
+        deprecation:
+          type: boolean
+      required:
+        - href
+    
+    hal-links-block:
+      type: object 
+      description: Common components of a HAL links block, as described in https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
+      properties:
+        self: 
+          $ref: '#/components/schemas/hal-link'
+        curies: 
+          type: array
+          items:
+            $ref: '#/components/schemas/hal-link'
+
+    paged-links-block:
+      allOf:
+      - $ref: '#/components/schemas/hal-links-block'
+      - type: object 
+        description: Extends the HAL Links block with some additional links for paging.  
+        properties:               
+          next: 
+            $ref: '#/components/schemas/hal-link'
+          previous: 
+            $ref: '#/components/schemas/hal-link'  
+
+    paged-resource:
+      type: object
+      description: |
+        Common resource definition for paged resources.  Assumes the resource content is included as an
+        array in an _embedded block, and a _links section is also declared separately containing any useful references. 
+      properties:
+        _links: 
+          $ref: '#/components/schemas/paged-links-block'      
+        total-count:
+          description: the total count returned by the query.  
+          type: integer
+          format: uint16
+        offset:
+          description: the offset from 0 if this query is beyond the first page.  
+          type: integer 
+          format: uint16
+    
+    limit-value-set: 
+      type: array
+      description: |
+        A set of general limit or rating values, each mapped to the various limit bands defined by the Transmission Provider's 
+        operating manual.  This typically consists of a "normal" limit, as well as limits for various levels of emergency conditions
+        (typically 2-4) defined in the operations manual.  The list of supported limit types may be fetched from getSupportedLimitTypes.  
+        The value of the limits are in units as defined by the X-TROLIE-Limit-Units header.  
+      items:
+        allOf:
+        - type: object
+          properties: 
+            type: 
+              $ref: '#/components/schemas/limit-type'
+        - oneOf:
+          - $ref: '#/components/schemas/apparent-power-value'
+          - $ref: '#/components/schemas/current-value'
+          - $ref: '#/components/schemas/actual-power-and-factor-value'
+            
+    rating-input:
+      description: General type for a rating input
+      oneOf:
+      - $ref: '#/components/schemas/aar-input'
+      - $ref: '#/components/schemas/dlr-input'
+
+    aar-input:
+      description: |
+        Ambient-adjusted rating, described as a minimum requirement for FERC 881.  Includes
+        a temperature, and an optional forecast source, such as a weather station or 
+        forecasted weather coordinate.  
+      type: object
+      additionalProperties: false
+      properties:
+        weather-source:
+          $ref: '#/components/schemas/generic-identifier'
+        degrees-fahrenheit:
+          type: integer
+          minimum: -200
+          maximum: 200
+      required:
+        - degrees-fahrenheit
+
+    dlr-input:
+      description: | 
+        True dynamic-line ratings may be used for either forecast or real-time ratings.  This is 
+        potentially more complex than AARs, and inputs may be more varied, from multiple sensor values
+        to multiple temperature stations, wind speed and wind direction.  For the purpose of TROLIE, 
+        this input is free form.  There isn't a good way to enforce a maximum size of a free form object in JSON
+        schema, so implementations are encouraged to enforce a maximum size internally.  
+      type: object
+      additionalProperties: true
+
+    
+    apparent-power-value:
+      type: object
+      description: Representation of a limit in megavolt-amperes.  This is the recommended default for limits in TROLIE  
+      properties:
+        mva:
+          type: number
+          format: float
+          minimum: 1 # MIN_MVA
+          maximum: 10000 # MAX_MVA          
+
+    current-value:
+      type: object
+      description: Representation of a limit in amps.  Assumes that TROLIE has a nominal voltage in its model.  
+      properties:
+        amps:
+          type: number
+          format: float
+          minimum: 1 
+          maximum: 100000 
+
+    actual-power-and-factor-value:
+      type: object
+      description: Representation of a limit using a combination of actual power in MW and an assumed power factor in MVA/MW
+      properties:
+        mw:
+          type: number
+          format: float
+          minimum: 1 
+          maximum: 10000   
+        pf:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1        
+
+    limiting-segment-input:
+      description: Reason for a submission indicating that a limiting segment                                  
+
+
+    realtime-limit-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/realtime-limit-item'
+
+    realtime-limit-item:
+      type: object
+      properties:
+        _links: 
+          type: object
+          properties:
+            provenant-submissions:
+              type: array
+              items: 
+                $ref: "#/components/schemas/hal-link"      
+            element: 
+              $ref: '#/components/schemas/hal-link'      
+        updated-time:
+          $ref: '#/components/schemas/timestamp'
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+
+
+
+
+    forecast-limit-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/forecast-limit-item'
+
+    forecast-limit-item:
+      type: object 
+      additionalProperties: false
+      properties:
+        _links: 
+          type: object
+          properties:
+            provenant-submissions:
+              type: array
+              items: 
+                $ref: "#/components/schemas/hal-link"      
+            element: 
+              $ref: '#/components/schemas/hal-link'  
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/forecast-limit-period'
+          
+    
+    forecast-limit-period:
+      type: object
+      additionalProperties: false
+      properties: 
+        period-start:
+          $ref: '#/components/schemas/period-start'
+        updated-time:
+          $ref: '#/components/schemas/timestamp'
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+        
+    recourse-rating-snapshot: 
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/recourse-rating-snapshot-item'     
+
+    recourse-rating-snapshot-item:
+      type: object
+      additionalProperties: false
+      properties:
+        _links: 
+          type: object
+          properties:
+            provenant-submissions:
+              type: array
+              items: 
+                $ref: "#/components/schemas/hal-link"      
+            element: 
+              $ref: '#/components/schemas/hal-link'      
+        ratings:
+          type: array 
+          items:
+            $ref: '#/components/schemas/recourse-rating-snapshot-value'
+          maxItems: 100
+          minItems: 0
+
+    recourse-rating-snapshot-value:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          type: object
+          properties:
+            season-instance: 
+               $ref: '#/components/schemas/hal-link'
+        effective-date:
+          description: The effective date of the season, if applicable, is inherited from the season instance.  
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+
+    season-instance-set: 
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        _embedded:
+          type: object
+          properties:
+            forecasts:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                $ref: '#/components/schemas/season-instance'     
+
+    season-instance:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block'
+          - type: object
+            properties:
+              season: 
+                $ref: '#/components/schemas/hal-link'
+        id: 
+          $ref: '#/components/schemas/generic-identifier'
+        effective-time: 
+          $ref: '#/components/schemas/period-start'
+        active:
+          description: Set to true if this season is currently active
+          type: boolean
+      required:
+      - _links
+      - id
+      - active
+
+        
+    forecast-rating-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/forecast-rating-submission'
+
+    rating-submission:
+      type: object
+      description: General type for ratings submission
+      additionalProperties: false
+      properties:
+        _links: 
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block'
+          - type: object
+            properties:   
+              segment: 
+                $ref: '#/components/schemas/hal-link'  
+              superceded-by: 
+                description: Link to a submission that supercedes this submission.  
+                $ref: '#/components/schemas/hal-link'
+        id:
+          description: A system-generated ID for this submission.  
+          $ref: '#/components/schemas/generic-identifier'   
+        timestamp:
+          description: The time this submission was recieved.  
+          $ref: '#/components/schemas/timestamp' 
+        submitter:
+          description: ID of the ratings provider that created this submission.  
+          $ref: '#/components/schemas/generic-identifier'
+
+    forecast-rating-submission:
+      allOf:
+      - $ref: '#/components/schemas/rating-submission'
+      - type: object 
+        additionalProperties: false
+        properties:              
+          ratings:  
+            type: array
+            items:
+              $ref: '#/components/schemas/forecast-rating-for-segment'
+          
+    forecast-rating-for-segment:
+      type: object
+      additionalProperties: false
+      properties:
+        _links: 
+          type: object
+          properties:   
+            segment: 
+              $ref: '#/components/schemas/hal-link'    
+        periods:  
+          type: array
+          items:
+            $ref: '#/components/schemas/forecast-rating-period'                  
+
+    forecast-rating-period:
+      type: object
+      additionalProperties: false
+      properties: 
+        period-start:
+          $ref: '#/components/schemas/period-start'
+        input:
+          $ref: '#/components/schemas/rating-input'          
+        values:
+          $ref: '#/components/schemas/limit-value-set'
+
+    missing-forecast-rating-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/missing-forecast-rating-for-segment'
+
+          
+    missing-forecast-rating-for-segment:
+      type: object
+      additionalProperties: false
+      properties:
+        _links: 
+          type: object
+          properties:   
+            segment: 
+              $ref: '#/components/schemas/hal-link'    
+        periods:  
+          type: array
+          items:
+            $ref: '#/components/schemas/period-start'           
+
+    realtime-rating-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/realtime-rating-submission'
+
+    realtime-rating-submission:
+      allOf:
+      - $ref: '#/components/schemas/rating-submission'
+      - type: object 
+        additionalProperties: false
+        properties:         
+          ratings:
+            type: array
+            items:
+              $ref: '#/components/schemas/realtime-rating'
+          
+    
+    realtime-rating:
+      type: object
+      additionalProperties: false
+      properties: 
+        _links:
+          type: object
+          properties:
+            segment:
+              $ref: '#/components/schemas/hal-link'
+        input:
+          $ref: '#/components/schemas/rating-input'        
+        values:
+          $ref: '#/components/schemas/limit-value-set'         
+
+    recourse-rating-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/recourse-rating-submission'
+              
+
+    recourse-rating-submission:
+      allOf:
+      - $ref: '#/components/schemas/rating-submission'
+      - type: object 
+        additionalProperties: false
+        properties:            
+          ratings:  
+            type: array
+            items:
+              $ref: '#/components/schemas/recourse-rating-for-segment'
+          
+    recourse-rating-for-segment:
+      type: object
+      additionalProperties: false
+      properties:
+        _links: 
+          type: object
+          properties:   
+            segment: 
+              $ref: '#/components/schemas/hal-link'    
+        seasons:  
+          type: array
+          items:
+            $ref: '#/components/schemas/recourse-rating-season'                  
+
+    recourse-rating-season:
+      type: object
+      additionalProperties: false
+      properties: 
+        _links: 
+          type: object
+          properties:   
+            season: 
+              $ref: '#/components/schemas/hal-link'   
+        values:
+          $ref: '#/components/schemas/limit-value-set'  
+
+    monitoring-set-list:
+      description: |
+        Paged list of monitoring set links.  Note that monitoring sets themselves are not embedded in the list as they are potentially extremely large objects.  
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              monitoring-sets:
+                type: array
+                minItems: 0
+                maxItems: 2000 
+                items:
+                  $ref: '#/components/schemas/hal-link'
+
+    monitoring-set:
+      description: |
+        Set of elements noteworthy to reference in queries in TROLIE.  
+        The set of segments included in the monitoring set is implied by their
+        inclusion in the elements within the monitoring set.  
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        id:
+          $ref: '#/components/schemas/generic-identifier'   
+        description:
+          type: string    
+        elements: 
+          type: array
+          minItems: 0
+          maxItems: 50000
+          items:
+            $ref: '#/components/schemas/hal-link'
+             
+
+    geographical-region-set:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        _embedded:
+          type: object
+          properties:
+            forecasts:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                $ref: '#/components/schemas/geographical-region'
+
+    geographical-region:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        id:
+          $ref: '#/components/schemas/generic-identifier'
+        name:
+          $ref: '#/components/schemas/generic-identifier'          
+        effective-time: 
+          $ref: '#/components/schemas/period-start'
+        _embedded:
+          type: object
+          properties:
+            sub-regions:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                $ref: '#/components/schemas/sub-geographical-region'        
+
+    sub-geographical-region-set:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        _embedded:
+          type: object
+          properties:
+            forecasts:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                $ref: '#/components/schemas/sub-geographical-region'
+
+    sub-geographical-region:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block'
+          - type: object
+            properties:
+              geographical-region:
+                $ref: '#/components/schemas/hal-link'
+        id:
+          $ref: '#/components/schemas/generic-identifier'
+        name:
+          $ref: '#/components/schemas/generic-identifier'          
+        effective-time: 
+          $ref: '#/components/schemas/period-start'            
+     
+    network-component-name:
+      type: object
+      additionalProperties: false
+      properties:
+        scheme:
+          $ref: '#/components/schemas/generic-identifier'
+        name:
+          $ref: '#/components/schemas/generic-identifier'
+          
+
+    network-element-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/network-element'
+
+    network-element:
+      type: object
+      description: |
+        A network element is any component of the network that can have a dynamic limit- 
+        this is generally lines, but could also include equipment such as transformers.  Elements generally are composed of segments.  
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block'
+          - type: object
+            additionalProperties: false
+            properties:
+              sub-geographical-region: 
+                $ref: '#/components/schemas/hal-link'
+        id:
+          $ref: '#/components/schemas/generic-identifier'
+        name:
+          $ref: '#/components/schemas/generic-identifier'          
+        effective-time: 
+          $ref: '#/components/schemas/period-start'
+        names:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items: 
+            $ref: '#/components/schemas/network-component-name'
+        _embedded:
+          type: object
+          properties:
+            segments:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                $ref: '#/components/schemas/network-segment'    
+
+    network-segment-set:
+      allOf:
+      - $ref: '#/components/schemas/paged-resource'
+      - type: object
+        additionalProperties: false
+        properties:
+          _embedded:
+            type: object
+            properties:
+              forecasts:
+                type: array
+                minItems: 0
+                maxItems: 50000 
+                items:
+                  $ref: '#/components/schemas/network-segment'
+
+    network-segment:
+      type: object
+      description: |
+        A network segment is a component of an element that may have rating assigned to it.  
+        These are generally line segments, but can really be any piece of equipment on the network that 
+        can have a dynamic rating and is potentially limiting to some element.  
+      additionalProperties: false
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/hal-links-block'
+          - type: object
+            additionalProperties: false
+            properties:
+              element: 
+                $ref: '#/components/schemas/hal-link'
+        id:
+          $ref: '#/components/schemas/generic-identifier'
+        name:
+          $ref: '#/components/schemas/generic-identifier'          
+        effective-time: 
+          $ref: '#/components/schemas/period-start'
+        names:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items: 
+            $ref: '#/components/schemas/network-component-name'                  
+
+    season-set:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        _embedded:
+          type: object
+          properties:
+            forecasts:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                $ref: '#/components/schemas/sub-geographical-region'  
+
+    season:
+      type: object
+      description: |
+        A logical season, which may be a calendar-based season (Spring, Fall etc), or may be a 
+        special operating condition, such as "exteme winter day".  Actual ratings are tied to season instances, 
+        which tie the season to a specific calendar time.  
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        id:
+          $ref: '#/components/schemas/generic-identifier'          
+        calendar-season:
+          type: boolean
+          description: If true, indicates that this is a season that occurs regularly with an effective time.    
+
+    limit-type-set:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        _embedded:
+          type: object
+          properties:
+            forecasts:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  id: 
+                    $ref: '#/components/schemas/generic-identifier'
+                  description:
+                    type: string  
+
+    naming-scheme-set:
+      type: object
+      additionalProperties: false
+      properties:
+        _links:
+          $ref: '#/components/schemas/hal-links-block'
+        _embedded:
+          type: object
+          properties:
+            forecasts:
+              type: array
+              minItems: 0
+              maxItems: 100 
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  id: 
+                    $ref: '#/components/schemas/generic-identifier'
+                  description:
+                    type: string                                               
+
+    validation-messages:
+      type: array
+      items: 
+        $ref: '#/components/schemas/validation-message'
+
+
+    validation-message:
+      type: object
+      additionalProperties: false
+      properties:
+        level:
+          type: string
+          enum: 
+          - warning
+          - error
+        message:
+          type: string
+          pattern: '^(.){1,500}$'
+          maxLength: 500
+
+    apparent-power-rating:
+      type: object
+      additionalProperties: false
+      properties:
+        mva:
+          description: >
+            The apparent power rating of the facility in megavolt-amperes. The ampacity of the facility should be
+            determined by assuming 1 per unit of the `facility-design-kilovoltage`.
+          type: integer
+          format: uint16
+          minimum: 1 # MIN_MVA
+          maximum: 10000 # MAX_MVA
+        override-reason:
+          type: string
+          description: >
+            Presence of this field implies out-of-methodology, e.g., an operator override.
+          maxLength: 100
+          pattern: ^(.){0,100}$
+      required:
+        - mva
+    computed-apparent-power-rating:
+      allOf:
+        - $ref: '#/components/schemas/apparent-power-rating'
+        - type: object
+          properties:
+            limiting-element:
+              $ref: '#/components/schemas/generic-identifier'
+
+
+    modeled-object-identifier:
+      description: |
+        Identifier for an object included in the network model of the Transmission Provider.   
+        TROLIE may be able to support multiple conventions, to handle the use of CIM MRIDs as well as
+        identifiers that may be unique to certain systems, such as the Transmission Provider's EMS, 
+        asset registration, or planning systems.  TROLIE will map these conventions based on use of the 
+        X-TROLIE-Naming-Scheme header.  Available naming conventions for a particular TROLIE implementation
+        are available from getNetworkNamingConventions.  
+      type: string
+      maxLength: 100
+      pattern: ^(.){0,100}$
+
+    generic-identifier:
+      type: string
+      maxLength: 100
+      pattern: ^(.){0,100}$
+    hash:
+      type: string
+      description: >
+        A hex encoded hash value as produced by, e.g., SHA512.
+      maxLength: 256
+      pattern: '^[A-Fa-f0-9\-]{6,256}$'
+    mrid:
+      type: string
+      description: >
+        An optional, globally unique identifier for the facility as used by
+        `authority`. In all cases, comparisons for uniqueness should be case
+        invariant. The pattern is included for security purposes and does
+        not attempt to validate the identifier format; it allows for, e.g.,
+        RFC 4122 style identifiers that are non-conforming.
+      maxLength: 50
+      pattern: '^(?:(^(urn:uuid:)?[A-Fa-f0-9\-]{6,50}$)|(^\S+$))$'
+
+    origin-id:
+      description: >
+        Opaque correlation identifier assigned by the originating system.
+      type: string
+      maxLength: 50
+      pattern: '^(.){1,50}$'
+    entity-id:
+      description: Usually the NERC id of the entity.
+      type: string
+      maxLength: 10
+      pattern: ^[A-Z]{3,10}$
+      example: 'MISO'
+
+    limit-type:
+      description: |
+        A type of limit as defined in the Transmission Provider's operating manual, usually indicating specific scenarios 
+        under which the limit may be used as well as a maximum period for which the limit may be safely applied.  The supported limit types
+        an instance of TROLIE may be introspected via the getSupportedLimitTypes operation.  
+      type: string
+      maxLength: 20
+      pattern: ^[A-Z]{3,10}$
+      example: 'normal'    
+    period-start: 
+      description: |
+        RFC 3339 date-time string with *no fractional seconds component* that designates an operating period (such as an hour) that
+        starts at a specified time. This will frequently be at the start of an hour, but may be finer-grained, such as 
+        every 30 minutes, should the Transmission Provider choose.
+        If the Transmission Provider is operating in EST, these are
+        valid and equivalent values:
+        * 2023-01-01T06:00Z
+        * 2023-01-01T01:00-5:00
+        * 2023-01-01T00:00-6:00
+        * 2023-01-01T11:30+5:30
+
+        The server should uniformly represent date-times in the operational time zone of the Transmission Provider.
+      type: string
+      format: date-time
+      maxLength: 25
+      pattern: '^([0-9]{4})-([0-9]{2})-([0-9]{2})[Tt]([0-9]{2}):([0-9]{2}):([0-9]{2})([Zz]|([+-])([0-9]{2}):([0-9]{2}))$'
+      example: '2025-01-01T03:00:00-05:00'
+
+    timestamp:
+      description: RFC 3339 date-time string with a maximum of 10 digits in the fractional seconds component, i.e., nanosecond precision.
+      type: string
+      format: date-time
+      maxLength: 35
+      pattern: '^([0-9]{4})-([0-9]{2})-([0-9]{2})[Tt]([0-9]{2}):([0-9]{2}):([0-9]{2})(\.[0-9]{1,10})?([Zz]|([+-])([0-9]{2}):([0-9]{2}))$'
+    forecast-length:
+      type: integer
+      format: uint16
+      minimum: 0
+      maximum: 1000 
+      default: 240 # MAX_HOURS
+    limit-units:
+      type: string
+      enum:
+      - mva
+      - amps
+      - pfmw    
+      
+    empty:
+      description: Intended to proactively avoid information disclosure
+      type: string
+      nullable: true
+      maxLength: 0
+      pattern: ^$
+
+  responses:
+    unauthorized-head:
+      description: Unauthorized
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    unauthorized:
+      description: Unauthorized
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    forbidden-head:
+      description: Access denied
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    forbidden:
+      description: Access denied
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+
+    forecast-will-never-exist:
+      description: The requested forecast does not exist and will never exist.
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    forecast-not-yet-available:
+      description: The forecasting window is not open for the nominated `first-hour-ends`.
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+
+    no-data-found:
+      description: No Data Found
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+
+    rate-limited-head:
+      description: Too many requests (rate limiting)
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    rate-limited:
+      description: Too many requests (rate limiting)
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    archived:
+      description: Gone. The requested forecast may be available in ratings archive.
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+        Location:
+          schema:
+            description: The URL for the archived forecast
+            type: string
+            pattern: ^http.*
+            maxLength: 2000
+
+    not-acceptable-head:
+      description: Not acceptable (content negotiation)
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    not-acceptable:
+      description: Not acceptable (content negotiation)
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    invalid-forecast:
+      description: Unprocessable entity (invalid forecast)
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/validation-message'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    unsupported-patch:
+      description: >
+        Unsupported media type. This can occur if an entity submits a forecast
+        payload other than what is expected, e.g., if a Reliability Coordinator
+        submits `application/vnd.local-rating-forecast` instead of
+        `application/vnd.regional-rating-forecast`.
+
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+        Accept-Patch:
+          description: The acceptable media types.
+          schema:
+            type: string
+            pattern: ^application/vnd.*
+            maxLength: 100
+    payload-too-large:
+      description: Payload too large
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    unexpected-error-head:
+      description: An unexpected error occurred
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    unexpected-error:
+      description: An unexpected error occurred
+      content:
+        'application/*':
+          schema:
+            $ref: '#/components/schemas/empty'
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+    not-modified:
+      description: Not modified
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+        ETag:
+          $ref: '#/components/headers/ETag'
+    empty:
+      description: An empty response
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: '#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '#/components/headers/X-Rate-Limit-Reset'
+
+  headers:
+    X-Rate-Limit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+    X-Rate-Limit-Remaining:
+      description: The number of remaining requests in the current period
+      schema:
+        type: integer
+    X-Rate-Limit-Reset:
+      description: The number of seconds left in the current period
+      schema:
+        type: integer
+    ETag:
+      description: >
+        An opaque, unique identifier for a specific version of a resource. The
+        modeled resource state is what is versioned, not the content of any
+        particular representation. The server MUST use a strong validator so that
+        the same ETag is returned regardless of the media type of the representation.
+      schema:
+        additionalProperties: false
+        anyOf:
+          - $ref: '#/components/schemas/hash'
+          - $ref: '#/components/schemas/origin-id'
+    X-TROLIE-Naming-Scheme:
+      description: |
+        Indicates the naming scheme used by this operation.  The names of elements and segments
+        will vary depending on their use.  CIM Master Resource Identifiers (mRIDs) may be used, as well
+        as names used by the EMS or other systems.  The list of naming schemes supported, as well as the current default, 
+        is a function of the TROLIE implementation.  All names of all elements are available in the getNetworkSegments and 
+        getNetworkElements operations.  The list of all naming conventions and the configured default is available in the 
+        getNetworkNamingConventions operation.              
+      schema:
+        type: string    
+    X-TROLIE-Limit-Units:
+      description: |
+        By default, all limits and ratings are assumed to be in megavolt-amperes (MVA).  However, TROLIE implementations _may_ support 
+        alternative units, for both submittal and query, under the following circumstances:
+
+        * Current (amps) may be used if the given segment or element has a nominal voltage configured in the model.  
+          Conversion from/to MVA will be done assuming this nominal voltage.  Submittals in amps for segments without 
+          a nominal voltage in amps will return null, and submittals in amps will not be allowed for such segments.  
+        * A combination of actual power in megawatts (MW) and an assumed power factor (PF) in MW/MVA.  The MW and PF pairs must be offered together
+          in submittals.  Queries for this form will return null for ratings/limits that were not originally submitted in this form.  
+
+        The ability to negotiate limit units in this way is an optional feature of the TROLIE implementation.  
+      schema:
+        $ref: '#/components/schemas/limit-units'
+
+  securitySchemes:
+    # Note that other OAuth flows may be allowed.  Here, an OAuth Client credential flow is assumed, and is 
+    # recommended for most implementations.  
+    oauth2-primary-flow:
+      type: oauth2
+      flows:
+        clientCredentials:
+          #The linter errors on the authorizationUrl, incorrectly?
+          #authorizationUrl: https://example.com/oauth2
+          tokenUrl: https://no-server/oauth2
+          scopes:
+            "read:forecast-submissions": "Read Forecast rating submissions"
+            "read:realtime-submissions": "Read real-time rating submissions"
+            "read:recourse-submissions": "Read recourse / seasonal rating submissions"
+            "write:forecast-submissions": "Submit forecasted ratings"
+            "write:realtime-submissions": "Submit realtime ratings"
+            "write:recourse-submissions": "Submit recoures / seasonal ratings"
+            "read:monitoring-set": "Read monitoring set definitions"
+            "write:monitoring-sets": "Write monitoring set definitions"
+            "read:operating-snapshot": "Read the ratings and limits snapshots in-use by the transmission provider"
+            "read:reference-data": "Read reference data in the model used by TROLIE"
+
+security:
+  - oauth2-primary-flow: []
