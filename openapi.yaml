@@ -1,3 +1,13 @@
+# Copyright 2023 General Electric Company and/or its affiliates (“GE”). 
+# All Rights Reserved. This document is the confidential and proprietary 
+# information of GE and may not be reproduced, transmitted, stored, or copied in whole or in part, 
+# or used to furnish information to others, without the prior written permission of GE.
+
+# This version of the API specification is a derivative work from TROLIE (https://github.com/misoenergy/TROLIE)
+# under the terms of https://github.com/misoenergy/TROLIE/blob/main/LICENSE.  
+# It adds significant features and refactoring from the original.  
+
+# Copyright 2023 Midcontinent Independent System Operator, Inc.
 openapi: '3.0.3'
 info:
   title: Transmission Facility Ratings and Operating Limits Information Exchange (TROLIE)
@@ -37,12 +47,23 @@ info:
 
 
   version: '1.0.0-alpha.1'
+  contact:
+    # Temporary for this version.  
+    name: Tory McKeag
+    email: tory.mckeag@ge.com
+    url: https://www.ge.com/digital/applications/grid-orchestration-software
   license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.txt
+    name: TODO- see copyright notice
+    url: https://todo
 servers:
   - url: https://no-server/trolie
 tags:
+  - name: Monitoring Sets
+    description: | 
+      Monitoring sets are arbitrarily defined sets of network components, both segments and elements, 
+      that may be used to filter ratings and limits returned by queries against this API.  These are stored sets that may be defined
+      arbitrarily by users of the API, so long as those users have permission to view relevant components.  
+
   - name: Operating Snapshots
     description: |
       Two snapshots are provided:
@@ -54,13 +75,6 @@ tags:
       * **Operating Limits Real-Time Snapshot** is the set of System Operating Limits the
         Transmission Provider is operating to at the time of the request for
         this resource.  
-  - name: Recourse Rating Snapshots
-    description: |
-      While not typically used directly in operational decisions, recourse ratings are provided for two purposes:
-      1.  They are used when applicable forecast ratings are not available.  
-      2.  They may be used in future-looking studies that look out (potentially far) beyond the time 
-          window where forecast ratings are available.  
-      A snapshot is provided of the resource ratings configured by the system, as well as their relationship to upcoming seasons.  
 
   - name: Rating Submissions
     description: |
@@ -72,11 +86,13 @@ tags:
         This includes ratings for scheduled calendar seasons, as well as to rating sets that apply in special named 
         scenarios defined by the Transmission Provider, such as an extreme winter day.  
 
-  - name: Monitoring Sets
-    description: | 
-      Monitoring sets are arbitrarily defined sets of network components, both segments and elements, 
-      that may be used to filter ratings and limits returned by queries against this API.  These are stored sets that may be defined
-      arbitrarily by users of the API, so long as those users have permission to view relevant components.  
+  - name: Recourse Rating Snapshots
+    description: |
+      While not typically used directly in operational decisions, recourse ratings are provided for two purposes:
+      1.  They are used when applicable forecast ratings are not available.  
+      2.  They may be used in future-looking studies that look out (potentially far) beyond the time 
+          window where forecast ratings are available.  
+      A snapshot is provided of the resource ratings configured by the system, as well as their relationship to upcoming seasons.  
 
   - name: Reference Data
     description: | 
@@ -110,7 +126,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'        
       responses: &forecastSnapshotReadResponses
-        200: 
+        "200": 
           description: >
             The requested operating forecast snapshot is returned.
           content:
@@ -133,9 +149,9 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'
             ETag:
               $ref: '#/components/headers/ETag'
-        304: &common304
+        "304": &common304
           $ref: '#/components/responses/not-modified'
-        400: &query400
+        "400": &query400
           description: >
             Malformed request, based on misuse of filters.
           content:
@@ -152,15 +168,17 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
-        401: &common401
+        "401": &common401
           $ref: '#/components/responses/unauthorized'
-        403: &common403
+        "403": &common403
           $ref: '#/components/responses/forbidden'
-        404: &common404
+        "404": &common404
           $ref: '#/components/responses/no-data-found'          
-        406: &common406
+        "406": &common406
           $ref: '#/components/responses/not-acceptable'
-        429: &common429
+        "410": &common410
+          $ref: '#/components/responses/archived'          
+        "429": &common429
           $ref: '#/components/responses/rate-limited'
         default: &commonDefaultErr
           $ref: '#/components/responses/unexpected-error'
@@ -168,7 +186,7 @@ paths:
         - oauth2-primary-flow:
           - "read:operating-snapshot"
     head:
-      operationId: getLimitsForecastSnapshot
+      operationId: getLimitsForecastSnapshotHeader
       description: >
         Use to obtain the headers that would be returned for 
         `getLimitsForecastSnapshot`. Useful for cache invalidation.
@@ -184,7 +202,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'        
       responses: &headResponses
-        200: 
+        "200": 
           description: OK
           headers:
             X-Rate-Limit-Limit:
@@ -195,14 +213,23 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404      
-        406: *common406
-        429: *common429
-        default: *commonDefaultErr
+        "304": 
+          $ref: '#/components/responses/not-modified'
+        "400": *query400
+        "401": 
+          $ref: '#/components/responses/unauthorized-head'
+        "403": 
+          $ref: '#/components/responses/forbidden-head'
+        "404": 
+          $ref: '#/components/responses/no-data-found-head'          
+        "406": 
+          $ref: '#/components/responses/not-acceptable-head'
+        "410":
+          $ref: '#/components/responses/archived'
+        "429": 
+          $ref: '#/components/responses/rate-limited-head'
+        default: 
+          $ref: '#/components/responses/unexpected-error-head'
 
       security: *snapshotReadSecurity
 
@@ -263,7 +290,7 @@ paths:
       tags:
         - Operating Snapshots
       responses:
-        200:
+        "200":
           description: >
             The System Operating Limits snapshot is returned.
           content:
@@ -286,13 +313,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *snapshotReadSecurity
     head:
@@ -328,7 +355,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'              
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -350,13 +377,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *snapshotReadSecurity
     head:
@@ -383,7 +410,7 @@ paths:
       tags:
         - Recourse Rating Snapshots           
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -401,13 +428,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *snapshotReadSecurity
     head:
@@ -429,7 +456,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/id'     
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -447,13 +474,14 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "410": *common410
+        "429": *common429
         default: *commonDefaultErr
       security: *snapshotReadSecurity
 
@@ -482,7 +510,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -504,13 +532,14 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "410": *common410        
+        "429": *common429
         default: *commonDefaultErr
       security: &forecastsubmissionReadSecurity
         - oauth2-primary-flow:
@@ -555,7 +584,7 @@ paths:
             schema:
               $ref: '#/components/schemas/forecast-rating-submission'                            
       responses: 
-        202: 
+        "202": 
           description: >
             The update was accepted for later processing. Updates to 
             ratings may need to undergo additional validation and propagation
@@ -580,8 +609,8 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: &submit400
+        "304": *common304
+        "400": &submit400
           description: >
             Malformed request, submission is invalid.  Details are in error messages.  
           content:
@@ -598,11 +627,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Remaining'
             X-Rate-Limit-Reset:
               $ref: '#/components/headers/X-Rate-Limit-Reset'
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "413": &common413
+           $ref: '#/components/responses/payload-too-large'
+        "429": *common429
         default: *commonDefaultErr   
       security: 
         - oauth2-primary-flow:
@@ -620,7 +651,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                      
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -642,13 +673,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *forecastsubmissionReadSecurity
 
@@ -671,7 +702,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -691,13 +722,14 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "410": *common410        
+        "429": *common429
         default: *commonDefaultErr
       security: *forecastsubmissionReadSecurity
    
@@ -738,7 +770,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -758,13 +790,14 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "410": *common410        
+        "429": *common429
         default: *commonDefaultErr
       security: *forecastsubmissionReadSecurity
    
@@ -806,7 +839,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -828,13 +861,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: &realtimesubmissionReadSecurity
         - oauth2-primary-flow:
@@ -877,7 +910,7 @@ paths:
             schema:
               $ref: '#/components/schemas/realtime-rating-submission'                            
       responses: 
-        202: 
+        "202": 
           description: >
             The update was accepted for later processing. Updates to 
             ratings may need to undergo additional validation and propagation
@@ -902,13 +935,14 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *submit400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *submit400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "413": *common413        
+        "429": *common429
         default: *commonDefaultErr   
       security: 
         - oauth2-primary-flow:
@@ -926,7 +960,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                      
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -948,13 +982,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *realtimesubmissionReadSecurity
 
@@ -978,7 +1012,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1000,13 +1034,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: &recoursesubmissionReadSecurity
         - oauth2-primary-flow:
@@ -1049,7 +1083,7 @@ paths:
             schema:
               $ref: '#/components/schemas/recourse-rating-submission'                            
       responses: 
-        202: 
+        "202": 
           description: >
             The update was accepted for later processing. Updates to 
             ratings may need to undergo additional validation and propagation
@@ -1074,13 +1108,14 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *submit400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *submit400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "413": *common413        
+        "429": *common429
         default: *commonDefaultErr   
       security: 
         - oauth2-primary-flow:
@@ -1098,7 +1133,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                      
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1120,13 +1155,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *recoursesubmissionReadSecurity
 
@@ -1145,7 +1180,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1165,13 +1200,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: &readMonSetSecurity
         - oauth2-primary-flow:
@@ -1208,7 +1243,7 @@ paths:
             schema:
               $ref: '#/components/schemas/monitoring-set'                            
       responses: 
-        201: 
+        "201": 
           description: >
             The update was accepted for later processing. Updates to 
             ratings may need to undergo additional validation and propagation
@@ -1231,13 +1266,14 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *submit400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *submit400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "413": *common413        
+        "429": *common429
         default: *commonDefaultErr   
       security: &writeMonSetSecurity
         - oauth2-primary-flow:
@@ -1254,7 +1290,7 @@ paths:
         - $ref: '#/components/parameters/id'   
         - $ref: '#/components/parameters/naming-scheme'                    
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1274,13 +1310,13 @@ paths:
               $ref: '#/components/headers/X-TROLIE-Naming-Scheme'              
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *writeMonSetSecurity   
     delete:
@@ -1292,15 +1328,15 @@ paths:
       parameters:
         - $ref: '#/components/parameters/id'                      
       responses: 
-        200:
+        "200":
           description: OK
-        304: *common304
-        400: *submit400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *submit400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *writeMonSetSecurity         
     put:
@@ -1310,6 +1346,7 @@ paths:
       tags:
         - Monitoring Sets
       parameters:
+        - $ref: '#/components/parameters/id'         
         - $ref: '#/components/parameters/naming-scheme'  
       requestBody:
         content:
@@ -1320,7 +1357,7 @@ paths:
             schema:
               $ref: '#/components/schemas/monitoring-set'                            
       responses: 
-        200: 
+        "200": 
           description: >
             The monitoring set was updated
           headers:
@@ -1332,13 +1369,14 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *submit400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *submit400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "413": *common413        
+        "429": *common429
         default: *commonDefaultErr   
       security: *writeMonSetSecurity          
 
@@ -1353,7 +1391,7 @@ paths:
       tags:
         - Reference Data             
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1371,13 +1409,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: &refReadSecurity
         - oauth2-primary-flow:
@@ -1405,7 +1443,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                      
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1423,13 +1461,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'      
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *refReadSecurity   
 
@@ -1444,7 +1482,7 @@ paths:
       tags:
         - Reference Data             
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1462,13 +1500,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity
    
@@ -1495,7 +1533,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                      
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1513,13 +1551,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'      
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404  
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404  
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *refReadSecurity       
 
@@ -1533,7 +1571,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'               
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1551,13 +1589,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity
     head:
@@ -1582,7 +1620,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/id'     
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1600,13 +1638,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity      
 
@@ -1620,7 +1658,7 @@ paths:
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'               
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1638,13 +1676,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity
     head:
@@ -1669,7 +1707,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/id'     
       responses:
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1687,13 +1725,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity    
            
@@ -1710,7 +1748,7 @@ paths:
       tags:
         - Reference Data             
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1728,13 +1766,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity
   
@@ -1751,7 +1789,7 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                      
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1769,13 +1807,13 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'      
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        404: *common404          
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "404": *common404          
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr   
       security: *refReadSecurity
 
@@ -1791,7 +1829,7 @@ paths:
       tags:
         - Reference Data             
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1809,12 +1847,12 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403         
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403         
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity      
 
@@ -1830,7 +1868,7 @@ paths:
       tags:
         - Reference Data             
       responses: 
-        200:
+        "200":
           description: OK
           content:
             application/json:
@@ -1848,12 +1886,12 @@ paths:
               $ref: '#/components/headers/X-Rate-Limit-Reset'           
             ETag:
               $ref: '#/components/headers/ETag'
-        304: *common304
-        400: *query400
-        401: *common401
-        403: *common403
-        406: *common406
-        429: *common429
+        "304": *common304
+        "400": *query400
+        "401": *common401
+        "403": *common403
+        "406": *common406
+        "429": *common429
         default: *commonDefaultErr
       security: *refReadSecurity           
 
@@ -1871,6 +1909,8 @@ components:
 
     ratings-provider:
       name: ratings-provider
+      description: >
+        Identifier (typically NERC Id) of a ratings provider.  
       in: path
       required: true
       schema:
@@ -1936,7 +1976,7 @@ components:
       in: query
       required: false
       schema:
-        $ref: '#/components/schemas/entity-id'
+        $ref: '#/components/schemas/generic-identifier'
     element-filter:
       name: element
       description: >
@@ -1944,7 +1984,7 @@ components:
       in: query
       required: false
       schema:
-        $ref: '#/components/schemas/entity-id'
+        $ref: '#/components/schemas/generic-identifier'
     segment-filter:
       name: segment
       description: >
@@ -1952,7 +1992,7 @@ components:
       in: query
       required: false
       schema:
-        $ref: '#/components/schemas/entity-id'     
+        $ref: '#/components/schemas/generic-identifier'     
     geographical-region-filter:
       name: geographical-region
       description: >
@@ -1960,7 +2000,7 @@ components:
       in: query
       required: false
       schema:
-        $ref: '#/components/schemas/entity-id'    
+        $ref: '#/components/schemas/generic-identifier'    
     subgeographical-region-filter:
       name: subgeographical-region
       description: >
@@ -1968,21 +2008,7 @@ components:
       in: query
       required: false
       schema:
-        $ref: '#/components/schemas/entity-id'                   
-
-    monitoring-set:
-      name: monitoring-set
-      description: >
-        A collection of Transmission Facilities associated with a Ratings Provider.
-        The Ratings Provider determines which facilities are in the collection,
-        but it must include every facility associated with a Ratings Requirement
-        assigned to the Ratings Provider. The ratings and other associated information for
-        the facilities in the Monitoring Set can be obtained by the Ratings Provider
-        by requesting the appropriate object from TROLIE using their entity id.
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/entity-id'
+        $ref: '#/components/schemas/generic-identifier'                   
 
     naming-scheme:
       name: X-TROLIE-Naming-Scheme
@@ -2356,7 +2382,14 @@ components:
 
     rating-submission:
       type: object
-      description: General type for ratings submission
+      description: |
+        General type for ratings submission, that are generated by the system after posting.  
+        Filling in these fields before posting may be ignored, or result in a 400 error from TROLIE.  
+        Properties include:
+        * A unique, system generated identifier.  
+        * The time the submission was recieved.  
+        * The ratings provider that created the submission.  
+        * If applicable, a link to another submission that supercedes this submission, for example on jointly-owned equipment.  
       additionalProperties: false
       properties:
         _links: 
@@ -2364,19 +2397,13 @@ components:
           - $ref: '#/components/schemas/hal-links-block'
           - type: object
             properties:   
-              segment: 
-                $ref: '#/components/schemas/hal-link'  
-              superceded-by: 
-                description: Link to a submission that supercedes this submission.  
+              superceded-by:  
                 $ref: '#/components/schemas/hal-link'
-        id:
-          description: A system-generated ID for this submission.  
+        id: 
           $ref: '#/components/schemas/generic-identifier'   
         timestamp:
-          description: The time this submission was recieved.  
           $ref: '#/components/schemas/timestamp' 
         submitter:
-          description: ID of the ratings provider that created this submission.  
           $ref: '#/components/schemas/generic-identifier'
 
     forecast-rating-submission:
@@ -2858,47 +2885,6 @@ components:
           pattern: '^(.){1,500}$'
           maxLength: 500
 
-    apparent-power-rating:
-      type: object
-      additionalProperties: false
-      properties:
-        mva:
-          description: >
-            The apparent power rating of the facility in megavolt-amperes. The ampacity of the facility should be
-            determined by assuming 1 per unit of the `facility-design-kilovoltage`.
-          type: integer
-          format: uint16
-          minimum: 1 # MIN_MVA
-          maximum: 10000 # MAX_MVA
-        override-reason:
-          type: string
-          description: >
-            Presence of this field implies out-of-methodology, e.g., an operator override.
-          maxLength: 100
-          pattern: ^(.){0,100}$
-      required:
-        - mva
-    computed-apparent-power-rating:
-      allOf:
-        - $ref: '#/components/schemas/apparent-power-rating'
-        - type: object
-          properties:
-            limiting-element:
-              $ref: '#/components/schemas/generic-identifier'
-
-
-    modeled-object-identifier:
-      description: |
-        Identifier for an object included in the network model of the Transmission Provider.   
-        TROLIE may be able to support multiple conventions, to handle the use of CIM MRIDs as well as
-        identifiers that may be unique to certain systems, such as the Transmission Provider's EMS, 
-        asset registration, or planning systems.  TROLIE will map these conventions based on use of the 
-        X-TROLIE-Naming-Scheme header.  Available naming conventions for a particular TROLIE implementation
-        are available from getNetworkNamingConventions.  
-      type: string
-      maxLength: 100
-      pattern: ^(.){0,100}$
-
     generic-identifier:
       type: string
       maxLength: 100
@@ -2909,16 +2895,6 @@ components:
         A hex encoded hash value as produced by, e.g., SHA512.
       maxLength: 256
       pattern: '^[A-Fa-f0-9\-]{6,256}$'
-    mrid:
-      type: string
-      description: >
-        An optional, globally unique identifier for the facility as used by
-        `authority`. In all cases, comparisons for uniqueness should be case
-        invariant. The pattern is included for security purposes and does
-        not attempt to validate the identifier format; it allows for, e.g.,
-        RFC 4122 style identifiers that are non-conforming.
-      maxLength: 50
-      pattern: '^(?:(^(urn:uuid:)?[A-Fa-f0-9\-]{6,50}$)|(^\S+$))$'
 
     origin-id:
       description: >
@@ -2940,7 +2916,7 @@ components:
         an instance of TROLIE may be introspected via the getSupportedLimitTypes operation.  
       type: string
       maxLength: 20
-      pattern: ^[A-Z]{3,10}$
+      pattern: ^[A-Za-z]{3,10}$
       example: 'normal'    
     period-start: 
       description: |
@@ -3033,21 +3009,8 @@ components:
         X-Rate-Limit-Reset:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
 
-    forecast-will-never-exist:
-      description: The requested forecast does not exist and will never exist.
-      content:
-        'application/*':
-          schema:
-            $ref: '#/components/schemas/empty'
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: '#/components/headers/X-Rate-Limit-Limit'
-        X-Rate-Limit-Remaining:
-          $ref: '#/components/headers/X-Rate-Limit-Remaining'
-        X-Rate-Limit-Reset:
-          $ref: '#/components/headers/X-Rate-Limit-Reset'
-    forecast-not-yet-available:
-      description: The forecasting window is not open for the nominated `first-hour-ends`.
+    no-data-found-head:
+      description: No Data Found
       content:
         'application/*':
           schema:
@@ -3138,43 +3101,6 @@ components:
           $ref: '#/components/headers/X-Rate-Limit-Remaining'
         X-Rate-Limit-Reset:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
-    invalid-forecast:
-      description: Unprocessable entity (invalid forecast)
-      content:
-        'application/*':
-          schema:
-            $ref: '#/components/schemas/validation-message'
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: '#/components/headers/X-Rate-Limit-Limit'
-        X-Rate-Limit-Remaining:
-          $ref: '#/components/headers/X-Rate-Limit-Remaining'
-        X-Rate-Limit-Reset:
-          $ref: '#/components/headers/X-Rate-Limit-Reset'
-    unsupported-patch:
-      description: >
-        Unsupported media type. This can occur if an entity submits a forecast
-        payload other than what is expected, e.g., if a Reliability Coordinator
-        submits `application/vnd.local-rating-forecast` instead of
-        `application/vnd.regional-rating-forecast`.
-
-      content:
-        'application/*':
-          schema:
-            $ref: '#/components/schemas/empty'
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: '#/components/headers/X-Rate-Limit-Limit'
-        X-Rate-Limit-Remaining:
-          $ref: '#/components/headers/X-Rate-Limit-Remaining'
-        X-Rate-Limit-Reset:
-          $ref: '#/components/headers/X-Rate-Limit-Reset'
-        Accept-Patch:
-          description: The acceptable media types.
-          schema:
-            type: string
-            pattern: ^application/vnd.*
-            maxLength: 100
     payload-too-large:
       description: Payload too large
       content:
@@ -3221,15 +3147,6 @@ components:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
         ETag:
           $ref: '#/components/headers/ETag'
-    empty:
-      description: An empty response
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: '#/components/headers/X-Rate-Limit-Limit'
-        X-Rate-Limit-Remaining:
-          $ref: '#/components/headers/X-Rate-Limit-Remaining'
-        X-Rate-Limit-Reset:
-          $ref: '#/components/headers/X-Rate-Limit-Reset'
 
   headers:
     X-Rate-Limit-Limit:
