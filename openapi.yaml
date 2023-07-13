@@ -45,6 +45,13 @@ info:
 
     <img src="images/TROLIE interactions.svg" alt="TROLIE Interactions" />
 
+    <b>HAL / HATEOAS Link Conventions</b>
+
+    This API makes significant use of the REST HATEOAS pattern, using HAL conventions.  This means that relationships between resources
+    are provided through links, which are navigable through GET requests.  On submittal (POST or PUT requests), this may be confusing when a particular
+    relationship must be provided by the client.  Clients should populate these links on submital, but may assume that the paths are relative, and only the href
+    needing to be populated.  As shown in the example in `createMonitoringSet`, `line2` may be added to the monitoring set by setting 
+    the href = /reference-data/network-elements/line2  
 
   version: '1.0.0-alpha.1'
   contact:
@@ -396,7 +403,7 @@ paths:
   
   /recourse-ratings/snapshot:
     get:
-      operationId: getResourceRatingsSnapshot
+      operationId: getRecourseRatingsSnapshot
       description: Retrieve the nominal and seasonal ratings for all facilities in the `monitoring-set`.
       tags:
         - Recourse Rating Snapshots
@@ -413,12 +420,42 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/recourse-rating-snapshot'
             application/vnd.trolie.recourse-rating-snapshot.v1+json:
               schema:
                 $ref: '#/components/schemas/recourse-rating-snapshot'
+              example:
+                _links:
+                  self: 
+                    href: /recourse-ratings/snapshot
+                total-count: 1
+                offset: 0
+                _embedded:
+                  recourse-ratings:
+                  - _links:
+                      provenant-submissions:
+                      - href: /rating-submissions/recourse/12345
+                      element:
+                        href: /reference-data/network-elements/line2
+                        name: line2
+                    seasons:
+                    - _links:
+                        season:
+                          name: fall-2023
+                          href: /recourse-ratings/season-instances/fall-2023
+                      effective-date: "2023-09-01T00:00:00-07:00"
+                      values: 
+                      - type: normal
+                        value:
+                          mva: 160
+                      - type: emergency
+                        value:
+                          mva: 165
+                      - type: loadshed
+                        value:
+                          mva: 170   
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-snapshot'                                       
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -468,12 +505,26 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/season-instance-set'
             application/vnd.trolie.season-instance-set.v1+json:
               schema:
                 $ref: '#/components/schemas/season-instance-set'
+              example:
+                _links:
+                  self: 
+                    href: /recourse-ratings/season-instances
+                _embedded:
+                  seasons:
+                  - _links:
+                      self:
+                        href: /recourse-ratings/season-instances/fall-2023
+                      season:
+                        href: /reference-data/seasons/fall
+                    id: fall-2023
+                    effective-time: "2023-09-1T00:00:00-07:00"
+                    active: true     
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season-instance-set'                                
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -514,12 +565,21 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/season-instance'
             application/vnd.trolie.season-instance.v1+json:
               schema:
                 $ref: '#/components/schemas/season-instance'
+              example:
+                _links:
+                  self:
+                    href: /recourse-ratings/season-instances/fall-2023
+                  season:
+                    href: /reference-data/seasons/fall
+                id: fall-2023
+                effective-time: "2023-09-01T00:00:00-07:00"
+                active: true 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season-instance'                
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -568,12 +628,48 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/forecast-rating-set'
             application/vnd.trolie.rating-forecast-submission-set.v1+json:
               schema:
                 $ref: '#/components/schemas/forecast-rating-set'
+              example:
+                _links:
+                  self: 
+                    href: /rating-submissions/forecasts
+                total-count: 1
+                offset: 0
+                _embedded:
+                  submissions:
+                  - _links:
+                      self:
+                        href: /rating-submissions/forecasts/12345
+                    id: "12345"
+                    timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                    submitter: utilityA
+                    ratings: 
+                    - _links:
+                        segment:
+                          href: /reference-data/network-segments/segmentX
+                          name: segmentX  
+                      periods:
+                      - period-start: "2023-07-12T16:00:00-07:00"
+                        input:
+                          degrees-fahrenheit: 75
+                        values:
+                        - type: normal
+                          value:
+                            mva: 160
+                        - type: ste
+                          value:
+                            mva: 165
+                        - type: lte
+                          value:
+                            mva: 170  
+                        - type: dal
+                          value:
+                            mva: 170      
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-set'                                         
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -632,12 +728,35 @@ paths:
         - $ref: '#/components/parameters/limit-units'    
       requestBody:
         content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/forecast-rating-submission'
           application/vnd.trolie.rating-forecast-submission.v1+json:
             schema:
-              $ref: '#/components/schemas/forecast-rating-submission'                            
+              $ref: '#/components/schemas/forecast-rating-submission'   
+            example:
+              ratings: 
+              - _links:
+                  segment:
+                    href: /reference-data/network-segments/segmentX
+                    name: segmentX  
+                periods:
+                - period-start: "2023-07-12T16:00:00-07:00"
+                  input:
+                    degrees-fahrenheit: 75
+                  values:
+                  - type: normal
+                    value:
+                      mva: 160
+                  - type: ste
+                    value:
+                      mva: 165
+                  - type: lte
+                    value:
+                      mva: 170  
+                  - type: dal
+                    value:
+                      mva: 170       
+          application/json:
+            schema:
+              $ref: '#/components/schemas/forecast-rating-submission'                                                             
       responses: 
         "202": 
           description: >
@@ -645,12 +764,41 @@ paths:
             ratings may need to undergo additional validation and propagation
             to other systems.
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/forecast-rating-submission'
             application/vnd.trolie.rating-forecast-submission.v1+json:
               schema:
                 $ref: '#/components/schemas/forecast-rating-submission'
+              example:
+                _links:
+                  self:
+                    href: /rating-submissions/forecasts/12345
+                id: "12345"
+                timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                submitter: utilityA
+                ratings: 
+                - _links:
+                    segment:
+                      href: /reference-data/network-segments/segmentX
+                      name: segmentX  
+                  periods:
+                  - period-start: "2023-07-12T16:00:00-07:00"
+                    input:
+                      degrees-fahrenheit: 75
+                    values:
+                    - type: normal
+                      value:
+                        mva: 160
+                    - type: ste
+                      value:
+                        mva: 165
+                    - type: lte
+                      value:
+                        mva: 170  
+                    - type: dal
+                      value:
+                        mva: 170 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-submission'                                           
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -709,12 +857,41 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/forecast-rating-submission'
             application/vnd.trolie.rating-forecast-submission.v1+json:
               schema:
                 $ref: '#/components/schemas/forecast-rating-submission'
+              example:
+                _links:
+                  self:
+                    href: /rating-submissions/forecasts/12345
+                id: "12345"
+                timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                submitter: utilityA
+                ratings: 
+                - _links:
+                    segment:
+                      href: /reference-data/network-segments/segmentX
+                      name: segmentX  
+                  periods:
+                  - period-start: "2023-07-12T16:00:00-07:00"
+                    input:
+                      degrees-fahrenheit: 75
+                    values:
+                    - type: normal
+                      value:
+                        mva: 160
+                    - type: ste
+                      value:
+                        mva: 165
+                    - type: lte
+                      value:
+                        mva: 170  
+                    - type: dal
+                      value:
+                        mva: 170      
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-rating-submission'                                   
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1217,7 +1394,7 @@ paths:
               example:
                 _links:
                   self: 
-                    href: /rating-submissions/recoures
+                    href: /rating-submissions/recourse
                 total-count: 1
                 offset: 0
                 _embedded:
@@ -1233,23 +1410,24 @@ paths:
                         segment:
                           href: /reference-data/network-segments/segmentX
                           name: segmentX  
-                      input:
-                        dlr-input:
-                          sensors:
-                          - sensor: "234"
-                            degrees-fahrenheit: 79
-                          - sensor: "567"
-                            degrees-fahrenheit: 81
-                      values:
-                      - type: normal
-                        value:
-                          mva: 160
-                      - type: emergency
-                        value:
-                          mva: 165
-                      - type: loadshed
-                        value:
-                          mva: 170     
+                      seasons:
+                      - _links:
+                          season:
+                            name: fall
+                            href: /reference-data/seasons/fall
+                        values:
+                        - type: normal
+                          value:
+                            mva: 160
+                        - type: ste
+                          value:
+                            mva: 165
+                        - type: lte
+                          value:
+                            mva: 170  
+                        - type: dal
+                          value:
+                            mva: 170                                 
             application/json:
               schema:
                 $ref: '#/components/schemas/recourse-rating-set'           
@@ -1308,12 +1486,36 @@ paths:
         - $ref: '#/components/parameters/limit-units'    
       requestBody:
         content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/recourse-rating-submission'
           application/vnd.trolie.recourse-rating-submission.v1+json:
             schema:
-              $ref: '#/components/schemas/recourse-rating-submission'                            
+              $ref: '#/components/schemas/recourse-rating-submission'   
+            example:
+              ratings: 
+              - _links:
+                  segment:
+                    href: /reference-data/network-segments/segmentX
+                    name: segmentX  
+                seasons:
+                - _links:
+                    season:
+                      name: fall
+                      href: /reference-data/seasons/fall
+                  values:
+                  - type: normal
+                    value:
+                      mva: 160
+                  - type: ste
+                    value:
+                      mva: 165
+                  - type: lte
+                    value:
+                      mva: 170  
+                  - type: dal
+                    value:
+                      mva: 170 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/recourse-rating-submission'                                          
       responses: 
         "202": 
           description: >
@@ -1321,12 +1523,42 @@ paths:
             ratings may need to undergo additional validation and propagation
             to other systems.
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/recourse-rating-submission'
             application/vnd.trolie.recourse-submission.v1+json:
               schema:
                 $ref: '#/components/schemas/recourse-rating-submission'
+              example:
+                _links:
+                  self:
+                    href: /rating-submissions/recourse/12345
+                id: "12345"
+                timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                submitter: utilityA
+                ratings: 
+                - _links:
+                    segment:
+                      href: /reference-data/network-segments/segmentX
+                      name: segmentX  
+                  seasons:
+                  - _links:
+                      season:
+                        name: fall
+                        href: /reference-data/seasons/fall
+                    values:
+                    - type: normal
+                      value:
+                        mva: 160
+                    - type: ste
+                      value:
+                        mva: 165
+                    - type: lte
+                      value:
+                        mva: 170  
+                    - type: dal
+                      value:
+                        mva: 170  
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-submission'                                       
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1368,10 +1600,40 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
+            application/vnd.trolie.recourse-rating-submission.v1+json:
               schema:
                 $ref: '#/components/schemas/recourse-rating-submission'
-            application/vnd.trolie.recourse-rating-submission.v1+json:
+              example:
+                _links:
+                  self:
+                    href: /rating-submissions/recourse/12345
+                id: "12345"
+                timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                submitter: utilityA
+                ratings: 
+                - _links:
+                    segment:
+                      href: /reference-data/network-segments/segmentX
+                      name: segmentX  
+                  seasons:
+                  - _links:
+                      season:
+                        name: fall
+                        href: /reference-data/seasons/fall
+                    values:
+                    - type: normal
+                      value:
+                        mva: 160
+                    - type: ste
+                      value:
+                        mva: 165
+                    - type: lte
+                      value:
+                        mva: 170  
+                    - type: dal
+                      value:
+                        mva: 170                     
+            application/json:
               schema:
                 $ref: '#/components/schemas/recourse-rating-submission'
           headers:
@@ -1675,12 +1937,33 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/geographical-region-set'
             application/vnd.trolie.geographical-region-set.v1+json:
               schema:
                 $ref: '#/components/schemas/geographical-region-set'
+              example:
+                _links:
+                  self: 
+                    href: /reference-data/geographical-regions
+                _embedded:
+                  regions:
+                  - _links:
+                      self:
+                        href: /reference-data/geographical-regions/5678
+                    id: "5678"
+                    name: East
+                    effective-time: "2023-09-1T00:00:00-07:00"
+                    _embedded:
+                      sub-regions:
+                      - _links:
+                          self:
+                            href: /reference-data/sub-geographical-regions/1234
+                        id: "1234"
+                        name: Nebraska
+                        effective-time: "2023-09-1T00:00:00-07:00"
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geographical-region-set'                    
+
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1727,12 +2010,27 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/geographical-region'
             application/vnd.trolie.geographical-region.v1+json:
               schema:
                 $ref: '#/components/schemas/geographical-region'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/geographical-regions/5678
+                id: "5678"
+                name: East
+                effective-time: "2023-09-01T00:00:00-07:00"
+                _embedded:
+                  sub-regions:
+                  - _links:
+                      self:
+                        href: /reference-data/sub-geographical-regions/1234
+                    id: "1234"
+                    name: Nebraska
+                    effective-time: "2023-09-01T00:00:00-07:00" 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geographical-region'                                 
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1766,12 +2064,25 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sub-geographical-region-set'
             application/vnd.trolie.sub-geographical-region-set.v1+json:
               schema:
                 $ref: '#/components/schemas/sub-geographical-region-set'
+              example:
+                _links:
+                  self: 
+                    href: /reference-data/sub-geographical-regions
+                _embedded:
+                  regions:
+                  - _links:
+                      self:
+                        href: /reference-data/sub-geographical-regions/5678
+                    id: "5678"
+                    name: Maine
+                    effective-time: "2023-09-01T00:00:00-07:00"             
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sub-geographical-region-set'
+ 
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1817,12 +2128,19 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sub-geographical-region'
             application/vnd.trolie.sub-geographical-region.v1+json:
               schema:
                 $ref: '#/components/schemas/sub-geographical-region'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/sub-geographical-regions/5678
+                id: "5678"
+                name: Maine
+                effective-time: "2023-09-01T00:00:00-07:00"     
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sub-geographical-region'                              
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1855,12 +2173,23 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/network-segment-set'
             application/vnd.trolie.network-segment-set.v1+json:
               schema:
                 $ref: '#/components/schemas/network-segment-set'
+              example:
+                _links:
+                  self: 
+                    href: /reference-data/network-segments
+                _embedded:
+                  segments:
+                  - _links:
+                      self:
+                        href: /reference-data/network-segments/Line4North
+                    id: Line4North
+                    effective-time: "2023-09-01T00:00:00-07:00"                
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-segment-set'                                      
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1904,12 +2233,18 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/network-segment'
             application/vnd.trolie.network-segment.v1+json:
               schema:
                 $ref: '#/components/schemas/network-segment'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/network-segments/Line4North
+                id: Line4North
+                effective-time: "2023-09-01T00:00:00-07:00"  
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-segment'                                
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1942,12 +2277,30 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/network-element-set'
             application/vnd.trolie.network-element-set.v1+json:
               schema:
                 $ref: '#/components/schemas/network-element-set'
+              example:
+                _links:
+                  self: 
+                    href: /reference-data/network-elements
+                _embedded:
+                  elements:
+                  - _links:
+                      self:
+                        href: /reference-data/network-elements/Line4
+                    id: Line4
+                    effective-time: "2023-09-01T00:00:00-07:00"
+                    _embedded:
+                      segments:
+                      - _links:
+                          self:
+                            href: /reference-data/network-segments/Line4North
+                        id: Line4North
+                        effective-time: "2023-09-01T00:00:00-07:00"   
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-element-set'                                       
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1991,12 +2344,25 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/network-element'
             application/vnd.trolie.network-element.v1+json:
               schema:
                 $ref: '#/components/schemas/network-element'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/network-elements/Line4
+                id: Line4
+                effective-time: "2023-09-01T00:00:00-07:00"
+                _embedded:
+                  segments:
+                  - _links:
+                      self:
+                        href: /reference-data/network-segments/Line4North
+                    id: Line4North
+                    effective-time: "2023-09-01T00:00:00-07:00"   
+            application/json:
+              schema:
+                $ref: '#/components/schemas/network-element'                                  
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -2032,12 +2398,23 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/season-set'
             application/vnd.trolie.season-set.v1+json:
               schema:
                 $ref: '#/components/schemas/season-set'
+              example:
+                _links:
+                  self: 
+                    href: /reference-data/seasons
+                _embedded:
+                  regions:
+                  - _links:
+                      self:
+                        href: /reference-data/seasons/fall
+                    id: fall
+                    calendar-season: true
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season-set'                                      
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -2073,12 +2450,18 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/season'
             application/vnd.trolie.season.v1+json:
               schema:
                 $ref: '#/components/schemas/season'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/seasons/fall
+                id: fall
+                calendar-season: true     
+            application/json:
+              schema:
+                $ref: '#/components/schemas/season'                           
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -2113,12 +2496,26 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/limit-type-set'
             application/vnd.trolie.limit-type-set.v1+json:
               schema:
                 $ref: '#/components/schemas/limit-type-set'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/limit-types
+                _embedded:
+                  types:
+                  - id: normal
+                    description: Limit for normal operating conditions
+                  - id: lte
+                    description: Long-term Emergency
+                  - id: ste
+                    description: Short-term Emergency
+                  - id: dal
+                    description: Drastic action Limit
+            application/json:
+              schema:
+                $ref: '#/components/schemas/limit-type-set'                                      
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -2152,12 +2549,24 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/naming-scheme-set'
             application/vnd.trolie.naming-scheme-set.v1+json:
               schema:
                 $ref: '#/components/schemas/naming-scheme-set'
+              example:
+                _links:
+                  self:
+                    href: /reference-data/naming-schemes
+                _embedded:
+                  naming-schemes:
+                  - id: CIM-MRIDs
+                    description: CIM Master resource Ids
+                  - id: EMS
+                    description: Ids of the objects in the EMS system
+                  - id: Asset-Reg
+                    description: Ids from the asset registration system 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/naming-scheme-set'                                
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -2574,12 +2983,11 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
             properties:
-              forecasts:
+              recourse-ratings:
                 type: array
                 minItems: 0
                 maxItems: 50000 
@@ -2599,7 +3007,7 @@ components:
                 $ref: "#/components/schemas/hal-link"      
             element: 
               $ref: '#/components/schemas/hal-link'      
-        ratings:
+        seasons:
           type: array 
           items:
             $ref: '#/components/schemas/recourse-rating-snapshot-value'
@@ -2616,7 +3024,7 @@ components:
             season-instance: 
                $ref: '#/components/schemas/hal-link'
         effective-date:
-          description: The effective date of the season, if applicable, is inherited from the season instance.  
+          $ref: '#/components/schemas/period-start'
         values:
           $ref: '#/components/schemas/limit-value-set'
 
@@ -2664,7 +3072,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
@@ -2705,7 +3112,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/rating-submission'
       - type: object 
-        additionalProperties: false
         properties:              
           ratings:  
             type: array
@@ -3116,7 +3522,7 @@ components:
         _embedded:
           type: object
           properties:
-            forecasts:
+            types:
               type: array
               minItems: 0
               maxItems: 100 
@@ -3139,7 +3545,7 @@ components:
         _embedded:
           type: object
           properties:
-            forecasts:
+            naming-schemes:
               type: array
               minItems: 0
               maxItems: 100 
@@ -3500,7 +3906,7 @@ components:
             "read:recourse-submissions": "Read recourse / seasonal rating submissions"
             "write:forecast-submissions": "Submit forecasted ratings"
             "write:realtime-submissions": "Submit realtime ratings"
-            "write:recourse-submissions": "Submit recoures / seasonal ratings"
+            "write:recourse-submissions": "Submit recourse / seasonal ratings"
             "read:monitoring-set": "Read monitoring set definitions"
             "write:monitoring-sets": "Write monitoring set definitions"
             "read:operating-snapshot": "Read the ratings and limits snapshots in-use by the transmission provider"
