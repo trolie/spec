@@ -130,12 +130,42 @@ paths:
           description: >
             The requested operating forecast snapshot is returned.
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/forecast-limit-set'
             application/vnd.trolie.forecast-limit-set.v1+json:
               schema:
                 $ref: '#/components/schemas/forecast-limit-set'
+              example:
+                _links:
+                  self: 
+                    href: /limits/forecast-snapshot
+                total-count: 1
+                offset: 0
+                _embedded:
+                  forecasts:
+                  - _links:
+                      provenant-submissions:
+                      - href: /rating-submissions/forecasts/12345
+                      element:
+                        href: /reference-data/network-elements/line2
+                        name: line2
+                    periods:
+                    - period-start: "2023-07-12T16:00:00-07:00"
+                      updated-time: "2023-07-12T13:05:43.044267100-07:00"
+                      values: 
+                      - type: normal
+                        value:
+                          mva: 160
+                      - type: emergency
+                        value:
+                          mva: 165
+                      - type: loadshed
+                        value:
+                          mva: 170
+            application/json:
+              schema:
+                $ref: '#/components/schemas/forecast-limit-set'
+                        
+                    
+                              
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -294,12 +324,37 @@ paths:
           description: >
             The System Operating Limits snapshot is returned.
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/realtime-limit-set'
             application/vnd.trolie.realtime-limit-set.v1+json:
               schema:
-                $ref: '#/components/schemas/realtime-limit-set'                
+                $ref: '#/components/schemas/realtime-limit-set'       
+              example:
+                _links:
+                  self: 
+                    href: /limits/realtime-snapshot
+                total-count: 1
+                offset: 0
+                _embedded:
+                  limits:
+                  - _links:
+                      provenant-submissions:
+                      - href: /rating-submissions/realtime/67890
+                      element:
+                        href: /reference-data/network-elements/line2
+                        name: line2
+                    updated-time: "2023-07-12T13:05:43.044267100-07:00"
+                    values: 
+                    - type: normal
+                      value:
+                        mva: 160
+                    - type: emergency
+                      value:
+                        mva: 165
+                    - type: loadshed
+                      value:
+                        mva: 170 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-limit-set'                      
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -705,12 +760,26 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/missing-forecast-rating-set'
             application/vnd.trolie.missing-forecast-rating-set.v1+json:
               schema:
                 $ref: '#/components/schemas/missing-forecast-rating-set'
+              example:
+                _links:
+                  self: 
+                    href: /rating-submissions/missing/forecasts
+                total-count: 1
+                offset: 0
+                _embedded:
+                  forecasts:
+                  - _links:
+                      segment:
+                        href: /reference-data/network-segments/segmentX
+                        name: segmentX
+                    periods: 
+                    - "2023-07-12T16:00:00-07:00"
+            application/json:
+              schema:
+                $ref: '#/components/schemas/missing-forecast-rating-set'               
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -773,12 +842,27 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/missing-forecast-rating-set'
             application/vnd.trolie.missing-forecast-rating-set.v1+json:
               schema:
                 $ref: '#/components/schemas/missing-forecast-rating-set'
+              example:
+                _links:
+                  self: 
+                    href: /rating-submissions/missing/forecasts/providerA
+                total-count: 1
+                offset: 0
+                _embedded:
+                  forecasts:
+                  - _links:
+                      segment:
+                        href: /reference-data/network-segments/segmentX
+                        name: segmentX
+                    periods: 
+                    - "2023-07-12T16:00:00-07:00"
+            application/json:
+              schema:
+                $ref: '#/components/schemas/missing-forecast-rating-set'                    
+
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -842,12 +926,48 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/realtime-rating-set'
             application/vnd.trolie.realtime-rating-submission-set.v1+json:
               schema:
-                $ref: '#/components/schemas/realtime-rating-set'
+                $ref: '#/components/schemas/realtime-rating-set'      
+              example:
+                _links:
+                  self: 
+                    href: /rating-submissions/realtime
+                total-count: 1
+                offset: 0
+                _embedded:
+                  submissions:
+                  - _links:
+                      self:
+                        href: /rating-submissions/realtime/12345
+                    id: "12345"
+                    timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                    submitter: utilityA
+                    ratings: 
+                    - _links:
+                        segment:
+                          href: /reference-data/network-segments/segmentX
+                          name: segmentX  
+                      input:
+                        dlr-input:
+                          sensors:
+                          - sensor: "234"
+                            degrees-fahrenheit: 79
+                          - sensor: "567"
+                            degrees-fahrenheit: 81
+                      values:
+                      - type: normal
+                        value:
+                          mva: 160
+                      - type: emergency
+                        value:
+                          mva: 165
+                      - type: loadshed
+                        value:
+                          mva: 170
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-set'                         
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -903,12 +1023,30 @@ paths:
         - $ref: '#/components/parameters/limit-units'    
       requestBody:
         content:
+          application/vnd.trolie.realtime-rating-submission.v1+json:
+            schema:
+              $ref: '#/components/schemas/realtime-rating-submission' 
+            example:
+              ratings: 
+              - _links:
+                  segment:
+                    href: /reference-data/network-segments/segmentX
+                input:
+                  degrees-fahrenheit: 79
+                values:
+                - type: normal
+                  value:
+                    mva: 160
+                - type: emergency
+                  value:
+                    mva: 165
+                - type: loadshed
+                  value:
+                    mva: 170               
           application/json:
             schema:
               $ref: '#/components/schemas/realtime-rating-submission'
-          application/vnd.trolie.realtime-rating-submission.v1+json:
-            schema:
-              $ref: '#/components/schemas/realtime-rating-submission'                            
+                           
       responses: 
         "202": 
           description: >
@@ -916,12 +1054,41 @@ paths:
             ratings may need to undergo additional validation and propagation
             to other systems.
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/realtime-rating-submission'
             application/vnd.trolie.realtime-submission.v1+json:
               schema:
                 $ref: '#/components/schemas/realtime-rating-submission'
+              example:
+                _links:
+                  self:
+                    href: /rating-submissions/realtime/12345
+                id: "12345"
+                timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                submitter: utilityA
+                ratings: 
+                - _links:
+                    segment:
+                      href: /reference-data/network-segments/segmentX
+                      name: segmentX  
+                  input:
+                    dlr-input:
+                      sensors:
+                      - sensor: "234"
+                        degrees-fahrenheit: 79
+                      - sensor: "567"
+                        degrees-fahrenheit: 81
+                  values:
+                  - type: normal
+                    value:
+                      mva: 160
+                  - type: emergency
+                    value:
+                      mva: 165
+                  - type: loadshed
+                    value:
+                      mva: 170        
+            application/json:
+              schema:
+                $ref: '#/components/schemas/realtime-rating-submission'                                
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -963,10 +1130,39 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
+            application/vnd.trolie.realtime-rating-submission.v1+json:
               schema:
                 $ref: '#/components/schemas/realtime-rating-submission'
-            application/vnd.trolie.realtime-rating-submission.v1+json:
+              example:
+                _links:
+                  self:
+                    href: /rating-submissions/realtime/12345
+                id: "12345"
+                timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                submitter: utilityA
+                ratings: 
+                - _links:
+                    segment:
+                      href: /reference-data/network-segments/segmentX
+                      name: segmentX  
+                  input:
+                    dlr-input:
+                      sensors:
+                      - sensor: "234"
+                        degrees-fahrenheit: 79
+                      - sensor: "567"
+                        degrees-fahrenheit: 81
+                  values:
+                  - type: normal
+                    value:
+                      mva: 160
+                  - type: emergency
+                    value:
+                      mva: 165
+                  - type: loadshed
+                    value:
+                      mva: 170              
+            application/json:
               schema:
                 $ref: '#/components/schemas/realtime-rating-submission'
           headers:
@@ -1015,12 +1211,48 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/recourse-rating-set'
             application/vnd.trolie.recourse-rating-submission-set.v1+json:
               schema:
                 $ref: '#/components/schemas/recourse-rating-set'
+              example:
+                _links:
+                  self: 
+                    href: /rating-submissions/recoures
+                total-count: 1
+                offset: 0
+                _embedded:
+                  submissions:
+                  - _links:
+                      self:
+                        href: /rating-submissions/recourse/12345
+                    id: "12345"
+                    timestamp: "2023-07-12T15:05:43.044267100-07:00"
+                    submitter: utilityA
+                    ratings: 
+                    - _links:
+                        segment:
+                          href: /reference-data/network-segments/segmentX
+                          name: segmentX  
+                      input:
+                        dlr-input:
+                          sensors:
+                          - sensor: "234"
+                            degrees-fahrenheit: 79
+                          - sensor: "567"
+                            degrees-fahrenheit: 81
+                      values:
+                      - type: normal
+                        value:
+                          mva: 160
+                      - type: emergency
+                        value:
+                          mva: 165
+                      - type: loadshed
+                        value:
+                          mva: 170     
+            application/json:
+              schema:
+                $ref: '#/components/schemas/recourse-rating-set'           
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1183,12 +1415,23 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/monitoring-set-list'
             application/vnd.trolie.monitoring-set-list.v1+json:
               schema:
                 $ref: '#/components/schemas/monitoring-set-list'
+              example:
+                _links:
+                  self:
+                    href: /monitoring-sets
+                total-count: 1
+                offset: 0
+                _embedded:
+                  monitoring-sets: 
+                  - name: utilityA-and-neighbors
+                    href: /monitoring-sets/utilityA-and-neighbors
+                    
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set-list'            
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1210,7 +1453,8 @@ paths:
         default: *commonDefaultErr
       security: &readMonSetSecurity
         - oauth2-primary-flow:
-          - "read:monitoring-sets"       
+          - "read:monitoring-sets"     
+
     head:
       operationId: getMonitoringSetsHeaders
       description: >
@@ -1236,12 +1480,24 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'  
       requestBody:
         content:
+          application/vnd.trolie.monitoring-set.v1+json:
+            schema:
+              $ref: '#/components/schemas/monitoring-set'  
+            example:
+              _links:
+                self:
+                  href: /monitoring-sets/utilityA-and-neighbors 
+              id: utilityA-and-neighbors   
+              description: Utility A's owned lines, as well as surround neighbors. 
+              elements:
+              - name: line1
+                href: /reference-data/network-elements/line1 
+              - href: /reference-data/network-elements/line2  
+              - name: line3             
+                href: /reference-data/network-elements/line3
           application/json:
             schema:
               $ref: '#/components/schemas/monitoring-set'
-          application/vnd.trolie.monitoring-set.v1+json:
-            schema:
-              $ref: '#/components/schemas/monitoring-set'                            
       responses: 
         "201": 
           description: >
@@ -1293,12 +1549,25 @@ paths:
         "200":
           description: OK
           content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/monitoring-set'
             application/vnd.trolie.monitoring-set.v1+json:
               schema:
                 $ref: '#/components/schemas/monitoring-set'
+              example:
+                _links:
+                  self:
+                    href: /monitoring-sets/utilityA-and-neighbors 
+                id: utilityA-and-neighbors   
+                description: Utility A's owned lines, as well as surround neighbors. 
+                elements:
+                - name: line1
+                  href: /reference-data/network-elements/line1 
+                - name: line2
+                  href: /reference-data/network-elements/line2  
+                - name: line3             
+                  href: /reference-data/network-elements/line3
+            application/json:
+              schema:
+                $ref: '#/components/schemas/monitoring-set'                                  
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1350,12 +1619,24 @@ paths:
         - $ref: '#/components/parameters/naming-scheme'  
       requestBody:
         content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/monitoring-set'
           application/vnd.trolie.monitoring-set.v1+json:
             schema:
-              $ref: '#/components/schemas/monitoring-set'                            
+              $ref: '#/components/schemas/monitoring-set'    
+            example:
+              _links:
+                self:
+                  href: /monitoring-sets/utilityA-and-neighbors 
+              id: utilityA-and-neighbors   
+              description: Utility A's owned lines, as well as surround neighbors. 
+              elements:
+              - name: line1
+                href: /reference-data/network-elements/line1 
+              - href: /reference-data/network-elements/line2  
+              - name: line3             
+                href: /reference-data/network-elements/line3  
+          application/json:
+            schema:
+              $ref: '#/components/schemas/monitoring-set'                                    
       responses: 
         "200": 
           description: >
@@ -2119,15 +2400,15 @@ components:
         (typically 2-4) defined in the operations manual.  The list of supported limit types may be fetched from getSupportedLimitTypes.  
         The value of the limits are in units as defined by the X-TROLIE-Limit-Units header.  
       items:
-        allOf:
-        - type: object
-          properties: 
-            type: 
-              $ref: '#/components/schemas/limit-type'
-        - oneOf:
-          - $ref: '#/components/schemas/apparent-power-value'
-          - $ref: '#/components/schemas/current-value'
-          - $ref: '#/components/schemas/actual-power-and-factor-value'
+        type: object
+        properties: 
+          type: 
+            $ref: '#/components/schemas/limit-type'
+          value:
+            oneOf:
+            - $ref: '#/components/schemas/apparent-power-value'
+            - $ref: '#/components/schemas/current-value'
+            - $ref: '#/components/schemas/actual-power-and-factor-value'
             
     rating-input:
       description: General type for a rating input
@@ -2160,12 +2441,17 @@ components:
         this input is free form.  There isn't a good way to enforce a maximum size of a free form object in JSON
         schema, so implementations are encouraged to enforce a maximum size internally.  
       type: object
-      additionalProperties: true
+      additionalProperties: false
+      properties:
+        dlr-input:
+          type: object
+          additionalProperties: true
 
     
     apparent-power-value:
       type: object
       description: Representation of a limit in megavolt-amperes.  This is the recommended default for limits in TROLIE  
+      additionalProperties: false
       properties:
         mva:
           type: number
@@ -2176,6 +2462,7 @@ components:
     current-value:
       type: object
       description: Representation of a limit in amps.  Assumes that TROLIE has a nominal voltage in its model.  
+      additionalProperties: false
       properties:
         amps:
           type: number
@@ -2186,6 +2473,7 @@ components:
     actual-power-and-factor-value:
       type: object
       description: Representation of a limit using a combination of actual power in MW and an assumed power factor in MVA/MW
+      additionalProperties: false
       properties:
         mw:
           type: number
@@ -2206,12 +2494,11 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
             properties:
-              forecasts:
+              limits:
                 type: array
                 minItems: 0
                 maxItems: 50000 
@@ -2242,7 +2529,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
@@ -2400,14 +2686,13 @@ components:
         * The time the submission was recieved.  
         * The ratings provider that created the submission.  
         * If applicable, a link to another submission that supercedes this submission, for example on jointly-owned equipment.  
-      additionalProperties: false
       properties:
         _links: 
           allOf:
           - $ref: '#/components/schemas/hal-links-block'
           - type: object
             properties:   
-              superceded-by:  
+              superseded-by:  
                 $ref: '#/components/schemas/hal-link'
         id: 
           $ref: '#/components/schemas/generic-identifier'   
@@ -2456,7 +2741,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
@@ -2487,12 +2771,11 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
             properties:
-              forecasts:
+              submissions:
                 type: array
                 minItems: 0
                 maxItems: 50000 
@@ -2503,7 +2786,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/rating-submission'
       - type: object 
-        additionalProperties: false
         properties:         
           ratings:
             type: array
@@ -2529,12 +2811,11 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
             properties:
-              forecasts:
+              submissions:
                 type: array
                 minItems: 0
                 maxItems: 50000 
@@ -2546,7 +2827,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/rating-submission'
       - type: object 
-        additionalProperties: false
         properties:            
           ratings:  
             type: array
@@ -2585,7 +2865,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
@@ -2705,7 +2984,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
@@ -2728,7 +3006,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/hal-links-block'
           - type: object
-            additionalProperties: false
             properties:
               sub-geographical-region: 
                 $ref: '#/components/schemas/hal-link'
@@ -2758,7 +3035,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
-        additionalProperties: false
         properties:
           _embedded:
             type: object
@@ -2782,7 +3058,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/hal-links-block'
           - type: object
-            additionalProperties: false
             properties:
               element: 
                 $ref: '#/components/schemas/hal-link'
