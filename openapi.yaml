@@ -1,13 +1,10 @@
 # Copyright 2023 General Electric Company and/or its affiliates (“GE”). 
-# All Rights Reserved. This document is the confidential and proprietary 
-# information of GE and may not be reproduced, transmitted, stored, or copied in whole or in part, 
-# or used to furnish information to others, without the prior written permission of GE.
-
-# This version of the API specification is a derivative work from TROLIE (https://github.com/misoenergy/TROLIE)
-# under the terms of https://github.com/misoenergy/TROLIE/blob/main/LICENSE.  
-# It adds significant features and refactoring from the original.  
-
 # Copyright 2023 Midcontinent Independent System Operator, Inc.
+
+# This specification is distributed under the Apache Software License version 2.0, 
+# as specified at https://github.com/ge-grid-software/TROLIE/blob/main/LICENSE
+
+
 openapi: '3.0.3'
 info:
   title: Transmission Facility Ratings and Operating Limits Information Exchange (TROLIE)
@@ -60,8 +57,8 @@ info:
     email: tory.mckeag@ge.com
     url: https://www.ge.com/digital/applications/grid-orchestration-software
   license:
-    name: TODO- see copyright notice
-    url: https://todo
+    name: Apache License, Version 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
   - url: https://no-server/trolie
 tags:
