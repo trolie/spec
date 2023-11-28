@@ -86,13 +86,15 @@ tags:
       * **Forecast Ratings** are at minimum hourly forecasts of ratings for a particular segment.  
       * **Real-Time Ratings** are provided for current operating conditions.  Ratings provided in this manner
         are an alternative for segments where ICCP communications are not available.  
-      * **Seasonal Recourse Ratings** are recourse ratings for when applicable forecast ratings are not available.  
+      * **Seasonal Ratings** are recourse ratings for when applicable forecast ratings are not available.  
+        In addition to use when forecast rating feeds are missing, these may be used by planning or other forward-looking
+        processes that go beyond the window for which forecasted ratings may be availalbe.  
         This includes ratings for scheduled calendar seasons, as well as to rating sets that apply in special named 
         scenarios defined by the Transmission Provider, such as an extreme winter day.  
 
-  - name: Recourse Rating Snapshots
+  - name: Seasonal Rating Snapshots
     description: |
-      While not typically used directly in operational decisions, recourse ratings are provided for two purposes:
+      While not typically used directly in operational decisions, seasonal ratings are provided for two purposes:
       1.  They are used when applicable forecast ratings are not available.  
       2.  They may be used in future-looking studies that look out (potentially far) beyond the time 
           window where forecast ratings are available.  
@@ -398,12 +400,12 @@ paths:
       responses: *headResponses
       security: *snapshotReadSecurity
   
-  /recourse-ratings/snapshot:
+  /seasonal-ratings/snapshot:
     get:
-      operationId: getRecourseRatingsSnapshot
+      operationId: getSeasonalRatingsSnapshot
       description: Retrieve the nominal and seasonal ratings for all facilities in the `monitoring-set`.
       tags:
-        - Recourse Rating Snapshots
+        - Seasonal Rating Snapshots
       parameters:
         - $ref: '#/components/parameters/monitoring-set-filter'
         - $ref: '#/components/parameters/facility-filter'
@@ -417,20 +419,20 @@ paths:
         "200":
           description: OK
           content:
-            application/vnd.trolie.recourse-rating-snapshot.v1+json:
+            application/vnd.trolie.seasonal-rating-snapshot.v1+json:
               schema:
-                $ref: '#/components/schemas/recourse-rating-snapshot'
+                $ref: '#/components/schemas/seasonal-rating-snapshot'
               example:
                 _links:
                   self: 
-                    href: /recourse-ratings/snapshot
+                    href: /seasonal-ratings/snapshot
                 total-count: 1
                 offset: 0
                 _embedded:
-                  recourse-ratings:
+                  seasonal-ratings:
                   - _links:
                       provenant-proposals:
-                      - href: /rating-proposals/recourse/12345
+                      - href: /rating-proposals/seasonal/12345
                       transmission-facility:
                         href: /reference-data/transmission-facilities/line2
                         name: line2
@@ -438,7 +440,7 @@ paths:
                     - _links:
                         season:
                           name: fall-2023
-                          href: /recourse-ratings/season-instances/fall-2023
+                          href: /seasonal-ratings/season-instances/fall-2023
                       effective-date: "2023-09-01T00:00:00-07:00"
                       values: 
                       - type: normal
@@ -452,7 +454,7 @@ paths:
                           mva: 170   
             application/json:
               schema:
-                $ref: '#/components/schemas/recourse-rating-snapshot'                                       
+                $ref: '#/components/schemas/seasonal-rating-snapshot'                                       
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -481,7 +483,7 @@ paths:
         Use to obtain the headers that would be returned for `getResourceRatingsSnapshot`.
         Useful for cache invalidation.
       tags:
-        - Recourse Rating Snapshots
+        - Seasonal Rating Snapshots
       parameters:
         - $ref: '#/components/parameters/monitoring-set-filter'
         - $ref: '#/components/parameters/facility-filter'
@@ -492,12 +494,12 @@ paths:
       responses: *headResponses
       security: *snapshotReadSecurity
 
-  /recourse-ratings/season-instances:
+  /seasonal-ratings/season-instances:
     get:
       operationId: getSeasonInstances
-      description: Recourse ratings are always bound against season instances, with effective dates.  
+      description: Seasonal ratings are always bound against season instances, with effective dates.  
       tags:
-        - Recourse Rating Snapshots           
+        - Seasonal Rating Snapshots           
       responses:
         "200":
           description: OK
@@ -508,12 +510,12 @@ paths:
               example:
                 _links:
                   self: 
-                    href: /recourse-ratings/season-instances
+                    href: /seasonal-ratings/season-instances
                 _embedded:
                   seasons:
                   - _links:
                       self:
-                        href: /recourse-ratings/season-instances/fall-2023
+                        href: /seasonal-ratings/season-instances/fall-2023
                       season:
                         href: /reference-data/seasons/fall
                     id: fall-2023
@@ -546,16 +548,16 @@ paths:
         Use to obtain the headers that would be returned for `getSeasonInstances`.
         Useful for cache invalidation.
       tags:
-        - Recourse Rating Snapshots      
+        - Seasonal Rating Snapshots      
       responses: *headResponses
       security: *snapshotReadSecurity
 
-  /recourse-ratings/season-instances/{id}:
+  /seasonal-ratings/season-instances/{id}:
     get:
       operationId: getSeasonInstance
       description: Gets a single season instance.  
       tags:
-        - Recourse Rating Snapshots      
+        - Seasonal Rating Snapshots      
       parameters:
       - $ref: '#/components/parameters/id'     
       responses:
@@ -568,7 +570,7 @@ paths:
               example:
                 _links:
                   self:
-                    href: /recourse-ratings/season-instances/fall-2023
+                    href: /seasonal-ratings/season-instances/fall-2023
                   season:
                     href: /reference-data/seasons/fall
                 id: fall-2023
@@ -1284,11 +1286,11 @@ paths:
         default: *commonDefaultErr   
       security: *realtimeproposalReadSecurity
 
-  /rating-proposals/recourse:
+  /rating-proposals/seasonal:
     get:
-      operationId: getRecourseRatingProposal
+      operationId: getSeasonalRatingProposal
       description: >
-        Obtain the latest Recourse / Seasonal Ratings the Ratings Provider has submitted.  
+        Obtain the latest Seasonal Ratings the Ratings Provider has submitted.  
 
         Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
         and the `ETag` of a previous `GET` response.
@@ -1303,17 +1305,17 @@ paths:
         - $ref: '#/components/parameters/limit-units'
         - $ref: '#/components/parameters/max-records'
         - $ref: '#/components/parameters/record-offset'                    
-      responses: &recourseProposalGetResponse
+      responses: &seasonalProposalGetResponse
         "200":
           description: OK
           content:
-            application/vnd.trolie.recourse-rating-proposal.v1+json:
+            application/vnd.trolie.seasonal-rating-proposal.v1+json:
               schema:
-                $ref: '#/components/schemas/recourse-rating-proposal'
+                $ref: '#/components/schemas/seasonal-rating-proposal'
               example:
                 _links:
                   self:
-                    href: /rating-proposals/recourse/UTILITYA
+                    href: /rating-proposals/seasonal/UTILITYA
                 timestamp: "2023-07-12T15:05:43.044267100-07:00"
                 owner: UTILITYA
                 ratings: 
@@ -1343,7 +1345,7 @@ paths:
                         mva: 170                                 
             application/json:
               schema:
-                $ref: '#/components/schemas/recourse-rating-proposal'           
+                $ref: '#/components/schemas/seasonal-rating-proposal'           
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1365,14 +1367,14 @@ paths:
         "406": *common406
         "429": *common429
         default: *commonDefaultErr
-      security: &recourseproposalReadSecurity
+      security: &seasonalproposalReadSecurity
         - oauth2-primary-flow:
-          - "read:recourse-proposals"       
+          - "read:seasonal-proposals"       
     head:
-      operationId: getRecourseRatingProposalsHeaders
+      operationId: getSeasonalRatingProposalsHeaders
       description: >
         Use to obtain the headers that would be returned for 
-        `getRecourseProposals`. Useful for cache invalidation.
+        `getSeasonalProposals`. Useful for cache invalidation.
       tags:
         - Rating Proposals
       parameters:
@@ -1384,10 +1386,10 @@ paths:
         - $ref: '#/components/parameters/limit-units'    
       responses: *headResponses
 
-      security: *recourseproposalReadSecurity
+      security: *seasonalproposalReadSecurity
 
     patch:
-      operationId: patchRecourseProposal
+      operationId: patchSeasonalProposal
       description: >
         Update this Provider's Rating Proposal 
       tags:
@@ -1395,11 +1397,11 @@ paths:
       parameters:
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'    
-      requestBody: &recourseProposalUpdateRequest
+      requestBody: &seasonalProposalUpdateRequest
         content:
-          application/vnd.trolie.recourse-rating-proposal.v1+json:
+          application/vnd.trolie.seasonal-rating-proposal.v1+json:
             schema:
-              $ref: '#/components/schemas/recourse-rating-proposal'   
+              $ref: '#/components/schemas/seasonal-rating-proposal'   
             example:
               ratings: 
               - segment-id: segmentX 
@@ -1420,21 +1422,21 @@ paths:
                       mva: 170 
           application/json:
             schema:
-              $ref: '#/components/schemas/recourse-rating-proposal'                                          
-      responses: &recourseProposalUpdateResponse
+              $ref: '#/components/schemas/seasonal-rating-proposal'                                          
+      responses: &seasonalProposalUpdateResponse
         "202": 
           description: >
             The update was accepted for later processing. Updates to 
             ratings may need to undergo additional validation and propagation
             to other systems.
           content:
-            application/vnd.trolie.recourse-proposal.v1+json:
+            application/vnd.trolie.seasonal-proposal.v1+json:
               schema:
-                $ref: '#/components/schemas/recourse-rating-proposal'
+                $ref: '#/components/schemas/seasonal-rating-proposal'
               example:
                 _links:
                   self:
-                    href: /rating-proposals/recourse/UTILITYA
+                    href: /rating-proposals/seasonal/UTILITYA
                 timestamp: "2023-07-12T15:05:43.044267100-07:00"
                 owner: UTILITYA
                 ratings: 
@@ -1464,7 +1466,7 @@ paths:
                         mva: 170  
             application/json:
               schema:
-                $ref: '#/components/schemas/recourse-rating-proposal'                                       
+                $ref: '#/components/schemas/seasonal-rating-proposal'                                       
           headers:
             X-Rate-Limit-Limit:
               $ref: '#/components/headers/X-Rate-Limit-Limit'
@@ -1487,13 +1489,13 @@ paths:
         "413": *common413        
         "429": *common429
         default: *commonDefaultErr   
-      security: &recourseWriteSecurity
+      security: &seasonalWriteSecurity
         - oauth2-primary-flow:
-          - "write:recourse-proposals"  
+          - "write:seasonal-proposals"  
 
-  /rating-proposals/recourse/{ratings-provider}:
+  /rating-proposals/seasonal/{ratings-provider}:
     get:
-      operationId: getRecourseProposalForProvider
+      operationId: getSeasonalProposalForProvider
       description: >
         Obtain a specific rating proposal by ratings provider
       tags:
@@ -1506,10 +1508,10 @@ paths:
         - $ref: '#/components/parameters/subgeographical-region-filter'     
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units'                       
-      responses: *recourseProposalGetResponse
-      security: *recourseproposalReadSecurity
+      responses: *seasonalProposalGetResponse
+      security: *seasonalproposalReadSecurity
     patch:
-      operationId: patchRecourseProposalByProvider
+      operationId: patchSeasonalProposalByProvider
       description: >
         Update a given Provider's Rating Proposal 
       tags:
@@ -1518,9 +1520,9 @@ paths:
         - $ref: '#/components/parameters/ratings-provider'         
         - $ref: '#/components/parameters/naming-scheme'
         - $ref: '#/components/parameters/limit-units' 
-      requestBody: *recourseProposalUpdateRequest   
-      responses: *recourseProposalUpdateResponse
-      security: *recourseWriteSecurity
+      requestBody: *seasonalProposalUpdateRequest   
+      responses: *seasonalProposalUpdateResponse
+      security: *seasonalWriteSecurity
     
 
   /monitoring-sets:
@@ -2803,7 +2805,7 @@ components:
         values:
           $ref: '#/components/schemas/limit-value-set'
         
-    recourse-rating-snapshot: 
+    seasonal-rating-snapshot: 
       allOf:
       - $ref: '#/components/schemas/paged-resource'
       - type: object
@@ -2811,14 +2813,14 @@ components:
           _embedded:
             type: object
             properties:
-              recourse-ratings:
+              seasonal-ratings:
                 type: array
                 minItems: 0
                 maxItems: 50000 
                 items:
-                  $ref: '#/components/schemas/recourse-rating-snapshot-item'     
+                  $ref: '#/components/schemas/seasonal-rating-snapshot-item'     
 
-    recourse-rating-snapshot-item:
+    seasonal-rating-snapshot-item:
       type: object
       additionalProperties: false
       properties:
@@ -2834,11 +2836,11 @@ components:
         seasons:
           type: array 
           items:
-            $ref: '#/components/schemas/recourse-rating-snapshot-value'
+            $ref: '#/components/schemas/seasonal-rating-snapshot-value'
           maxItems: 100
           minItems: 0
 
-    recourse-rating-snapshot-value:
+    seasonal-rating-snapshot-value:
       type: object
       additionalProperties: false
       properties:
@@ -3072,7 +3074,7 @@ components:
           $ref: '#/components/schemas/limit-value-set'         
               
 
-    recourse-rating-proposal:
+    seasonal-rating-proposal:
       allOf:
       - $ref: '#/components/schemas/mutable-rating-proposal'
       - type: object 
@@ -3080,9 +3082,9 @@ components:
           ratings:  
             type: array
             items:
-              $ref: '#/components/schemas/recourse-proposal-for-segment'
+              $ref: '#/components/schemas/seasonal-proposal-for-segment'
           
-    recourse-proposal-for-segment:
+    seasonal-proposal-for-segment:
       type: object
       additionalProperties: false
       properties:
@@ -3096,9 +3098,9 @@ components:
         seasons:  
           type: array
           items:
-            $ref: '#/components/schemas/recourse-proposal-season'                  
+            $ref: '#/components/schemas/seasonal-proposal-season'                  
 
-    recourse-proposal-season:
+    seasonal-proposal-season:
       type: object
       additionalProperties: false
       properties: 
@@ -3752,10 +3754,10 @@ components:
           scopes:
             "read:forecast-proposals": "Read Forecast rating proposals"
             "read:realtime-proposals": "Read real-time rating proposals"
-            "read:recourse-proposals": "Read recourse / seasonal rating proposals"
+            "read:seasonal-proposals": "Read seasonal rating proposals"
             "write:forecast-proposals": "Submit forecasted ratings"
             "write:realtime-proposals": "Submit realtime ratings"
-            "write:recourse-proposals": "Submit recourse / seasonal ratings"
+            "write:seasonal-proposals": "Submit seasonal ratings"
             "read:monitoring-set": "Read monitoring set definitions"
             "write:monitoring-sets": "Write monitoring set definitions"
             "read:operating-snapshot": "Read the ratings and limits snapshots in-use by the transmission provider"
