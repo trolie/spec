@@ -2684,6 +2684,21 @@ components:
             - $ref: '#/components/schemas/apparent-power-value'
             - $ref: '#/components/schemas/current-value'
             - $ref: '#/components/schemas/actual-power-and-factor-value'
+
+    conditional-value-set:
+      type: array
+      description: |
+        List of alternative ratings for rating altering conditions on the segment.  References condition identifiers described in
+        `getNetworkSegment`
+      minItems: 1
+      maxItems: 100
+      items:
+        type: object
+        properties:
+          condition:
+            $ref: '#/components/schemas/network-component-name'               
+          values:
+            $ref: '#/components/schemas/limit-value-set'                  
     
     apparent-power-value:
       type: object
@@ -2853,6 +2868,8 @@ components:
           $ref: '#/components/schemas/period-start'
         values:
           $ref: '#/components/schemas/limit-value-set'
+        conditional-values:
+          $ref: '#/components/schemas/conditional-value-set'         
 
     season-instance-set: 
       type: object
@@ -2993,6 +3010,19 @@ components:
     forecast-rating-period:
       type: object
       additionalProperties: false
+      description: |
+        Forecast ratings data for a segment and period.  Includes status of the 
+        proposal relative to this data, as well as rating values.  
+        It also optionally may include a set of "branch-only" ratings.  
+        While forecast ratings in the "values" fields should be based on
+        ambient conditions, they may also be limited by current topology.  
+        The ratings provider should take this into account when populating the 
+        values field for the proposal.  
+
+        However, since this is a forecast, the Transmission Provider may run various 
+        look-ahead functions that change this topology such that it is no longer a limiting factor.  
+        To accommodate these scenarios, a "branch-only" rating should be sent that does not factor in 
+        topology.  
       properties: 
         period-start:
           $ref: '#/components/schemas/period-start'
@@ -3000,6 +3030,8 @@ components:
           $ref: '#/components/schemas/proposal-status'         
         values:
           $ref: '#/components/schemas/limit-value-set'
+        branch-only-values:
+          $ref: '#/components/schemas/limit-value-set'     
 
     missing-forecast-rating-set:
       allOf:
@@ -3060,6 +3092,8 @@ components:
     realtime-proposal-for-segment:
       type: object
       additionalProperties: false
+      description: |
+        Real-time ratings data for a segment.  Includes status of the proposal relative to this data, as well as rating values.  
       properties: 
         _links:
           type: object
@@ -3102,6 +3136,9 @@ components:
 
     seasonal-proposal-season:
       type: object
+      description: |
+        Seasonal ratings data for a segment.  Includes status of the proposal relative to this data, as well as rating values.  
+        Also includes a set of values for rating altering conditions on the segment, should they apply.  
       additionalProperties: false
       properties: 
         _links: 
@@ -3115,6 +3152,8 @@ components:
           $ref: '#/components/schemas/proposal-status' 
         values:
           $ref: '#/components/schemas/limit-value-set'  
+        conditional-values:
+          $ref: '#/components/schemas/conditional-value-set'  
 
     monitoring-set-list:
       description: |
@@ -3329,7 +3368,18 @@ components:
           minItems: 1
           maxItems: 100
           items: 
-            $ref: '#/components/schemas/network-component-name'                  
+            $ref: '#/components/schemas/network-component-name'       
+        altering-conditions:
+          description: |
+            A condition on a given segment that may have specialized ratings against it.  
+            This is typically used for underground cables that are next to each other in a tray.  
+            If certain cables are switched on or off, it significantly changes the rating of the line (segment).  
+          type: array
+          minItems: 1
+          maxItems: 100
+          items: 
+            $ref: '#/components/schemas/network-component-name'               
+
 
     season-set:
       type: object
@@ -3345,7 +3395,7 @@ components:
               minItems: 0
               maxItems: 100 
               items:
-                $ref: '#/components/schemas/sub-geographical-region'  
+                $ref: '#/components/schemas/season'  
 
     season:
       type: object
