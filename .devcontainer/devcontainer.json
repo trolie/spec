@@ -1,0 +1,30 @@
+{
+	"name": "TROLIE devcontainer",
+	"build": {
+        "dockerfile": "Dockerfile"
+    },
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"upgradePackages": true,
+			"username": "vscode",
+			"userUid": "automatic",
+			"userGid": "automatic"
+		},
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-git:0": {}
+	},
+
+	"remoteUser": "vscode",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"Redocly.openapi-vs-code"
+			]
+		}
+	},
+
+    // this path is used by the redocly cli
+    "workspaceMount": "source=${localWorkspaceFolder},target=/spec,type=bind",
+    "workspaceFolder": "/spec"
+}
