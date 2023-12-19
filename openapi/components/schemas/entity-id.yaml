@@ -1,0 +1,5 @@
+description: Usually the NERC id of the entity.
+type: string
+maxLength: 10
+pattern: ^[A-Z]{3,10}$
+example: MISO

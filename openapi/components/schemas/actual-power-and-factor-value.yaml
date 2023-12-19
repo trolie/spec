@@ -1,0 +1,16 @@
+type: object
+description: >-
+  Representation of a limit using a combination of actual power in MW and an
+  assumed power factor in MVA/MW
+additionalProperties: false
+properties:
+  mw:
+    type: number
+    format: float
+    minimum: 1
+    maximum: 10000
+  pf:
+    type: number
+    format: float
+    minimum: 0
+    maximum: 1

@@ -1,0 +1,8 @@
+type: object
+properties:
+  period-start:
+    $ref: ./period-start.yaml
+  updated-time:
+    $ref: ./timestamp.yaml
+  values:
+    $ref: ./limit-value-set.yaml

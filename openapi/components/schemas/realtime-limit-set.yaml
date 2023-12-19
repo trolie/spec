@@ -1,0 +1,5 @@
+type: array
+minItems: 0
+maxItems: 50000
+items:
+  $ref: ./realtime-limit-item.yaml

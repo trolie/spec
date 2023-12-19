@@ -1,0 +1,7 @@
+description: |
+  List of monitoring set IDs
+type: array
+minItems: 0
+maxItems: 2000
+items:
+  $ref: ./generic-identifier.yaml

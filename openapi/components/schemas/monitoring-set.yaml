@@ -1,0 +1,17 @@
+description: |
+  Set of transmission facilities noteworthy to reference in queries in TROLIE.  
+  The set of segments included in the monitoring set is implied by their
+  inclusion in the transmission facilities within the monitoring set.  
+type: object
+additionalProperties: false
+properties:
+  id:
+    $ref: ./generic-identifier.yaml
+  description:
+    type: string
+  transmission-facilities:
+    type: array
+    minItems: 0
+    maxItems: 50000
+    items:
+      $ref: ./generic-identifier.yaml

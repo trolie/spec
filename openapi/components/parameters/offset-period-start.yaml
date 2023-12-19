@@ -1,0 +1,9 @@
+name: offset-period-start
+description: >
+  Rather than return the entire forecast from the beginning, i.e., the next
+  operating period, instead return a subset of the forecast starting with the
+  period starting at `offset-period-start`.
+in: query
+required: false
+schema:
+  $ref: ../schemas/period-start.yaml

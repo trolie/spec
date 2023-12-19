@@ -1,0 +1,5 @@
+description: Intended to proactively avoid information disclosure
+type: string
+nullable: true
+maxLength: 0
+pattern: ^$

@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./mutable-rating-proposal.yaml
+  - type: object
+    properties:
+      ratings:
+        type: array
+        items:
+          $ref: ./forecast-proposal-for-segment.yaml

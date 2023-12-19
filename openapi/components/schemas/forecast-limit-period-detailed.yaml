@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./forecast-limit-period.yaml
+  - $ref: ./limit-provenance.yaml

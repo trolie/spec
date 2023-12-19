@@ -1,0 +1,23 @@
+type: array
+description: >
+  A set of general limit or rating values, each mapped to the various limit
+  bands defined by the Transmission Provider's 
+
+  operating manual.  This typically consists of a "normal" limit, as well as
+  limits for various levels of emergency conditions
+
+  (typically 2-4) defined in the operations manual.  The list of supported limit
+  types may be fetched from getSupportedLimitTypes.  
+
+  The value of the limits are in units as defined by the X-TROLIE-Limit-Units
+  header.  
+items:
+  type: object
+  properties:
+    type:
+      $ref: ./limit-type.yaml
+    value:
+      oneOf:
+        - $ref: ./apparent-power-value.yaml
+        - $ref: ./current-value.yaml
+        - $ref: ./actual-power-and-factor-value.yaml

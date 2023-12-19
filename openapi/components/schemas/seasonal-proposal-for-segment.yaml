@@ -1,0 +1,9 @@
+type: object
+additionalProperties: false
+properties:
+  segment-id:
+    $ref: ./generic-identifier.yaml
+  seasons:
+    type: array
+    items:
+      $ref: ./seasonal-proposal-season.yaml

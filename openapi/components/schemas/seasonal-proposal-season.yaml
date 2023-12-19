@@ -1,0 +1,17 @@
+type: object
+description: >
+  Seasonal ratings data for a segment.  Includes status of the proposal relative
+  to this data, as well as rating values.  
+
+  Also includes a set of values for rating altering conditions on the segment,
+  should they apply.  
+additionalProperties: false
+properties:
+  season-id:
+    $ref: ./generic-identifier.yaml
+  status:
+    $ref: ./proposal-status.yaml
+  values:
+    $ref: ./limit-value-set.yaml
+  conditional-values:
+    $ref: ./conditional-value-set.yaml
