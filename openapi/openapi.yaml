@@ -302,8 +302,8 @@ paths:
     $ref: paths/reference-data_seasons_{id}.yaml
   /reference-data/limit-types:
     $ref: paths/reference-data_limit-types.yaml
-  /reference-data/namimg-schemes:
-    $ref: paths/reference-data_namimg-schemes.yaml
+  /reference-data/naming-schemes:
+    $ref: paths/reference-data_naming-schemes.yaml
 components:
   securitySchemes:
     oauth2-primary-flow:

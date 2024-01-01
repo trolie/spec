@@ -2,6 +2,6 @@ apis:
   trolie@v1: 
     root: openapi/openapi.yaml
 extends:
-  - recommended
+  - recommended-strict
 rules:
-  no-unused-components: error
+  operation-summary: warn

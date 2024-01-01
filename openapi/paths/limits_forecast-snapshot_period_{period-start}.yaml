@@ -1,5 +1,6 @@
 get:
   operationId: getLimitsForecastByPeriod
+  summary: Obtain Limits Forecast
   description: >
     Obtain the Limits Forecast the Transmission Provider is currently using in
     Operations, narrowed in scope for a particular period.   Clients SHOULD
@@ -107,6 +108,7 @@ get:
       $ref: ../components/responses/unexpected-error.yaml
 head:
   operationId: getLimitsForecastHeadersByPeriod
+  summary: Obtain HTTP headers for Limits Forecast.
   description: >
     Use to obtain the headers that would be returned for 
     `getLimitsForecastByPeriodId`. Useful for cache invalidation.
