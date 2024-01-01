@@ -9,8 +9,7 @@
 			"username": "vscode",
 			"userUid": "automatic",
 			"userGid": "automatic"
-		},
-		"ghcr.io/cirolosapio/devcontainers-features/alpine-git:0": {}
+		}
 	},
 
 	"remoteUser": "vscode",

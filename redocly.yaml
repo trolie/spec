@@ -1,6 +1,6 @@
 apis:
   trolie@v1: 
-    root: openapi/openapi.yaml
+    root: docs/_data/openapi-split.yaml
 extends:
   - recommended-strict
 rules:
