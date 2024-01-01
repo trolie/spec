@@ -25,5 +25,8 @@
 
     // this path is used by the redocly cli
     "workspaceMount": "source=${localWorkspaceFolder},target=/spec,type=bind",
-    "workspaceFolder": "/spec"
+    "workspaceFolder": "/spec",
+
+	"postCreateCommand": "cd /spec/docs && bundle install",
+	"postStartCommand": "cd /spec/docs && bundle update github-pages && bundle exec jekyll serve"
 }

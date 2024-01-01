@@ -1,4 +1,5 @@
-FROM redocly/cli:1.5.0
+FROM node:lts-slim
 
 RUN set -eux; \
-	apk add --no-cache jekyll;
+	apt update -y -qq && apt install -y -qq ruby-full build-essential \
+	&& gem install bundler;
