@@ -28,6 +28,8 @@ jobs:
         uses: actions/configure-pages@v4
       - name: Build
         uses: actions/jekyll-build-pages@v1
+        with:
+          source: './docs'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
