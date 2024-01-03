@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./realtime-limit-item.yaml
+  - $ref: ./limit-provenance.yaml

@@ -1,0 +1,8 @@
+name: period-end
+description: >-
+  Specifies the end of a period for which a filter specifies.  Periods will only
+  be returned that start prior to this time.
+in: query
+required: false
+schema:
+  $ref: ../schemas/period-start.yaml

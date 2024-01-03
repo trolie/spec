@@ -1,0 +1,117 @@
+get:
+  operationId: getMissingRatingForecastPeriodsForProvider
+  description: >
+    Given an operations window, returns the missing forecasts for segments owned
+    by the selected ratings provider.   If no period-end is provided, then this
+    will default to the configured "required" periods for this instance of
+    TROLIE, typically assumed to be the 10-day ahead set of hours required by
+    FERC order 881.  
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response.
+  tags:
+    - Rating Proposals
+  parameters:
+    - $ref: ../components/parameters/ratings-provider.yaml
+    - $ref: ../components/parameters/offset-period-start.yaml
+    - $ref: ../components/parameters/period-end.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/vnd.trolie.missing-forecast-rating-set.v1+json:
+          schema:
+            $ref: ../components/schemas/missing-forecast-rating-set.yaml
+          example:
+            - segment-id: segmentX
+              periods:
+                - '2023-07-12T16:00:00-07:00'
+        application/json:
+          schema:
+            $ref: ../components/schemas/missing-forecast-rating-set.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304':
+      $ref: ../components/responses/not-modified.yaml
+    '400': &ref_0
+      description: |
+        Malformed request, based on misuse of filters.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+        application/vnd.trolie.validation-messages.v1+json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '403':
+      $ref: ../components/responses/forbidden.yaml
+    '404':
+      $ref: ../components/responses/no-data-found.yaml
+    '406':
+      $ref: ../components/responses/not-acceptable.yaml
+    '410':
+      $ref: ../components/responses/archived.yaml
+    '429':
+      $ref: ../components/responses/rate-limited.yaml
+    default:
+      $ref: ../components/responses/unexpected-error.yaml
+  security: &ref_1
+    - oauth2-primary-flow:
+        - read:forecast-proposals
+head:
+  operationId: getMissingRatingForecastPeriodsForProviderHeaders
+  description: >
+    Use to obtain the headers that would be returned for 
+    `getMissingRatingForecastPeriodsForProvider`. Useful for cache invalidation.
+  tags:
+    - Rating Proposals
+  parameters:
+    - $ref: ../components/parameters/ratings-provider.yaml
+    - $ref: ../components/parameters/offset-period-start.yaml
+    - $ref: ../components/parameters/period-end.yaml
+  responses:
+    '200':
+      description: OK
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304':
+      $ref: ../components/responses/not-modified.yaml
+    '400': *ref_0
+    '401':
+      $ref: ../components/responses/unauthorized-head.yaml
+    '403':
+      $ref: ../components/responses/forbidden-head.yaml
+    '404':
+      $ref: ../components/responses/no-data-found-head.yaml
+    '406':
+      $ref: ../components/responses/not-acceptable-head.yaml
+    '410':
+      $ref: ../components/responses/archived.yaml
+    '429':
+      $ref: ../components/responses/rate-limited-head.yaml
+    default:
+      $ref: ../components/responses/unexpected-error-head.yaml
+  security: *ref_1

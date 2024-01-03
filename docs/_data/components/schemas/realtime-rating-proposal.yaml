@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./immutable-rating-proposal.yaml
+  - type: object
+    properties:
+      ratings:
+        type: array
+        items:
+          $ref: ./realtime-proposal-for-segment.yaml

@@ -1,0 +1,7 @@
+apis:
+  trolie@v1: 
+    root: docs/_data/openapi-split.yaml
+extends:
+  - recommended-strict
+rules:
+  operation-summary: warn

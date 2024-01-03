@@ -1,0 +1,196 @@
+get:
+  operationId: getRatingForecastProposalForProvider
+  description: |
+    Obtain a specific rating proposal for a ratings provider.  
+  tags:
+    - Rating Proposals
+  parameters:
+    - $ref: ../components/parameters/ratings-provider.yaml
+    - $ref: ../components/parameters/offset-period-start.yaml
+    - $ref: ../components/parameters/period-end.yaml
+    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/segment-filter.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/vnd.trolie.rating-forecast-proposal.v1+json:
+          schema:
+            $ref: ../components/schemas/forecast-rating-proposal.yaml
+          example:
+            timestamp: '2023-07-12T15:05:43.044267100-07:00'
+            ratings-provider: UTILITYX
+            ratings:
+              - segment-id: segmentX
+                periods:
+                  - period-start: '2023-07-12T16:00:00-07:00'
+                    status: pending
+                    values:
+                      - type: normal
+                        value:
+                          mva: 160
+                      - type: ste
+                        value:
+                          mva: 165
+                      - type: lte
+                        value:
+                          mva: 170
+                      - type: dal
+                        value:
+                          mva: 170
+        application/json:
+          schema:
+            $ref: ../components/schemas/forecast-rating-proposal.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304': &ref_0
+      $ref: ../components/responses/not-modified.yaml
+    '400':
+      description: |
+        Malformed request, based on misuse of filters.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+        application/vnd.trolie.validation-messages.v1+json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+    '401': &ref_1
+      $ref: ../components/responses/unauthorized.yaml
+    '403': &ref_2
+      $ref: ../components/responses/forbidden.yaml
+    '404': &ref_3
+      $ref: ../components/responses/no-data-found.yaml
+    '406': &ref_4
+      $ref: ../components/responses/not-acceptable.yaml
+    '410':
+      $ref: ../components/responses/archived.yaml
+    '429': &ref_5
+      $ref: ../components/responses/rate-limited.yaml
+    default: &ref_6
+      $ref: ../components/responses/unexpected-error.yaml
+  security:
+    - oauth2-primary-flow:
+        - read:forecast-proposals
+patch:
+  operationId: patchRatingForecastProposalForProvider
+  description: |
+    Update this rating provider's ratings Forecast Proposal 
+  tags:
+    - Rating Proposals
+  parameters:
+    - $ref: ../components/parameters/ratings-provider.yaml
+  requestBody:
+    content:
+      application/vnd.trolie.rating-forecast-proposal.v1+json:
+        schema:
+          $ref: ../components/schemas/forecast-rating-proposal.yaml
+        example:
+          ratings:
+            - segment-id: segmentX
+              periods:
+                - period-start: '2023-07-12T16:00:00-07:00'
+                  values:
+                    - type: normal
+                      value:
+                        mva: 160
+                    - type: ste
+                      value:
+                        mva: 165
+                    - type: lte
+                      value:
+                        mva: 170
+                    - type: dal
+                      value:
+                        mva: 170
+      application/json:
+        schema:
+          $ref: ../components/schemas/forecast-rating-proposal.yaml
+  responses:
+    '202':
+      description: >
+        The update was accepted for later processing. Updates to  ratings may
+        need to undergo additional validation and propagation to other systems. 
+        Status may be retreived by issuing a GET using
+        `getRatingForecastProposals`
+      content:
+        application/vnd.trolie.rating-forecast-proposal.v1+json:
+          schema:
+            $ref: ../components/schemas/forecast-rating-proposal.yaml
+          example:
+            timestamp: '2023-07-12T15:05:43.044267100-07:00'
+            ratings-provider: UTILITYA
+            ratings:
+              - segment-id: segmentX
+                periods:
+                  - period-start: '2023-07-12T16:00:00-07:00'
+                    status: pending
+                    values:
+                      - type: normal
+                        value:
+                          mva: 160
+                      - type: ste
+                        value:
+                          mva: 165
+                      - type: lte
+                        value:
+                          mva: 170
+                      - type: dal
+                        value:
+                          mva: 170
+        application/json:
+          schema:
+            $ref: ../components/schemas/forecast-rating-proposal.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304': *ref_0
+    '400':
+      description: >
+        Malformed request, proposal is invalid.  Details are in error
+        messages.  
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+        application/vnd.trolie.validation-messages.v1+json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+    '401': *ref_1
+    '403': *ref_2
+    '404': *ref_3
+    '406': *ref_4
+    '413':
+      $ref: ../components/responses/payload-too-large.yaml
+    '429': *ref_5
+    default: *ref_6
+  security:
+    - oauth2-primary-flow:
+        - write:forecast-proposals

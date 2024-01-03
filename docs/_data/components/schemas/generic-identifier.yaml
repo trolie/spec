@@ -1,0 +1,4 @@
+type: string
+maxLength: 100
+pattern: ^(.){0,100}$
+example: fded654c-64f5-4db9-9467-8937d2b3f027

@@ -1,0 +1,12 @@
+type: array
+minItems: 0
+maxItems: 100
+items:
+  type: object
+  additionalProperties: false
+  properties:
+    id:
+      $ref: ./generic-identifier.yaml
+    description:
+      type: string
+      example: Extreme cold winter day, -100 degrees fahrenheit

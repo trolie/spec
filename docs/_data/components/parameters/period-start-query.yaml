@@ -1,0 +1,7 @@
+name: period-start
+description: |
+  Defines the start of an applicable operating period.  
+in: query
+required: false
+schema:
+  $ref: ../schemas/period-start.yaml

@@ -1,0 +1,24 @@
+type: string
+description: >
+  Enumeration of the possible statuses of a proposal, or parts of a proposal. 
+  Note that submitals of proposals do not
+
+  set this value.  It is system-generated after submission.  The following
+  values are possible:
+
+  * *pending* indicates that the system has not yet processed this proposal.  
+
+  * *accepted* indicates that the proposal has been accepted, and is now the
+  basis for the associated ratings / limit
+    snapshot.  
+  * *superseded* indicates that the proposal was superseded to a more
+  conservative rating.  This rating may have 
+    come from another party, as may be the case on jointly owned equipment or tie lines, or it may have come from a 
+    topological condition on the network such that some related equipment is now forcing a more conservative limit.  
+  * *overridden* indicates that the proposal was overridden manually by an
+  operator for the Transmission Provider.   
+enum:
+  - pending
+  - accepted
+  - superseded
+  - overridden

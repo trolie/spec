@@ -1,0 +1,7 @@
+name: segment
+description: |
+  Only return limits for this segment.  
+in: query
+required: false
+schema:
+  $ref: ../schemas/generic-identifier.yaml

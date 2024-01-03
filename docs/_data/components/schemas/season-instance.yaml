@@ -1,0 +1,15 @@
+type: object
+additionalProperties: false
+properties:
+  season:
+    $ref: ./generic-identifier.yaml
+  id:
+    $ref: ./generic-identifier.yaml
+  effective-time:
+    $ref: ./period-start.yaml
+  active:
+    description: Set to true if this season is currently active
+    type: boolean
+required:
+  - id
+  - active

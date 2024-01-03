@@ -1,0 +1,45 @@
+name: 'Documentation build'
+
+on:
+  pull_request:
+    branches:
+      - '1.0.0-wip'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: "Bundle and Build"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: "npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Build
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: './docs'
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}

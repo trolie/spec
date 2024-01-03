@@ -1,0 +1,9 @@
+type: object
+additionalProperties: false
+properties:
+  transmission-facility-id:
+    $ref: ./generic-identifier.yaml
+  periods:
+    type: array
+    items:
+      $ref: ./forecast-limit-period-detailed.yaml

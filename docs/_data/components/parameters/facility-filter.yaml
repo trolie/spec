@@ -1,0 +1,7 @@
+name: transmission-facility
+description: |
+  Only return limits for this transmission facility.  
+in: query
+required: false
+schema:
+  $ref: ../schemas/generic-identifier.yaml

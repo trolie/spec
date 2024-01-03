@@ -1,0 +1,7 @@
+name: ratings-provider
+description: |
+  Identifier (typically NERC Id) of a ratings provider.  
+in: path
+required: true
+schema:
+  $ref: ../schemas/entity-id.yaml

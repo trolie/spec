@@ -1,0 +1,173 @@
+get:
+  operationId: getMonitoringSets
+  description: >
+    Obtain the list of monitoring sets visible to this user.  
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response.
+  tags:
+    - Monitoring Sets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/vnd.trolie.monitoring-set-list.v1+json:
+          schema:
+            $ref: ../components/schemas/monitoring-set-list.yaml
+          example:
+            - utilityA-and-neighbors
+            - utilityB-and-neighbors
+        application/json:
+          schema:
+            $ref: ../components/schemas/monitoring-set-list.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304': &ref_2
+      $ref: ../components/responses/not-modified.yaml
+    '400': &ref_0
+      description: |
+        Malformed request, based on misuse of filters.
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+        application/vnd.trolie.validation-messages.v1+json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+    '401': &ref_3
+      $ref: ../components/responses/unauthorized.yaml
+    '403': &ref_4
+      $ref: ../components/responses/forbidden.yaml
+    '404': &ref_5
+      $ref: ../components/responses/no-data-found.yaml
+    '406': &ref_6
+      $ref: ../components/responses/not-acceptable.yaml
+    '429': &ref_7
+      $ref: ../components/responses/rate-limited.yaml
+    default: &ref_8
+      $ref: ../components/responses/unexpected-error.yaml
+  security: &ref_1
+    - oauth2-primary-flow:
+        - read:monitoring-sets
+head:
+  operationId: getMonitoringSetsHeaders
+  description: >
+    Use to obtain the headers that would be returned for  `getMonitoringSets`.
+    Useful for cache invalidation.
+  tags:
+    - Monitoring Sets
+  responses:
+    '200':
+      description: OK
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304':
+      $ref: ../components/responses/not-modified.yaml
+    '400': *ref_0
+    '401':
+      $ref: ../components/responses/unauthorized-head.yaml
+    '403':
+      $ref: ../components/responses/forbidden-head.yaml
+    '404':
+      $ref: ../components/responses/no-data-found-head.yaml
+    '406':
+      $ref: ../components/responses/not-acceptable-head.yaml
+    '410':
+      $ref: ../components/responses/archived.yaml
+    '429':
+      $ref: ../components/responses/rate-limited-head.yaml
+    default:
+      $ref: ../components/responses/unexpected-error-head.yaml
+  security: *ref_1
+post:
+  operationId: createMonitoringSet
+  description: |
+    Create a new Monitoring Set
+  tags:
+    - Monitoring Sets
+  requestBody:
+    content:
+      application/vnd.trolie.monitoring-set.v1+json:
+        schema:
+          $ref: ../components/schemas/monitoring-set.yaml
+        example:
+          id: utilityA-and-neighbors
+          description: Utility A's owned lines, as well as surround neighbors.
+          transmission-facilities:
+            - line1
+            - line2
+            - line3
+      application/json:
+        schema:
+          $ref: ../components/schemas/monitoring-set.yaml
+  responses:
+    '201':
+      description: |
+        The monitoring set was created.  
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/monitoring-set.yaml
+        application/vnd.trolie.monitoring-set.v1+json:
+          schema:
+            $ref: ../components/schemas/monitoring-set.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        ETag:
+          $ref: ../components/headers/ETag.yaml
+    '304': *ref_2
+    '400':
+      description: >
+        Malformed request, proposal is invalid.  Details are in error
+        messages.  
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+        application/vnd.trolie.validation-messages.v1+json:
+          schema:
+            $ref: ../components/schemas/validation-messages.yaml
+      headers:
+        X-Rate-Limit-Limit:
+          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
+        X-Rate-Limit-Remaining:
+          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
+        X-Rate-Limit-Reset:
+          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+    '401': *ref_3
+    '403': *ref_4
+    '404': *ref_5
+    '406': *ref_6
+    '413':
+      $ref: ../components/responses/payload-too-large.yaml
+    '429': *ref_7
+    default: *ref_8
+  security:
+    - oauth2-primary-flow:
+        - write:monitoring-sets

@@ -1,0 +1,7 @@
+type: object
+additionalProperties: false
+properties:
+  scheme:
+    $ref: ./generic-identifier.yaml
+  name:
+    $ref: ./generic-identifier.yaml

@@ -1,0 +1,7 @@
+name: id
+description: |
+  ID of the associated object
+in: path
+required: true
+schema:
+  $ref: ../schemas/generic-identifier.yaml

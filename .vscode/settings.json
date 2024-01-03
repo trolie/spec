@@ -1,0 +1,12 @@
+{
+    "yaml.maxItemsComputed": 50000,
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "docs/_data/*",
+                "isAsync": true,
+                "cmd": "npx --yes @redocly/cli bundle /spec/docs/_data/openapi-split.yaml -o /spec/docs/openapi.yaml"
+            }
+        ]
+    }
+}

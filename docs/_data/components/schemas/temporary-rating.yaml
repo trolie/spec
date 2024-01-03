@@ -1,0 +1,25 @@
+type: object
+additionalProperties: false
+description: |
+  Data structure for a temporary rating against a segment.
+  Includes a unique ID, start and (optional) end time, and a reason.  
+
+  May include a set of values, which apply if this temporary rating
+  is either an AAR Exception or temporary seasonal rating.  
+properties:
+  id:
+    $ref: ./generic-identifier.yaml
+  segment-id:
+    $ref: ./generic-identifier.yaml
+  start-time:
+    $ref: ./period-start.yaml
+  end-time:
+    $ref: ./period-start.yaml
+  updated-time:
+    $ref: ./timestamp.yaml
+  values:
+    $ref: ./limit-value-set.yaml
+  reason:
+    description: |
+      Free-form text indicating the reason for the temporary rating.  
+    type: string

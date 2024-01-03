@@ -1,0 +1,7 @@
+name: proposal-id
+description: |
+  ID of the associated proposal
+in: path
+required: true
+schema:
+  $ref: ../schemas/generic-identifier.yaml
