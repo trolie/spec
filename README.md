@@ -2,11 +2,11 @@
 
 Transmission Ratings and Operating Limits Information Exchange
 
-[OpenAPI Specification docs](https://ge-grid-software.github.io/TROLIE/)
+[OpenAPI Specification docs](https://TROLIE.github.io/spec/)
 
 ### License
 
-[Apache 2.0](https://github.com/ge-grid-software/TROLIE/blob/main/LICENSE)
+[Apache 2.0](https://github.com/TROLIE/spec/blob/1.0.0-wip/LICENSE)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/white/lf-energy-project-horizontal-white.png">
