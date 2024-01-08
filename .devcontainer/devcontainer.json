@@ -11,6 +11,6 @@
         }
     },
 
-    "postCreateCommand": "cd ${containerWorkspaceFolder}/docs && bundle install",
-    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && cd ${containerWorkspaceFolder}/docs && bundle exec jekyll serve"
+    "postCreateCommand": ".devcontainer/post.sh create",
+    "postStartCommand": ".devcontainer/post.sh start"
 }
