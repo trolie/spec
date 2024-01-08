@@ -1,0 +1,11 @@
+{
+	"name": "TROLIE spec devcontainer",
+	"build": {
+        "dockerfile": "Dockerfile"
+    },
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"upgradePackages": true
+		}
+	}
+}

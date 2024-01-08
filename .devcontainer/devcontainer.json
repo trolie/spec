@@ -12,5 +12,5 @@
     },
 
     "postCreateCommand": "cd ${containerWorkspaceFolder}/docs && bundle install",
-    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && cd ${containerWorkspaceFolder}/docs && jekyll serve"
+    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && cd ${containerWorkspaceFolder}/docs && bundle exec jekyll serve"
 }
