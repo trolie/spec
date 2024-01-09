@@ -30,5 +30,12 @@ the next section.
 
 Put your company's self-signed cert in a PEM file at: `.devcontainer/root.pem`
 
-You can use your company's RubyGem and npm proxies by specifying them in these locations:
-![screenshot](./docs/images/repo-proxy-diff.png)
+You can use your company's RubyGem and npm proxies by specifying them in
+`.devcontainer\devcontainer.json` by replacing:
+
+```json
+  "containerEnv": {
+      "GEM_REPO": "https://rubygems.org",
+      "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org"
+  }
+```
