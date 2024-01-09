@@ -4,7 +4,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 PARENT="$(dirname "$SCRIPT_DIR")"
 if [[ ! $# -eq 1 ]]; then 
-    echo "either 'create' or 'start' should an the argument"
+    echo "either 'create', 'start', or 'bundle' should an the argument"
     exit 0
 fi
 
@@ -15,13 +15,19 @@ if [ -s $CERT_PATH ]; then
     export SSL_CERT_DIR=$CERT_PATH
 fi
 
-
+DOCS_PATH="$PARENT/docs"
 
 if [[ "${1,,}" == "create" ]]; then
     git config --global --add safe.directory $PARENT
-    cd $PARENT/docs && bundle install
+    cd $DOCS_PATH && bundle install
+    exit 0
+fi
+
+if [[ ("${1,,}" == "bundle") || ("${1,,}" == "start") ]]; then
+    npx --yes @redocly/cli bundle $DOCS_PATH/_data/openapi-split.yaml -o $DOCS_PATH/openapi.yaml
 fi
 
 if [[ "${1,,}" == "start" ]]; then
     cd $PARENT/docs && bundle update && bundle exec jekyll serve
+    SHOULD_BUNDLE = true
 fi

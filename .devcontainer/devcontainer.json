@@ -12,5 +12,9 @@
     },
 
     "postCreateCommand": ".devcontainer/post.sh create",
-    "postStartCommand": ".devcontainer/post.sh start"
+    "postStartCommand": ".devcontainer/post.sh start",
+    "containerEnv": {
+        "GEM_REPO": "https://rubygems.org",
+        "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org"
+    }
 }
