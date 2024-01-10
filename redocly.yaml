@@ -5,3 +5,10 @@ extends:
   - recommended-strict
 rules:
   operation-summary: warn
+  rule/path-item-get-operation-defined:
+    subject:
+      type: MediaType
+      property: example
+    assertions:
+      defined: true
+    severity: warn

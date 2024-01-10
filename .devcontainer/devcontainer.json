@@ -6,7 +6,9 @@
             "extensions": [
                 "ms-azuretools.vscode-docker",
                 "Redocly.openapi-vs-code",
-                "emeraldwalk.RunOnSave"
+                "emeraldwalk.RunOnSave",
+                "42Crunch.vscode-openapi",
+                "stoplight.spectral"
             ]
         }
     },

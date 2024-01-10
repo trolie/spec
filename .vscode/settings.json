@@ -8,5 +8,10 @@
                 "cmd": ".devcontainer/post.sh bundle"
             }
         ]
-    }
+    },
+    // note this only covers the 2019 top ten https://github.com/stoplightio/spectral-owasp-ruleset/issues/47
+    "spectral.rulesetFile": "https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs",
+    "spectral.validateFiles": [
+        "**/docs/openapi.yaml"
+    ]
 }

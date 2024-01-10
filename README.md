@@ -1,3 +1,6 @@
+![Redocly Lint](https://github.com/TROLIE/spec/actions/workflows/lint/badge.svg)
+![Spectral OWASP Scan](https://github.com/TROLIE/spec/actions/workflows/owasp/badge.svg)
+
 # TROLIE
 
 Transmission Ratings and Operating Limits Information Exchange
@@ -14,17 +17,17 @@ Transmission Ratings and Operating Limits Information Exchange
   <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200">
 </picture>
 
-## Specification Editors
+## To Specification Editors
 
 The `docs/` folder contains a Jekyll site for the GH Pages along with the yaml
-that is used with `redocly bundle` to created the OpenAPI specification.
+that is used with `redocly bundle` to create the OpenAPI specification.
 
-To simply the local setup of the toolchain, a devcontainer is provided. This
-will also install VS Code extensions to help with local editing as well.
+To simplify the local setup of the toolchain, a devcontainer is provided. This
+will also install VS Code extensions to help with local editing.
 
 If your company uses MITM, self-signed certificates through your Internet proxy
 and/or proxies upstream RubyGem or npm repos, please follow the instructions in
-the next section.
+the next section to get the local devcontainer editing experience working.
 
 ### Self-Signed Certs and Repo Proxies
 

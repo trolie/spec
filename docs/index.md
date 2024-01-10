@@ -18,3 +18,8 @@ title: Home
 <picture>
   <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200">
 </picture>
+
+### Example:
+```json
+{% include_relative _data/examples/forecast-limits-slim.json %}
+```
