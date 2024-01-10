@@ -18,7 +18,9 @@ fi
 DOCS_PATH="$PARENT/docs"
 
 if [[ "${1,,}" == "create" ]]; then
+    # see https://www.kenmuse.com/blog/avoiding-dubious-ownership-in-dev-containers/
     git config --global --add safe.directory $PARENT
+
     cd $DOCS_PATH && bundle install
     exit 0
 fi
