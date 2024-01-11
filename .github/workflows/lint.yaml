@@ -1,0 +1,27 @@
+name: 'OpenAPI lint'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - 1.0.0*
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: "Bundle and Build"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Lint
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: >-
+          npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml &&
+          npx @redocly/cli lint ./docs/openapi.yaml
