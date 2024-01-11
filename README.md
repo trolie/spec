@@ -1,5 +1,5 @@
-![Redocly Lint](https://github.com/TROLIE/spec/actions/workflows/lint/badge.svg)
-![Spectral OWASP Scan](https://github.com/TROLIE/spec/actions/workflows/owasp/badge.svg)
+[![Redocly OpenAPI lint](https://github.com/trolie/spec/actions/workflows/lint.yaml/badge.svg)](https://github.com/trolie/spec/actions/workflows/lint.yaml)
+[![OWASP Top 10 Spectral lint](https://github.com/trolie/spec/actions/workflows/owasp.yaml/badge.svg)](https://github.com/trolie/spec/actions/workflows/owasp.yaml)
 
 # TROLIE
 
