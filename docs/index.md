@@ -9,12 +9,12 @@ title: Home
 
 # {{site.data.openapi-split.info.title}}
 
-[OpenAPI Specification docs](https://ge-grid-software.github.io/TROLIE/)
+[OpenAPI Specification docs](./redocly.html)
 
 ### License
 
-[Apache 2.0](https://github.com/ge-grid-software/TROLIE/blob/main/LICENSE)
 
+[Apache 2.0](https://github.com/TROLIE/spec/blob/1.0.0-wip/LICENSE)
 <picture>
   <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200">
 </picture>

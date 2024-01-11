@@ -5,7 +5,7 @@
             {
                 "match": "docs/_data/*",
                 "isAsync": true,
-                "cmd": "npx --yes @redocly/cli bundle /spec/docs/_data/openapi-split.yaml -o /spec/docs/openapi.yaml"
+                "cmd": ".devcontainer/post.sh bundle"
             }
         ]
     }

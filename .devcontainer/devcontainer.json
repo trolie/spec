@@ -1,33 +1,20 @@
 {
-	"name": "TROLIE devcontainer",
-	"build": {
-        "dockerfile": "Dockerfile"
+    "name": "TROLIE devcontainer",
+    "image": "ghcr.io/trolie/spec-devcontainer:latest",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker",
+                "Redocly.openapi-vs-code",
+                "emeraldwalk.RunOnSave"
+            ]
+        }
     },
-	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {
-			"upgradePackages": true,
-			"username": "vscode",
-			"userUid": "automatic",
-			"userGid": "automatic"
-		}
-	},
 
-	"remoteUser": "vscode",
-
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"ms-azuretools.vscode-docker",
-				"Redocly.openapi-vs-code",
-				"emeraldwalk.RunOnSave"
-			]
-		}
-	},
-
-    // this path is used by the redocly cli
-    "workspaceMount": "source=${localWorkspaceFolder},target=/spec,type=bind",
-    "workspaceFolder": "/spec",
-
-	"postCreateCommand": "cd /spec/docs && bundle install",
-	"postStartCommand": "cd /spec/docs && bundle update github-pages && bundle exec jekyll serve"
+    "postCreateCommand": ".devcontainer/post.sh create",
+    "postStartCommand": ".devcontainer/post.sh start",
+    "containerEnv": {
+        "GEM_REPO": "https://rubygems.org",
+        "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org"
+    }
 }
