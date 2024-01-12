@@ -16,4 +16,4 @@ jobs:
           # only warn for now
           inline: warning # error
           strict: false # true fails the build
-          config: '.'
+          config: 'cspell.json'
