@@ -78,12 +78,12 @@ info:
     real-time rating submittals are all examples of ratings.  
 
 
-    <img src="images/TROLIE interactions.svg" alt="TROLIE Interactions" />
+    <img src="images/TROLIE Ratings Provider interactions.excalidraw.svg" alt="TROLIE Interactions by Ratings Provider" />
   version: 0.1.0-wip
   contact:
-    name: Tory McKeag
-    email: tory.mckeag@ge.com
-    url: https://www.ge.com/digital/applications/grid-orchestration-software
+    name: TROLIE Maintainers
+    email: maintainers@trolie.energy
+    url: https://trolie.energy
   license:
     name: Apache License, Version 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
