@@ -8,7 +8,9 @@
                 "Redocly.openapi-vs-code",
                 "emeraldwalk.RunOnSave",
                 "42Crunch.vscode-openapi",
-                "stoplight.spectral"
+                "stoplight.spectral",
+                "pomdtr.excalidraw-editor",
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     },
