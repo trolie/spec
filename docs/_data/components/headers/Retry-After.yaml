@@ -1,0 +1,11 @@
+schema:
+  oneOf:
+    - type: integer
+      minimum: 0
+      example: 120
+      description: The seconds to delay after the response is received.
+    # TODO: the HTTP spec allows for this but we probably should not support it
+    - type: string
+      pattern: "^[A-Z][a-z]{2}, \\d{2} [A-Z][a-z]{2} \\d{4} \\d{2}:\\d{2}:\\d{2} GMT$"
+      example: 'Wed, 21 Oct 2022 07:28:00 GMT'
+      description: A date after which to retry.

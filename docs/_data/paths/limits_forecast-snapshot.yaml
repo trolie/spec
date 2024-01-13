@@ -1,4 +1,59 @@
+head: &head
+  operationId: getLimitsForecastSnapshotHeaders
+  description: &head_desc >
+    Use to obtain the headers that would be returned for 
+    `getLimitsForecastSnapshot`. Useful for cache invalidation.
+  summary: *head_desc
+  tags:
+    - Operating Snapshots
+  parameters:
+    - $ref: ../components/parameters/offset-period-start.yaml
+    - $ref: ../components/parameters/period-end.yaml
+    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/facility-filter.yaml
+  responses:
+    '200': &ok
+      description: OK
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '304': &not-modified
+      description: The snapshot has not changed.
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '400': &malformed
+      description: Malformed request, based on misuse of filters.
+      headers: &rate-limited
+        $ref: ../components/headers/rate-limited.yaml
+    '401': &unauthorized
+      description: Unauthorized
+      headers: *rate-limited
+    '403': &forbidden
+      description: Access denied
+      headers: *rate-limited
+    '404': &not-found
+      description: The requested snapshot does not exist
+      headers: *rate-limited
+    '406': &not-acceptable
+      description: Content negotiation failed
+      headers: *rate-limited
+    '410': &gone
+      description: Gone. The requested forecast should be available in archive.
+      headers: *rate-limited
+    '422':
+      description: Unprocessable Content
+      headers: *rate-limited
+    '429':
+      $ref: ../components/responses/rate-limit-hit-head.yaml
+    '500': &unexpected-error
+      description: An unexpected error occurred
+      headers: *rate-limited
+    default: *unexpected-error
+  security: &security
+    - oauth2-primary-flow:
+        - read:operating-snapshot
+
 get:
+  <<: *head
   operationId: getLimitsForecastSnapshot
   description: >
     Obtain the Limits Forecast the Transmission Provider is currently using in
@@ -11,15 +66,10 @@ get:
     application/vnd.trolie.forecast-limit-set-detailed.v1+json may be
     requested,  which also references the source proposals used to generate the
     snapshot, as well as  reporting data from the ratings clearing process.  
-  tags:
-    - Operating Snapshots
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
+  summary: Get the Limits Forecast Snapshot
   responses:
     '200':
+      <<: *ok
       description: |
         The requested operating forecast snapshot is returned.
       content:
@@ -57,20 +107,9 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/forecast-limit-set.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': &ref_0
-      description: |
-        Malformed request, based on misuse of filters.
+    '304': *not-modified
+    '400':
+      <<: *malformed
       content:
         application/json:
           schema:
@@ -78,69 +117,26 @@ get:
         application/vnd.trolie.validation-messages.v1+json:
           schema:
             $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
     '401':
-      $ref: ../components/responses/unauthorized.yaml
+      <<: *unauthorized
+      content: &empty
+        $ref: ../components/responses/empty.yaml
     '403':
-      $ref: ../components/responses/forbidden.yaml
+      <<: *forbidden
+      content: *empty
     '404':
-      $ref: ../components/responses/no-data-found.yaml
+      <<: *not-found
+      content: *empty
     '406':
-      $ref: ../components/responses/not-acceptable.yaml
+      <<: *not-acceptable
+      content: *empty
     '410':
-      $ref: ../components/responses/archived.yaml
+      <<: *gone
+      content: *empty
     '429':
-      $ref: ../components/responses/rate-limited.yaml
-    default:
-      $ref: ../components/responses/unexpected-error.yaml
-  security: &ref_1
-    - oauth2-primary-flow:
-        - read:operating-snapshot
-head:
-  operationId: getLimitsForecastSnapshotHeader
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getLimitsForecastSnapshot`. Useful for cache invalidation.
-  tags:
-    - Operating Snapshots
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': *ref_0
-    '401':
-      $ref: ../components/responses/unauthorized-head.yaml
-    '403':
-      $ref: ../components/responses/forbidden-head.yaml
-    '404':
-      $ref: ../components/responses/no-data-found-head.yaml
-    '406':
-      $ref: ../components/responses/not-acceptable-head.yaml
-    '410':
-      $ref: ../components/responses/archived.yaml
-    '429':
-      $ref: ../components/responses/rate-limited-head.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
-  security: *ref_1
+      $ref: ../components/responses/rate-limit-hit.yaml
+    '500': &unexpected-error-message
+      <<: *unexpected-error
+      content: *empty
+    default: *unexpected-error-message
+  security: *security
