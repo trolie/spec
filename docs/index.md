@@ -3,7 +3,7 @@ title: Home
 ---
 
 
-<img alt="TROLIE logo" src="images/TROLIE-icon-color.svg" width="200" style="float:right"/>
+<img alt="TROLIE logo" src="https://artwork.lfenergy.org/projects/trolie/icon/color/TROLIE-icon-color.svg" width="200" style="float:right"/>
 
 # {{site.data.openapi-split.info.title}}
 
