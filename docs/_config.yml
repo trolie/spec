@@ -4,7 +4,7 @@ email: maintainers@trolie.energy
 description: Transmission Ratings and Operating Limits Information Exchange 
 url: "https://trolie.energy"
 logo: https://artwork.lfenergy.org/projects/trolie/horizontal/color/TROLIE-horizontal-color.svg
-favicon_ico: images/TROLIE-icon-white.svg
+favicon_ico: /images/TROLIE-icon-white.svg
 github_username: TROLIE
 
 theme: just-the-docs
