@@ -38,7 +38,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Build with Jekyll
-        run: "cd docs && bundle install && PAGES_REPO_NWO=$GITHUB_REPOSITORY bundle exec jekyll build --baseurl ''"
+        run: "cd docs && bundle install && PAGES_REPO_NWO=$GITHUB_REPOSITORY bundle exec jekyll build -V --baseurl ''"
         env:
           JEKYLL_ENV: production
       - name: Upload artifact
