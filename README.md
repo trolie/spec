@@ -5,7 +5,7 @@
 
 Transmission Ratings and Operating Limits Information Exchange
 
-[OpenAPI Specification docs](https://TROLIE.github.io/spec/)
+[OpenAPI Specification docs](https://trolie.energy/spec)
 
 ### License
 

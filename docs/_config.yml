@@ -1,17 +1,17 @@
 title: TROLIE
-email: your-email@example.com
+email: maintainers@trolie.energy
 
-description: >-
- Transmission Ratings and Operating Limits Information Exchange 
-url: "https://trolie.energy" # the base hostname & protocol for your site, e.g. http://example.com
-logo: https://artwork.lfenergy.org/projects/trolie/horizontal/color/TROLIE-horizontal-color.png
-# twitter_username: jekyllrb
+description: Transmission Ratings and Operating Limits Information Exchange 
+url: "https://trolie.energy"
+logo: https://artwork.lfenergy.org/projects/trolie/horizontal/color/TROLIE-horizontal-color.svg
+favicon_ico: images/TROLIE-icon-white.svg
 github_username: TROLIE
 
-# Build settings
-remote_theme: pages-themes/minimal@v0.2.0
-
-show_downloads: false
+theme: just-the-docs
 
 plugins:
   - jekyll-remote-theme
+  - jekyll-redirect-from
+
+whitelist:
+  - jekyll-redirect-from

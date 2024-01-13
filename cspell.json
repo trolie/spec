@@ -5,9 +5,11 @@
     "dictionaries": [],
     "words": [
         "excalidraw",
-        "TROLIE",
         "FERC",
-        "NERC"
+        "NERC",
+        "openapi",
+        "redoc",
+        "TROLIE"
     ],
     "ignoreWords": [],
     "import": []
