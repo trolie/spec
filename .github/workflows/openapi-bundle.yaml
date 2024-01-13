@@ -20,17 +20,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: "npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml"
+      - name: Redocly bundle
+        run: "npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml"
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.98 
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      - name: Build
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: './docs'
+      - name: Build with Jekyll
+        run: bundle exec jekyll build --source ./docs"
+        env:
+          JEKYLL_ENV: production
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 

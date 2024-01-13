@@ -9,6 +9,7 @@
         "NERC",
         "openapi",
         "redoc",
+        "Redocly",
         "TROLIE"
     ],
     "ignoreWords": [],
