@@ -1,15 +1,19 @@
 {
     "version": "0.2",
-    "ignorePaths": [],
+    "ignorePaths": [
+        ".devcontainer/**"
+    ],
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
+        "devcontainer",
         "excalidraw",
         "FERC",
         "NERC",
         "openapi",
         "redoc",
         "Redocly",
+        "ruleset",
         "TROLIE"
     ],
     "ignoreWords": [],

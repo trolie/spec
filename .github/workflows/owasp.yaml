@@ -24,4 +24,4 @@ jobs:
           node-version: 20
       - run: >-
           npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml &&
-          npx --yes @stoplight/spectral-cli lint docs/openapi.yaml --ruleset https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs
+          npx --yes @stoplight/spectral-cli lint docs/openapi.yaml --ruleset .spectral.yaml
