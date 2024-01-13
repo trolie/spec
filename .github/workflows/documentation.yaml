@@ -11,6 +11,9 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  GEM_REPO: "https://rubygems.org"
+
 jobs:
   build:
     name: "Bundle and Build"
@@ -29,8 +32,6 @@ jobs:
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.98.0
-        env:
-          GEM_REPO: "https://rubygems.org"
         with:
           ruby-version: '3.1'
           working-directory: docs
