@@ -1,7 +1,7 @@
 get:
   operationId: getRatingForecastProposalForProvider
-  description: |
-    Obtain a specific rating proposal for a ratings provider.  
+  description: &get_desc Obtain a specific rating proposal for a ratings provider.  
+  summary: *get_desc
   tags:
     - Rating Proposals
   parameters:
@@ -88,8 +88,8 @@ get:
         - read:forecast-proposals
 patch:
   operationId: patchRatingForecastProposalForProvider
-  description: |
-    Update this rating provider's ratings Forecast Proposal 
+  description: &patch_desc Update this rating provider's ratings Forecast Proposal 
+  summary: *patch_desc 
   tags:
     - Rating Proposals
   parameters:
@@ -125,7 +125,7 @@ patch:
       description: >
         The update was accepted for later processing. Updates to  ratings may
         need to undergo additional validation and propagation to other systems. 
-        Status may be retreived by issuing a GET using
+        Status may be retrieved by issuing a GET using
         `getRatingForecastProposals`
       content:
         application/vnd.trolie.rating-forecast-proposal.v1+json:

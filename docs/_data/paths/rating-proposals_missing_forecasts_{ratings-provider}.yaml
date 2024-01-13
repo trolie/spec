@@ -9,6 +9,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Obtain missing forecasts for specified period.
   tags:
     - Rating Proposals
   parameters:
@@ -79,6 +80,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getMissingRatingForecastPeriodsForProvider`. Useful for cache invalidation.
+  summary: Get headers for the provider's missing forecasts.
   tags:
     - Rating Proposals
   parameters:

@@ -1,7 +1,7 @@
 get:
   operationId: getMonitoringSet
-  description: |
-    Obtain a specific monitoring set by Id.  
+  description: &get_desc Obtain a specific monitoring set by Id.  
+  summary: *get_desc
   tags:
     - Monitoring Sets
   parameters:
@@ -68,8 +68,8 @@ get:
         - write:monitoring-sets
 delete:
   operationId: deleteMonitoringSet
-  description: |
-    Delete a specific monitoring set by Id.  
+  description: &delete_desc Delete a specific monitoring set by Id.  
+  summary: *delete_desc
   tags:
     - Monitoring Sets
   parameters:
@@ -105,8 +105,8 @@ delete:
   security: *ref_7
 put:
   operationId: updateMonitoringSet
-  description: |
-    Updates an existing Monitoring Set
+  description: &put_desc Updates an existing Monitoring Set
+  summary: *put_desc
   tags:
     - Monitoring Sets
   parameters:

@@ -1,7 +1,7 @@
 get:
   operationId: getTemporaryAARException
-  description: |
-    Obtain a specific temporary AAR exception by Id.  
+  description: &get_desc Obtain a specific temporary AAR exception by Id.
+  summary: *get_desc
   tags:
     - Temporary AAR Exceptions
   parameters:
@@ -117,8 +117,8 @@ delete:
         - write:temporary-aar-exceptions
 put:
   operationId: updateTemporaryAARException
-  description: |
-    Updates an existing Temporary AAR Exception.  
+  description: &put_desc Updates an existing Temporary AAR Exception.  
+  summary: *put_desc
   tags:
     - Temporary AAR Exceptions
   parameters:

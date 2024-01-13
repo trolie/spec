@@ -4,6 +4,7 @@ get:
     Obtain the System Operating Limits in-use by the Transmission Provider.
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Obtain the Real Time Limits Snapshot
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/facility-filter.yaml
@@ -105,6 +106,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for `getRealTimeLimits`.
     Useful for cache invalidation.
+  summary: Obtain the headers for the current Real Time Limits Snapshot
   tags:
     - Operating Snapshots
   parameters:

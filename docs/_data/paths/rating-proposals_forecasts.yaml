@@ -8,6 +8,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Obtain the Ratings Provider's proposals
   tags:
     - Rating Proposals
   parameters:
@@ -96,6 +97,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getRatingForecastProposals`. Useful for cache invalidation.
+  summary: Get headers for the Ratings Provider's proposals
   tags:
     - Rating Proposals
   parameters:
@@ -135,8 +137,8 @@ head:
   security: *ref_1
 patch:
   operationId: patchRatingForecastProposal
-  description: |
-    Update the logged-in provider's ratings Forecast Proposal 
+  description: &patch_desc Update the logged-in provider's ratings Forecast Proposal 
+  summary: *patch_desc
   tags:
     - Rating Proposals
   requestBody:
