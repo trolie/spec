@@ -6,6 +6,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Get Limit Types
   tags:
     - Reference Data
   responses:
@@ -62,7 +63,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security:

@@ -1,7 +1,7 @@
 type: string
 description: >
   Enumeration of the possible statuses of a proposal, or parts of a proposal. 
-  Note that submitals of proposals do not
+  Note that submissions of proposals do not
 
   set this value.  It is system-generated after submission.  The following
   values are possible:

@@ -11,10 +11,11 @@ permissions:
 
 jobs:
   build:
-    name: "Bundle and Build"
+    name: "Redocly Lint"
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,3 +26,13 @@ jobs:
       - run: >-
           npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml &&
           npx @redocly/cli lint ./docs/openapi.yaml
+      - name: Redocly API Stats
+        id: api_stats
+        run: npx @redocly/cli stats ./docs/openapi.yaml > stats.txt 2>&1
+      - name: Comment PR with API Stats
+        #if: ${{ github.event.pull_request }}
+        if: ${{ false }}
+        uses: thollander/actions-comment-pull-request@v2.4.3
+        with:
+          comment_tag: api-stats
+          filePath: stats.txt

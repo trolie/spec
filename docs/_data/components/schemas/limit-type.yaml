@@ -9,5 +9,5 @@ description: >
   operation.  
 type: string
 maxLength: 20
-pattern: ^[A-Za-z]{3,10}$
+pattern: ^[A-Za-z\-]{3,10}$
 example: normal

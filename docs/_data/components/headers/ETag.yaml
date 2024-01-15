@@ -1,3 +1,4 @@
+# TODO: delete this and switch to ETag-response.yaml
 description: >
   An opaque, unique identifier for a specific version of a resource. The modeled
   resource state is what is versioned, not the content of any particular

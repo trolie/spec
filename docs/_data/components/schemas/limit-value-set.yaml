@@ -11,6 +11,7 @@ description: >
 
   The value of the limits are in units as defined by the X-TROLIE-Limit-Units
   header.  
+maxItems: 10
 items:
   type: object
   properties:

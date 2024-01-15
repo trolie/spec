@@ -1,16 +1,18 @@
 type: object
 description: Given a limit value, a set of data defining the provenance of that limit.
 properties:
-  provenant-proposals:
+  proposals-considered:
     description: |
       Set of IDs of proposals that affect this limit.  
     type: array
+    maxItems: 10
     items:
       $ref: ./generic-identifier.yaml
   temporary-aar-exceptions:
     description: |
       Set of IDs temporary AAR exceptions that affect this limit.  
     type: array
+    maxItems: 10
     items:
       $ref: ./generic-identifier.yaml
   limiting-segment:
@@ -22,6 +24,8 @@ properties:
 
       If not provided, users may assume no override is in place.  
     type: string
+    format: free-text
+    maxLength: 500
   additional-data:
     description: >
       Implementors may use this object to provide freeform extensions with

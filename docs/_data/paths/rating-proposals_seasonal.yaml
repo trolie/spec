@@ -5,6 +5,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Get a Seasonal Rating Proposal
   tags:
     - Rating Proposals
   parameters:
@@ -19,7 +20,7 @@ get:
             $ref: ../components/schemas/seasonal-rating-proposal.yaml
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            owner: UTILITYA
+            owner: UTILITY A
             ratings:
               - segment-id: segmentX
                 seasons:
@@ -78,7 +79,7 @@ get:
     '406': &ref_6
       $ref: ../components/responses/not-acceptable.yaml
     '429': &ref_7
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default: &ref_8
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -89,6 +90,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getSeasonalProposals`. Useful for cache invalidation.
+  summary: Get HTTP headers
   tags:
     - Rating Proposals
   parameters:
@@ -120,14 +122,14 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1
 patch:
   operationId: patchSeasonalProposal
-  description: |
-    Update this Provider's Rating Proposal 
+  description: &patch_desc Update this Provider's Rating Proposal 
+  summary: *patch_desc
   tags:
     - Rating Proposals
   requestBody:
@@ -167,7 +169,7 @@ patch:
             $ref: ../components/schemas/seasonal-rating-proposal.yaml
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            owner: UTILITYA
+            owner: UTILITY A
             ratings:
               - segment-id: segmentX
                 seasons:

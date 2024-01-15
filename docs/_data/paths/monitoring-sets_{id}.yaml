@@ -1,7 +1,7 @@
 get:
   operationId: getMonitoringSet
-  description: |
-    Obtain a specific monitoring set by Id.  
+  description: &get_desc Obtain a specific monitoring set by Id.  
+  summary: *get_desc
   tags:
     - Monitoring Sets
   parameters:
@@ -60,16 +60,17 @@ get:
     '406': &ref_4
       $ref: ../components/responses/not-acceptable.yaml
     '429': &ref_5
-      $ref: ../components/responses/rate-limited.yaml
-    default: &ref_6
+      $ref: ../components/responses/rate-limit-hit.yaml
+    '500': &unexpected_error
       $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: &ref_7
     - oauth2-primary-flow:
         - write:monitoring-sets
 delete:
   operationId: deleteMonitoringSet
-  description: |
-    Delete a specific monitoring set by Id.  
+  description: &delete_desc Delete a specific monitoring set by Id.  
+  summary: *delete_desc
   tags:
     - Monitoring Sets
   parameters:
@@ -101,12 +102,14 @@ delete:
     '404': *ref_3
     '406': *ref_4
     '429': *ref_5
-    default: *ref_6
+    '500': &unexpected_error
+      $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: *ref_7
 put:
   operationId: updateMonitoringSet
-  description: |
-    Updates an existing Monitoring Set
+  description: &put_desc Updates an existing Monitoring Set
+  summary: *put_desc
   tags:
     - Monitoring Sets
   parameters:
@@ -148,5 +151,7 @@ put:
     '413':
       $ref: ../components/responses/payload-too-large.yaml
     '429': *ref_5
-    default: *ref_6
+    '500': &unexpected_error
+      $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: *ref_7

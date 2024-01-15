@@ -3,6 +3,7 @@ get:
   description: >-
     Retrieve the nominal and seasonal ratings for all facilities in the
     `monitoring-set`.
+  summary: Get Seasonal Ratings
   tags:
     - Seasonal Rating Snapshots
   parameters:
@@ -27,7 +28,7 @@ get:
                     - type: emergency
                       value:
                         mva: 165
-                    - type: loadshed
+                    - type: load-shed
                       value:
                         mva: 170
         application/json:
@@ -70,7 +71,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -81,6 +82,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for
     `getSeasonalRatingsSnapshot`. Useful for cache invalidation.
+  summary: Get header for Seasonal Ratings
   tags:
     - Seasonal Rating Snapshots
   parameters:
@@ -112,7 +114,7 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1

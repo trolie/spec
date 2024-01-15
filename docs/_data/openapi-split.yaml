@@ -23,7 +23,7 @@ info:
     For the purpose of this API, Transmission Provider may be assumed to be more
     generic- it is 
 
-    really any entity that can recieve AARs.  
+    really any entity that can receive AARs.  
 
 
     This API specification supports the information exchange necessary to
@@ -70,11 +70,11 @@ info:
     (and by extension operating power systems at large) and may be selected for
     use as a 
 
-    limit after validation and dependent on operating conditions, timeframe and
+    limit after validation and dependent on operating conditions, time frame and
     the operational 
 
-    decisions being made.  Seasonal ratings, forecast rating submittals, and
-    real-time rating submittals are all examples of ratings.  
+    decisions being made.  Seasonal ratings, forecast rating proposals, and
+    real-time rating proposals are all examples of ratings.  
 
 
     <img src="images/TROLIE Ratings Provider interactions.excalidraw.png" alt="TROLIE Interactions by Ratings Provider" />
@@ -125,7 +125,7 @@ tags:
       * **Seasonal Ratings** are recourse ratings for when applicable forecast
       ratings are not available.  
         In addition to use when forecast rating feeds are missing, these may be used by planning or other forward-looking
-        processes that go beyond the window for which forecasted ratings may be availalbe.  
+        processes that go beyond the window for which forecasted ratings may be available.  
         This includes ratings for scheduled calendar seasons, as well as to rating sets that apply in special named 
         scenarios defined by the Transmission Provider, such as an extreme winter day.  
   - name: Seasonal Rating Snapshots
@@ -165,7 +165,7 @@ tags:
 
       * An equipment failure.
 
-      * An unforseen condition on a related part of the power grid.
+      * An unforeseen condition on a related part of the power grid.
 
       * Some ambient condition that is not part of the model is heating the
       line.
@@ -234,7 +234,7 @@ tags:
           of numbers until the AAR data feed is repaired.
   - name: Temporary Seasonal Ratings
     description: >
-      A TemporarySeasonalRating allows for temorary overrides of the seasonal
+      A TemporarySeasonalRating allows for temporary overrides of the seasonal
       rating, due to some unusual
 
       condition on the facility.  This essentially overrides the current
@@ -307,6 +307,7 @@ components:
   securitySchemes:
     oauth2-primary-flow:
       type: oauth2
+      description: Support RFC8725 JWT tokens.
       flows:
         clientCredentials:
           tokenUrl: https://no-server/oauth2

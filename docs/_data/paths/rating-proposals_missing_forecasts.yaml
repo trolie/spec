@@ -9,6 +9,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Get Missing Forecast Periods for Ratings Provider
   tags:
     - Rating Proposals
   parameters:
@@ -67,7 +68,7 @@ get:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -78,6 +79,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getMissingRatingForecastPeriods`. Useful for cache invalidation.
+  summary: Get HTTP headers
   tags:
     - Rating Proposals
   parameters:
@@ -109,7 +111,7 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1

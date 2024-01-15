@@ -19,7 +19,7 @@
                         }
                     },
                     {
-                        "type": "loadshed",
+                        "type": "load-shed",
                         "value": {
                             "mva": 170
                         }

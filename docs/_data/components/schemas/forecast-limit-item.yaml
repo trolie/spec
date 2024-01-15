@@ -4,6 +4,8 @@ properties:
   transmission-facility-id:
     $ref: ./generic-identifier.yaml
   periods:
-    type: array
-    items:
-      $ref: ./forecast-limit-period.yaml
+    allOf: 
+      -  $ref: ./constants/maximum-periods.yaml
+      - type: array
+        items:
+          $ref: ./forecast-limit-period.yaml

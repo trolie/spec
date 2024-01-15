@@ -1,7 +1,7 @@
 get:
   operationId: getTemporaryAARException
-  description: |
-    Obtain a specific temporary AAR exception by Id.  
+  description: &get_desc Obtain a specific temporary AAR exception by Id.
+  summary: *get_desc
   tags:
     - Temporary AAR Exceptions
   parameters:
@@ -26,7 +26,7 @@ get:
               - type: emergency
                 value:
                   mva: 165
-              - type: loadshed
+              - type: load-shed
                 value:
                   mva: 170
             reason: Free-form text reason.
@@ -70,7 +70,7 @@ get:
     '406': &ref_4
       $ref: ../components/responses/not-acceptable.yaml
     '429': &ref_5
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default: &ref_6
       $ref: ../components/responses/unexpected-error.yaml
   security:
@@ -78,8 +78,8 @@ get:
         - read:temporary-aar-exceptions
 delete:
   operationId: deleteTemporaryAARException
-  description: |
-    Delete a specific temporary AAR Exception by Id.  
+  description: &delete_desc Delete a specific temporary AAR Exception by Id.  
+  summary: *delete_desc
   tags:
     - Temporary AAR Exceptions
   parameters:
@@ -117,8 +117,8 @@ delete:
         - write:temporary-aar-exceptions
 put:
   operationId: updateTemporaryAARException
-  description: |
-    Updates an existing Temporary AAR Exception.  
+  description: &put_desc Updates an existing Temporary AAR Exception.  
+  summary: *put_desc
   tags:
     - Temporary AAR Exceptions
   parameters:
@@ -140,7 +140,7 @@ put:
             - type: emergency
               value:
                 mva: 165
-            - type: loadshed
+            - type: load-shed
               value:
                 mva: 170
           reason: Free-form text reason.

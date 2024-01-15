@@ -5,6 +5,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Get Proposals for Real Time Ratings
   tags:
     - Rating Proposals
   parameters:
@@ -31,7 +32,7 @@ get:
                     - type: emergency
                       value:
                         mva: 165
-                    - type: loadshed
+                    - type: load-shed
                       value:
                         mva: 170
         application/json:
@@ -74,7 +75,7 @@ get:
     '406': &ref_6
       $ref: ../components/responses/not-acceptable.yaml
     '429': &ref_7
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default: &ref_8
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -85,6 +86,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getRealTimeProposals`. Useful for cache invalidation.
+  summary: Get HTTP headers
   tags:
     - Rating Proposals
   parameters:
@@ -116,14 +118,14 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1
 post:
   operationId: postRealTimeProposal
-  description: |
-    Post a new RealTime Rating Proposal 
+  description: &post_desc Post a new RealTime Rating Proposal 
+  summary: *post_desc
   tags:
     - Rating Proposals
   requestBody:
@@ -141,7 +143,7 @@ post:
                 - type: emergency
                   value:
                     mva: 165
-                - type: loadshed
+                - type: load-shed
                   value:
                     mva: 170
       application/json:
@@ -170,7 +172,7 @@ post:
                   - type: emergency
                     value:
                       mva: 165
-                  - type: loadshed
+                  - type: load-shed
                     value:
                       mva: 170
         application/json:

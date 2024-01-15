@@ -1,6 +1,7 @@
 get:
   operationId: getSeasonInstance
-  description: Gets a single season instance.
+  description: &get_desc Gets a single season instance.
+  summary: *get_desc
   tags:
     - Seasonal Rating Snapshots
   parameters:
@@ -59,7 +60,7 @@ get:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security:

@@ -5,6 +5,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Get the list of known Monitoring Sets
   tags:
     - Monitoring Sets
   responses:
@@ -57,9 +58,10 @@ get:
     '406': &ref_6
       $ref: ../components/responses/not-acceptable.yaml
     '429': &ref_7
-      $ref: ../components/responses/rate-limited.yaml
-    default: &ref_8
+      $ref: ../components/responses/rate-limit-hit.yaml
+    '500': &unexpected_error
       $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: &ref_1
     - oauth2-primary-flow:
         - read:monitoring-sets
@@ -68,6 +70,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for  `getMonitoringSets`.
     Useful for cache invalidation.
+  summary: Get the headers for the current list of Monitoring Sets
   tags:
     - Monitoring Sets
   responses:
@@ -96,14 +99,15 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
+    '500': &unexpected_error
+      $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: *ref_1
 post:
   operationId: createMonitoringSet
-  description: |
-    Create a new Monitoring Set
+  description: &post_desc Create a new Monitoring Set
+  summary: *post_desc
   tags:
     - Monitoring Sets
   requestBody:
@@ -167,7 +171,9 @@ post:
     '413':
       $ref: ../components/responses/payload-too-large.yaml
     '429': *ref_7
-    default: *ref_8
+    '500': &unexpected_error
+      $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security:
     - oauth2-primary-flow:
         - write:monitoring-sets

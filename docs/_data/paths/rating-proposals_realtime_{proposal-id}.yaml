@@ -1,7 +1,7 @@
 get:
   operationId: getRealTimeProposal
-  description: |
-    Obtain a specific rating proposal by Id.  
+  description: &get_desc Obtain a specific rating proposal by Id.  
+  summary: *get_desc
   tags:
     - Rating Proposals
   parameters:
@@ -27,7 +27,7 @@ get:
                   - type: emergency
                     value:
                       mva: 165
-                  - type: loadshed
+                  - type: load-shed
                     value:
                       mva: 170
         application/json:
@@ -70,7 +70,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security:

@@ -1,0 +1,31 @@
+X-Rate-Limit-Limit:
+  description: The number of allowed requests in the current period
+  schema:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 1000
+X-Rate-Limit-Remaining:
+  description: The number of remaining requests in the current period
+  schema:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 1000
+# this would be identical to Retry-After if the latter
+# returns seconds to delay (as opposed to an HTTP date time)
+Retry-After:
+  schema:
+    oneOf:
+      - type: integer
+        format: int32
+        minimum: 0
+        maximum: 60
+        example: 60
+        description: The seconds to delay after the response is received.
+      # TODO: the HTTP spec allows for this but we probably should not support it
+      - type: string
+        pattern: "^[A-Z][a-z]{2}, \\d{2} [A-Z][a-z]{2} \\d{4} \\d{2}:\\d{2}:\\d{2} GMT$"
+        maxLength: 30
+        example: 'Wed, 21 Oct 2022 07:28:00 GMT'
+        description: A date after which to retry.
