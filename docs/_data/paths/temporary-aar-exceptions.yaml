@@ -6,6 +6,7 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  summary: Get Temporary AAR Exceptions
   tags:
     - Temporary AAR Exceptions
   parameters:
@@ -33,7 +34,7 @@ get:
                 - type: emergency
                   value:
                     mva: 165
-                - type: loadshed
+                - type: load-shed
                   value:
                     mva: 170
               reason: Free-form text reason.
@@ -79,7 +80,7 @@ get:
     '410':
       $ref: ../components/responses/archived.yaml
     '429': &ref_7
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default: &ref_8
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -90,6 +91,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getTemporaryAARExceptions`. Useful for cache invalidation.
+  summary: Get HTTP headers for Temporary AAR Exceptions
   tags:
     - Temporary AAR Exceptions
   parameters:
@@ -123,14 +125,14 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1
 post:
   operationId: createTemporaryAARException
-  description: |
-    Create a new temporary AAR Exception
+  description: &post_desc Create a new temporary AAR Exception
+  summary: *post_desc
   tags:
     - Temporary AAR Exceptions
   requestBody:
@@ -149,7 +151,7 @@ post:
             - type: emergency
               value:
                 mva: 165
-            - type: loadshed
+            - type: load-shed
               value:
                 mva: 170
           reason: Free-form text reason.
@@ -177,7 +179,7 @@ post:
               - type: emergency
                 value:
                   mva: 165
-              - type: loadshed
+              - type: load-shed
                 value:
                   mva: 170
             reason: Free-form text reason.

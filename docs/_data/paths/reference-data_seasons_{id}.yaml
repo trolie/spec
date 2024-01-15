@@ -1,7 +1,7 @@
 get:
   operationId: getSeason
-  description: |
-    Obtain a specific SubGeographical region by Id.  
+  description: &get_desc Obtain a specific SubGeographical region by Id.  
+  summary: *get_desc
   tags:
     - Reference Data
   parameters:
@@ -56,7 +56,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security:

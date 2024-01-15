@@ -6,6 +6,8 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
+  # TODO: adjust language
+  summary: Get Default Static Rating
   tags:
     - Temporary Seasonal Ratings
   parameters:
@@ -33,7 +35,7 @@ get:
                 - type: emergency
                   value:
                     mva: 165
-                - type: loadshed
+                - type: load-shed
                   value:
                     mva: 170
               reason: Free-form text reason.
@@ -79,7 +81,7 @@ get:
     '410':
       $ref: ../components/responses/archived.yaml
     '429': &ref_7
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default: &ref_8
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -90,6 +92,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for 
     `getTemporarySeasonalRatings`. Useful for cache invalidation.
+  summary: Get HTTP headers
   tags:
     - Temporary Seasonal Ratings
   parameters:
@@ -123,14 +126,15 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1
 post:
   operationId: createTemporarySeasonalRating
-  description: |
+  description: &post_desc |
     Create a new temporary temporary seasonal rating
+  summary: *post_desc
   tags:
     - Temporary Seasonal Ratings
   requestBody:
@@ -149,7 +153,7 @@ post:
             - type: emergency
               value:
                 mva: 165
-            - type: loadshed
+            - type: load-shed
               value:
                 mva: 170
           reason: Free-form text reason.
@@ -177,7 +181,7 @@ post:
               - type: emergency
                 value:
                   mva: 165
-              - type: loadshed
+              - type: load-shed
                 value:
                   mva: 170
             reason: Free-form text reason.

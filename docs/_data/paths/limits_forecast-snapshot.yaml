@@ -23,7 +23,7 @@ head: &head
     '400': &malformed
       description: Malformed request, based on misuse of filters.
       headers: &rate-limited
-        $ref: ../components/headers/rate-limited.yaml
+        $ref: ../components/headers/rate-limit-hit.yaml
     '401': &unauthorized
       description: Unauthorized
       headers: *rate-limited
@@ -86,7 +86,7 @@ get:
               periods:
                 - period-start: '2023-07-12T16:00:00-07:00'
                   updated-time: '2023-07-12T13:05:43.044267100-07:00'
-                  provenant-proposals:
+                  proposals-considered:
                     - c386503e-ae8f-46e7-8fcf-bdee30f4f56b
                   temporary-aar-exceptions:
                     - 2d8c80e8-f533-4be9-85bf-f7f81eb73d67
@@ -101,7 +101,7 @@ get:
                     - type: emergency
                       value:
                         mva: 165
-                    - type: loadshed
+                    - type: load-shed
                       value:
                         mva: 170
         application/json:

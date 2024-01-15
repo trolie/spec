@@ -58,9 +58,10 @@ get:
     '406': &ref_6
       $ref: ../components/responses/not-acceptable.yaml
     '429': &ref_7
-      $ref: ../components/responses/rate-limited.yaml
-    default: &ref_8
+      $ref: ../components/responses/rate-limit-hit.yaml
+    '500': &unexpected_error
       $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: &ref_1
     - oauth2-primary-flow:
         - read:monitoring-sets
@@ -98,9 +99,10 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
+    '500': &unexpected_error
+      $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security: *ref_1
 post:
   operationId: createMonitoringSet
@@ -169,7 +171,9 @@ post:
     '413':
       $ref: ../components/responses/payload-too-large.yaml
     '429': *ref_7
-    default: *ref_8
+    '500': &unexpected_error
+      $ref: ../components/responses/unexpected-error.yaml
+    default: *unexpected_error
   security:
     - oauth2-primary-flow:
         - write:monitoring-sets

@@ -1,6 +1,7 @@
 get:
   operationId: getTransmissionFacilities
-  description: Get transmission facilities in the model with effective dates
+  description: &get_desc Get transmission facilities in the model with effective dates
+  summary: *get_desc
   tags:
     - Reference Data
   responses:
@@ -56,7 +57,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -67,6 +68,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for
     `getNetworkTransmissionFacilities`. Useful for cache invalidation.
+  summary: Get HTTP headers for Transmission Facilities
   tags:
     - Reference Data
   responses:
@@ -95,7 +97,7 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1

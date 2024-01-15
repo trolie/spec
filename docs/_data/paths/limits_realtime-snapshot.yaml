@@ -28,7 +28,7 @@ get:
                 - type: emergency
                   value:
                     mva: 165
-                - type: loadshed
+                - type: load-shed
                   value:
                     mva: 170
         application/vnd.trolie.realtime-limit-set-detailed.v1+json:
@@ -36,7 +36,7 @@ get:
             $ref: ../components/schemas/realtime-limit-set-detailed.yaml
           example:
             - transmission-facility-id: line2
-              provenant-proposals:
+              proposals-considered:
                 - c386503e-ae8f-46e7-8fcf-bdee30f4f56b
               temporary-aar-exceptions:
                 - 2d8c80e8-f533-4be9-85bf-f7f81eb73d67
@@ -52,7 +52,7 @@ get:
                 - type: emergency
                   value:
                     mva: 165
-                - type: loadshed
+                - type: load-shed
                   value:
                     mva: 170
         application/json:
@@ -95,7 +95,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -138,7 +138,7 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1

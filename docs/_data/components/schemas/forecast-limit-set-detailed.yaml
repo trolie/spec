@@ -2,6 +2,6 @@ description: |
   Forecast including provenance information.  
 type: array
 minItems: 0
-maxItems: 50000
+maxItems: 5000
 items:
   $ref: ./forecast-limit-item-detailed.yaml

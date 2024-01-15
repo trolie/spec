@@ -1,8 +1,7 @@
 get:
   operationId: getSeasonInstances
-  description: >-
-    Seasonal ratings are always bound against season instances, with effective
-    dates.
+  description: Seasonal ratings are always bound against season instances, with effective dates.
+  summary: Get Instances of Seasons
   tags:
     - Seasonal Rating Snapshots
   responses:
@@ -57,7 +56,7 @@ get:
     '406':
       $ref: ../components/responses/not-acceptable.yaml
     '429':
-      $ref: ../components/responses/rate-limited.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error.yaml
   security: &ref_1
@@ -68,6 +67,7 @@ head:
   description: >
     Use to obtain the headers that would be returned for `getSeasonInstances`.
     Useful for cache invalidation.
+  summary: Get HTTP headers for season instances.
   tags:
     - Seasonal Rating Snapshots
   responses:
@@ -96,7 +96,7 @@ head:
     '410':
       $ref: ../components/responses/archived.yaml
     '429':
-      $ref: ../components/responses/rate-limited-head.yaml
+      $ref: ../components/responses/rate-limit-hit.yaml
     default:
       $ref: ../components/responses/unexpected-error-head.yaml
   security: *ref_1
