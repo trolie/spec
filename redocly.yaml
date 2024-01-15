@@ -2,14 +2,14 @@ extends:
   - recommended-strict
 
 rules:
-  operation-summary: off #warn
+  operation-summary: warn
   rule/media-type-example-defined:
     subject:
       type: MediaType
       property: example
     assertions:
       defined: true
-    severity: off
+    severity: warn
 apis:
   trolie@dev:
     root: ./docs/_data/openapi-split.yaml
