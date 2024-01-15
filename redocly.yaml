@@ -1,5 +1,6 @@
 extends:
   - recommended-strict
+
 rules:
   operation-summary: off #warn
   rule/media-type-example-defined:
@@ -9,3 +10,8 @@ rules:
     assertions:
       defined: true
     severity: off
+apis:
+  trolie@dev:
+    root: ./docs/_data/openapi-split.yaml
+  trolie@v1:
+    root: ./docs/openapi.yaml

@@ -1,5 +1,6 @@
 extends:
   - spectral:oas
+  # note this only covers the 2019 top ten https://github.com/stoplightio/spectral-owasp-ruleset/issues/47
   - https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs
 rules:
   # override a couple of rules that erroneously apply to HEAD requests

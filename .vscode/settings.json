@@ -9,7 +9,6 @@
             }
         ]
     },
-    // note this only covers the 2019 top ten https://github.com/stoplightio/spectral-owasp-ruleset/issues/47
     "spectral.rulesetFile": ".spectral.yaml",
     "spectral.validateFiles": [
         "**/docs/openapi.yaml"
