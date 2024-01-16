@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -xe
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 PARENT="$(dirname "$SCRIPT_DIR")"
@@ -31,7 +33,7 @@ fi
 
 if [[ "${1,,}" == "start" ]]; then
     cd $PARENT/docs
-    bundle update 
+    bundle update
     nohup bundle exec jekyll serve  --force_polling --livereload > $PARENT/jekyll.out 2>&1 &
     sleep 4
     tail $PARENT/jekyll.out
