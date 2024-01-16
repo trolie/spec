@@ -12,7 +12,7 @@ title: Home
   <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200" />
 </a>
 
-For general announcements and discussion, subscribe to our [Email List](https://lists.lfenergy.org/g/trolie-general).
+For general announcements and discussion, subscribe to our [Email List <i class="fa-solid fa-envelope"></i>](https://lists.lfenergy.org/g/trolie-general).
 
 ***
 
@@ -24,9 +24,9 @@ TROLIE started as a [MISO](https://www.misoenergy.org/) and [GE Vernova](https:/
 
 The project’s specific aims are:
 
-* **In Progress**: Define an API specification for the exchange of ratings and ratings-related information to support organizations working to comply with FERC Order 881.
-* <span class="text-green-100 fw-500">TODO</span>: A conformance program to provide vendors a means to demonstrate their compatibility with the above specification and signal their commitment to maintaining compatibility.
-* <span class="text-green-100 fw-500">TODO</span>: An open commons for the development of clients of the API specification.
+* <i class="fa-solid fa-hammer"></i> In Progress: Define an API specification for the exchange of ratings and ratings-related information to support organizations working to comply with FERC Order 881.
+* <i class="fa-solid fa-calendar-check"></i> TODO: A conformance program to provide vendors a means to demonstrate their compatibility with the above specification and signal their commitment to maintaining compatibility.
+* <i class="fa-solid fa-calendar-check"></i> TODO: An open commons for the development of clients of the API specification.
 
 
 We are committed establishing a vendor-neutral specification and building an inclusive community.
