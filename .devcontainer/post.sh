@@ -30,7 +30,9 @@ if [[ ("${1,,}" == "bundle") || ("${1,,}" == "start") ]]; then
 fi
 
 if [[ "${1,,}" == "start" ]]; then
-    cd $PARENT/docs && bundle update && nohup bundle exec jekyll serve  --force_polling --livereload > $PARENT/jekyll.out 2>&1 &
+    cd $PARENT/docs
+    bundle update 
+    nohup bundle exec jekyll serve  --force_polling --livereload > $PARENT/jekyll.out 2>&1 &
     sleep 4
     tail $PARENT/jekyll.out
     echo "Jekyll started, to monitor see $PARENT/jekyll.out"
