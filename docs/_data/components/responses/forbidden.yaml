@@ -1,12 +1,5 @@
-description: Access denied
+description: Access denied.
 content:
-  application/*:
-    schema:
-      $ref: ../schemas/empty.yaml
+  $ref: empty.yaml
 headers:
-  X-Rate-Limit-Limit:
-    $ref: ../headers/X-Rate-Limit-Limit.yaml
-  X-Rate-Limit-Remaining:
-    $ref: ../headers/X-Rate-Limit-Remaining.yaml
-  X-Rate-Limit-Reset:
-    $ref: ../headers/X-Rate-Limit-Reset.yaml
+  $ref: ../headers/rate-limited.yaml
