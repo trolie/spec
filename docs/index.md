@@ -8,16 +8,11 @@ title: Home
 # {{site.data.openapi-split.info.title}}
 
 
-[OpenAPI Specification docs](./spec)
-
-### License
-
-[Apache 2.0](https://github.com/TROLIE/spec/blob/1.0.0-wip/LICENSE)
-
-
 <a href="https://lfenergy.org/projects/trolie/">
   <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200" />
 </a>
+
+For general announcements and discussion, subscribe to our [Email List](https://lists.lfenergy.org/g/trolie-general).
 
 ***
 

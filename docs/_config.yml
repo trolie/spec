@@ -15,3 +15,10 @@ plugins:
 
 whitelist:
   - jekyll-redirect-from
+
+aux_links:
+  "<i class='fa-brands fa-github fa-fw'></i> GitHub Project":
+    - "https://github.com/TROLIE/spec"
+
+  "OpenAPI Specification":
+    - "/spec"
