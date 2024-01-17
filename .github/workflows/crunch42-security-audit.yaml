@@ -1,0 +1,37 @@
+name: "42Crunch API Security Audit"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '1.0.0*'
+jobs:
+  run_42c_audit:
+    permissions:
+      contents: read
+      security-events: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Bundle
+        run: >-
+          npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml &&
+          rm ./docs/_data/openapi-split.yaml
+
+      - name: Audit API definition for security issues
+        uses: 42Crunch/api-security-audit-action-freemium@v1
+        with:
+          upload-to-code-scanning: true
+          log-level: debug
+          sarif-report: 42Crunch_AuditReport_${{ github.run_id }}.SARIF
+      - name: save-audit-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: 42Crunch_AuditReport_${{ github.run_id }}
+          path: 42Crunch_AuditReport_${{ github.run_id }}.SARIF
+          if-no-files-found: error

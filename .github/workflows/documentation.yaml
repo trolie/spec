@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    name: "Bundle and Build"
+    name: "Build Docs"
     runs-on: ubuntu-latest
     permissions:
       contents: read

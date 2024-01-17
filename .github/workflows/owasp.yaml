@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    name: "Bundle and Build"
+    name: "Bundle and Lint"
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: >-
+      - name: Lint
+        run: >-
           npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml &&
           npx --yes @stoplight/spectral-cli lint docs/openapi.yaml --ruleset .spectral.yaml
