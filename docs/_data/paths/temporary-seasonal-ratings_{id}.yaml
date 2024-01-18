@@ -78,20 +78,18 @@ get:
         - read:temporary-seasonal-ratings
 delete:
   operationId: deleteTemporarySeasonalRating
-  description: &delete_desc Delete a specific temporary seasonal rating by Id.  
+  description: &delete_desc Delete a specific temporary seasonal rating by its Id.
   summary: *delete_desc
   tags:
     - Temporary Seasonal Ratings
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
-    '200':
-      description: OK
+    '204':
+      $ref: ../components/responses/no-content.yaml
     '304': *ref_0
     '400': &ref_7
-      description: >
-        Malformed request, proposal is invalid.  Details are in error
-        messages.  
+      description: Malformed request, proposal is invalid. Details are in error messages.
       content:
         application/json:
           schema:

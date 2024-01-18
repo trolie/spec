@@ -5,7 +5,7 @@ properties:
     $ref: ./generic-identifier.yaml
   periods:
     allOf: 
-      -  $ref: ./constants/maximum-periods.yaml
+      - $ref: ./constants/maximum-periods.yaml
       - type: array
         items:
           $ref: ./forecast-limit-period.yaml

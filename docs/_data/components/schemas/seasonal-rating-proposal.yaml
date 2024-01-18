@@ -3,6 +3,8 @@ allOf:
   - type: object
     properties:
       ratings:
-        type: array
-        items:
-          $ref: ./seasonal-proposal-for-segment.yaml
+        allOf:
+        - $ref: ./constants/maximum-proposals.yaml
+        - type: array
+          items:
+            $ref: ./seasonal-proposal-for-segment.yaml

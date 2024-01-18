@@ -8,5 +8,6 @@ items:
     id:
       $ref: ./generic-identifier.yaml
     description:
-      type: string
-      example: Asset registration system identifiers
+      allOf:
+        - $ref: ./description.yaml
+        - example: Asset registration system identifiers

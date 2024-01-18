@@ -85,8 +85,8 @@ delete:
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
-    '200':
-      description: OK
+    '204':
+      $ref: ../components/responses/no-content.yaml
     '304': *ref_0
     '400': &ref_7
       description: >

@@ -8,7 +8,7 @@ properties:
   id:
     $ref: ./generic-identifier.yaml
   description:
-    type: string
+    $ref: ./description.yaml
   transmission-facilities:
     type: array
     minItems: 0

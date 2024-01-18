@@ -1,7 +1,7 @@
-description: |
-  Set of forecast limits
-type: array
-minItems: 0
-maxItems: 50000
-items:
-  $ref: ./forecast-limit-item.yaml
+allOf:
+  - $ref: ./constants/maximum-proposals.yaml
+  - description: Set of forecast limits
+    type: array
+    minItems: 0
+    items:
+      $ref: ./forecast-limit-item.yaml

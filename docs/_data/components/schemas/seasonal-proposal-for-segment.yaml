@@ -4,6 +4,8 @@ properties:
   segment-id:
     $ref: ./generic-identifier.yaml
   seasons:
-    type: array
-    items:
-      $ref: ./seasonal-proposal-season.yaml
+    allOf:
+    - $ref: ./constants/maximum-seasons.yaml
+    - type: array
+      items:
+        $ref: ./seasonal-proposal-season.yaml

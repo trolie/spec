@@ -18,14 +18,13 @@ properties:
   limiting-segment:
     $ref: ./generic-identifier.yaml
   override-reason:
-    description: >
-      If provided, indicates that this limit was overridden for some reason, the
-      reason itself.  
+    allOf:
+      - $ref: ./description.yaml
+      - description: >
+          If provided, indicates that this limit was overridden for some reason, the
+          reason itself.
 
-      If not provided, users may assume no override is in place.  
-    type: string
-    format: free-text
-    maxLength: 500
+          If not provided, users may assume no override is in place.  
   additional-data:
     description: >
       Implementors may use this object to provide freeform extensions with

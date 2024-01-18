@@ -8,7 +8,4 @@ items:
     id:
       $ref: ./generic-identifier.yaml
     description:
-      type: string
-      format: free-text
-      maxLength: 1000
-      example: Extreme cold winter day, -100 degrees fahrenheit
+      $ref: ./description.yaml

@@ -32,7 +32,7 @@ get:
           $ref: ../components/headers/X-Rate-Limit-Reset.yaml
         ETag:
           $ref: ../components/headers/ETag.yaml
-    '304': &ref_0
+    '304': &not-modified
       $ref: ../components/responses/not-modified.yaml
     '400':
       description: |
@@ -76,9 +76,9 @@ delete:
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
-    '200':
-      description: OK
-    '304': *ref_0
+    '204':
+      $ref: ../components/responses/no-content.yaml
+    '304': *not-modified
     '400': &ref_8
       description: >
         Malformed request, proposal is invalid.  Details are in error
@@ -142,7 +142,7 @@ put:
           $ref: ../components/headers/X-Rate-Limit-Reset.yaml
         ETag:
           $ref: ../components/headers/ETag.yaml
-    '304': *ref_0
+    '304': *not-modified
     '400': *ref_8
     '401': *ref_1
     '403': *ref_2

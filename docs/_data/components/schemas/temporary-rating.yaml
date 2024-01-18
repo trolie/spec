@@ -23,3 +23,5 @@ properties:
     description: |
       Free-form text indicating the reason for the temporary rating.  
     type: string
+    format: free-form
+    maxLength: 100
