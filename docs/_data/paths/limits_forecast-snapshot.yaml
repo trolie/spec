@@ -24,12 +24,11 @@ head: &head
       description: Malformed request, based on misuse of filters.
       content:
         $ref: ../components/responses/content/problem.yaml
-      headers:
+      headers: &rate-limited
         $ref: ../components/headers/rate-limited.yaml
     '401': &unauthorized
       description: Unauthorized
-      headers: &rate-limited
-        $ref: ../components/headers/rate-limit-hit.yaml
+      headers: *rate-limited
     '403': &forbidden
       description: Access denied
       headers: *rate-limited

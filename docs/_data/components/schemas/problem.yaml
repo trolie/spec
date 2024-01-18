@@ -2,12 +2,11 @@ description: See [RFC9457](https://www.rfc-editor.org/rfc/rfc9457#appendix-A).
 type: object
 properties:
   type:
-    type: string
-    format: "uri-reference"
-    maxLength: 2048
-    description: |
-      A URI reference that identifies the problem type.
-      See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-type)
+    allOf:
+      - $ref: ./uri-reference.yaml
+      - description: |
+          A URI reference that identifies the problem type.
+          See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-type)
     example: "https://iana.org/assignments/http-problem-types#date"
   title:
     allOf:
@@ -32,11 +31,11 @@ properties:
           See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-detail)
 
   instance:
-    type: string
-    format: "uri"
-    description: |
-      A URI reference that identifies the specific occurrence of the problem.
-      It may or may not yield further information if dereferenced.
-      See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-status)
+    allOf:
+      - $ref: ./uri-reference.yaml
+      - description: |
+          A URI reference that identifies the specific occurrence of the problem.
+          It may or may not yield further information if dereferenced.
+          See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-status)
 
 required: [ type ]
