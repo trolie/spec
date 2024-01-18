@@ -23,3 +23,14 @@ rules:
         function: truthy
       - field: "401.content"
         function: truthy
+
+
+  "should-have-422":
+    message: "Operation is missing {{property}}."
+    description: ""
+    given: $.paths.*[put,post,patch].responses
+    then:
+      - field: "422"
+        function: truthy
+      - field: "422.content.application/problem+json"
+        function: truthy

@@ -1,0 +1,5 @@
+description: Unprocessable Content
+headers:
+  $ref: ../headers/rate-limited.yaml
+content:
+  $ref: ../responses/content/problem.yaml

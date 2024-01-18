@@ -41,11 +41,6 @@ head: &head
     '410': &gone
       description: Gone. The requested forecast should be available in archive.
       headers: *rate-limited
-    '422': &unprocessable
-      description: Unprocessable Content
-      headers: *rate-limited
-      content:
-        $ref: ../components/responses/content/problem.yaml
     '429':
       $ref: ../components/responses/rate-limit-hit-head.yaml
     '500': &unexpected-error
@@ -129,7 +124,6 @@ get:
     '410':
       <<: *gone
       content: *empty
-    '422': *unprocessable
     '429':
       $ref: ../components/responses/rate-limit-hit.yaml
     '500': &unexpected-error-message
