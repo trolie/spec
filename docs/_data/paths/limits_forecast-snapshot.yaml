@@ -22,11 +22,14 @@ head: &head
         $ref: ../components/headers/ETag-response.yaml
     '400': &malformed
       description: Malformed request, based on misuse of filters.
-      headers: &rate-limited
-        $ref: ../components/headers/rate-limit-hit.yaml
+      content:
+        $ref: ../components/responses/content/problem.yaml
+      headers:
+        $ref: ../components/headers/rate-limited.yaml
     '401': &unauthorized
       description: Unauthorized
-      headers: *rate-limited
+      headers: &rate-limited
+        $ref: ../components/headers/rate-limit-hit.yaml
     '403': &forbidden
       description: Access denied
       headers: *rate-limited
@@ -39,9 +42,11 @@ head: &head
     '410': &gone
       description: Gone. The requested forecast should be available in archive.
       headers: *rate-limited
-    '422':
+    '422': &unprocessable
       description: Unprocessable Content
       headers: *rate-limited
+      content:
+        $ref: ../components/responses/content/problem.yaml
     '429':
       $ref: ../components/responses/rate-limit-hit-head.yaml
     '500': &unexpected-error
@@ -108,15 +113,7 @@ get:
           schema:
             $ref: ../components/schemas/forecast-limit-set.yaml
     '304': *not-modified
-    '400':
-      <<: *malformed
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
+    '400': *malformed
     '401':
       <<: *unauthorized
       content: &empty
@@ -133,6 +130,7 @@ get:
     '410':
       <<: *gone
       content: *empty
+    '422': *unprocessable
     '429':
       $ref: ../components/responses/rate-limit-hit.yaml
     '500': &unexpected-error-message
