@@ -4,6 +4,8 @@ RUN set -eux; \
 	apt update -y -qq && apt install -y -qq ruby-full build-essential \
 	&& gem install bundler;
 
+RUN npm -g install @redocly/cli
+
 USER node
 
 RUN gem install --user-install github-pages webrick \

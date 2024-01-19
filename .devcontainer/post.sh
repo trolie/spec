@@ -28,7 +28,11 @@ if [[ "${1,,}" == "create" ]]; then
 fi
 
 if [[ ("${1,,}" == "bundle") || ("${1,,}" == "start") ]]; then
-    npx --yes @redocly/cli bundle $DOCS_PATH/_data/openapi-split.yaml -o $DOCS_PATH/openapi.yaml
+    if [[ -n "$BUNDLE_PID" && -n "$(ps -p $BUNDLE_PID)" ]]; then
+        kill $BUNDLE_PID
+    fi
+    redocly bundle $DOCS_PATH/_data/openapi-split.yaml -o $DOCS_PATH/openapi.yaml &
+    export BUNDLE_PID=$!
 fi
 
 if [[ "${1,,}" == "start" ]]; then
