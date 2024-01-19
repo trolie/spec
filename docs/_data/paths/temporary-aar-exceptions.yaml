@@ -220,6 +220,8 @@ post:
     '406': *ref_6
     '413':
       $ref: ../components/responses/payload-too-large.yaml
+    '422':
+      $ref: ../components/responses/unprocessable.yaml
     '429': *ref_7
     default: *ref_8
   security:

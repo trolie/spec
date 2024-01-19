@@ -166,6 +166,8 @@ put:
     '406': *ref_4
     '413':
       $ref: ../components/responses/payload-too-large.yaml
+    '422':
+      $ref: ../components/responses/unprocessable.yaml
     '429': *ref_5
     default: *ref_6
   security: *ref_8
