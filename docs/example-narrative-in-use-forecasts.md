@@ -2,7 +2,11 @@
 title: Querying in-use Limit Forecast
 parent: Usage Examples
 nav_order: 2
+
 ---
+
+
+
 
 # Ratings Provider Querying in-use Limit Forecast from the Transmission Provider
 
@@ -15,6 +19,22 @@ curl -H "Accept: application/vnd.trolie.forecast-limit-set-slim.v1+json" \
 ```
 
 This will return the current version of the in-use ratings for the next 240 hours into output.json.  See the following for an example:
+
+### Reuse JSON method 1:
+
+ {% capture example %}
+ {{- site.data.paths["limits_forecast-snapshot"].get.responses["200"].content["application/vnd.trolie.forecast-limit-set-slim.v1+json"].example["$ref"] 
+    | split: "/" | last
+ -}}
+ {% endcapture %}
+
+{% assign example_json = '_data/examples/' | append: example %}
+
+```json
+{% include_relative {{example_json}} %}
+```
+
+### Method 2:
 
 ```json
 {% include_relative _data/examples/forecast-limits-slim.json %}

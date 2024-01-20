@@ -148,7 +148,7 @@ patch:
           $ref: ../components/schemas/forecast-rating-proposal.yaml
         examples:
           simple-example:
-            externalValue: '/example-json/forecast-ratings-proposal-patch.json'
+            externalValue: '/example-narratives/example-json/forecast-ratings-proposal-patch.json'
       application/json:
         schema:
           $ref: ../components/schemas/forecast-rating-proposal.yaml

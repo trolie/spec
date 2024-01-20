@@ -10,8 +10,9 @@ For most transmission owners (rating providers in TROLIE terminology), the most 
 
 For the purpose of this example, the JSON listing below may be assumed to be in a file called `input.json`.  The input consists of an array by segment, which then contains an array of ratings for each forecast period.  Note this example also cross the Fall daylight savings transition in the central timezone, thus providing an example of dealing with the notorious "duplicate" 1 AM hour:
 
+
 ```json
-{% include_relative _data/examples/forecast-ratings-proposal-patch.json %}
+{% include_relative /example-json/forecast-ratings-proposal-patch.json %}
 ```
 
 ## Pushing input.json to TROLIE
