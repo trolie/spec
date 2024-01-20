@@ -146,8 +146,9 @@ patch:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
         schema:
           $ref: ../components/schemas/forecast-rating-proposal.yaml
-        example:
-          $ref: ../examples/forecast-ratings-proposal-patch.json
+        examples:
+          simple-example:
+            externalValue: '/example-json/forecast-ratings-proposal-patch.json'
       application/json:
         schema:
           $ref: ../components/schemas/forecast-rating-proposal.yaml
