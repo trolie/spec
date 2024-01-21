@@ -18,12 +18,13 @@ For the purpose of this example, the JSON listing below may be assumed to be in 
 ## Pushing input.json to TROLIE
 Given input.json, run the following command to send it to the TROLIE server:
 
-```bash
+# Example of disabling line nos
+{% highlight bash %}
 curl -d @input.json \
 -X PATCH \
 -H "Content-Type: application/vnd.trolie.rating-forecast-proposal.v1+json" \
 -o output.json \
 "https://trolie.transmission-provider.com/rating-proposals/forecasts"
-```
+{% endhighlight %}
 
 On success, output.json will container a copy of the data just uploaded, with additional metadata on update time and status.  
