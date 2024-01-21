@@ -11,7 +11,7 @@ using JSON snippets and [curl](https://curl.se/) commands.
 
 ## Caveats on Examples
 
-The examples provided here have some limitations, as they real TROLIE server
+The examples provided here have some limitations, as the real TROLIE server
 implementations may differ in certain details:
 
 * The actual URLs used for the TROLIE service themselves are only examples.
@@ -22,5 +22,5 @@ implementations may differ in certain details:
 
 * The rating set tiers (normal, emergency, short-term emergency etc) used by
   each Transmission Provider differ, and TROLIE is designed to be agnostic to
-  this.  The rating names therefore used in these examples may not match
+  this. The rating names therefore used in these examples may not match
   exactly those in use by a particular TROLIE server.
