@@ -4,8 +4,8 @@ properties:
   segment-id:
     $ref: ./generic-identifier.yaml
   periods:
+    type: array
+    items:
+      $ref: ./forecast-rating-period.yaml
     allOf: 
       - $ref: ./constants/maximum-periods.yaml
-      - type: array
-        items:
-          $ref: ./forecast-rating-period.yaml

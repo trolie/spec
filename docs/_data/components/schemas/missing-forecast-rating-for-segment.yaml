@@ -4,8 +4,8 @@ properties:
   segment-id:
     $ref: ./generic-identifier.yaml
   periods:
+    type: array
+    items:
+      $ref: ./period-start.yaml
     allOf:
     - $ref: ./constants/maximum-proposals.yaml
-    - type: array
-      items:
-        $ref: ./period-start.yaml
