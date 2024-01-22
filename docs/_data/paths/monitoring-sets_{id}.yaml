@@ -68,6 +68,7 @@ delete:
     '204':
       $ref: ../components/responses/no-content.yaml
     '304': *not-modified
+    '400': *malformed
     '401': *ref_1
     '403': *ref_2
     '404': *ref_3
