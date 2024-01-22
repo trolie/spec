@@ -102,10 +102,10 @@ get:
       <<: *not-acceptable
       content: *empty
     '429': *rate-limit-hit
-    '500': &unexpected-error-message
+    '500': &unexpected-error-empty
       <<: *unexpected-error
       content: *empty
-    default: *unexpected-error-message
+    default: *unexpected-error-empty
   security: *read-authorization
 
 post:
@@ -178,8 +178,8 @@ post:
     '422':
       $ref: ../components/responses/unprocessable.yaml
     '429': *rate-limit-hit
-    '500': *unexpected-error-message
-    default: *unexpected-error-message
+    '500': *unexpected-error-empty
+    default: *unexpected-error-empty
   security:
     - oauth2-primary-flow:
         - write:temporary-aar-exceptions

@@ -95,8 +95,8 @@ get:
       <<: *not-acceptable
       content: *empty
     '429': *rate-limit-hit
-    '500': &unexpected-error-message
+    '500': &unexpected-error-empty
       <<: *unexpected-error
       content: *empty
-    default: *unexpected-error-message
+    default: *unexpected-error-empty
   security: *read-authorization
