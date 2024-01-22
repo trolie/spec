@@ -1,4 +1,55 @@
+head: &head
+  operationId: getRatingForecastProposalsHeaders
+  description: >
+    Use to obtain the headers that would be returned for 
+    `getRatingForecastProposals`. Useful for cache invalidation.
+  summary: Get headers for the Ratings Provider's proposals
+  tags:
+    - Rating Proposals
+  parameters:
+    - $ref: ../components/parameters/offset-period-start.yaml
+    - $ref: ../components/parameters/period-end.yaml
+    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/segment-filter.yaml
+  responses:
+    '200': &ok
+      description: OK
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '304': &not-modified
+      description: The snapshot has not changed.
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '400': &malformed
+      description: Malformed request, based on misuse of filters.
+      headers: &rate-limited
+        $ref: ../components/headers/rate-limited.yaml
+    '401': &unauthorized
+      description: Unauthorized
+      headers: *rate-limited
+    '403': &forbidden
+      description: Access denied
+      headers: *rate-limited
+    '404': &not-found
+      description: The requested snapshot does not exist
+      headers: *rate-limited
+    '406': &not-acceptable
+      description: Content negotiation failed
+      headers: *rate-limited
+    '410': &gone
+      description: Gone. The requested forecast should be available in archive.
+      headers: *rate-limited
+    '429': &rate-limit-hit
+      $ref: ../components/responses/rate-limit-hit-head.yaml
+    '500': &unexpected-error
+      description: An unexpected error occurred
+      headers: *rate-limited
+    default: *unexpected-error
+  security: &read-authorization
+    - oauth2-primary-flow:
+        - read:forecast-proposals
 get:
+  <<: *head
   operationId: getRatingForecastProposals
   description: >
     Obtain the Ratings Forecasts that *this* Ratings Provider has submitted.  
@@ -9,16 +60,9 @@ get:
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
   summary: Obtain the Ratings Provider's proposals
-  tags:
-    - Rating Proposals
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
   responses:
     '200':
-      description: OK
+      <<: *ok
       content:
         application/vnd.trolie.rating-forecast-proposal.v1+json:
           schema:
@@ -47,100 +91,36 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/forecast-rating-proposal.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': &ref_2
-      $ref: ../components/responses/not-modified.yaml
-    '400': &ref_0
-      description: |
-        Malformed request, based on misuse of filters.
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': &ref_3
-      $ref: ../components/responses/unauthorized.yaml
-    '403': &ref_4
-      $ref: ../components/responses/forbidden.yaml
-    '404': &ref_5
-      $ref: ../components/responses/no-data-found.yaml
-    '406': &ref_6
-      $ref: ../components/responses/not-acceptable.yaml
+    '304': *not-modified
+    '400': *malformed
+    '401': &unauthorized-empty
+      <<: *unauthorized
+      content: &empty
+        $ref: ../components/responses/empty.yaml
+    '403': &forbidden-empty
+      <<: *forbidden
+      content: *empty
+    '404': &not-found-empty
+      <<: *not-found
+      content: *empty
+    '406': &not-acceptable-empty
+      <<: *not-acceptable
+      content: *empty
     '410':
-      $ref: ../components/responses/archived.yaml
-    '429': &ref_7
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default: &ref_8
-      $ref: ../components/responses/unexpected-error.yaml
-  security: &ref_1
-    - oauth2-primary-flow:
-        - read:forecast-proposals
-head:
-  operationId: getRatingForecastProposalsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getRatingForecastProposals`. Useful for cache invalidation.
-  summary: Get headers for the Ratings Provider's proposals
-  tags:
-    - Rating Proposals
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': *ref_0
-    '401':
-      $ref: ../components/responses/unauthorized-head.yaml
-    '403':
-      $ref: ../components/responses/forbidden-head.yaml
-    '404':
-      $ref: ../components/responses/no-data-found-head.yaml
-    '406':
-      $ref: ../components/responses/not-acceptable-head.yaml
-    '410':
-      $ref: ../components/responses/archived.yaml
-    '429':
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
-  security: *ref_1
+      <<: *gone
+      content: *empty
+    '429': *rate-limit-hit
+    '500': &unexpected-error-message
+      <<: *unexpected-error
+      content: *empty
+    default: *unexpected-error-message
+  security: *read-authorization
+
 patch:
+  <<: *head
   operationId: patchRatingForecastProposal
   description: &patch_desc Update the logged-in provider's ratings Forecast Proposal 
   summary: *patch_desc
-  tags:
-    - Rating Proposals
   requestBody:
     content:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
@@ -203,43 +183,19 @@ patch:
           schema:
             $ref: ../components/schemas/forecast-rating-proposal.yaml
       headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': *ref_2
-    '400':
-      description: >
-        Malformed request, proposal is invalid.  Details are in error
-        messages.  
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': *ref_3
-    '403': *ref_4
-    '404': *ref_5
-    '406': *ref_6
+        $ref: ../components/headers/ETag-response.yaml
+    '400': *malformed
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '404': *not-found-empty
+    '406': *not-acceptable-empty
     '413':
       $ref: ../components/responses/payload-too-large.yaml
     '422':
       $ref: ../components/responses/unprocessable.yaml
-    '429': *ref_7
-    default: *ref_8
+    '429': *rate-limit-hit
+    '500': *unexpected-error-message
+    default: *unexpected-error-message
   security:
     - oauth2-primary-flow:
         - write:forecast-proposals

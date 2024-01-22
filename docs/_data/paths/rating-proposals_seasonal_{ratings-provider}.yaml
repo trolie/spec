@@ -50,23 +50,12 @@ get:
           $ref: ../components/headers/ETag.yaml
     '304': &ref_0
       $ref: ../components/responses/not-modified.yaml
-    '400':
-      description: |
-        Malformed request, based on misuse of filters.
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
+    '400': &malformed
+      description: Malformed request, based on misuse of filters.
       headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+        $ref: ../components/headers/rate-limited.yaml
+      content:
+        $ref: ../components/responses/content/problem.yaml
     '401': &ref_1
       $ref: ../components/responses/unauthorized.yaml
     '403': &ref_2
@@ -159,24 +148,7 @@ patch:
         ETag:
           $ref: ../components/headers/ETag.yaml
     '304': *ref_0
-    '400':
-      description: >
-        Malformed request, proposal is invalid.  Details are in error
-        messages.  
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+    '400': *malformed
     '401': *ref_1
     '403': *ref_2
     '404': *ref_3

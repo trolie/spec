@@ -1,4 +1,4 @@
-head:
+head: &head
   operationId: getLimitsForecastHeadersByPeriod
   summary: Obtain HTTP headers for Limits Forecast.
   description: >
@@ -18,8 +18,6 @@ head:
       $ref: ../components/responses/not-modified.yaml
     '400': &malformed
       description: Malformed request, based on misuse of filters.
-      content:
-        $ref: ../components/responses/content/problem.yaml
       headers: &rate-limited
         $ref: ../components/headers/rate-limited.yaml
     '401': &unauthorized
@@ -48,6 +46,7 @@ head:
         - read:operating-snapshot
 
 get:
+  <<: *head
   operationId: getLimitsForecastByPeriod
   summary: Obtain Limits Forecast
   description: >
@@ -55,12 +54,6 @@ get:
     Operations, narrowed in scope for a particular period.   Clients SHOULD
     perform Conditional `GET` using the `If-None-Match` header and the `ETag` of
     a previous `GET` response.
-  tags:
-    - Operating Snapshots
-  parameters:
-    - $ref: ../components/parameters/period-start.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
   responses:
     '200':
       <<: *ok
@@ -115,7 +108,10 @@ get:
             $ref: ../components/schemas/forecast-limit-set.yaml
 
     '304': *not-modified
-    '400': *malformed
+    '400':
+      <<: *malformed
+      content:
+        $ref: ../components/responses/content/problem.yaml
     '401':
       <<: *unauthorized
       content: &empty

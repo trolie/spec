@@ -1,4 +1,4 @@
-head:
+head: &head
   operationId: getRealTimeLimitsHeaders
   description: >
     Use to obtain the headers that would be returned for `getRealTimeLimits`.
@@ -18,8 +18,6 @@ head:
       $ref: ../components/responses/not-modified.yaml
     '400': &malformed
       description: Malformed request, based on misuse of filters.
-      content:
-        $ref: ../components/responses/content/problem.yaml
       headers: &rate-limited
         $ref: ../components/headers/rate-limited.yaml
     '401': &unauthorized
@@ -43,22 +41,18 @@ head:
       description: An unexpected error occurred
       headers: *rate-limited
     default: *unexpected-error
-  security: &security
+  security: &read-authorization
     - oauth2-primary-flow:
         - read:operating-snapshot
 
 get:
+  <<: *head
   operationId: getRealTimeLimits
   description: >
     Obtain the System Operating Limits in-use by the Transmission Provider.
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
   summary: Obtain the Real Time Limits Snapshot
-  parameters:
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
-  tags:
-    - Operating Snapshots
   responses:
     '200':
       <<: *ok
@@ -108,7 +102,10 @@ get:
           schema:
             $ref: ../components/schemas/realtime-limit-set.yaml
     '304': *not-modified
-    '400': *malformed
+    '400':
+      <<: *malformed
+      content:
+        $ref: ../components/responses/content/problem.yaml
     '401':
       <<: *unauthorized
       content: &empty
@@ -131,4 +128,4 @@ get:
       <<: *unexpected-error
       content: *empty
     default: *unexpected-error-message
-  security: *security
+  security: *read-authorization

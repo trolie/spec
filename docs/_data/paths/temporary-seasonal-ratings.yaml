@@ -1,4 +1,56 @@
+head: &head
+  operationId: getTemporarySeasonalRatingsHeaders
+  description: >
+    Use to obtain the headers that would be returned for 
+    `getTemporarySeasonalRatings`. Useful for cache invalidation.
+  summary: Get HTTP headers
+  tags: &tags
+    - Temporary Seasonal Ratings
+  parameters:
+    - $ref: ../components/parameters/period-start-query.yaml
+    - $ref: ../components/parameters/period-end.yaml
+    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/segment-filter.yaml
+  responses:
+    '200': &ok
+      description: OK
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '304': &not-modified
+      description: The snapshot has not changed.
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '400': &malformed
+      description: Malformed request, based on misuse of filters.
+      headers: &rate-limited
+        $ref: ../components/headers/rate-limited.yaml
+    '401': &unauthorized
+      description: Unauthorized
+      headers: *rate-limited
+    '403': &forbidden
+      description: Access denied
+      headers: *rate-limited
+    '404': &not-found
+      description: The requested snapshot does not exist
+      headers: *rate-limited
+    '406': &not-acceptable
+      description: Content negotiation failed
+      headers: *rate-limited
+    '410': &gone
+      description: Gone. The requested forecast should be available in archive.
+      headers: *rate-limited
+    '429': &rate-limit-hit
+      $ref: ../components/responses/rate-limit-hit-head.yaml
+    '500': &unexpected-error
+      description: An unexpected error occurred
+      headers: *rate-limited
+    default: *unexpected-error
+  security: &read-authorization
+    - oauth2-primary-flow:
+        - read:temporary-seasonal-ratings
+
 get:
+  <<: *head
   operationId: getTemporarySeasonalRatings
   description: >
     Search for Temporary Seasonal Ratings.  Will return any Temporary Seasonal
@@ -8,16 +60,10 @@ get:
     and the `ETag` of a previous `GET` response.
   # TODO: adjust language
   summary: Get Default Static Rating
-  tags:
-    - Temporary Seasonal Ratings
-  parameters:
-    - $ref: ../components/parameters/period-start-query.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
   responses:
     '200':
-      description: OK
+      <<: *ok
+      description: The requested default static rating is returned.
       content:
         application/vnd.trolie.temporary-seasonal-rating-set.v1+json:
           schema:
@@ -42,101 +88,40 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/temporary-rating-set.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': &ref_2
-      $ref: ../components/responses/not-modified.yaml
-    '400': &ref_0
-      description: |
-        Malformed request, based on misuse of filters.
+    '304': *not-modified
+    '400':
+      <<: *malformed
       content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': &ref_3
-      $ref: ../components/responses/unauthorized.yaml
-    '403': &ref_4
-      $ref: ../components/responses/forbidden.yaml
-    '404': &ref_5
-      $ref: ../components/responses/no-data-found.yaml
-    '406': &ref_6
-      $ref: ../components/responses/not-acceptable.yaml
+        $ref: ../components/responses/content/problem.yaml
+    '401': &unauthorized-empty
+      <<: *unauthorized
+      content: &empty
+        $ref: ../components/responses/empty.yaml
+    '403': &forbidden-empty
+      <<: *forbidden
+      content: *empty
+    '404': &not-found-empty
+      <<: *not-found
+      content: *empty
+    '406': &not-acceptable-empty
+      <<: *not-acceptable
+      content: *empty
     '410':
-      $ref: ../components/responses/archived.yaml
-    '429': &ref_7
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default: &ref_8
-      $ref: ../components/responses/unexpected-error.yaml
-  security: &ref_1
-    - oauth2-primary-flow:
-        - read:temporary-seasonal-ratings
-head:
-  operationId: getTemporarySeasonalRatingsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getTemporarySeasonalRatings`. Useful for cache invalidation.
-  summary: Get HTTP headers
-  tags:
-    - Temporary Seasonal Ratings
-  parameters:
-    - $ref: ../components/parameters/period-start-query.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': *ref_0
-    '401':
-      $ref: ../components/responses/unauthorized-head.yaml
-    '403':
-      $ref: ../components/responses/forbidden-head.yaml
-    '404':
-      $ref: ../components/responses/no-data-found-head.yaml
-    '406':
-      $ref: ../components/responses/not-acceptable-head.yaml
-    '410':
-      $ref: ../components/responses/archived.yaml
-    '429':
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
-  security: *ref_1
+      <<: *gone
+      content: *empty
+    '429': *rate-limit-hit
+    '500': &unexpected-error-message
+      <<: *unexpected-error
+      content: *empty
+    default: *unexpected-error-message
+  security: *read-authorization
+
 post:
   operationId: createTemporarySeasonalRating
   description: &post_desc |
     Create a new temporary temporary seasonal rating
   summary: *post_desc
-  tags:
-    - Temporary Seasonal Ratings
+  tags: *tags
   requestBody:
     content:
       application/vnd.trolie.temporary-seasonal-rating.v1+json:
@@ -162,6 +147,7 @@ post:
           $ref: ../components/schemas/temporary-rating.yaml
   responses:
     '201':
+      <<: *ok
       description: |
         The temporary Seasonal Rating was created
       content:
@@ -197,35 +183,22 @@ post:
           $ref: ../components/headers/X-Rate-Limit-Reset.yaml
         ETag:
           $ref: ../components/headers/ETag.yaml
-    '304': *ref_2
     '400':
+      <<: *malformed
       description: >
         Malformed request, proposal is invalid.  Details are in error
         messages.  
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': *ref_3
-    '403': *ref_4
-    '404': *ref_5
-    '406': *ref_6
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '404': *not-found-empty
+    '406': *not-acceptable-empty
     '413':
       $ref: ../components/responses/payload-too-large.yaml
     '422':
       $ref: ../components/responses/unprocessable.yaml
-    '429': *ref_7
-    default: *ref_8
+    '429': *rate-limit-hit
+    '500': *unexpected-error-message
+    default: *unexpected-error-message
   security:
     - oauth2-primary-flow:
         - write:temporary-seasonal-ratings

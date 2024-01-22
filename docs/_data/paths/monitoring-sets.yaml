@@ -1,4 +1,50 @@
+head: &head
+  operationId: getMonitoringSetsHeaders
+  description: >
+    Use to obtain the headers that would be returned for  `getMonitoringSets`.
+    Useful for cache invalidation.
+  summary: Get the headers for the current list of Monitoring Sets
+  tags: &tags
+    - Monitoring Sets
+  responses:
+    '200': &ok
+      description: OK
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '304': &not-modified
+      description: The snapshot has not changed.
+      headers:
+        $ref: ../components/headers/ETag-response.yaml
+    '400': &malformed
+      description: Malformed request, based on misuse of filters.
+      headers: &rate-limited
+        $ref: ../components/headers/rate-limited.yaml
+    '401': &unauthorized
+      description: Unauthorized
+      headers: *rate-limited
+    '403': &forbidden
+      description: Access denied
+      headers: *rate-limited
+    '404': &not-found
+      description: The requested snapshot does not exist
+      headers: *rate-limited
+    '406': &not-acceptable
+      description: Content negotiation failed
+      headers: *rate-limited
+    '410': &gone
+      description: Gone. The requested forecast should be available in archive.
+      headers: *rate-limited
+    '429': &rate-limit-hit
+      $ref: ../components/responses/rate-limit-hit-head.yaml
+    '500': &unexpected-error
+      description: An unexpected error occurred
+      headers: *rate-limited
+    default: *unexpected-error
+  security: &read-authorization
+    - oauth2-primary-flow:
+        - read:monitoring-sets
 get:
+  <<: *head
   operationId: getMonitoringSets
   description: >
     Obtain the list of monitoring sets visible to this user.  
@@ -6,11 +52,9 @@ get:
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
   summary: Get the list of known Monitoring Sets
-  tags:
-    - Monitoring Sets
   responses:
     '200':
-      description: OK
+      <<: *ok
       content:
         application/vnd.trolie.monitoring-set-list.v1+json:
           schema:
@@ -21,95 +65,39 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/monitoring-set-list.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': &ref_2
-      $ref: ../components/responses/not-modified.yaml
-    '400': &ref_0
-      description: |
-        Malformed request, based on misuse of filters.
+    '304': *not-modified
+    '400':
+      <<: *malformed
       content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': &ref_3
-      $ref: ../components/responses/unauthorized.yaml
-    '403': &ref_4
-      $ref: ../components/responses/forbidden.yaml
-    '404': &ref_5
-      $ref: ../components/responses/no-data-found.yaml
-    '406': &ref_6
-      $ref: ../components/responses/not-acceptable.yaml
-    '429': &ref_7
-      $ref: ../components/responses/rate-limit-hit.yaml
-    '500': &unexpected_error
-      $ref: ../components/responses/unexpected-error.yaml
-    default: *unexpected_error
-  security: &ref_1
-    - oauth2-primary-flow:
-        - read:monitoring-sets
-head:
-  operationId: getMonitoringSetsHeaders
-  description: >
-    Use to obtain the headers that would be returned for  `getMonitoringSets`.
-    Useful for cache invalidation.
-  summary: Get the headers for the current list of Monitoring Sets
-  tags:
-    - Monitoring Sets
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': *ref_0
-    '401':
-      $ref: ../components/responses/unauthorized-head.yaml
-    '403':
-      $ref: ../components/responses/forbidden-head.yaml
-    '404':
-      $ref: ../components/responses/no-data-found-head.yaml
-    '406':
-      $ref: ../components/responses/not-acceptable-head.yaml
+        $ref: ../components/responses/content/problem.yaml
+    '401': &unauthorized-empty
+      <<: *unauthorized
+      content: &empty
+        $ref: ../components/responses/empty.yaml
+    '403': &forbidden-empty
+      <<: *forbidden
+      content: *empty
+    '404': &not-found-empty
+      <<: *not-found
+      content: *empty
+    '406': &not-acceptable-empty
+      <<: *not-acceptable
+      content: *empty
     '410':
-      $ref: ../components/responses/archived.yaml
-    '429':
-      $ref: ../components/responses/rate-limit-hit.yaml
-    '500': &unexpected_error
-      $ref: ../components/responses/unexpected-error.yaml
-    default: *unexpected_error
-  security: *ref_1
+      <<: *gone
+      content: *empty
+    '429': *rate-limit-hit
+    '500': &unexpected-error-message
+      <<: *unexpected-error
+      content: *empty
+    default: *unexpected-error-message
+  security: *read-authorization
+
 post:
   operationId: createMonitoringSet
   description: &post_desc Create a new Monitoring Set
   summary: *post_desc
-  tags:
-    - Monitoring Sets
+  tags: *tags
   requestBody:
     content:
       application/vnd.trolie.monitoring-set.v1+json:
@@ -127,8 +115,8 @@ post:
           $ref: ../components/schemas/monitoring-set.yaml
   responses:
     '201':
-      description: |
-        The monitoring set was created.  
+      <<: *ok
+      description: The monitoring set was created.
       content:
         application/json:
           schema:
@@ -136,46 +124,22 @@ post:
         application/vnd.trolie.monitoring-set.v1+json:
           schema:
             $ref: ../components/schemas/monitoring-set.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': *ref_2
     '400':
+      <<: *malformed
       description: >
         Malformed request, proposal is invalid.  Details are in error
         messages.  
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': *ref_3
-    '403': *ref_4
-    '404': *ref_5
-    '406': *ref_6
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '404': *not-found-empty
+    '406': *not-acceptable-empty
     '413':
       $ref: ../components/responses/payload-too-large.yaml
     '422':
       $ref: ../components/responses/unprocessable.yaml
-    '429': *ref_7
-    '500': &unexpected_error
-      $ref: ../components/responses/unexpected-error.yaml
-    default: *unexpected_error
+    '429': *rate-limit-hit
+    '500': *unexpected-error-message
+    default: *unexpected-error-message
   security:
     - oauth2-primary-flow:
         - write:monitoring-sets
