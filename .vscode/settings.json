@@ -3,7 +3,7 @@
     "emeraldwalk.runonsave": {
         "commands": [
             {
-                "match": "docs/_data/*",
+                "match": "docs/*",
                 "isAsync": true,
                 "cmd": ".devcontainer/post.sh bundle"
             }
