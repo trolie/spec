@@ -5,6 +5,6 @@ allOf:
       ratings:
         type: array
         items:
-          $ref: ./forecast-proposal-for-segment.yaml
+          $ref: 'forecast-limit.yaml#/forecast-proposal-for-segment'
         allOf:
           - $ref: ./constants/maximum-proposals.yaml

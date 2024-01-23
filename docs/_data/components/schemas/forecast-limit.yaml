@@ -1,0 +1,62 @@
+forecast-limit-period:
+  type: object
+  properties:
+    period-start:
+      $ref: ./period-start.yaml
+    updated-time:
+      $ref: ./timestamp.yaml
+    values:
+      $ref: ./limit-value-set.yaml
+
+forecast-limit-period-detailed:
+  allOf:
+    - $ref: '#/forecast-limit-period'
+    - $ref: ./limit-provenance.yaml
+
+forecast-limit-item:
+  type: object
+  additionalProperties: false
+  properties:
+    transmission-facility-id:
+      $ref: ./generic-identifier.yaml
+    periods: &periods
+      type: array
+      maxItems: 240
+      items:
+        $ref: '#/forecast-limit-period'
+
+forecast-limit-item-detailed:
+  type: object
+  additionalProperties: false
+  properties:
+    transmission-facility-id:
+      $ref: ./generic-identifier.yaml
+    periods:
+      <<: *periods
+      items:
+        $ref: '#/forecast-limit-period-detailed'
+
+forecast-proposal-for-segment:
+  type: object
+  additionalProperties: false
+  properties:
+    segment-id:
+      $ref: ./generic-identifier.yaml
+    periods:
+      <<: *periods
+      items:
+        $ref: ./forecast-rating-period.yaml
+ 
+forecast-limit-set-detailed: &limit-set
+  description: Forecast including provenance information.
+  type: array
+  minItems: 0
+  maxItems: 100000
+  items:
+    $ref: '#/forecast-limit-item-detailed'
+
+forecast-limit-set:
+  <<: *limit-set
+  description: Set of forecast limits
+  items:
+    $ref: '#/forecast-limit-item'
