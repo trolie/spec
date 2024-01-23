@@ -40,17 +40,17 @@ get:
       content:
         application/vnd.trolie.forecast-limit-set-slim.v1+json:
           schema:
-            $ref: "../components/schemas/forecast-limit.yaml#/forecast-limit-set"
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set"
           example:
             $ref: '../../examples/forecast-limits-slim.json'
         application/vnd.trolie.forecast-limit-set-detailed.v1+json:
           schema:
-            $ref: "../components/schemas/forecast-limit.yaml#/forecast-limit-set-detailed"
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set-detailed"
           example:
             $ref: "../../examples/forecast-limits-detailed.json"
         application/json:
           schema:
-            $ref: "../components/schemas/forecast-limit.yaml#/forecast-limit-set"
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304':

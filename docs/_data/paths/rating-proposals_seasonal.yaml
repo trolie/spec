@@ -30,7 +30,7 @@ get:
       content:
         application/vnd.trolie.seasonal-rating-proposal.v1+json:
           schema:
-            $ref: ../components/schemas/seasonal-rating-proposal.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             owner: UTILITY A
@@ -54,7 +54,7 @@ get:
                           mva: 170
         application/json:
           schema:
-            $ref: ../components/schemas/seasonal-rating-proposal.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -89,7 +89,7 @@ patch:
     content:
       application/vnd.trolie.seasonal-rating-proposal.v1+json:
         schema:
-          $ref: ../components/schemas/seasonal-rating-proposal.yaml
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
         example:
           ratings:
             - segment-id: segmentX
@@ -110,7 +110,7 @@ patch:
                         mva: 170
       application/json:
         schema:
-          $ref: ../components/schemas/seasonal-rating-proposal.yaml
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
   responses:
     '202':
       description: >
@@ -119,7 +119,7 @@ patch:
       content:
         application/vnd.trolie.seasonal-proposal.v1+json:
           schema:
-            $ref: ../components/schemas/seasonal-rating-proposal.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             owner: UTILITY A
@@ -143,7 +143,7 @@ patch:
                           mva: 170
         application/json:
           schema:
-            $ref: ../components/schemas/seasonal-rating-proposal.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 

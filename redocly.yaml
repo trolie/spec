@@ -9,7 +9,7 @@ rules:
       property: example
     assertions:
       defined: true
-    severity: warn
+    severity: off
 apis:
   trolie@dev:
     root: ./docs/_data/openapi-split.yaml

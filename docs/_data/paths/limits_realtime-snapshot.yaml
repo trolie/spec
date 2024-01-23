@@ -29,7 +29,7 @@ get:
       content:
         application/vnd.trolie.realtime-limit-set-slim.v1+json:
           schema:
-            $ref: ../components/schemas/realtime-limit-set.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set"
           example:
             $ref: '../../examples/realtime-limit-set-slim.json'
         application/vnd.trolie.realtime-limit-set-detailed.v1+json:
@@ -39,7 +39,7 @@ get:
               $ref: '../../examples/realtime-limit-set-detailed.json'
         application/json:
           schema:
-            $ref: ../components/schemas/realtime-limit-set.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304':

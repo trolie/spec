@@ -12,7 +12,7 @@ get:
       content:
         application/vnd.trolie.monitoring-set.v1+json:
           schema:
-            $ref: ../components/schemas/monitoring-set.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
           example:
             id: utilityA-and-neighbors
             description: Utility A's owned lines, as well as surround neighbors.
@@ -22,7 +22,7 @@ get:
               - line3
         application/json:
           schema:
-            $ref: ../components/schemas/monitoring-set.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304': &not-modified
@@ -84,7 +84,7 @@ put:
     content:
       application/vnd.trolie.monitoring-set.v1+json:
         schema:
-          $ref: ../components/schemas/monitoring-set.yaml
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
         example:
           id: utilityA-and-neighbors
           description: Utility A's owned lines, as well as surround neighbors.
@@ -94,7 +94,7 @@ put:
             - line3
       application/json:
         schema:
-          $ref: ../components/schemas/monitoring-set.yaml
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
   responses:
     '204': *no-content
     '304': *not-modified

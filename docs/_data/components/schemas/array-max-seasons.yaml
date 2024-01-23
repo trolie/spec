@@ -1,0 +1,11 @@
+seasonal-proposals:
+  type: object
+  additionalProperties: false
+  properties:
+    segment-id:
+      $ref: ./generic-identifier.yaml
+    seasons:
+      type: array
+      maxItems: 20 # max seasons
+      items:
+        $ref: ./seasonal-proposal-season.yaml

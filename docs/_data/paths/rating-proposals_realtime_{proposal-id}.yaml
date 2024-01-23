@@ -12,27 +12,10 @@ get:
       content:
         application/vnd.trolie.realtime-rating-proposal.v1+json:
           schema:
-            $ref: ../components/schemas/realtime-rating-proposal.yaml
-          example:
-            id: '12345'
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            submitter: utilityA
-            ratings:
-              - segment-id: segmentX
-                status: superseded
-                values:
-                  - type: normal
-                    value:
-                      mva: 160
-                  - type: emergency
-                    value:
-                      mva: 165
-                  - type: load-shed
-                    value:
-                      mva: 170
+            $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
         application/json:
           schema:
-            $ref: ../components/schemas/realtime-rating-proposal.yaml
+            $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304':

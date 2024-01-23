@@ -68,7 +68,7 @@ post:
     content:
       application/vnd.trolie.monitoring-set.v1+json:
         schema:
-          $ref: ../components/schemas/monitoring-set.yaml
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
         example:
           id: utilityA-and-neighbors
           description: Utility A's owned lines, as well as surround neighbors.
@@ -78,17 +78,17 @@ post:
             - line3
       application/json:
         schema:
-          $ref: ../components/schemas/monitoring-set.yaml
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
   responses:
     '201':
       description: The monitoring set was created.
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/monitoring-set.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
         application/vnd.trolie.monitoring-set.v1+json:
           schema:
-            $ref: ../components/schemas/monitoring-set.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/monitoring-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
