@@ -19,7 +19,7 @@ properties:
     $ref: ./generic-identifier.yaml
   override-reason:
     allOf:
-      - $ref: ./description.yaml
+      - $ref: '../../openapi-split.yaml#/components/schemas/description'
       - description: >
           If provided, indicates that this limit was overridden for some reason, the
           reason itself.

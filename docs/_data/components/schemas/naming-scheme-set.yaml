@@ -9,5 +9,5 @@ items:
       $ref: ./generic-identifier.yaml
     description:
       allOf:
-        - $ref: ./description.yaml
+        - $ref: '../../openapi-split.yaml#/components/schemas/description'
         - example: Asset registration system identifiers
