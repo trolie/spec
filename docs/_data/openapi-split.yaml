@@ -414,16 +414,14 @@ components:
 
     hash:
       type: string
-      description: |
-        A hex encoded hash value as produced by, e.g., SHA512.
+      description: A hex encoded hash value as produced by, e.g., SHA512.
       maxLength: 256
       pattern: ^[A-Fa-f0-9\-]{6,256}$
       example: >-
         8f27c691ded1634cc83491368203c7d2af782d45a7375b49d6e6b042132ee48b9c78fb6a4a274f118a8bd97abe40305e6a0598c694fa5dee6eb70e750fd617e3
 
     origin-id:
-      description: |
-        Opaque correlation identifier assigned by the originating system.
+      description: Opaque correlation identifier assigned by the originating system.
       type: string
       maxLength: 50
       pattern: ^(.){1,50}$
