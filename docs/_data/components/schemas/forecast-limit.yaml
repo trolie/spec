@@ -60,3 +60,14 @@ forecast-limit-set:
   description: Set of forecast limits
   items:
     $ref: '#/forecast-limit-item'
+
+missing-forecast-rating-for-segment:
+  type: object
+  additionalProperties: false
+  properties:
+    segment-id:
+      $ref: ./generic-identifier.yaml
+    periods:
+      <<: *periods
+      items:
+        $ref: ./period-start.yaml
