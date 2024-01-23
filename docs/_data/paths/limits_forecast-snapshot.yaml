@@ -41,15 +41,13 @@ get:
         application/vnd.trolie.forecast-limit-set-slim.v1+json:
           schema:
             $ref: "../components/schemas/forecast-limit.yaml#/forecast-limit-set"
-          examples:
-            simple-example:
-              externalValue: '/examples/forecast-limits-slim.json'
+          example:
+            $ref: '../../examples/forecast-limits-slim.json'
         application/vnd.trolie.forecast-limit-set-detailed.v1+json:
           schema:
             $ref: "../components/schemas/forecast-limit.yaml#/forecast-limit-set-detailed"
-          examples:
-            simple-example:
-              externalValue: "/examples/forecast-limits-detailed.json"
+          example:
+            $ref: "../../examples/forecast-limits-detailed.json"
         application/json:
           schema:
             $ref: "../components/schemas/forecast-limit.yaml#/forecast-limit-set"
