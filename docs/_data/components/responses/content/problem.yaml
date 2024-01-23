@@ -1,3 +1,0 @@
-"application/problem+json":
-  schema:
-    $ref: ../../schemas/problem.yaml

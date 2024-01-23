@@ -150,7 +150,7 @@ patch:
           schema:
             $ref: ../components/schemas/forecast-rating-proposal.yaml
       headers:
-        $ref: ../components/headers/ETag-response.yaml
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty

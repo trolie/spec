@@ -3,7 +3,7 @@ head: &head
   description: >
     Use to obtain the headers that would be returned for 
     `getTemporaryAARExceptions`. Useful for cache invalidation.
-  summary: Get HTTP headers for Temporary AAR Exceptions
+  summary: Temporary AAR Exceptions
   tags: &tags
     - Temporary AAR Exceptions
   parameters:
@@ -12,36 +12,8 @@ head: &head
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/segment-filter.yaml
   responses:
-    '200': &ok
-      description: OK
-      headers:
-        $ref: ../components/headers/ETag-response.yaml
-    '304': &not-modified
-      description: The snapshot has not changed.
-      headers:
-        $ref: ../components/headers/ETag-response.yaml
-    '400': &malformed
-      description: Malformed request, based on misuse of filters.
-      headers: &rate-limited
-        $ref: ../components/headers/rate-limited.yaml
-    '401': &unauthorized
-      description: Unauthorized
-      headers: *rate-limited
-    '403': &forbidden
-      description: Access denied
-      headers: *rate-limited
-    '404': &not-found
-      description: The requested snapshot does not exist
-      headers: *rate-limited
-    '406': &not-acceptable
-      description: Content negotiation failed
-      headers: *rate-limited
-    '429': &rate-limit-hit
-      $ref: ../components/responses/rate-limit-hit-head.yaml
-    '500': &unexpected-error
-      description: An unexpected error occurred
-      headers: *rate-limited
-    default: *unexpected-error
+    $ref: ../components/responses/read-head.yaml
+
   security: &read-authorization
     - oauth2-primary-flow:
         - read:temporary-aar-exceptions
@@ -55,10 +27,9 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
-  summary: Get Temporary AAR Exceptions
   responses:
     '200':
-      <<: *ok
+      description: OK
       content:
         application/vnd.trolie.temporary-aar-exception-set.v1+json:
           schema:
@@ -83,29 +54,29 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/temporary-rating-set.yaml
-    '304': *not-modified
-    '400':
-      <<: *malformed
-      content:
-        $ref: ../components/responses/content/problem.yaml
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
+    '304':
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400': &malformed
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
     '401': &unauthorized-empty
-      <<: *unauthorized
-      content: &empty
-        $ref: ../components/responses/empty.yaml
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
     '403': &forbidden-empty
-      <<: *forbidden
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
     '404': &not-found-empty
-      <<: *not-found
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406': &not-acceptable-empty
-      <<: *not-acceptable
-      content: *empty
-    '429': *rate-limit-hit
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
+    '410':
+      $ref: '../openapi-split.yaml#/components/responses/410-empty'
+    '429': &rate-limit-hit
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': &unexpected-error-empty
-      <<: *unexpected-error
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
+
   security: *read-authorization
 
 post:
@@ -138,7 +109,6 @@ post:
           $ref: ../components/schemas/temporary-rating.yaml
   responses:
     '201':
-      <<: *ok
       description: The temporary AAR Exception was created.
       content:
         application/vnd.trolie.temporary-aar-exception.v1+json:
@@ -164,19 +134,17 @@ post:
         application/json:
           schema:
             $ref: ../components/schemas/temporary-rating.yaml
-    '400':
-      <<: *malformed
-      description: >
-        Malformed request, proposal is invalid.  Details are in error
-        messages.  
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+    '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
     '404': *not-found-empty
     '406': *not-acceptable-empty
     '413':
-      $ref: ../components/responses/payload-too-large.yaml
+      $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '422':
-      $ref: ../components/responses/unprocessable.yaml
+      $ref: '../openapi-split.yaml#/components/responses/422-problem'
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty

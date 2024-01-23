@@ -1,5 +1,0 @@
-description: Too many requests (rate limiting)
-content:
-  $ref: empty.yaml
-headers:
-  $ref: ../headers/rate-limit-hit.yaml

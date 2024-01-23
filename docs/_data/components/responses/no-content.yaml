@@ -1,3 +1,0 @@
-description: Operation successful. No Content.
-headers:
-  $ref: ../headers/rate-limited.yaml

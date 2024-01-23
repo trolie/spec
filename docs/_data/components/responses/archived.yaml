@@ -1,5 +1,0 @@
-description: Gone. The requested forecast may be available in ratings archive.
-content:
-  $ref: empty.yaml
-headers:
-  $ref: ../headers/rate-limited.yaml

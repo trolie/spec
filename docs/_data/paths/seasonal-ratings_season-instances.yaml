@@ -7,39 +7,8 @@ head: &head
   tags:
     - Seasonal Rating Snapshots
   responses:
-    '200': &ok
-      description: OK
-      headers:
-        $ref: ../components/headers/ETag-response.yaml
-    '304': &not-modified
-      description: The snapshot has not changed.
-      headers:
-        $ref: ../components/headers/ETag-response.yaml
-    '400': &malformed
-      description: Malformed request, based on misuse of filters.
-      headers: &rate-limited
-        $ref: ../components/headers/rate-limited.yaml
-    '401': &unauthorized
-      description: Unauthorized
-      headers: *rate-limited
-    '403': &forbidden
-      description: Access denied
-      headers: *rate-limited
-    '404': &not-found
-      description: The requested snapshot does not exist
-      headers: *rate-limited
-    '406': &not-acceptable
-      description: Content negotiation failed
-      headers: *rate-limited
-    '410': &gone
-      description: Gone. The requested forecast should be available in archive.
-      headers: *rate-limited
-    '429': &rate-limit-hit
-      $ref: ../components/responses/rate-limit-hit-head.yaml
-    '500': &unexpected-error
-      description: An unexpected error occurred
-      headers: *rate-limited
-    default: *unexpected-error
+    $ref: ../components/responses/read-head.yaml
+
   security: &read-authorization
     - oauth2-primary-flow:
         - read:operating-snapshot
@@ -50,7 +19,7 @@ get:
   summary: Get Instances of Seasons
   responses:
     '200':
-      <<: *ok
+      description: OK
       content:
         application/vnd.trolie.season-instance-set.v1+json:
           schema:
@@ -63,30 +32,27 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/season-instance-set.yaml
-    '304': *not-modified
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
+    '304':
+      $ref: '../openapi-split.yaml#/components/responses/304'
     '400':
-      <<: *malformed
-      content:
-        $ref: ../components/responses/content/problem.yaml
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
     '401':
-      <<: *unauthorized
-      content: &empty
-        $ref: ../components/responses/empty.yaml
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
     '403':
-      <<: *forbidden
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
     '404':
-      <<: *not-found
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406':
-      <<: *not-acceptable
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
     '410':
-      <<: *gone
-      content: *empty
-    '429': *rate-limit-hit
+      $ref: '../openapi-split.yaml#/components/responses/410-empty'
+    '429':
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': &unexpected-error-empty
-      <<: *unexpected-error
-      content: *empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
+
   security: *read-authorization

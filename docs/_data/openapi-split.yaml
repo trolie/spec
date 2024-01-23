@@ -321,10 +321,13 @@ components:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
     '200':
       description: OK
-      headers:
+      headers: &caching-headers
         <<: *rate-limited-headers
         ETag:
           $ref: "#/components/headers/ETag"
+    '204':
+      description: Operation successful. No Content.
+      headers: *caching-headers
 
     '400': &malformed
       <<: *rate-limited
