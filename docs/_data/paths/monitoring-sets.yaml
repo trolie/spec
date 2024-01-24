@@ -11,7 +11,7 @@ head: &head
 
   security: &read-authorization
     - oauth2-primary-flow:
-        - read:monitoring-sets
+        - read:monitoring-set
 get:
   <<: *head
   operationId: getMonitoringSets

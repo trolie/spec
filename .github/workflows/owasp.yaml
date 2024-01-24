@@ -2,6 +2,9 @@ name: 'OWASP Spectral lint'
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 1.0.0*
   pull_request:
     branches:
       - 1.0.0*
