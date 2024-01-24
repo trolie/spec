@@ -1,9 +1,22 @@
+head: &head
+  operationId: getNetworkSegmentsHeaders
+  description: >
+    Use to obtain the headers that would be returned for `getNetworkSegments`.
+    Useful for cache invalidation.
+  summary: Get HTTP headers for Network Segments
+  tags:
+    - Reference Data
+  responses:
+    $ref: ../components/responses/read-head.yaml
+
+  security: &read-authorization
+    - oauth2-primary-flow:
+        - read:reference-data
 get:
+  <<: *head
   operationId: getNetworkSegments
   description: &get_desc Get network segments in the model with effective dates
   summary: *get_desc
-  tags:
-    - Reference Data
   responses:
     '200':
       description: OK
@@ -18,83 +31,26 @@ get:
           schema:
             $ref: ../components/schemas/network-segment-set.yaml
       headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
     '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': &ref_0
-      description: |
-        Malformed request, based on misuse of filters.
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400':
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
     '401':
-      $ref: ../components/responses/unauthorized.yaml
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
     '403':
-      $ref: ../components/responses/forbidden.yaml
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
     '404':
-      $ref: ../components/responses/no-data-found.yaml
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406':
-      $ref: ../components/responses/not-acceptable.yaml
-    '429':
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default:
-      $ref: ../components/responses/unexpected-error.yaml
-  security: &ref_1
-    - oauth2-primary-flow:
-        - read:reference-data
-head:
-  operationId: getNetworkSegmentsHeaders
-  description: >
-    Use to obtain the headers that would be returned for `getNetworkSegments`.
-    Useful for cache invalidation.
-  summary: Get HTTP headers for Network Segments
-  tags:
-    - Reference Data
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': *ref_0
-    '401':
-      $ref: ../components/responses/unauthorized-head.yaml
-    '403':
-      $ref: ../components/responses/forbidden-head.yaml
-    '404':
-      $ref: ../components/responses/no-data-found-head.yaml
-    '406':
-      $ref: ../components/responses/not-acceptable-head.yaml
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
     '410':
-      $ref: ../components/responses/archived.yaml
+      $ref: '../openapi-split.yaml#/components/responses/410-empty'
     '429':
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
-  security: *ref_1
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    default: *unexpected-error-empty
+
+  security: *read-authorization

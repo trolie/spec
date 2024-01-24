@@ -1,6 +1,0 @@
-description: |
-  Opaque correlation identifier assigned by the originating system.
-type: string
-maxLength: 50
-pattern: ^(.){1,50}$
-example: fded654c-64f5-4db9-9467-8937d2b3f027

@@ -14,6 +14,14 @@ rules:
       - field: "500.content"
         function: truthy
 
+  "owasp:api3:2019-define-error-responses-500-head":
+    message: "Operation is missing {{property}}."
+    description: OWASP API Security recommends defining schemas for all responses, even errors. The 500 describes what happens when a request fails with an internal server error, so its important to define this not just for documentation, but to empower contract testing to make sure the proper JSON structure is being returned instead of leaking implementation details in backtraces.
+    given: $.paths.*[head].responses
+    then:
+      - field: "500"
+        function: truthy
+
   "owasp:api3:2019-define-error-responses-401":
     message: "Operation is missing {{property}}."
     description: "OWASP API Security recommends defining schemas for all responses, even errors. The 401 describes what happens when a request is unauthorized, so its important to define this not just for documentation, but to empower contract testing to make sure the proper JSON structure is being returned instead of leaking implementation details in backtraces."
@@ -24,6 +32,12 @@ rules:
       - field: "401.content"
         function: truthy
 
+  # we do not require content for rate limiting
+  "owasp:api4:2019-rate-limit-responses-429":
+    given: $.paths..responses
+    then:
+      - field: "429"
+        function: truthy
 
   "should-have-422":
     message: "Operation is missing {{property}}."

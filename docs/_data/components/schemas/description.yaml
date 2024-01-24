@@ -1,4 +1,0 @@
-allOf:
-  - $ref: ./constants/maximum-description-length.yaml
-  - type: string
-    format: free-text

@@ -3,8 +3,4 @@ allOf:
   - type: object
     properties:
       ratings:
-        allOf:
-          - $ref: ./constants/maximum-proposals.yaml
-          - type: array
-            items:
-              $ref: ./forecast-proposal-for-segment.yaml
+        $ref: 'array-max-monitoring-sets.yaml#/forecast-ratings-proposals'

@@ -34,45 +34,28 @@ get:
           schema:
             $ref: ../components/schemas/temporary-rating.yaml
       headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': &ref_0
-      $ref: ../components/responses/not-modified.yaml
-    '400':
-      description: |
-        Malformed request, based on misuse of filters.
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': &ref_1
-      $ref: ../components/responses/unauthorized.yaml
-    '403': &ref_2
-      $ref: ../components/responses/forbidden.yaml
-    '404': &ref_3
-      $ref: ../components/responses/no-data-found.yaml
-    '406': &ref_4
-      $ref: ../components/responses/not-acceptable.yaml
-    '429': &ref_5
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default: &ref_6
-      $ref: ../components/responses/unexpected-error.yaml
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
+    '304':
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400': &malformed
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401': &unauthorized-empty
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403': &forbidden-empty
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '404': &not-found-empty
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
+    '406': &not-acceptable-empty
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
+    '410':
+      $ref: '../openapi-split.yaml#/components/responses/410-empty'
+    '429': &rate-limit-hit
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    default: *unexpected-error-empty
+
   security:
     - oauth2-primary-flow:
         - read:temporary-seasonal-ratings
@@ -85,32 +68,20 @@ delete:
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
-    '204':
-      $ref: ../components/responses/no-content.yaml
-    '304': *ref_0
-    '400': &ref_7
-      description: Malformed request, proposal is invalid. Details are in error messages.
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': *ref_1
-    '403': *ref_2
-    '404': *ref_3
-    '406': *ref_4
-    '429': *ref_5
-    default: *ref_6
-  security: &ref_8
+    '204': &no-content
+      $ref: '../openapi-split.yaml#/components/responses/204'
+    '304': &not-modified
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400': *malformed
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '404': *not-found-empty
+    '406': *not-acceptable-empty
+    '429': *rate-limit-hit
+    '500': *unexpected-error-empty
+    default: *unexpected-error-empty
+
+  security: &authorize-admin
     - oauth2-primary-flow:
         - write:temporary-seasonal-ratings
 put:
@@ -146,28 +117,18 @@ put:
         schema:
           $ref: ../components/schemas/temporary-rating.yaml
   responses:
-    '200':
-      description: |
-        The temporary seasonal rating was updated
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': *ref_0
-    '400': *ref_7
-    '401': *ref_1
-    '403': *ref_2
-    '404': *ref_3
-    '406': *ref_4
+    '204': *no-content
+    '304': *not-modified
+    '400': *malformed
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '404': *not-found-empty
+    '406': *not-acceptable-empty
     '413':
-      $ref: ../components/responses/payload-too-large.yaml
+      $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '422':
-      $ref: ../components/responses/unprocessable.yaml
-    '429': *ref_5
-    default: *ref_6
-  security: *ref_8
+      $ref: '../openapi-split.yaml#/components/responses/422-problem'
+    '429': *rate-limit-hit
+    '500': *unexpected-error-empty
+    default: *unexpected-error-empty
+  security: *authorize-admin

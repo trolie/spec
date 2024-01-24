@@ -1,5 +1,0 @@
-description: Access denied.
-content:
-  $ref: empty.yaml
-headers:
-  $ref: ../headers/rate-limited.yaml

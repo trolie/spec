@@ -1,0 +1,49 @@
+forecast-limit-item:
+  type: object
+  additionalProperties: false
+  properties:
+    transmission-facility-id:
+      $ref: ./generic-identifier.yaml
+    periods: &max
+      type: array
+      maxItems: 240
+      items:
+        $ref: 'forecast-limit-period.yaml#/slim'
+
+forecast-limit-item-detailed:
+  type: object
+  additionalProperties: false
+  properties:
+    transmission-facility-id:
+      $ref: ./generic-identifier.yaml
+    periods:
+      <<: *max
+      items:
+        $ref: 'forecast-limit-period.yaml#/detailed'
+
+forecast-proposal-for-segment:
+  type: object
+  additionalProperties: false
+  properties:
+    segment-id:
+      $ref: ./generic-identifier.yaml
+    periods:
+      <<: *max
+      items:
+        $ref: ./forecast-rating-period.yaml
+
+missing-forecast-rating-for-segment:
+  type: object
+  additionalProperties: false
+  properties:
+    segment-id:
+      $ref: ./generic-identifier.yaml
+    periods:
+      <<: *max
+      items:
+        $ref: ./period-start.yaml
+
+realtime-rating-proposal:
+  <<: *max
+  items:
+    $ref: ./realtime-proposal-for-segment.yaml

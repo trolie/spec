@@ -1,4 +1,25 @@
+head: &head
+  operationId: getTemporaryAARExceptionsHeaders
+  description: >
+    Use to obtain the headers that would be returned for 
+    `getTemporaryAARExceptions`. Useful for cache invalidation.
+  summary: Temporary AAR Exceptions
+  tags: &tags
+    - Temporary AAR Exceptions
+  parameters:
+    - $ref: ../components/parameters/period-start-query.yaml
+    - $ref: ../components/parameters/period-end.yaml
+    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/segment-filter.yaml
+  responses:
+    $ref: ../components/responses/read-head.yaml
+
+  security: &read-authorization
+    - oauth2-primary-flow:
+        - read:temporary-aar-exceptions
+
 get:
+  <<: *head
   operationId: getTemporaryAARExceptions
   description: >
     Search for Temporary AAR Exceptions.  Will return any Temporary AAR
@@ -6,14 +27,6 @@ get:
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
-  summary: Get Temporary AAR Exceptions
-  tags:
-    - Temporary AAR Exceptions
-  parameters:
-    - $ref: ../components/parameters/period-start-query.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
   responses:
     '200':
       description: OK
@@ -42,99 +55,35 @@ get:
           schema:
             $ref: ../components/schemas/temporary-rating-set.yaml
       headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': &ref_2
-      $ref: ../components/responses/not-modified.yaml
-    '400': &ref_0
-      description: |
-        Malformed request, based on misuse of filters.
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': &ref_3
-      $ref: ../components/responses/unauthorized.yaml
-    '403': &ref_4
-      $ref: ../components/responses/forbidden.yaml
-    '404': &ref_5
-      $ref: ../components/responses/no-data-found.yaml
-    '406': &ref_6
-      $ref: ../components/responses/not-acceptable.yaml
-    '410':
-      $ref: ../components/responses/archived.yaml
-    '429': &ref_7
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default: &ref_8
-      $ref: ../components/responses/unexpected-error.yaml
-  security: &ref_1
-    - oauth2-primary-flow:
-        - read:temporary-aar-exceptions
-head:
-  operationId: getTemporaryAARExceptionsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getTemporaryAARExceptions`. Useful for cache invalidation.
-  summary: Get HTTP headers for Temporary AAR Exceptions
-  tags:
-    - Temporary AAR Exceptions
-  parameters:
-    - $ref: ../components/parameters/period-start-query.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
     '304':
-      $ref: ../components/responses/not-modified.yaml
-    '400': *ref_0
-    '401':
-      $ref: ../components/responses/unauthorized-head.yaml
-    '403':
-      $ref: ../components/responses/forbidden-head.yaml
-    '404':
-      $ref: ../components/responses/no-data-found-head.yaml
-    '406':
-      $ref: ../components/responses/not-acceptable-head.yaml
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400': &malformed
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401': &unauthorized-empty
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403': &forbidden-empty
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '404': &not-found-empty
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
+    '406': &not-acceptable-empty
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
     '410':
-      $ref: ../components/responses/archived.yaml
-    '429':
-      $ref: ../components/responses/rate-limit-hit.yaml
-    default:
-      $ref: ../components/responses/unexpected-error-head.yaml
-  security: *ref_1
+      $ref: '../openapi-split.yaml#/components/responses/410-empty'
+    '429': &rate-limit-hit
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    default: *unexpected-error-empty
+
+  security: *read-authorization
+
 post:
   operationId: createTemporaryAARException
   description: &post_desc Create a new temporary AAR Exception
   summary: *post_desc
-  tags:
-    - Temporary AAR Exceptions
+  tags: *tags
   requestBody:
     content:
       application/vnd.trolie.temporary-aar-exception.v1+json:
@@ -160,8 +109,7 @@ post:
           $ref: ../components/schemas/temporary-rating.yaml
   responses:
     '201':
-      description: |
-        The temporary AAR Exception was created
+      description: The temporary AAR Exception was created.
       content:
         application/vnd.trolie.temporary-aar-exception.v1+json:
           schema:
@@ -187,43 +135,19 @@ post:
           schema:
             $ref: ../components/schemas/temporary-rating.yaml
       headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-        ETag:
-          $ref: ../components/headers/ETag.yaml
-    '304': *ref_2
-    '400':
-      description: >
-        Malformed request, proposal is invalid.  Details are in error
-        messages.  
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-        application/vnd.trolie.validation-messages.v1+json:
-          schema:
-            $ref: ../components/schemas/validation-messages.yaml
-      headers:
-        X-Rate-Limit-Limit:
-          $ref: ../components/headers/X-Rate-Limit-Limit.yaml
-        X-Rate-Limit-Remaining:
-          $ref: ../components/headers/X-Rate-Limit-Remaining.yaml
-        X-Rate-Limit-Reset:
-          $ref: ../components/headers/X-Rate-Limit-Reset.yaml
-    '401': *ref_3
-    '403': *ref_4
-    '404': *ref_5
-    '406': *ref_6
+        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+    '400': *malformed
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '404': *not-found-empty
+    '406': *not-acceptable-empty
     '413':
-      $ref: ../components/responses/payload-too-large.yaml
+      $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '422':
-      $ref: ../components/responses/unprocessable.yaml
-    '429': *ref_7
-    default: *ref_8
+      $ref: '../openapi-split.yaml#/components/responses/422-problem'
+    '429': *rate-limit-hit
+    '500': *unexpected-error-empty
+    default: *unexpected-error-empty
   security:
     - oauth2-primary-flow:
         - write:temporary-aar-exceptions

@@ -1,6 +1,0 @@
-description: The number of seconds left in the current period
-schema:
-  type: integer
-  format: int32
-  minimum: 0
-  maximum: 1000

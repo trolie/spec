@@ -8,4 +8,4 @@ items:
     id:
       $ref: ./generic-identifier.yaml
     description:
-      $ref: ./description.yaml
+      $ref: '../../openapi-split.yaml#/components/schemas/description'

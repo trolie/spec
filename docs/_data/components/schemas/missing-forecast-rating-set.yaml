@@ -1,5 +1,0 @@
-type: array
-minItems: 0
-maxItems: 50000
-items:
-  $ref: ./missing-forecast-rating-for-segment.yaml

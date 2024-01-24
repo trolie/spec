@@ -1,0 +1,37 @@
+[
+  {
+    "transmission-facility-id": "line2",
+    "proposals-considered": [
+      "c386503e-ae8f-46e7-8fcf-bdee30f4f56b"
+    ],
+    "temporary-aar-exceptions": [
+      "2d8c80e8-f533-4be9-85bf-f7f81eb73d67"
+    ],
+    "limiting-segment-id": "segmentX",
+    "override-reason": "Any reason entered by the operator for an override.",
+    "additional-data": {
+      "vendor-specific-data": {}
+    },
+    "updated-time": "2023-07-12T13:05:43.044267100-07:00",
+    "values": [
+      {
+        "type": "normal",
+        "value": {
+          "mva": 160
+        }
+      },
+      {
+        "type": "emergency",
+        "value": {
+          "mva": 165
+        }
+      },
+      {
+        "type": "load-shed",
+        "value": {
+          "mva": 170
+        }
+      }
+    ]
+  }
+]

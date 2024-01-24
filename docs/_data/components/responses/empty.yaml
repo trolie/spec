@@ -1,4 +1,0 @@
-application/*:
-  schema:
-    $ref: ../schemas/empty.yaml
-  example: ""

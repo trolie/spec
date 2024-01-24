@@ -1,0 +1,50 @@
+monitoring-set:
+  description: |
+    Set of transmission facilities noteworthy to reference in queries in TROLIE.  
+    The set of segments included in the monitoring set is implied by their
+    inclusion in the transmission facilities within the monitoring set.  
+  type: object
+  additionalProperties: false
+  properties:
+    id:
+      $ref: ./generic-identifier.yaml
+    description:
+      $ref: '../../openapi-split.yaml#/components/schemas/description'
+    transmission-facilities: &max
+      type: array
+      minItems: 0
+      maxItems: 50000
+      items:
+        $ref: ./generic-identifier.yaml
+
+forecast-limit-set-detailed:
+  <<: *max
+  description: Forecast including provenance information.
+  items:
+    $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+
+forecast-limit-set:
+  <<: *max
+  description: Set of forecast limits
+  items:
+    $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
+
+realtime-limit-set:
+  <<: *max
+  items:
+    $ref: ./realtime-limit-item.yaml
+
+realtime-limit-set-detailed:
+  <<: *max
+  items:
+    $ref: ./realtime-limit-item-detailed.yaml
+
+rating-proposal:
+  allOf:
+    - $ref: ./mutable-rating-proposal.yaml
+    - type: object
+      properties:
+        ratings:
+          <<: *max
+          items:
+            $ref: 'array-max-seasons.yaml#/seasonal-proposals'
