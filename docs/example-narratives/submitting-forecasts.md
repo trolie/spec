@@ -11,66 +11,7 @@ For most transmission owners (rating providers in TROLIE terminology), the most 
 For the purpose of this example, the JSON listing below may be assumed to be in a file called `input.json`.  The input consists of an array by segment, which then contains an array of ratings for each forecast period.  Note this example also cross the Fall daylight savings transition in the central timezone, thus providing an example of dealing with the notorious "duplicate" 1 AM hour:
 
 ```json
-{
-  "ratings": [
-    { 
-      "segment-id": "segmentX",
-      "periods": [
-        {
-          "period-start": "2025-11-02T01:00:00-05:00",
-          "values": [
-            {
-             "type": "normal",
-             "value": {
-               "mva": 160
-             }
-            },
-            {
-             "type": "emergency",
-             "value": {
-                "mva": 165
-             }
-            }
-          ]
-        },
-        {
-            "period-start": "2025-11-02T01:00:00-06:00",
-            "values": [
-              {
-               "type": "normal",
-               "value": {
-                 "mva": 162
-               }
-              },
-              {
-               "type": "emergency",
-               "value": {
-                  "mva": 167
-               }
-              }
-            ]
-        }, 
-        {
-            "period-start": "2025-11-02T02:00:00-06:00",
-            "values": [
-              {
-               "type": "normal",
-               "value": {
-                 "mva": 162
-               }
-              },
-              {
-               "type": "emergency",
-               "value": {
-                  "mva": 167
-               }
-              }
-            ]
-        }              
-      ]
-    }
-  ]
-}
+{% include_relative ../_data/examples/forecast-ratings-proposal-patch.json %}
 ```
 
 ## Pushing input.json to TROLIE
@@ -81,7 +22,7 @@ curl -d @input.json \
 -X PATCH \
 -H "Content-Type: application/vnd.trolie.rating-forecast-proposal.v1+json" \
 -o output.json \
-"https://trolie.transmission-provider.com/rating-proposals/forecasts"
+"https://trolie.example.com/rating-proposals/forecasts"
 ```
 
 On success, output.json will container a copy of the data just uploaded, with additional metadata on update time and status.  

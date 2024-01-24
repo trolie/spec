@@ -90,7 +90,7 @@ info:
     name: Apache License, Version 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://no-server/trolie
+  - url: https://trolie.example.com
 tags:
   - name: Monitoring Sets
     description: >
