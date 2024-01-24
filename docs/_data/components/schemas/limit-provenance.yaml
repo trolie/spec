@@ -18,13 +18,14 @@ properties:
   limiting-segment:
     $ref: ./generic-identifier.yaml
   override-reason:
+    type: string
+    description: >
+      If provided, indicates that this limit was overridden for some reason, the
+      reason itself.
+
+      If not provided, users may assume no override is in place.  
     allOf:
       - $ref: '../../openapi-split.yaml#/components/schemas/description'
-      - description: >
-          If provided, indicates that this limit was overridden for some reason, the
-          reason itself.
-
-          If not provided, users may assume no override is in place.  
   additional-data:
     description: >
       Implementors may use this object to provide freeform extensions with

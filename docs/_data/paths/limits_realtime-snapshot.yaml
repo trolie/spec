@@ -34,7 +34,7 @@ get:
             $ref: '../../examples/realtime-limit-set-slim.json'
         application/vnd.trolie.realtime-limit-set-detailed.v1+json:
           schema:
-            $ref: ../components/schemas/realtime-limit-set-detailed.yaml
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set-detailed"
           example:
               $ref: '../../examples/realtime-limit-set-detailed.json'
         application/json:

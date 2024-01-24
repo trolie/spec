@@ -34,6 +34,11 @@ realtime-limit-set:
   items:
     $ref: ./realtime-limit-item.yaml
 
+realtime-limit-set-detailed:
+  <<: *max
+  items:
+    $ref: ./realtime-limit-item-detailed.yaml
+
 rating-proposal:
   allOf:
     - $ref: ./mutable-rating-proposal.yaml

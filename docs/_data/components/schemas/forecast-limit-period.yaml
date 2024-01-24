@@ -9,6 +9,8 @@ slim:
       $ref: ./limit-value-set.yaml
 
 detailed:
+  type: object
+  description: Period detailed limits including provenance
   allOf:
     - $ref: '#/slim'
     - $ref: ./limit-provenance.yaml

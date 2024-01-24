@@ -8,6 +8,7 @@ items:
     id:
       $ref: ./generic-identifier.yaml
     description:
+      type: string
+      example: Asset registration system identifiers
       allOf:
         - $ref: '../../openapi-split.yaml#/components/schemas/description'
-        - example: Asset registration system identifiers
