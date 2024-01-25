@@ -1,0 +1,60 @@
+{
+  "ratings": [
+    { 
+      "segment-id": "segmentX",
+      "periods": [
+        {
+          "period-start": "2025-11-02T01:00:00-05:00",
+          "values": [
+            {
+             "type": "normal",
+             "value": {
+               "mva": 160
+             }
+            },
+            {
+             "type": "emergency",
+             "value": {
+                "mva": 165
+             }
+            }
+          ]
+        },
+        {
+            "period-start": "2025-11-02T01:00:00-06:00",
+            "values": [
+              {
+               "type": "normal",
+               "value": {
+                 "mva": 162
+               }
+              },
+              {
+               "type": "emergency",
+               "value": {
+                  "mva": 167
+               }
+              }
+            ]
+        }, 
+        {
+            "period-start": "2025-11-02T02:00:00-06:00",
+            "values": [
+              {
+               "type": "normal",
+               "value": {
+                 "mva": 162
+               }
+              },
+              {
+               "type": "emergency",
+               "value": {
+                  "mva": 167
+               }
+              }
+            ]
+        }              
+      ]
+    }
+  ]
+}

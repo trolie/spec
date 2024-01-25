@@ -42,12 +42,12 @@ get:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set"
           example:
-            $ref: '../../examples/forecast-limits-slim.json'
+            $ref: '../../example-narratives/examples/forecast-limits-slim.json'
         application/vnd.trolie.forecast-limit-set-detailed.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set-detailed"
           example:
-            $ref: "../../examples/forecast-limits-detailed.json"
+            $ref: "../../example-narratives/examples/forecast-limits-detailed.json"
         application/json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set"

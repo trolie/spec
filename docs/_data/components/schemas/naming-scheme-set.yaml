@@ -9,6 +9,6 @@ items:
       $ref: ./generic-identifier.yaml
     description:
       type: string
+      format: free-text
+      maxLength: 500
       example: Asset registration system identifiers
-      allOf:
-        - $ref: '../../openapi-split.yaml#/components/schemas/description'
