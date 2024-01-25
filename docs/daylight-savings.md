@@ -14,12 +14,12 @@ The first problem (non-24 hour days) does not create any particular problem for 
 
 For example, in central US time in 2025, the Fall transition day would begin with the following hours:
 
-```
+{% highlight none %}
 2025-11-02T00:00:00-05:00
 2025-11-02T01:00:00-05:00
 2025-11-02T01:00:00-06:00
 2025-11-02T02:00:00-06:00
 2025-11-02T03:00:00-06:00
-```
+{% endhighlight %}
 
 Note that the two 01:00:00 times are uniquely distinguished with the -05:00 and -06:00 offsets.  

@@ -94,7 +94,7 @@ patch:
         schema:
           $ref: ../components/schemas/forecast-rating-proposal.yaml
         example:
-          $ref: ../examples/forecast-ratings-proposal-patch.json
+          $ref: ../../example-narratives/examples/forecast-ratings-proposal-patch.json
       application/json:
         schema:
           $ref: ../components/schemas/forecast-rating-proposal.yaml

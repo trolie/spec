@@ -3,6 +3,7 @@ extends:
 
 rules:
   operation-summary: warn
+  no-server-example.com: off
   rule/media-type-example-defined:
     subject:
       type: MediaType

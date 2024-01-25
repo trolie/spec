@@ -31,12 +31,12 @@ get:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set"
           example:
-            $ref: '../../examples/realtime-limit-set-slim.json'
+            $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
         application/vnd.trolie.realtime-limit-set-detailed.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set-detailed"
           example:
-              $ref: '../../examples/realtime-limit-set-detailed.json'
+              $ref: '../../example-narratives/examples/realtime-limit-set-detailed.json'
         application/json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set"
