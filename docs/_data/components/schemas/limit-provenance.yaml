@@ -24,8 +24,8 @@ properties:
       reason itself.
 
       If not provided, users may assume no override is in place.  
-    allOf:
-      - $ref: '../../openapi-split.yaml#/components/schemas/description'
+    format: free-text
+    maxLength: 500
   additional-data:
     description: >
       Implementors may use this object to provide freeform extensions with

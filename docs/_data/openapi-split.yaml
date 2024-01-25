@@ -412,21 +412,6 @@ components:
       pattern: ^$
       example: ""
 
-    hash:
-      type: string
-      description: A hex encoded hash value as produced by, e.g., SHA512.
-      maxLength: 256
-      pattern: ^[A-Fa-f0-9\-]{6,256}$
-      example: >-
-        8f27c691ded1634cc83491368203c7d2af782d45a7375b49d6e6b042132ee48b9c78fb6a4a274f118a8bd97abe40305e6a0598c694fa5dee6eb70e750fd617e3
-
-    origin-id:
-      description: Opaque correlation identifier assigned by the originating system.
-      type: string
-      maxLength: 50
-      pattern: ^(.){1,50}$
-      example: fded654c-64f5-4db9-9467-8937d2b3f027
-
     problem:
       description: See [RFC9457](https://www.rfc-editor.org/rfc/rfc9457#appendix-A).
       type: object
@@ -466,16 +451,17 @@ components:
   headers:
     ETag:
       description: >
-        An opaque, unique identifier for a specific version of a resource. The modeled
-        resource state is what is versioned, not the content of any particular
-        representation. The server MUST use a strong validator so that the same ETag
-        is returned regardless of the media type of the representation.
+        An opaque, unique identifier--typically a hash value--for a specific
+        version of a resource. The modeled resource state is what is versioned,
+        not the content of any particular representation. The server MUST use a
+        strong validator so that the same ETag is returned regardless of the
+        media type of the representation.
       schema:
         type: string
+        format: hash
+        maxLength: 256
         additionalProperties: false
-        anyOf:
-          - $ref: "#/components/schemas/hash"
-          - $ref: "#/components/schemas/origin-id"
+
     X-Rate-Limit-Limit:
       description: The number of allowed requests in the current period
       schema:
