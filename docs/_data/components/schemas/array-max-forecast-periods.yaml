@@ -45,5 +45,7 @@ missing-forecast-rating-for-segment:
 
 realtime-rating-proposal:
   <<: *max
+  title: Realtime Rating Proposal
+  x-tags: ["Rating Proposals"]
   items:
     $ref: ./realtime-proposal-for-segment.yaml
