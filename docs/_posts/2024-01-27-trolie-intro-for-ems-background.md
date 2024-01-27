@@ -1,6 +1,7 @@
 ---
-title: Why REST and OpenAPI?
-nav_order: 2
+title: TROLIE, REST and OpenAPI for the EMS 
+layout: post
+author: Tory McKeag, Principal Software Architect, GE Vernova
 ---
 
 # Why REST and OpenAPI?
