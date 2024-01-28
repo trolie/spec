@@ -4,7 +4,7 @@ parent: Articles
 ---
 
 # {{ page.title }}
-
+_January 27, 2024_
 
 ## FERC 881 and EMS
 Thermal line limits are critical to many decisions made on the transmission grid.  Therefore, unsurprisingly, the need to exchange AARs affects many software systems used by utilities and other grid operators.  However, by far the most common among these are Energy Management Systems (EMS) that provide real-time monitoring and control of the transmission grid to control centers.  These systems are implemented by a diverse landscape of vendors, and are used by the vast majority of entities with operations responsibility for the transmission grid, including utilities, transmission companies, transmission owners, reliability coordinators, ISO/RTOs, and of course organizations with combinations of these roles.  There will need to be many EMS integrations with TROLIE.  
