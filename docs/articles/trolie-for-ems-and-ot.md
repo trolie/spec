@@ -1,15 +1,17 @@
 ---
 title: TROLIE, REST and OpenAPI for EMS and OT Experts
-layout: post
-author: Tory McKeag, Principal Software Architect, GE Vernova
+parent: Articles
 ---
 
-# FERC 881 and EMS
+# {{ page.title }}
+
+
+## FERC 881 and EMS
 Thermal line limits are critical to many decisions made on the transmission grid.  Therefore, unsurprisingly, the need to exchange AARs affects many software systems used by utilities and other grid operators.  However, by far the most common among these are Energy Management Systems (EMS) that provide real-time monitoring and control of the transmission grid to control centers.  These systems are implemented by a diverse landscape of vendors, and are used by the vast majority of entities with operations responsibility for the transmission grid, including utilities, transmission companies, transmission owners, reliability coordinators, ISO/RTOs, and of course organizations with combinations of these roles.  There will need to be many EMS integrations with TROLIE.  
 
 EMS systems have been around a long time, with their origins of current functional design dating to the mid-1970s.  Depending on the vendor, EMS technology may be fairly old, some of which significantly pre-dates REST.  Many EMS platforms have traditionally used older methods for data exchanges, such as SCADA protocols, custom TCP-based protocols, and ad-hoc file exchanges.  Representational State Transfer (REST), the technology used for TROLIE, _may_ be unfamiliar to engineers who regularly work on the EMS in what is often referred to as an operations technology (OT) environment.  This article aims to provide a brief introduction to REST from the perspective of an EMS/OT expert in the hopes of making TROLIE more accessible.  
 
-# Why REST and OpenAPI?
+## Why REST and OpenAPI?
 
 While REST may be new (or rarely used) in some EMS systems, it certainly isn't new. It was first published in [academic literature in the
 year 2000](https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm).
@@ -47,7 +49,7 @@ architecture in detail, users of the TROLIE APIs do not need to be experts in
 REST. From a user perspective, REST could be seen as a minor cognitive leap
 from file exchanges, which this document will illustrate through examples.
 
-## Why not ICCP?
+### Why not ICCP?
 The Inter-Control Center Communications Protocol (ICCP), part of IEC standard
 60870-6, is used frequently to integrate Reliability Coordinators' SCADA system
 with member transmission owners' SCADA systems to capture all kinds of telemetry
@@ -75,7 +77,7 @@ forecasted data. There are a couple reasons for this:
 
 This is all in addition to considering the advantages of REST discussed above.
 
-## Why not File Exchanges?
+### Why not File Exchanges?
 
 Unlike ICCP, file exchanges using common formats such as CSV, XML, and JSON do
 allow for more complex data structures. The advantages to REST however over
