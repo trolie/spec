@@ -1,22 +1,21 @@
 ---
-title: TROLIE, REST and OpenAPI for the EMS 
+title: TROLIE, REST and OpenAPI for EMS and OT Experts
 layout: post
 author: Tory McKeag, Principal Software Architect, GE Vernova
 ---
 
+# FERC 881 and EMS
+Thermal line limits are critical to many decisions made on the transmission grid.  Therefore, unsurprisingly, the need to exchange AARs affects many software systems used by utilities and other grid operators.  However, by far the most common among these are Energy Management Systems (EMS) that provide real-time monitoring and control of the transmission grid to control centers.  These systems are implemented by a diverse landscape of vendors, and are used by the vast majority of entities with operations responsibility for the transmission grid, including utilities, transmission companies, transmission owners, reliability coordinators, ISO/RTOs, and of course organizations with combinations of these roles.  There will need to be many EMS integrations with TROLIE.  
+
+EMS systems have been around a long time, with their origins of current functional design dating to the mid-1970s.  Depending on the vendor, EMS technology may be fairly old, some of which significantly pre-dates REST.  Many EMS platforms have traditionally used older methods for data exchanges, such as SCADA protocols, custom TCP-based protocols, and ad-hoc file exchanges.  Representational State Transfer (REST), the technology used for TROLIE, _may_ be unfamiliar to engineers who regularly work on the EMS in what is often referred to as an operations technology (OT) environment.  This article aims to provide a brief introduction to REST from the perspective of an EMS/OT expert in the hopes of making TROLIE more accessible.  
+
 # Why REST and OpenAPI?
 
-While REST isn’t new. It was first published in [academic literature in the
+While REST may be new (or rarely used) in some EMS systems, it certainly isn't new. It was first published in [academic literature in the
 year 2000](https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm).
 
-However, it may imply a learning curve for typical operations technology (OT)
-teams that need to integrate with TROLIE. This is because EMS systems are the
-most common integration targets for TROLIE, where older methods have frequently
-been used for data exchanges, such as SCADA protocols, custom TCP-based
-protocols, and ad-hoc file exchanges.
-
-TROLIE is built on the philosophy that this is an acceptable tradeoff due to the
-upside that REST offers over these traditional data exchange methods. An entire
+TROLIE is built on the philosophy that the adoption of REST vs traditional EMS-centric/OT exchange methods is an acceptable tradeoff due to the
+upside that REST offers over these traditional methods. An entire
 paper could be written purely on this subject as to the benefits of using REST
 for this sort of complex data exchange. To summarize:
 
