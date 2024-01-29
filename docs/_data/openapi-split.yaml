@@ -271,10 +271,6 @@ paths:
     $ref: paths/rating-proposals_seasonal.yaml
   /rating-proposals/seasonal/{ratings-provider}:
     $ref: paths/rating-proposals_seasonal_{ratings-provider}.yaml
-  /monitoring-sets:
-    $ref: paths/monitoring-sets.yaml
-  /monitoring-sets/{id}:
-    $ref: paths/monitoring-sets_{id}.yaml
 components:
   responses:
 
@@ -368,11 +364,6 @@ components:
 
   schemas:
 
-    description: &description
-      type: string
-      format: free-text
-      maxLength: 500
-
     empty:
       description: Intended to proactively avoid information disclosure
       type: string
@@ -393,8 +384,10 @@ components:
             A URI reference that identifies the problem type.
             See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-type)
           example: "https://iana.org/assignments/http-problem-types#date"
-        title:
-          <<: *description
+        title: &description
+          type: string
+          format: free-text
+          maxLength: 500
           description: |
             A short, human-readable summary of the problem type.
             See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-title)
