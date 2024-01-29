@@ -1,3 +1,4 @@
+# TODO: monitoring-set is no longer referenced
 monitoring-set:
   description: |
     Set of transmission facilities noteworthy to reference in queries in TROLIE.  
