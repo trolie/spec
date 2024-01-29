@@ -92,16 +92,7 @@ info:
 servers:
   - url: https://trolie.example.com
 tags:
-  - name: Monitoring Sets
-    description: >
-      Monitoring sets are arbitrarily defined sets of network components, both
-      segments and transmission facilities, 
 
-      that may be used to filter ratings and limits returned by queries against
-      this API.  These are stored sets that may be defined
-
-      arbitrarily by users of the API, so long as those users have permission to
-      view relevant components.  
   - name: Operating Snapshots
     description: >
       Two snapshots are provided:
