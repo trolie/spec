@@ -6,7 +6,9 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-        "devcontainer"
+        "CGMES"
+        ,"devcontainer"
+        ,"ENTSO"
         ,"excalidraw"
         ,"FERC"
         ,"ICCP"
@@ -20,6 +22,6 @@
         ,"Vernova"
         ,"SCADA"
     ],
-    "ignoreWords": [],
+    "ignoreWords": ["adrs"],
     "import": []
 }
