@@ -6,7 +6,7 @@ parent: Architecture Decision Records
 ## Status
 
 * Status: { `proposed` | `rejected` | `accepted` | `deprecated` | `superseded by ADR-XXXX`}
-* Issue Link: {GitHub Issue URL}
+* Issue Link: [GitHub Issue]({GitHub Issue URL})
 
 ## Context
 

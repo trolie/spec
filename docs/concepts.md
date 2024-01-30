@@ -7,6 +7,14 @@ nav_order: 2
 
 Before reviewing examples, users may benefit from a basic understanding of the key constructs used by the TROLIE APIs.  Definitions of these concepts are included here.  
 
+## Transmission Providers
+Transmission Providers refers roughly to the FERC definition of "Transmission Provider" as any public utility that owns, operates, or controls facilities used for the transmission of electric energy in interstate commerce.  This could be said to apply to any entity that operates the transmission grid, including ISOs.  
+
+For the purpose of TROLIE, Transmission Provider may be assumed to be more generic- it is really any entity that can receive ratings.  The Transmission Provider is the host of TROLIE server implementations.  
+
+## Ratings Providers
+A Ratings Provider is defined by this specification to be any entity that has pre-coordinated with the Transmission Provider hosting TROLIE to be the entity responsible for providing AARs on some set of Transmission Facilities.  Ratings Providers implement clients to TROLIE servers.  
+
 ## Transmission Facilities
 A Transmission Facility is a logical part of the electrical network that may have a rating, whether simply seasonal or an AAR.  This most often represents a transmission line, but could also include transformers and other large pieces of equipment, or perhaps even logical points on the network such as interfaces.  Most importantly, these are points at which transmission providers need rating values to operate against.  
 
