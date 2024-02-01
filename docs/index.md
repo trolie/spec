@@ -17,8 +17,9 @@ For general announcements and discussion, subscribe to our [Email List <i class=
 
 ***
 
-{: .important-title }
-> Webinar Announcement <i class="fa-solid fa-bullhorn"></i>
+{: .announcement-title }
+
+> **Webinar Announcement** <i class="fa-solid fa-bullhorn"></i>
 >
 > <a href="https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-webinar-introduction-to-trolie/">Intro to TROLIE</a> webinar hosted by LF Energy on September 21st, 2024.
 
