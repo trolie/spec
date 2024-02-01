@@ -17,6 +17,12 @@ For general announcements and discussion, subscribe to our [Email List <i class=
 
 ***
 
+{: .important-title }
+> Webinar Announcement <i class="fa-solid fa-bullhorn"></i>
+>
+> <a href="https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-webinar-introduction-to-trolie/">Intro to TROLIE</a> webinar hosted by LF Energy on September 21st, 2024.
+
+
 # Introduction
 
 With FERC Order 881, North American Transmission Owners, Transmission Operators, Transmission Providers, and Reliability Coordinators must establish a means to exchange ratings information based on current and forecasted ambient conditions. There is no standards body with a mandate to define a technical specification for that exchange and no vendor consortium that is working toward a specification.
