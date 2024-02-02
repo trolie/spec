@@ -13,8 +13,8 @@ get:
       description: OK
       content:
         application/vnd.trolie.seasonal-rating-proposal.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+          schema: &seasonal-rating-proposal
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-proposal"
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             owner: UTILITY A
@@ -37,8 +37,8 @@ get:
                         value:
                           mva: 170
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+          schema: *seasonal-rating-proposal
+            #$ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-proposal"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -76,8 +76,7 @@ patch:
   requestBody:
     content:
       application/vnd.trolie.seasonal-rating-proposal.v1+json:
-        schema:
-          $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+        schema: *seasonal-rating-proposal
         example:
           ratings:
             - segment-id: segmentX
@@ -97,8 +96,7 @@ patch:
                       value:
                         mva: 170
       application/json:
-        schema:
-          $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+        schema: *seasonal-rating-proposal
   responses:
     '202':
       description: >
@@ -106,8 +104,7 @@ patch:
         need to undergo additional validation and propagation to other systems.
       content:
         application/vnd.trolie.seasonal-proposal.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+          schema: *seasonal-rating-proposal
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             owner: UTILITY A
@@ -130,8 +127,7 @@ patch:
                         value:
                           mva: 170
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+          schema: *seasonal-rating-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 

@@ -30,9 +30,25 @@ forecast-proposal-for-segment:
     periods:
       <<: *max
       items:
-        $ref: ./forecast-rating-period.yaml
+        type: object
+        additionalProperties: false
+        title: Forecasted Period
+        description: |
 
-missing-forecast-rating-for-segment:
+          A Forecasted Period contains proposed limits for a power system
+          object, e.g., a segment, that were forecasted for a particular Period
+          in a Forecast Window. The status of the proposal as determined by the
+          Clearinghouse is also included.
+
+        properties:
+          period-start:
+            $ref: ./period-start.yaml
+          status:
+            $ref: ./proposal-status.yaml
+          values:
+            $ref: ./limit-value-set.yaml
+
+missing-forecast:
   type: object
   additionalProperties: false
   properties:

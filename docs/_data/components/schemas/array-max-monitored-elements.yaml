@@ -40,7 +40,7 @@ realtime-limit-set-detailed:
   items:
     $ref: ./realtime-limit-item-detailed.yaml
 
-rating-proposal:
+seasonal-rating-proposal:
   allOf:
     - $ref: ./mutable-rating-proposal.yaml
     - type: object
