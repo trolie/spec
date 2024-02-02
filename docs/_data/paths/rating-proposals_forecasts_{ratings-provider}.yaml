@@ -15,8 +15,8 @@ get:
       description: OK
       content:
         application/vnd.trolie.rating-forecast-proposal.v1+json:
-          schema:
-            $ref: ../components/schemas/forecast-rating-proposal.yaml
+          schema: &forecast-rating-proposal
+            $ref: ../components/schemas/array-max-monitoring-sets.yaml#/forecast-rating-proposal
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             ratings-provider: UTILITY-X
@@ -39,8 +39,7 @@ get:
                         value:
                           mva: 170
         application/json:
-          schema:
-            $ref: ../components/schemas/forecast-rating-proposal.yaml
+          schema: *forecast-rating-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304': &not-modified
@@ -77,8 +76,7 @@ patch:
   requestBody:
     content:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
-        schema:
-          $ref: ../components/schemas/forecast-rating-proposal.yaml
+        schema: *forecast-rating-proposal
         example:
           ratings:
             - segment-id: segmentX
@@ -98,8 +96,7 @@ patch:
                       value:
                         mva: 170
       application/json:
-        schema:
-          $ref: ../components/schemas/forecast-rating-proposal.yaml
+        schema: *forecast-rating-proposal
   responses:
     '202':
       description: >
@@ -109,8 +106,7 @@ patch:
         `getRatingForecastProposals`
       content:
         application/vnd.trolie.rating-forecast-proposal.v1+json:
-          schema:
-            $ref: ../components/schemas/forecast-rating-proposal.yaml
+          schema: *forecast-rating-proposal
           example:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             ratings-provider: UTILITY-A
@@ -133,8 +129,7 @@ patch:
                         value:
                           mva: 170
         application/json:
-          schema:
-            $ref: ../components/schemas/forecast-rating-proposal.yaml
+          schema: *forecast-rating-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304': *not-modified

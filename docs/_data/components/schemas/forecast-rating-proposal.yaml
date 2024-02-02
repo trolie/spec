@@ -1,6 +1,0 @@
-allOf:
-  - $ref: ./mutable-rating-proposal.yaml
-  - type: object
-    properties:
-      ratings:
-        $ref: 'array-max-monitoring-sets.yaml#/forecast-ratings-proposals'

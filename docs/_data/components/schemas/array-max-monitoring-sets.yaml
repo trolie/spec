@@ -6,17 +6,25 @@ monitoring-set-list: &max
   items:
     $ref: ./generic-identifier.yaml
 
-forecast-ratings-proposals:
-  <<: *max
-  items:
-    $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
+forecast-rating-proposal:
+  allOf:
+    - $ref: ./mutable-rating-proposal.yaml
+    - type: object
+      properties:
+        ratings:
+          <<: *max
+          description: Forecasted Ratings
+          items:
+            $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
 
 realtime-ratings-proposals:
   <<: *max
+  description: Forecasted Ratings
   items:
     $ref: 'array-max-forecast-periods.yaml#/realtime-rating-proposal'
 
 missing-forecast-rating-set:
   <<: *max
+  description: A set of Missing Forecasted Ratings for a Forecast Window
   items:
-    $ref: 'array-max-forecast-periods.yaml#/missing-forecast-rating-for-segment'
+    $ref: 'array-max-forecast-periods.yaml#/missing-forecast'
