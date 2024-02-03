@@ -49,15 +49,14 @@ get:
                   override-reason: Any reason entered by the operator for an override.
                   additional-data:
                     vendor-specific-data: {}
-                  values:
-                    - type: normal
-                      value:
-                        mva: 160
-                    - type: emergency
-                      value:
+                  continuous-operating-limit:
+                    mva: 160
+                  emergency-operating-limits:
+                    - duration-name: emergency
+                      limit:
                         mva: 165
-                    - type: load-shed
-                      value:
+                    - duration-name: load-shed
+                      limit:
                         mva: 170
         application/json:
           schema:

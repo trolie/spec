@@ -23,18 +23,17 @@ get:
                 seasons:
                   - season-id: fall
                     status: accepted
-                    values:
-                      - type: normal
-                        value:
-                          mva: 160
-                      - type: ste
-                        value:
+                    continuous-operating-limit:
+                      mva: 160
+                    emergency-operating-limits:
+                      - duration-name: ste
+                        limit:
                           mva: 165
-                      - type: lte
-                        value:
+                      - duration-name: lte
+                        limit:
                           mva: 170
-                      - type: dal
-                        value:
+                      - duration-name: dal
+                        limit:
                           mva: 170
         application/json:
           schema: *seasonal-rating-proposal
@@ -82,18 +81,17 @@ patch:
             - segment-id: segmentX
               seasons:
                 - season-id: fall
-                  values:
-                    - type: normal
-                      value:
-                        mva: 160
-                    - type: ste
-                      value:
+                  continuous-operating-limit:
+                    mva: 160
+                  emergency-operating-limits:
+                    - duration-name: ste
+                      limit:
                         mva: 165
-                    - type: lte
-                      value:
+                    - duration-name: lte
+                      limit:
                         mva: 170
-                    - type: dal
-                      value:
+                    - duration-name: dal
+                      limit:
                         mva: 170
       application/json:
         schema: *seasonal-rating-proposal
@@ -113,18 +111,17 @@ patch:
                 seasons:
                   - season-id: fall
                     status: accepted
-                    values:
-                      - type: normal
-                        value:
-                          mva: 160
-                      - type: ste
-                        value:
+                    continuous-operating-limit:
+                      mva: 160
+                    emergency-operating-limits:
+                      - duration-name: ste
+                        limit:
                           mva: 165
-                      - type: lte
-                        value:
+                      - duration-name: lte
+                        limit:
                           mva: 170
-                      - type: dal
-                        value:
+                      - duration-name: dal
+                        limit:
                           mva: 170
         application/json:
           schema: *seasonal-rating-proposal

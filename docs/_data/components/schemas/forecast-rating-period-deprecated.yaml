@@ -30,7 +30,9 @@ properties:
     $ref: ./period-start.yaml
   status:
     $ref: ./proposal-status.yaml
-  values:
-    $ref: ./limit-value-set.yaml
+  continuous-operating-limit:
+    $ref: ./limit.yaml
+  emergency-operating-limits:
+    $ref: ./array-max-emergency-durations.yaml#/limit-value-set
   branch-only-values:
-    $ref: ./limit-value-set.yaml
+    $ref: ./array-max-emergency-durations.yaml#/limit-value-set

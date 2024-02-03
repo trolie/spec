@@ -40,15 +40,17 @@ get:
               start-time: '2025-07-12T16:00:00-07:00'
               end-time: '2025-07-13T12:00:00-07:00'
               updated-time: '2025-07-08T13:05:43.044267100-07:00'
-              values:
-                - type: normal
-                  value:
-                    mva: 160
-                - type: emergency
-                  value:
+              continuous-operating-limit:
+                mva: 160
+              emergency-operating-limits:
+                - duration-name: ste
+                  limit:
                     mva: 165
-                - type: load-shed
-                  value:
+                - duration-name: lte
+                  limit:
+                    mva: 170
+                - duration-name: dal
+                  limit:
                     mva: 170
               reason: Free-form text reason.
         application/json:
@@ -93,15 +95,17 @@ post:
           segment-id: segmentX
           start-time: '2025-07-12T16:00:00-07:00'
           end-time: '2025-07-13T12:00:00-07:00'
-          values:
-            - type: normal
-              value:
-                mva: 160
-            - type: emergency
-              value:
+          continuous-operating-limit:
+            mva: 160
+          emergency-operating-limits:
+            - duration-name: ste
+              limit:
                 mva: 165
-            - type: load-shed
-              value:
+            - duration-name: lte
+              limit:
+                mva: 170
+            - duration-name: dal
+              limit:
                 mva: 170
           reason: Free-form text reason.
       application/json:
@@ -120,15 +124,17 @@ post:
             start-time: '2025-07-12T16:00:00-07:00'
             end-time: '2025-07-13T12:00:00-07:00'
             updated-time: '2025-07-08T13:05:43.044267100-07:00'
-            values:
-              - type: normal
-                value:
-                  mva: 160
-              - type: emergency
-                value:
+            continuous-operating-limit:
+              mva: 160
+            emergency-operating-limits:
+              - duration-name: ste
+                limit:
                   mva: 165
-              - type: load-shed
-                value:
+              - duration-name: lte
+                limit:
+                  mva: 170
+              - duration-name: dal
+                limit:
                   mva: 170
             reason: Free-form text reason.
         application/json:

@@ -12,22 +12,17 @@
                 "additional-data": {
                   "vendor-specific-data": {}
                 },
-                "values": [
+                "continuous-operating-limit": { "mva": 160 },
+                "emergency-operating-limits": [
                     {
-                        "type": "normal",
-                        "value": {
-                            "mva": 160
-                        }
-                    },
-                    {
-                        "type": "emergency",
-                        "value": {
+                        "duration-name": "emergency",
+                        "limit": {
                             "mva": 165
                         }
                     },
                     {
-                        "type": "load-shed",
-                        "value": {
+                        "duration-name": "load-shed",
+                        "limit": {
                             "mva": 170
                         }
                     }
