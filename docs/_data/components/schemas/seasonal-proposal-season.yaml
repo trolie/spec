@@ -11,7 +11,9 @@ properties:
     $ref: ./generic-identifier.yaml
   status:
     $ref: ./proposal-status.yaml
-  values:
-    $ref: ./limit-value-set.yaml
+  continuous-operating-limit:
+    $ref: ./limit.yaml
+  emergency-operating-limits:
+    $ref: ./array-max-emergency-durations.yaml#/limit-value-set
   conditional-values:
     $ref: ./conditional-value-set.yaml

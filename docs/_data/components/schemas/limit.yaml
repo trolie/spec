@@ -1,0 +1,5 @@
+type: object
+oneOf:
+  - $ref: ./apparent-power-value.yaml
+  - $ref: ./current-value.yaml
+  - $ref: ./actual-power-and-factor-value.yaml

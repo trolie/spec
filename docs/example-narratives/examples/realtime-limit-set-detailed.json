@@ -13,25 +13,20 @@
       "vendor-specific-data": {}
     },
     "updated-time": "2023-07-12T13:05:43.044267100-07:00",
-    "values": [
-      {
-        "type": "normal",
-        "value": {
-          "mva": 160
+    "continuous-operating-limit": { "mva": 160 },
+    "emergency-operating-limits": [
+        {
+            "duration-name": "emergency",
+            "limit": {
+                "mva": 165
+            }
+        },
+        {
+            "duration-name": "load-shed",
+            "limit": {
+                "mva": 170
+            }
         }
-      },
-      {
-        "type": "emergency",
-        "value": {
-          "mva": 165
-        }
-      },
-      {
-        "type": "load-shed",
-        "value": {
-          "mva": 170
-        }
-      }
     ]
   }
 ]

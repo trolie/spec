@@ -8,5 +8,7 @@ items:
   properties:
     condition:
       $ref: ./network-component-name.yaml
-    values:
-      $ref: ./limit-value-set.yaml
+    continuous-operating-limit:
+      $ref: ./limit.yaml
+    emergency-operating-limits:
+      $ref: ./array-max-emergency-durations.yaml#/limit-value-set

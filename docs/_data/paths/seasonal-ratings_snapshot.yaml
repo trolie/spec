@@ -35,15 +35,14 @@ get:
               seasons:
                 - season-instance: fall-2023
                   effective-date: '2023-09-01T00:00:00-07:00'
-                  values:
-                    - type: normal
-                      value:
-                        mva: 160
-                    - type: emergency
-                      value:
+                  continuous-operating-limit:
+                    mva: 160
+                  emergency-operating-limits:
+                    - duration-name: emergency
+                      limit:
                         mva: 165
-                    - type: load-shed
-                      value:
+                    - duration-name: load-shed
+                      limit:
                         mva: 170
         application/json:
           schema:
