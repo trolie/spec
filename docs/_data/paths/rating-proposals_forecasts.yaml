@@ -36,8 +36,16 @@ get:
           schema: &forecast-rating-proposal
             $ref: ../components/schemas/array-max-monitoring-sets.yaml#/forecast-rating-proposal
           example:
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            ratings-provider: UTILITY-X
+            forecast-header:
+              last-updated: '2023-07-12T15:05:43.044267100-07:00'
+              default-emergency-durations:
+                - name: lte
+                  duration-minutes: 240
+                - name: ste
+                  duration-minutes: 30
+                - name: dal
+                  duration-minutes: 15
+              ratings-provider: UTILITY-X
             ratings:
               - segment-id: segmentX
                 periods:
@@ -105,8 +113,16 @@ patch:
         application/vnd.trolie.rating-forecast-proposal.v1+json:
           schema: *forecast-rating-proposal
           example:
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            ratings-provider: UTILITY-A
+            forecast-header:
+              last-updated: '2023-07-12T15:05:43.044267100-07:00'
+              default-emergency-durations:
+                - name: lte
+                  duration-minutes: 240
+                - name: ste
+                  duration-minutes: 30
+                - name: dal
+                  duration-minutes: 15
+              ratings-provider: UTILITY-X
             ratings:
               - segment-id: segmentX
                 periods:
