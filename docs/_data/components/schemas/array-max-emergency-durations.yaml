@@ -1,9 +1,17 @@
 emergency-durations: &max
   type: array
-  description: Defines the durations used for emergency limits.
+  description: Defines the durations in minutes used for emergency limits.
+  minItems: 1
   maxItems: 10
   items:
     type: object
+    properties:
+      name:
+        $ref: ./limit-type.yaml
+      duration-minutes:
+        type: integer
+        minimum: 0
+        maximum: 1440
 
 
 limit-value-set:

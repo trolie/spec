@@ -7,19 +7,19 @@ monitoring-set-list: &max
     $ref: ./generic-identifier.yaml
 
 forecast-rating-proposal:
-  allOf:
-    - $ref: ./mutable-rating-proposal.yaml
-    - type: object
-      properties:
-        ratings:
-          <<: *max
-          description: Forecasted Ratings
-          items:
-            $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
+  type: object
+  properties:
+    forecast-header:
+      $ref: ./rating-proposal-header.yaml
+    ratings:
+      <<: *max
+      description: Forecasted Ratings
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
 
 realtime-ratings-proposals:
   <<: *max
-  description: Forecasted Ratings
+  description: Real-Time Ratings Proposals
   items:
     $ref: 'array-max-forecast-periods.yaml#/realtime-rating-proposal'
 
