@@ -49,3 +49,29 @@ seasonal-rating-proposal:
           <<: *max
           items:
             $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+
+missing-forecast-rating-set:
+  <<: *max
+  description: A set of Missing Forecasted Ratings for a Forecast Window
+  items:
+    $ref: 'array-max-forecast-periods.yaml#/missing-forecast'
+
+realtime-ratings-proposals:
+  <<: *max
+  description: Real-Time Ratings Proposals
+  items:
+    $ref: 'array-max-forecast-periods.yaml#/realtime-rating-proposal'
+
+forecast-rating-proposal:
+  type: object
+  properties:
+    forecast-header:
+      $ref: ./rating-proposal-header.yaml
+    ratings:
+      <<: *max
+      description: Forecasted Ratings
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
+  required:
+    - forecast-header
+    - ratings

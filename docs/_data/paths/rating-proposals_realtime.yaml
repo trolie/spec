@@ -30,11 +30,10 @@ get:
       description: OK
       content:
         application/vnd.trolie.realtime-rating-proposal-set.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitoring-sets.yaml#/realtime-ratings-proposals"
+          schema: &realtime-ratings-proposals
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-ratings-proposals"
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitoring-sets.yaml#/realtime-ratings-proposals"
+          schema: *realtime-ratings-proposals
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
