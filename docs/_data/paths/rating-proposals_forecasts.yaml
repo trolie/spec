@@ -45,6 +45,14 @@ get:
                   duration-minutes: 30
                 - name: dal
                   duration-minutes: 15
+              power-system-objects:
+                - receiver-primary-identifier: 8badf00d
+                  alternate-identifiers:
+                    - name: segmentX
+                      authority: TO-NERC-ID
+                    - name: LINE1 SEG-X
+                      authority: RC-NERC-ID
+                      mrid: 8badf00d
               ratings-provider: UTILITY-X
             ratings:
               - segment-id: segmentX
@@ -122,6 +130,14 @@ patch:
                   duration-minutes: 30
                 - name: dal
                   duration-minutes: 15
+              power-system-objects:
+                - receiver-primary-identifier: 8badf00d
+                  alternate-identifiers:
+                    - name: segmentX
+                      authority: TO-NERC-ID
+                    - name: LINE1 SEG-X
+                      authority: RC-NERC-ID
+                      mrid: 8badf00d
               ratings-provider: UTILITY-X
             ratings:
               - segment-id: segmentX

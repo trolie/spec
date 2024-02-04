@@ -23,6 +23,10 @@ properties:
     $ref: ./entity-id.yaml
   default-emergency-durations:
     $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+  power-system-objects:
+    $ref: ./array-max-monitored-elements.yaml#/named-power-system-objects
+
 required:
   - default-emergency-durations
+  - power-system-objects
 additionalProperties: false
