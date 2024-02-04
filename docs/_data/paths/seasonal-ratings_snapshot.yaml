@@ -3,7 +3,7 @@ head: &head
   description: >
     Use to obtain the headers that would be returned for
     `getSeasonalRatingsSnapshot`. Useful for cache invalidation.
-  summary: Get header for Seasonal Ratings
+  summary: Get headers for Seasonal Ratings
   tags:
     - Seasonal Rating Snapshots
   parameters:
@@ -19,17 +19,15 @@ head: &head
 get:
   <<: *head
   operationId: getSeasonalRatingsSnapshot
-  description: >-
-    Retrieve the nominal and seasonal ratings for all facilities in the
-    `monitoring-set`.
+  description: Retrieve the nominal and seasonal ratings.
   summary: Get Seasonal Ratings
   responses:
     '200':
       description: OK
       content:
         application/vnd.trolie.seasonal-rating-snapshot.v1+json:
-          schema:
-            $ref: ../components/schemas/seasonal-rating-snapshot.yaml
+          schema: &seasonal-rating-snapshot
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-snapshot
           example:
             - transmission-facility-id: line2
               seasons:
@@ -45,8 +43,7 @@ get:
                       limit:
                         mva: 170
         application/json:
-          schema:
-            $ref: ../components/schemas/seasonal-rating-snapshot.yaml
+          schema: *seasonal-rating-snapshot
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
