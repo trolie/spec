@@ -49,6 +49,13 @@ forecast-proposal-for-segment:
             $ref: ./limit.yaml
           emergency-operating-limits:
             $ref: ./array-max-emergency-durations.yaml#/limit-value-set
+        required:
+          - period-start
+          - continuous-operating-limit
+          - emergency-operating-limits
+  required:
+    - segment-id
+    - periods
 
 missing-forecast:
   type: object

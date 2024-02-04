@@ -85,6 +85,16 @@ patch:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
         schema: *forecast-rating-proposal
         example:
+          forecast-header:
+            last-updated: '2023-07-12T15:05:43.044267100-07:00'
+            ratings-provider: UTILITY-A
+            default-emergency-durations:
+              - name: lte
+                duration-minutes: 240
+              - name: ste
+                duration-minutes: 30
+              - name: dal
+                duration-minutes: 15
           ratings:
             - segment-id: segmentX
               periods:

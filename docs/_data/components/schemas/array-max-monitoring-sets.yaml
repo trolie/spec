@@ -16,6 +16,9 @@ forecast-rating-proposal:
       description: Forecasted Ratings
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
+  required:
+    - forecast-header
+    - ratings
 
 realtime-ratings-proposals:
   <<: *max
