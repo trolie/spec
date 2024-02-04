@@ -51,6 +51,7 @@ realtime-ratings-proposals:
     $ref: 'array-max-forecast-periods.yaml#/realtime-rating-proposal'
 
 seasonal-rating-proposal:
+  description: Seasonal rating proposal
   allOf:
     - $ref: ./mutable-rating-proposal.yaml
     - type: object
@@ -59,3 +60,8 @@ seasonal-rating-proposal:
           <<: *max
           items:
             $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+seasonal-rating-snapshot:
+  <<: *max
+  description: Seasonal rating snapshot
+  items:
+    $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
