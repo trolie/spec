@@ -1,0 +1,20 @@
+type: object
+properties:
+  receiver-primary-identifier:
+    $ref: ./generic-identifier.yaml
+  alternate-identifiers:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          $ref: ./generic-identifier.yaml
+        authority:
+          $ref: ./entity-id.yaml
+        mrid:
+          $ref: ./generic-identifier.yaml
+      required:
+        - name
+        - authority
+required:
+  - receiver-primary-identifier

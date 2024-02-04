@@ -12,6 +12,12 @@ forecast-limit-set-detailed:
   items:
     $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
 
+named-power-system-objects:
+  <<: *max
+  description: Collection of power system object names
+  items:
+    $ref: ./names.yaml
+
 forecast-rating-proposal:
   type: object
   properties:
