@@ -1,4 +1,9 @@
 {
+  "forecast-header" : {
+    "default-emergency-durations": [
+      { "name": "emergency", "duration-minutes": 60}
+    ]
+  },
   "ratings": [
     {
       "segment-id": "segmentX",
