@@ -470,8 +470,6 @@ components:
             write:seasonal-proposals: Submit seasonal ratings
             write:temporary-aar-exceptions: Write temporary AAR exceptions
             write:temporary-seasonal-ratings: Write temporary seasonal ratings
-            read:monitoring-set: Read monitoring set definitions
-            write:monitoring-sets: Write monitoring set definitions
             read:operating-snapshot: >-
               Read the ratings and limits snapshots in-use by the transmission
               provider

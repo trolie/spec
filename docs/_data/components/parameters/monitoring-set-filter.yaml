@@ -1,7 +1,5 @@
 name: monitoring-set
-description: >
-  Only return ratings or limits for facilities of the associated
-  `monitoring-set`
+description: Only return ratings or limits for facilities of the associated `monitoring-set`.
 in: query
 required: false
 schema:
