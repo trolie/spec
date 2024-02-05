@@ -8,7 +8,7 @@ forecast-limit-item:
       type: array
       maxItems: 240
       items:
-        $ref: 'forecast-limit-period.yaml#/slim'
+        $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-slim'
 
 forecast-limit-item-detailed:
   type: object
@@ -19,7 +19,7 @@ forecast-limit-item-detailed:
     periods:
       <<: *max
       items:
-        $ref: 'forecast-limit-period.yaml#/detailed'
+        $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-detailed'
 
 forecast-proposal-for-segment:
   type: object
@@ -30,29 +30,8 @@ forecast-proposal-for-segment:
     periods:
       <<: *max
       items:
-        type: object
-        additionalProperties: false
-        title: Forecasted Period
-        description: |
+        $ref: 'forecast-limit-period.yaml#/forecast-period-proposal'
 
-          A Forecasted Period contains proposed limits for a power system
-          object, e.g., a segment, that were forecasted for a particular Period
-          in a Forecast Window. The status of the proposal as determined by the
-          Clearinghouse is also included.
-
-        properties:
-          period-start:
-            $ref: ./period-start.yaml
-          status:
-            $ref: ./proposal-status.yaml
-          continuous-operating-limit:
-            $ref: ./limit.yaml
-          emergency-operating-limits:
-            $ref: ./array-max-emergency-durations.yaml#/limit-value-set
-        required:
-          - period-start
-          - continuous-operating-limit
-          - emergency-operating-limits
   required:
     - segment-id
     - periods

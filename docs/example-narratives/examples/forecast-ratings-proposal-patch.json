@@ -18,6 +18,7 @@
       "periods": [
         {
           "period-start": "2025-11-02T01:00:00-05:00",
+          "period-end": "2025-11-02T02:00:00-05:00",
           "continuous-operating-limit": {
             "mva": 160
           },
@@ -31,7 +32,8 @@
           ]
         },
         {
-          "period-start": "2025-11-02T01:00:00-06:00",
+          "period-start": "2025-11-02T02:00:00-05:00",
+          "period-end": "2025-11-02T03:00:00-05:00",
           "continuous-operating-limit": {
             "mva": 160
           },
@@ -45,7 +47,8 @@
           ]
         },
         {
-          "period-start": "2025-11-02T02:00:00-06:00",
+          "period-start": "2025-11-02T03:00:00-05:00",
+          "period-end": "2025-11-02T04:00:00-05:00",
           "continuous-operating-limit": {
             "mva": 160
           },
