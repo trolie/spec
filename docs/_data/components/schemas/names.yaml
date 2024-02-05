@@ -4,6 +4,8 @@ properties:
     $ref: ./generic-identifier.yaml
   alternate-identifiers:
     type: array
+    maxItems: 10
+    minItems: 1
     items:
       type: object
       properties:

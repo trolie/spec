@@ -40,6 +40,7 @@ get:
               - segment-id: segmentX
                 periods:
                   - period-start: '2023-07-12T16:00:00-07:00'
+                    period-end: '2023-07-12T17:00:00-07:00'
                     status: pending
                     continuous-operating-limit:
                       mva: 160
@@ -115,7 +116,7 @@ patch:
             - segment-id: segmentX
               periods:
                 - period-start: '2023-07-12T16:00:00-07:00'
-                  status: pending
+                  period-end: '2023-07-12T17:00:00-07:00'
                   continuous-operating-limit:
                     mva: 160
                   emergency-operating-limits:
@@ -163,6 +164,7 @@ patch:
               - segment-id: segmentX
                 periods:
                   - period-start: '2023-07-12T16:00:00-07:00'
+                    period-end: '2023-07-12T17:00:00-07:00'
                     status: pending
                     continuous-operating-limit:
                       mva: 160
