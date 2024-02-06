@@ -59,7 +59,6 @@ get:
                 periods:
                   - period-start: '2023-07-12T16:00:00-07:00'
                     period-end: '2023-07-12T17:00:00-07:00'
-                    status: pending
                     continuous-operating-limit:
                       mva: 160
                     emergency-operating-limits:
@@ -145,7 +144,6 @@ patch:
                 periods:
                   - period-start: '2023-07-12T16:00:00-07:00'
                     period-end: '2023-07-12T17:00:00-07:00'
-                    status: pending
                     continuous-operating-limit:
                       mva: 160
                     emergency-operating-limits:

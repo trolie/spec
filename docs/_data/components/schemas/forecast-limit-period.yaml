@@ -17,8 +17,6 @@ forecast-period-proposal:
       $ref: ./limit.yaml
     emergency-operating-limits:
       $ref: ./array-max-emergency-durations.yaml#/limit-value-set
-    status:
-      $ref: ./proposal-status.yaml
   required:
     - period-start
     - period-end
