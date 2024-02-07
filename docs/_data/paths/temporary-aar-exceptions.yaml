@@ -36,7 +36,7 @@ get:
             $ref: ../components/schemas/temporary-rating-set.yaml
           example:
             - id: 46f7212b-1633-4c30-ba71-c6e987b2ded7
-              segment-id: segmentX
+              resource-id: segmentX
               start-time: '2025-07-12T16:00:00-07:00'
               end-time: '2025-07-13T12:00:00-07:00'
               updated-time: '2025-07-08T13:05:43.044267100-07:00'
@@ -92,7 +92,7 @@ post:
         schema:
           $ref: ../components/schemas/temporary-rating.yaml
         example:
-          segment-id: segmentX
+          resource-id: segmentX
           start-time: '2025-07-12T16:00:00-07:00'
           end-time: '2025-07-13T12:00:00-07:00'
           continuous-operating-limit:
@@ -120,7 +120,7 @@ post:
             $ref: ../components/schemas/temporary-rating.yaml
           example:
             id: 46f7212b-1633-4c30-ba71-c6e987b2ded7
-            segment-id: segmentX
+            resource-id: segmentX
             start-time: '2025-07-12T16:00:00-07:00'
             end-time: '2025-07-13T12:00:00-07:00'
             updated-time: '2025-07-08T13:05:43.044267100-07:00'

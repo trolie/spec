@@ -4,7 +4,7 @@ description: >
   Real-time ratings data for a segment.  Includes status of the proposal
   relative to this data, as well as rating values.  
 properties:
-  segment-id:
+  resource-id:
     $ref: ./generic-identifier.yaml
   status:
     $ref: ./proposal-status.yaml

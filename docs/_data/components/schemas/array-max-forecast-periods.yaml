@@ -40,7 +40,7 @@ missing-forecast:
   type: object
   additionalProperties: false
   properties:
-    segment-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
     periods:
       <<: *max

@@ -9,7 +9,7 @@ description: |
 properties:
   id:
     $ref: ./generic-identifier.yaml
-  segment-id:
+  resource-id:
     $ref: ./generic-identifier.yaml
   start-time:
     $ref: ./period-start.yaml
