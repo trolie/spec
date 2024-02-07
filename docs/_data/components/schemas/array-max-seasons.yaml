@@ -2,7 +2,7 @@ seasonal-proposals:
   type: object
   additionalProperties: false
   properties:
-    segment-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
     seasons: &max
       type: array

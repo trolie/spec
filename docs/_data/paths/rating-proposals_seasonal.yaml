@@ -35,7 +35,7 @@ get:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             owner: UTILITY A
             ratings:
-              - segment-id: segmentX
+              - resource-id: segmentX
                 seasons:
                   - season-id: fall
                     status: accepted
@@ -89,7 +89,7 @@ patch:
         schema: *seasonal-rating-proposal
         example:
           ratings:
-            - segment-id: segmentX
+            - resource-id: segmentX
               seasons:
                 - season-id: fall
                   continuous-operating-limit:
@@ -118,7 +118,7 @@ patch:
             timestamp: '2023-07-12T15:05:43.044267100-07:00'
             owner: UTILITY A
             ratings:
-              - segment-id: segmentX
+              - resource-id: segmentX
                 seasons:
                   - season-id: fall
                     status: accepted
