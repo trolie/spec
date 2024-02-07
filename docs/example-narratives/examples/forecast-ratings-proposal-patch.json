@@ -4,7 +4,7 @@
       { "name": "emergency", "duration-minutes": 60}
     ],
     "power-system-objects": [
-      { "receiver-primary-identifier": "8badf00d",
+      { "resource-id": "8badf00d",
         "alternate-identifiers": [
           {"name": "segmentX", "authority": "TO-NERC-ID"},
           {"name": "LINE1 SEG-X", "authority": "RC-NERC-ID", "mrid": "8badf00d"}
@@ -14,7 +14,7 @@
   },
   "ratings": [
     {
-      "segment-id": "segmentX",
+      "resource-id": "segmentX",
       "periods": [
         {
           "period-start": "2025-11-02T01:00:00-05:00",

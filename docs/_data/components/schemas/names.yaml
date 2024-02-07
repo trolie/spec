@@ -1,6 +1,6 @@
 type: object
 properties:
-  receiver-primary-identifier:
+  resource-id:
     $ref: ./generic-identifier.yaml
   alternate-identifiers:
     type: array
@@ -19,4 +19,4 @@ properties:
         - name
         - authority
 required:
-  - receiver-primary-identifier
+  - resource-id

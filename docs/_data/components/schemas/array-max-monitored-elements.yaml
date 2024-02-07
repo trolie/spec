@@ -18,7 +18,7 @@ named-power-system-objects:
   items:
     $ref: ./names.yaml
 
-forecast-rating-proposal:
+forecast-proposal:
   type: object
   properties:
     forecast-header:
@@ -27,7 +27,7 @@ forecast-rating-proposal:
       <<: *max
       description: Forecasted Ratings
       items:
-        $ref: 'array-max-forecast-periods.yaml#/forecast-proposal-for-segment'
+        $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal'
   required:
     - forecast-header
     - ratings

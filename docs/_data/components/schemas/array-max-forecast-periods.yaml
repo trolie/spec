@@ -21,11 +21,11 @@ forecast-limit-item-detailed:
       items:
         $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-detailed'
 
-forecast-proposal-for-segment:
+resource-forecast-proposal:
   type: object
   additionalProperties: false
   properties:
-    segment-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
     periods:
       <<: *max
@@ -33,7 +33,7 @@ forecast-proposal-for-segment:
         $ref: 'forecast-limit-period.yaml#/forecast-period-proposal'
 
   required:
-    - segment-id
+    - resource-id
     - periods
 
 missing-forecast:
