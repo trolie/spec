@@ -15,29 +15,10 @@ get:
         application/vnd.trolie.seasonal-rating-proposal.v1+json:
           schema: &seasonal-rating-proposal
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-proposal"
-          example:
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            owner: UTILITY A
-            ratings:
-              - resource-id: segmentX
-                seasons:
-                  - season-id: fall
-                    status: accepted
-                    continuous-operating-limit:
-                      mva: 160
-                    emergency-operating-limits:
-                      - duration-name: ste
-                        limit:
-                          mva: 165
-                      - duration-name: lte
-                        limit:
-                          mva: 170
-                      - duration-name: dal
-                        limit:
-                          mva: 170
+          example: &get-example
+            $ref: ../../example-narratives/examples/seasonal-ratings-proposals-get.json
         application/json:
           schema: *seasonal-rating-proposal
-            #$ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-proposal"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -77,22 +58,7 @@ patch:
       application/vnd.trolie.seasonal-rating-proposal.v1+json:
         schema: *seasonal-rating-proposal
         example:
-          ratings:
-            - resource-id: segmentX
-              seasons:
-                - season-id: fall
-                  continuous-operating-limit:
-                    mva: 160
-                  emergency-operating-limits:
-                    - duration-name: ste
-                      limit:
-                        mva: 165
-                    - duration-name: lte
-                      limit:
-                        mva: 170
-                    - duration-name: dal
-                      limit:
-                        mva: 170
+          $ref: ../../example-narratives/examples/seasonal-ratings-proposals-patch.json
       application/json:
         schema: *seasonal-rating-proposal
   responses:
@@ -103,26 +69,7 @@ patch:
       content:
         application/vnd.trolie.seasonal-proposal.v1+json:
           schema: *seasonal-rating-proposal
-          example:
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            owner: UTILITY A
-            ratings:
-              - resource-id: segmentX
-                seasons:
-                  - season-id: fall
-                    status: accepted
-                    continuous-operating-limit:
-                      mva: 160
-                    emergency-operating-limits:
-                      - duration-name: ste
-                        limit:
-                          mva: 165
-                      - duration-name: lte
-                        limit:
-                          mva: 170
-                      - duration-name: dal
-                        limit:
-                          mva: 170
+          example: *get-example
         application/json:
           schema: *seasonal-rating-proposal
       headers:
