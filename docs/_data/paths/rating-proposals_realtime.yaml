@@ -29,11 +29,11 @@ get:
     '200':
       description: OK
       content:
-        application/vnd.trolie.realtime-rating-proposal-set.v1+json:
-          schema: &realtime-ratings-proposals
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-ratings-proposals"
+        application/vnd.trolie.rating-realtime-proposal.v1+json:
+          schema: &realtime-proposal
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
         application/json:
-          schema: *realtime-ratings-proposals
+          schema: *realtime-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -58,31 +58,27 @@ get:
     default: *unexpected-error-empty
   security: *read-authorization
 
-post:
+patch:
   operationId: postRealTimeProposal
   description: &post_desc Post a new RealTime Rating Proposal 
   summary: *post_desc
   tags: *tags
   requestBody:
     content:
-      application/vnd.trolie.realtime-rating-proposal.v1+json:
-        schema:
-          $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
+      application/vnd.trolie.rating-realtime-proposal.v1+json:
+        schema: *realtime-proposal
       application/json:
-        schema:
-          $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
+        schema: *realtime-proposal
   responses:
     '202':
       description: >
         The update was accepted for later processing. Updates to  ratings may
         need to undergo additional validation and propagation to other systems.
       content:
-        application/vnd.trolie.realtime-proposal.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
+        application/vnd.trolie.rating-realtime-proposal.v1+json:
+          schema: *realtime-proposal
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
+          schema: *realtime-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 

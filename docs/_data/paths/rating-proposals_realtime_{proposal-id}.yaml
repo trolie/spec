@@ -11,11 +11,10 @@ get:
       description: OK
       content:
         application/vnd.trolie.realtime-rating-proposal.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
+          schema: &realtime-proposal
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-forecast-periods.yaml#/realtime-rating-proposal"
+          schema: *realtime-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304':
