@@ -1,0 +1,35 @@
+{
+  "ratings": [
+    {
+      "resource-id": "segmentX",
+      "seasons": [
+        {
+          "season-id": "fall",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
+            {
+              "duration-name": "ste",
+              "limit": {
+                "mva": 165
+              }
+            },
+            {
+              "duration-name": "lte",
+              "limit": {
+                "mva": 170
+              }
+            },
+            {
+              "duration-name": "dal",
+              "limit": {
+                "mva": 170
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
