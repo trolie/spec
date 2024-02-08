@@ -18,7 +18,7 @@ get:
           schema: &forecast-rating-proposal
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
           example:
-            forecast-header:
+            proposal-header:
               last-updated: '2023-07-12T15:05:43.044267100-07:00'
               ratings-provider: UTILITY-X
               default-emergency-durations:
@@ -93,7 +93,7 @@ patch:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
         schema: *forecast-rating-proposal
         example:
-          forecast-header:
+          proposal-header:
             last-updated: '2023-07-12T15:05:43.044267100-07:00'
             ratings-provider: UTILITY-A
             default-emergency-durations:
@@ -141,7 +141,7 @@ patch:
         application/vnd.trolie.rating-forecast-proposal.v1+json:
           schema: *forecast-rating-proposal
           example:
-            forecast-header:
+            proposal-header:
               last-updated: '2023-07-12T15:05:43.044267100-07:00'
               ratings-provider: UTILITY-A
               default-emergency-durations:

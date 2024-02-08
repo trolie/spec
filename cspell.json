@@ -1,7 +1,10 @@
 {
     "version": "0.2",
     "ignorePaths": [
-        ".devcontainer/**"
+        ".devcontainer/*"
+        ,".github/**"
+        ,"./*.yaml"
+        ,"./**/*.lock"
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [],

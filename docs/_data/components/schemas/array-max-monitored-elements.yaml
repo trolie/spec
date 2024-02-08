@@ -21,7 +21,7 @@ named-power-system-objects:
 forecast-proposal:
   type: object
   properties:
-    forecast-header:
+    proposal-header:
       $ref: ./rating-proposal-header.yaml
     ratings:
       <<: *max
@@ -29,7 +29,7 @@ forecast-proposal:
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal'
   required:
-    - forecast-header
+    - proposal-header
     - ratings
 
 missing-forecast-rating-set:
@@ -50,11 +50,16 @@ realtime-limit-set-detailed:
   items:
     $ref: ./realtime-limit-item-detailed.yaml
 
-realtime-ratings-proposals:
-  <<: *max
-  description: Real-Time Ratings Proposals
-  items:
-    $ref: 'array-max-forecast-periods.yaml#/realtime-rating-proposal'
+realtime-proposal:
+  type: object
+  properties:
+    proposal-header:
+      $ref: ./rating-proposal-header.yaml
+    ratings:
+      <<: *max
+      description: Real-Time Ratings Proposals
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/resource-realtime-proposal'
 
 seasonal-rating-proposal:
   description: Seasonal rating proposal
