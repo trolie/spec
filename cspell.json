@@ -4,6 +4,7 @@
         ".devcontainer/*"
         ,".github/**"
         ,"./*.yaml"
+        ,"./docs/_config.yml"
         ,"./**/*.lock"
     ],
     "dictionaryDefinitions": [],
