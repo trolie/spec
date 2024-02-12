@@ -48,9 +48,6 @@ get:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set-detailed"
           example:
             $ref: "../../example-narratives/examples/forecast-limits-detailed.json"
-        application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304':

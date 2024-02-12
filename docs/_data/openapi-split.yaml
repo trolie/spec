@@ -320,6 +320,9 @@ components:
         "application/problem+json":
           schema:
             $ref: '#/components/schemas/problem'
+        "application/json": # helpful errors when the request doesn't specify a TROLIE media type
+          schema:
+            $ref: '#/components/schemas/problem'
     '401-empty':
       <<: *unauthorized
       content: &empty
@@ -334,7 +337,7 @@ components:
       content: *empty
     '406-empty':
       <<: *not-acceptable
-      content: *empty
+      content: *problem
     '410-empty':
       <<: *gone
       content: *empty
