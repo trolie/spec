@@ -28,37 +28,16 @@ get:
     '200':
       description: The requested operating forecast snapshot is returned.
       content:
-        application/vnd.trolie.forecast-limits-snapshot-slim.v1+json:
+        application/vnd.trolie.forecast-limits-snapshot.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot"
           example:
             $ref: "../../example-narratives/examples/forecast-limits-slim.json"
-        application/vnd.trolie.forecast-limit-set-detailed.v1+json:
+        application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json:
           schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set-detailed"
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-detailed-snapshot"
           example:
-            - transmission-facility-id: line2
-              periods:
-                - period-start: '2023-07-12T16:00:00-07:00'
-                  period-end: '2023-07-12T17:00:00-07:00'
-                  updated-time: '2023-07-12T13:05:43.044267100-07:00'
-                  proposals-considered:
-                    - c386503e-ae8f-46e7-8fcf-bdee30f4f56b
-                  temporary-aar-exceptions:
-                    - 2d8c80e8-f533-4be9-85bf-f7f81eb73d67
-                  limiting-segment: segmentX
-                  override-reason: Any reason entered by the operator for an override.
-                  additional-data:
-                    vendor-specific-data: {}
-                  continuous-operating-limit:
-                    mva: 160
-                  emergency-operating-limits:
-                    - duration-name: emergency
-                      limit:
-                        mva: 165
-                    - duration-name: load-shed
-                      limit:
-                        mva: 170
+            $ref: "../../example-narratives/examples/forecast-limits-detailed.json"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 

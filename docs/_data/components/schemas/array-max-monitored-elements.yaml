@@ -21,6 +21,15 @@ forecast-limit-set-detailed:
   items:
     $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
 
+forecast-limits-detailed-snapshot:
+  type: object
+  description: A snapshot of the forecast for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      $ref: '#/forecast-limit-set-detailed'
+
 named-power-system-objects:
   <<: *max
   description: Collection of power system object names
