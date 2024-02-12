@@ -28,7 +28,7 @@ get:
     '200':
       description: The requested operating forecast snapshot is returned.
       content:
-        application/vnd.trolie.forecast-limit-set-slim.v1+json:
+        application/vnd.trolie.forecast-limits-snapshot-slim.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot"
           example:
@@ -59,9 +59,6 @@ get:
                     - duration-name: load-shed
                       limit:
                         mva: 170
-        application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limit-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
