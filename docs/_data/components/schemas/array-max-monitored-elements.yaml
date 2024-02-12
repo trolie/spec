@@ -6,6 +6,15 @@ forecast-limit-set: &max
   items:
     $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
 
+forecast-limits-snapshot:
+  type: object
+  description: A snapshot of the forecast for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      $ref: '#/forecast-limit-set'
+
 forecast-limit-set-detailed:
   <<: *max
   description: Forecast including provenance information.
@@ -22,7 +31,7 @@ forecast-proposal:
   type: object
   properties:
     proposal-header:
-      $ref: ./rating-proposal-header.yaml
+      $ref: ./headers.yaml#/proposal-header
     ratings:
       <<: *max
       description: Forecasted Ratings
@@ -54,7 +63,7 @@ realtime-proposal:
   type: object
   properties:
     proposal-header:
-      $ref: ./rating-proposal-header.yaml
+      $ref: ./headers.yaml#/proposal-header
     ratings:
       <<: *max
       description: Real-Time Ratings Proposals
