@@ -27,19 +27,16 @@ get:
     '200':
       description: The System Operating Limits snapshot is returned.
       content:
-        application/vnd.trolie.realtime-limit-set-slim.v1+json:
+        application/vnd.trolie.realtime-limits-snapshot.v1+json:
           schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set"
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot"
           example:
             $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
-        application/vnd.trolie.realtime-limit-set-detailed.v1+json:
+        application/vnd.trolie.realtime-limits-detailed-snapshot.v1+json:
           schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set-detailed"
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-detailed-snapshot"
           example:
               $ref: '../../example-narratives/examples/realtime-limit-set-detailed.json'
-        application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limit-set"
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
     '304':
