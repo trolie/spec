@@ -14,7 +14,7 @@ seasonal-rating-snapshot-item:
   type: object
   additionalProperties: false
   properties:
-    transmission-facility-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
     seasons:
       <<: *max
