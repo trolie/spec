@@ -95,8 +95,15 @@ seasonal-rating-proposal:
           <<: *max
           items:
             $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+
 seasonal-rating-snapshot:
-  <<: *max
-  description: Seasonal rating snapshot
-  items:
-    $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Seasonal rating snapshot
+      items:
+        $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item

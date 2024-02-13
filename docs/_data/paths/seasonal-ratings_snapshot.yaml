@@ -29,19 +29,7 @@ get:
           schema: &seasonal-rating-snapshot
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-snapshot
           example:
-            - transmission-facility-id: line2
-              seasons:
-                - season-instance: fall-2023
-                  effective-date: '2023-09-01T00:00:00-07:00'
-                  continuous-operating-limit:
-                    mva: 160
-                  emergency-operating-limits:
-                    - duration-name: emergency
-                      limit:
-                        mva: 165
-                    - duration-name: load-shed
-                      limit:
-                        mva: 170
+            $ref: '../../example-narratives/examples/seasonal-limits-snapshot.json'
         application/json:
           schema: *seasonal-rating-snapshot
       headers:
