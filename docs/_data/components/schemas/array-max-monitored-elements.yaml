@@ -1,25 +1,16 @@
-forecast-limit-set: &max
-  type: array
-  minItems: 0
-  maxItems: 50000
-  description: Set of forecast limits
-  items:
-    $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
-
 forecast-limits-snapshot:
   type: object
   description: A snapshot of the forecast for a monitoring set.
   properties:
     snapshot-header:
       $ref: ./headers.yaml#/snapshot-header
-    limits:
-      $ref: '#/forecast-limit-set'
-
-forecast-limit-set-detailed:
-  <<: *max
-  description: Forecast including provenance information.
-  items:
-    $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+    limits: &max
+      type: array
+      minItems: 0
+      maxItems: 50000
+      description: Set of forecast limits
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
 
 forecast-limits-detailed-snapshot:
   type: object
@@ -28,7 +19,10 @@ forecast-limits-detailed-snapshot:
     snapshot-header:
       $ref: ./headers.yaml#/snapshot-header
     limits:
-      $ref: '#/forecast-limit-set-detailed'
+      <<: *max
+      description: Forecast including provenance information.
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
 
 named-power-system-objects:
   <<: *max
@@ -56,17 +50,29 @@ missing-forecast-rating-set:
   items:
     $ref: 'array-max-forecast-periods.yaml#/missing-forecast'
 
-realtime-limit-set:
-  <<: *max
-  description: Real-time limits
-  items:
-    $ref: ./realtime-limit-item.yaml
+realtime-limits-snapshot:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Real-time limits
+      items:
+        $ref: ./realtime-limit-item.yaml
 
-realtime-limit-set-detailed:
-  <<: *max
-  description: Real-time limits including provenance.
-  items:
-    $ref: ./realtime-limit-item-detailed.yaml
+realtime-limits-detailed-snapshot:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Real-time limits including provenance.
+      items:
+        $ref: ./realtime-limit-item-detailed.yaml
 
 realtime-proposal:
   type: object
