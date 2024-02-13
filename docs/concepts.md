@@ -7,6 +7,8 @@ nav_order: 2
 
 Before reviewing examples, users may benefit from a basic understanding of the key constructs used by the TROLIE APIs.  Definitions of these concepts are included here.  
 
+![UML concept model](<images/data model.excalidraw.png>)
+
 ## Transmission Facilities
 A Transmission Facility is a logical part of the electrical network that may have a rating, whether simply seasonal or an AAR.  This most often represents a transmission line, but could also include transformers and other large pieces of equipment, or perhaps even logical points on the network such as interfaces.  Most importantly, these are points at which transmission providers need rating values to operate against.  
 
