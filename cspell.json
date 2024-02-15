@@ -25,6 +25,6 @@
         ,"Vernova"
         ,"SCADA"
     ],
-    "ignoreWords": [],
+    "ignoreWords": ["AMPL"],
     "import": []
 }

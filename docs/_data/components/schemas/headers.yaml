@@ -1,48 +1,29 @@
-proposal-header:
+proposal-header: &header
   type: object
-  description: >
-    General type for ratings proposal that is mutable over time, such as forecasts
-    and seasonal ratings.  
+  description: |
 
-    Like the immutable proposal, it includes general fields created by the
-    system.  
+    For simplicity, a single Proposal media type is used for both requests and
+    responses. The `provenance` object populated by the Ratings Provider in a
+    request. The Clearinghouse implementation may record this information, but
+    the response `provenance` should reflect the appropriate metadata from the
+    Clearinghouse Provider's perspective. Concretely, in a request
+    `provenance.provider` should be the Ratings Provider and in a response the
+    `provenance.provider` should be the Clearinghouse Provider.
 
-    Filling in these fields before posting may be ignored, or result in a 400
-    error from TROLIE.  
-
-    Properties include:
-
-    * The time the proposal was last updated.  
-
-    * The ratings provider that owns the proposal.  For mutable proposals such as
-    those for forecasts or seasonal 
-      ratings, the ID of the owning ratings provider is the ID of the proposal itself.  
   properties:
-    last-updated:
-      $ref: ./timestamp.yaml
-    ratings-provider:
-      $ref: ./entity-id.yaml
+    source:
+      $ref: ./data-provenance.yaml
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
     power-system-objects:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-objects
 
   required:
+    - source
     - default-emergency-durations
     - power-system-objects
   additionalProperties: false
 
 snapshot-header:
-  properties:
-    last-updated:
-      $ref: ./timestamp.yaml
-    snapshot-provider:
-      $ref: ./entity-id.yaml
-    power-system-objects:
-      $ref: ./array-max-monitored-elements.yaml#/named-power-system-objects
-    default-emergency-durations:
-      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
-  required:
-    - last-updated
-    - snapshot-provider
-    - power-system-objects
+  <<: *header
+  description: Details about the snapshot provided by the Clearinghouse provider.

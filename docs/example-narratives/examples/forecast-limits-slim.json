@@ -1,7 +1,10 @@
 {
     "snapshot-header": {
-        "last-updated": "2023-07-12T16:00:00-07:00",
-        "snapshot-provider": "X-RC",
+        "source": {
+            "last-updated": "2023-07-12T16:00:00-07:00",
+            "provider":"X-RC",
+            "origin-id": "//trolie.example.com/limits/forecast-snapshot/2025-07-05T01:00:00-0500"
+        },
         "default-emergency-durations": [
             {
                 "name": "lte",

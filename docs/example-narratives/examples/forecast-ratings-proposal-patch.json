@@ -1,5 +1,10 @@
 {
   "proposal-header" : {
+    "source": {
+      "last-updated": "2023-07-12T15:05:43.044267100-07:00",
+      "provider": "UTILITY-A",
+      "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+    },
     "default-emergency-durations": [
       { "name": "emergency", "duration-minutes": 60}
     ],

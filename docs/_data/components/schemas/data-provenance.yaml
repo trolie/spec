@@ -1,0 +1,30 @@
+type: object
+description: |
+
+  Provides information about where the associated representation came from. *No
+  functional aspects of the exchange are contingent upon this data.* However,
+  this information is meant to support debugging and application support use
+  cases, so it is required, and implementors are encouraged to provide
+  meaningful values.
+
+  * `provider` identifies that entity, e.g., a Ratings Provider or Clearinghouse
+    Provider, that created the object. The `provider`'s NERC id is recommended.
+  * `last-updated` indicates the wall-clock time at the `provider` when the
+    object was last modified. N.b. this is not when the message
+    describing the object was sent or received, i.e., implementors should not
+    simply insert the current timestamp here when preparing the object serialization.
+  * `origin-id` is the identifier used by the `provider` to uniquely nominate
+    the object. It is recommended but not required that this be a URI.
+
+properties:
+  provider:
+    $ref: ./entity-id.yaml
+  last-updated:
+    $ref: ./timestamp.yaml
+  origin-id:
+    $ref: ./generic-identifier.yaml
+
+required:
+  - provider
+  - last-updated
+  - origin-id
