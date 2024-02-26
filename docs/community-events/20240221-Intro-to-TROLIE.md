@@ -94,7 +94,7 @@ the appropriate units, including amps and MVA. However, the specification does
 *not* require the RC to accept any particular kind of rating, so the Ratings
 Provider and the Clearinghouse Provider will need to pre-determine the
 appropriate units. The TROLIE Specification is designed to be flexible enough to
-accomodate most anticipated situations, such an RC only allowing for apparent
+accommodate most anticipated situations, such an RC only allowing for apparent
 power as inputs and sending apparent power as outputs, as well as an RC allowing
 for current and power factor as inputs. We have a [number of tasks
 identified](https://github.com/trolie/spec/issues/43) to properly document this
