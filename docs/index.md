@@ -21,7 +21,7 @@ For general announcements and discussion, subscribe to our [Email List <i class=
 
 > **Project News** <i class="fa-solid fa-bullhorn"></i>
 >
-> We had 144 participants at our <a href="https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-webinar-introduction-to-trolie/">Intro to TROLIE</a> webinar hosted by LF Energy on February 21st, 2024. The replay is now available for those who were unable to attend.
+> The replay and Q&A is now available for the [Intro to TROLIE][intro_webinar] webinar.
 
 
 # Introduction
@@ -38,3 +38,6 @@ The project’s specific aims are:
 
 
 We are committed establishing a vendor-neutral specification and building an inclusive community.
+
+
+[intro_webinar]: ./community-events/20240221-Intro-to-TROLIE
