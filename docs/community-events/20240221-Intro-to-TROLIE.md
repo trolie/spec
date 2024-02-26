@@ -82,7 +82,7 @@ milestones will be comprehensive examples.  However, since the TROLIE project
 appropriate Reliability Coordinator for more information about integration
 testing.
 
-### Our RTO will need to send annual day/night times so each member uses the eact time to define day/night; can TROLIE support that?
+### Our RTO will need to send annual day/night times so each member uses the exact time to define day/night; can TROLIE support that?
 
 *TODO*
 
