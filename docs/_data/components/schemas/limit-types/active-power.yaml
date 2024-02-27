@@ -1,7 +1,7 @@
 type: object
 title: Active Power and Power Factor
 description: >-
-  Representation of a limit using a combination of actual power in MW and an
+  Representation of a limit using a combination of active power in MW and an
   assumed power factor.
 additionalProperties: false
 properties:
