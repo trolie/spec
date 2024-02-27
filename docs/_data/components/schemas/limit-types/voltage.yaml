@@ -1,7 +1,7 @@
 overvoltage-threshold-pu:
   type: object
-  title: Overvoltage Threshold in per unit
-  description: An upper limit to voltage for a transmission facility in per unit
+  title: Overvoltage Threshold per unit
+  description: An upper limit to voltage for a transmission facility in per unit.
   additionalProperties: false
   properties:
     voltage-pu-max: &pu
@@ -16,7 +16,6 @@ overvoltage-threshold-pu:
       maximum: 1100
   required:
   - voltage-pu-max
-  - base-kV
 
 overvoltage-threshold:
   type: object
@@ -30,15 +29,14 @@ overvoltage-threshold:
 
 undervoltage-threshold-pu:
   type: object
-  title: Overvoltage Threshold in per unit
-  description: An upper limit to voltage for a transmission facility in per unit
+  title: Undervoltage Threshold per unit
+  description: An lower limit to voltage for a transmission facility in per unit.
   additionalProperties: false
   properties:
     voltage-pu-min: *pu
     base-kV: *voltage
   required:
   - voltage-pu-min
-  - base-kV
 
 undervoltage-threshold:
   type: object
