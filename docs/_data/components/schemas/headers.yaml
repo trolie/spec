@@ -27,3 +27,16 @@ proposal-header: &header
 snapshot-header:
   <<: *header
   description: Details about the snapshot provided by the Clearinghouse provider.
+  properties:
+    last-updated:
+      $ref: ./timestamp.yaml
+    snapshot-provenance:
+      $ref: ./data-provenance.yaml
+    power-system-objects:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-objects
+    default-emergency-durations:
+      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+  required:
+    - last-updated
+    - snapshot-provenance
+    - power-system-objects

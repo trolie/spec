@@ -6,8 +6,15 @@ emergency-durations: &max
   items:
     type: object
     properties:
-      name:
-        $ref: ./limit-type.yaml
+      name: &emergency-kind-name
+        description: |
+          A type of limit as defined in the Transmission Provider's operating manual,
+          usually indicating specific scenarios under which the limit may be used as
+          well as a maximum period for which the limit may be safely applied.
+        type: string
+        maxLength: 20
+        pattern: ^[A-Za-z\-]{3,10}$
+        example: "emergency"
       duration-minutes:
         type: integer
         format: int32
@@ -18,22 +25,16 @@ emergency-durations: &max
 limit-value-set:
   <<: *max
   description: >
+
     A set of general limit or rating values, each mapped to the various limit
-    bands defined by the Transmission Provider's 
+    bands defined by the Transmission Provider's operating manual. This
+    typically consists of a "normal" limit, as well as limits for various levels
+    of emergency conditions (typically 2-4) defined in the operations manual.
 
-    operating manual.  This typically consists of a "normal" limit, as well as
-    limits for various levels of emergency conditions
-
-    (typically 2-4) defined in the operations manual.  The list of supported limit
-    types may be fetched from getSupportedLimitTypes.  
-
-    The value of the limits are in units as defined by the X-TROLIE-Limit-Units
-    header.
   items:
     type: object
     description: Operating Limit
     properties:
-        duration-name:
-          $ref: ./limit-type.yaml
+        duration-name: *emergency-kind-name
         limit:
           $ref: ./limit.yaml

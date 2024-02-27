@@ -1,9 +1,10 @@
 {
     "snapshot-header": {
-        "source": {
+        "last-updated": "2023-07-12T16:00:00-07:00",
+        "snapshot-provenance": {
+            "provider":"X-AMPL",
             "last-updated": "2023-07-12T16:00:00-07:00",
-            "provider":"X-RC",
-            "origin-id": "//trolie.example.com/limits/forecast-snapshot/2025-07-05T01:00:00-0500"
+            "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00"
         },
         "default-emergency-durations": [
             {
@@ -45,19 +46,22 @@
                     "period-end": "2023-07-12T17:00:00-07:00",
                     "updated-time": "2023-07-12T13:05:43.044267100-07:00",
                     "continuous-operating-limit": {
-                        "mva": 160
+                        "mw": 160,
+                        "pf": 1.0
                     },
                     "emergency-operating-limits": [
                         {
                             "duration-name": "emergency",
                             "limit": {
-                                "mva": 165
+                                "mw": 170,
+                                "pf": 1.0
                             }
                         },
                         {
                             "duration-name": "load-shed",
                             "limit": {
-                                "mva": 170
+                                "mw": 180,
+                                "pf": 1.0
                             }
                         }
                     ]

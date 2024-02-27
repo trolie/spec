@@ -10,23 +10,31 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-        "devcontainer"
+        "CGMES"
+        ,"devcontainer"
+        ,"ENTSO"
         ,"excalidraw"
         ,"FERC"
         ,"ICCP"
         ,"mrid"
+        ,"MVAR"
         ,"NERC"
         ,"openapi"
+        ,"overvoltage"
         ,"owasp"
         ,"redoc"
         ,"Redocly"
         ,"ruleset"
-        ,"TROLIE"
-        ,"Vernova"
         ,"SCADA"
-        ,"ENTSO"
-        ,"CGMES"
+        ,"TROLIE"
+        ,"undervoltage"
+        ,"Vernova"
+        ,"Vmax"
+        ,"Vmin"
     ],
-    "ignoreWords": ["AMPL", "autoplay"],
+    "ignoreWords": [
+        "AMPL"
+        ,"autoplay"
+    ],
     "import": []
 }
