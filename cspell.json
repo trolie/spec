@@ -24,6 +24,8 @@
         ,"TROLIE"
         ,"Vernova"
         ,"SCADA"
+        ,"ENTSO"
+        ,"CGMES"
     ],
     "ignoreWords": ["AMPL", "autoplay"],
     "import": []
