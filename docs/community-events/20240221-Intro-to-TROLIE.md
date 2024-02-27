@@ -24,7 +24,19 @@ the original question for clarity, based on our reading of them.
 
 ### Does the TROLIE interface handle day/night ratings?
 
-*TODO*
+No.  The use of day vs night ratings, as required by the FERC order, 
+applies to the use of temperature-to-rating lookup tables to derive forecast ratings.  However, the current TROLIE design assumes that the entity computing the ratings has included the day vs night assumption into the numbers submitted for forecast ratings via https://trolie.energy/spec#tag/Rating-Proposals/operation/patchRatingForecastProposalForProvider.  This allows for other methodologies to be used, and also allows the ratings provider, if
+desired, to make their own determination as to when day and night switch.  
+
+There are multiple ways to interpret this question that could imply
+useful extensions to TROLIE:
+
+1.  Is it important to track whether the rating provided is based on a 
+    day or night rating?  Is this a common use case for interop?
+2.  Currently, the exchange of temperature-to-rating tables is not in TROLIE scope.  Should it be?
+    Is this a common enough interop need?  
+
+Please submit further questions, or propose TROLIE scope changes at https://github.com/trolie/spec/issues.
 
 ### How does CIM relate to the TROLIE Specification?
 
@@ -49,15 +61,47 @@ Please join the discussion there.
 updated by Ratings Provider? What are the validation rules? How are they
 coordinated with network model updates</h3>
 
-*TODO*
+TROLIE is intentionally agnostic to how server and client implementations update 
+their network models, or whether these data entities are part of the network model 
+at all, or updated via some other means.  The validation rules provided are also 
+up to individual implementations.  
+
+We understand that this is may be disappointing, because maintenance of 
+network model databases and orchestrating their roll out can be
+challenging, especially across entities.  
+
+Exchanging model data is _not_ in the scope of TROLIE.  This is an incredibly
+complex problem that likely requires its own set of defined protocols, standards, 
+discussions and vendor adoption, much like the 
+Common Grid Model Exchange Standard (CGMES) used in the 
+ENTSO-E (https://www.entsoe.eu/data/cim/cim-for-grid-models-exchange/). 
+
+As of this writing, the processes to update, exchange and orchestrate network model
+updates in North America are highly fragmented.  TROLIE does not attempt to solve this problem.  
+
+However, instead, we recognize this fragmented landscape as a reality that users of TROLIE must 
+navigate.  In the short term, please consult appropriate vendors, reliability coordinators
+or partners on how their specific software behaves.  In addition, we have created issue
+https://github.com/trolie/spec/issues/57 to document recommended validation rules and model
+coordination best-practices for TROLIE implementers.  
 
 ### Would TROLIE be a cloud-based solution?
 
-*TODO*
+TROLIE is agnostic to where servers are hosted.  The specification will work whether clients or
+servers are hosted either on-premise or in a public cloud.  
+
+Specific vendor products and reliability coordinator implementations will of course be more opinionated.  
 
 ### Does the specification allow for UTC timestamps?
 
-*TODO*
+Yes.  TROLIE timestamps use the RFC 3339 format (https://www.rfc-editor.org/rfc/rfc3339).  
+This format is daylight savings-safe, as shown by example at https://trolie.energy/daylight-savings.  
+
+The example referenced above however shows timestamps in local time zones.  The common way to specify UTC is
+to use a "Z" character instead of a UTC offset as a suffix, like in the following example, which evaluates to 7am EDT:
+
+    2025-11-01T11:00:00Z
+
 
 <h3>How are the status/state of Real-Time and Forecast snapshots communicated
 via TROLIE interfaces? How can we know from the TROLIE interface that a new
@@ -84,7 +128,13 @@ testing.
 
 ### Our RTO will need to send annual day/night times so each member uses the exact time to define day/night; can TROLIE support that?
 
-*TODO*
+This is currently out of scope of TROLIE.  As of now, TROLIE does not include anything
+related to weather data.  Whether these timestamps represent weather data that should come from 
+somewhere else, or they are truly key in orchestrating ratings exchange across providers in a common way is an interesting debate.  
+
+If this is desired in TROLIE, the need should probably be driven by the RTO by 
+reaching out to one of the project contributors, 
+their vendor, and/or submitting a proposal to https://github.com/trolie/spec/issues.
 
 ### Does TROLIE handle the exchange of AARs between a Ratings Provider (TOP) using amps and an Clearinghouse Provider (RC) using MVA?
 
