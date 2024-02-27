@@ -2,9 +2,9 @@
     "snapshot-header": {
         "last-updated": "2023-07-12T15:05:43.044267100-07:00",
         "snapshot-provenance": {
-            "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00",
+            "provider":"X-AMPL",
             "last-updated": "2023-07-12T15:05:43.044267100-07:00",
-            "provider":"X-RC"
+            "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00"
         },
         "default-emergency-durations": [
             {
