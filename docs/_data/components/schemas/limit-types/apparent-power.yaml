@@ -1,0 +1,14 @@
+type: object
+title: Apparent Power
+description: >-
+  Representation of a limit in megavolt-amperes. This is the recommended
+  default for limits in TROLIE
+additionalProperties: false
+properties:
+  mva:
+    type: number
+    format: float
+    minimum: 1
+    maximum: 10000
+required:
+  - mva
