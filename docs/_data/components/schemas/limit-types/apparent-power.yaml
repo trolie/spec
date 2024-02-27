@@ -1,7 +1,7 @@
 type: object
 title: Apparent Power
 description: >-
-  Representation of a limit in megavolt-amperes. This is the recommended
+  Representation of a limit in megavolt-amperes (MVA). This is the recommended
   default for limits in TROLIE
 additionalProperties: false
 properties:
