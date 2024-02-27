@@ -5,7 +5,9 @@ description: |
   Superset of limit types. This schema represents a compromise for the most
   common 4GL programming languages, e.g., Java, C#, etc., that don't support
   algebraic data types and require a discriminator field to deserialize objects
-  that have `oneOf` or `anyOf` schemas.
+  that have `oneOf` or `anyOf` schemas. Requiring this discriminator for every
+  limit is verbose and redundant, while defining the "limit type" in the header
+  as a processing instruction is awkward.
 
   This relaxed schema permits nonsensical representations, so runtime validation
   will be required by both server and client.
@@ -19,9 +21,15 @@ properties:
     $ref: './limit-types/apparent-power.yaml#/properties/mva'
   amps:
     $ref: './limit-types/current.yaml#/properties/amps'
-  kVmax:
-    $ref: './limit-types/overvoltage-threshold.yaml#/properties/kVmax'
+  kV-max:
+    $ref: './limit-types/voltage.yaml#/overvoltage-threshold/properties/kV-max'
   mvar:
     $ref: './limit-types/reactive-power.yaml#/properties/mvar'
-  kVmin:
-    $ref: './limit-types/undervoltage-threshold.yaml#/properties/kVmin'
+  kV-min:
+    $ref: './limit-types/voltage.yaml#/undervoltage-threshold/properties/kV-min'
+  voltage-pu-max:
+    $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu/properties/voltage-pu-max'
+  voltage-pu-min:
+    $ref: './limit-types/voltage.yaml#/undervoltage-threshold-pu/properties/voltage-pu-min'
+  base-kV:
+    $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu/properties/base-kV'
