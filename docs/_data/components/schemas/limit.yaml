@@ -1,35 +1,19 @@
-type: object
-title: Limit
 description: |
 
-  Superset of limit types. This schema represents a compromise for the most
-  common 4GL programming languages, e.g., Java, C#, etc., that don't support
-  algebraic data types and require a discriminator field to deserialize objects
-  that have `oneOf` or `anyOf` schemas. Requiring this discriminator for every
-  limit is verbose and redundant, while defining the "limit type" in the header
-  as a processing instruction is awkward.
+  Defines the limit. In practice, most exchanges will only support one kind of
+  limit for proposals and snapshots. However, the specification supports
+  defining limits on a per resource basis as well as limit types that are not
+  anticipated to be used to implement Order 881. TROLIE server implementations
+  must support at least one of these limit types and should return an well known
+  `application/problem+json` response if they receive a proposal in an
+  unsupported but valid limit type as defined here.
 
-  This relaxed schema permits nonsensical representations, so runtime validation
-  will be required by both server and client.
-
-properties:
-  mw:
-    $ref: './limit-types/active-power.yaml#/properties/mw'
-  pf:
-    $ref: './limit-types/active-power.yaml#/properties/pf'
-  mva:
-    $ref: './limit-types/apparent-power.yaml#/properties/mva'
-  amps:
-    $ref: './limit-types/current.yaml#/properties/amps'
-  kV-max:
-    $ref: './limit-types/voltage.yaml#/overvoltage-threshold/properties/kV-max'
-  mvar:
-    $ref: './limit-types/reactive-power.yaml#/properties/mvar'
-  kV-min:
-    $ref: './limit-types/voltage.yaml#/undervoltage-threshold/properties/kV-min'
-  voltage-pu-max:
-    $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu/properties/voltage-pu-max'
-  voltage-pu-min:
-    $ref: './limit-types/voltage.yaml#/undervoltage-threshold-pu/properties/voltage-pu-min'
-  base-kV:
-    $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu/properties/base-kV'
+oneOf:
+  - $ref: './limit-types/active-power.yaml'
+  - $ref: './limit-types/apparent-power.yaml'
+  - $ref: './limit-types/current.yaml'
+  - $ref: './limit-types/reactive-power.yaml'
+  - $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu'
+  - $ref: './limit-types/voltage.yaml#/overvoltage-threshold'
+  - $ref: './limit-types/voltage.yaml#/undervoltage-threshold-pu'
+  - $ref: './limit-types/voltage.yaml#/undervoltage-threshold'
