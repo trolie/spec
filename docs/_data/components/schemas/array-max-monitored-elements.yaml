@@ -24,9 +24,9 @@ forecast-limits-detailed-snapshot:
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
 
-named-power-system-objects:
+named-power-system-resources:
   <<: *max
-  description: Collection of power system object names
+  description: Collection of power system resource names
   items:
     $ref: ./names.yaml
 

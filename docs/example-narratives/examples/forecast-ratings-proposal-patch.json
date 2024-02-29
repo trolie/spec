@@ -8,7 +8,7 @@
     "default-emergency-durations": [
       { "name": "emergency", "duration-minutes": 60}
     ],
-    "power-system-objects": [
+    "power-system-resources": [
       { "resource-id": "8badf00d",
         "alternate-identifiers": [
           {"name": "segmentX", "authority": "TO-NERC-ID"},
