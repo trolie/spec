@@ -20,7 +20,7 @@
         "duration-minutes": 15
       }
     ],
-    "power-system-objects": [
+    "power-system-resources": [
       {
         "resource-id": "8badf00d",
         "alternate-identifiers": [

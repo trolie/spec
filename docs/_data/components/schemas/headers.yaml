@@ -15,13 +15,13 @@ proposal-header: &header
       $ref: ./data-provenance.yaml
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
-    power-system-objects:
-      $ref: ./array-max-monitored-elements.yaml#/named-power-system-objects
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
 
   required:
     - source
     - default-emergency-durations
-    - power-system-objects
+    - power-system-resources
   additionalProperties: false
 
 snapshot-header:
@@ -32,11 +32,11 @@ snapshot-header:
       $ref: ./timestamp.yaml
     snapshot-provenance:
       $ref: ./data-provenance.yaml
-    power-system-objects:
-      $ref: ./array-max-monitored-elements.yaml#/named-power-system-objects
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
     - last-updated
     - snapshot-provenance
-    - power-system-objects
+    - power-system-resources
