@@ -1,8 +1,11 @@
 type: object
 title: Active Power and Power Factor
-description: >-
+description: |
+
   Representation of a limit using a combination of active power in MW and an
-  assumed power factor.
+  assumed power factor. N.b. power factor is optional in the spec though it
+  may be required in a particular exchange.
+
 additionalProperties: false
 properties:
   mw:
@@ -17,4 +20,3 @@ properties:
     maximum: 1
 required:
   - mw
-  - pf
