@@ -122,12 +122,8 @@ We've made an intentional decision to adopt certain design constraints,
 including the restriction of the TROLIE Specification to classic REST patterns
 and HTTP/1.1. Thus, we don't specify WebSockets, Server Sent Events, or
 recommend HTTP long-polling, instead relying on the [Conditional GET
-pattern](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests)
+pattern](../articles/conditional-GET)
 mediated by rate limiting.
-
-We've created an issue to document using this pattern with TROLIE; see [issue
-#56](https://github.com/trolie/spec/issues/56).
-
 
 ### Can you provide an implementation timeline? Is there an environment for us to test?
 
