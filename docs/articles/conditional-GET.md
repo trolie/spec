@@ -9,7 +9,7 @@ TROLIE implementations MUST support the Conditional GET pattern and client
 should use it to determine when limits snapshots are available.  While this
 pattern is [well-documented by
 Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests),
-it can be helpful see a concrete example. In this article we will use discuss
+it can be helpful see a concrete example. In this article we will discuss
 this pattern in the context of obtaining a Forecast Limits Snapshot.
 
 By employing the Conditional GET pattern, the client can efficiently determine
@@ -49,14 +49,15 @@ X-Rate-Limit-Reset: 3600
 ```
 
 When using the Conditional GET pattern, the client includes the previously
-received ETag and/or Last-Modified timestamp in the request headers. If the
-resource has not been modified since the provided ETag or Last-Modified
-timestamp, the server responds with a 304 Not Modified status code, indicating
+received `ETag` and/or `Last-Modified` timestamp in the request headers. If the
+resource has not been modified since the provided `ETag` or `Last-Modified`
+timestamp, the server responds with a `304 Not Modified` status code, indicating
 that the client's cached version is still valid. If the resource has been
 modified, the server responds with a 200 OK status code and provides the updated
 resource.
 
-The TROLIE client can then issue a Conditional GET 
+The TROLIE client can then issue a Conditional GET:
+
 ```http
 GET /limits/forecast-snapshot HTTP/1.1
 Host: trolie.example.com
@@ -66,7 +67,8 @@ Accept-Encoding: br
 If-None-Match: "d41d8cd98f00b204e9800998ecf8427e"
 ```
 
-Assuming a new snapshot hasn't been generated, we should see a response similar to the following:
+Assuming a new snapshot hasn't been generated, we should see a response similar
+to the following:
 
 ```http
 HTTP/1.1 304 Not Modified
@@ -77,7 +79,6 @@ X-Rate-Limit-Limit: 100
 X-Rate-Limit-Remaining: 97
 X-Rate-Limit-Reset: 3400
 ```
-
 *Otherwise*, we would have gotten a new limit forecast:
 
 ```http
