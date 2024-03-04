@@ -46,21 +46,3 @@ missing-forecast:
       <<: *max
       items:
         $ref: ./period-start.yaml
-
-resource-realtime-proposal:
-  <<: *max
-  items:
-    type: object
-    additionalProperties: false
-    description: >
-      Real-time ratings data for a segment.  Includes status of the proposal
-      relative to this data, as well as rating values.  
-    properties:
-      resource-id:
-        $ref: ./generic-identifier.yaml
-      status:
-        $ref: ./proposal-status.yaml
-      continuous-operating-limit:
-        $ref: ./limit.yaml
-      emergency-operating-limits:
-        $ref: ./array-max-emergency-durations.yaml#/limit-value-set

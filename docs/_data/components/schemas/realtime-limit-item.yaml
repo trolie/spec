@@ -1,10 +1,11 @@
 type: object
-properties:
-  transmission-facility-id:
-    $ref: ./generic-identifier.yaml
-  updated-time:
-    $ref: ./timestamp.yaml
-  continuous-operating-limit:
-    $ref: ./limit.yaml
-  emergency-operating-limits:
-    $ref: ./array-max-emergency-durations.yaml#/limit-value-set
+allOf:
+  - type: object
+    properties:
+      transmission-facility-id:
+        $ref: ./generic-identifier.yaml
+      updated-time:
+        $ref: ./timestamp.yaml
+  - $ref: ./limit-data.yaml
+required:
+  - transmission-facility-id
