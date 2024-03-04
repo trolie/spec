@@ -34,6 +34,7 @@ forecast-period-proposal:
           name:
             type: string
             format: free-text
+            maxLength: 50
           value:
             type: object
             description: >
@@ -48,6 +49,10 @@ forecast-period-proposal:
               appropriate: The CIM may not include appropriate units for
               all inputs, e.g., wind speed.
             format: unit
+            maxLength: 50
+        required:
+          - name
+          - value
 
   required:
     - period-start
