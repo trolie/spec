@@ -83,7 +83,19 @@ realtime-proposal:
       <<: *max
       description: Real-Time Ratings Proposals
       items:
-        $ref: 'array-max-forecast-periods.yaml#/resource-realtime-proposal'
+        type: object
+        additionalProperties: false
+        description: >
+          Real-time ratings data for a segment.  Includes status of the proposal
+          relative to this data, as well as rating values.  
+        allOf:
+          - type: object
+            properties:
+              resource-id:
+                $ref: ./generic-identifier.yaml
+              status:
+                $ref: ./proposal-status.yaml
+          - $ref: ./limit-data.yaml
 
 seasonal-rating-proposal:
   description: Seasonal rating proposal
