@@ -46,15 +46,21 @@
             },
             "emergency-operating-limits": [
                 {
-                    "duration-name": "emergency",
+                    "duration-name": "lte",
                     "limit": {
                         "mva": 165
                     }
                 },
                 {
-                    "duration-name": "load-shed",
+                    "duration-name": "ste",
                     "limit": {
                         "mva": 170
+                    }
+                },
+                {
+                    "duration-name": "dal",
+                    "limit": {
+                        "mva": 180
                     }
                 }
             ]
