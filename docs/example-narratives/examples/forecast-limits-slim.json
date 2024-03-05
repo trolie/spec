@@ -51,16 +51,23 @@
                     },
                     "emergency-operating-limits": [
                         {
-                            "duration-name": "emergency",
+                            "duration-name": "lte",
                             "limit": {
                                 "mw": 170,
                                 "pf": 1.0
                             }
                         },
                         {
-                            "duration-name": "load-shed",
+                            "duration-name": "ste",
                             "limit": {
                                 "mw": 180,
+                                "pf": 1.0
+                            }
+                        },
+                        {
+                            "duration-name": "dal",
+                            "limit": {
+                                "mw": 190,
                                 "pf": 1.0
                             }
                         }

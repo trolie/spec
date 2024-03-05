@@ -13,13 +13,13 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "ste",
+              "duration-name": "lte",
               "limit": {
                 "mva": 165
               }
             },
             {
-              "duration-name": "lte",
+              "duration-name": "ste",
               "limit": {
                 "mva": 170
               }
