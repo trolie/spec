@@ -16,6 +16,7 @@ if [ -s $CERT_PATH ]; then
     echo "Using SSL_CERT_FILE=$CERT_PATH"
     export SSL_CERT_FILE=$CERT_PATH
     git config --global http.sslCAInfo "$CERT_PATH"
+    export NODE_EXTRA_CA_CERTS=$CERT_PATH
 fi
 
 DOCS_PATH="$PARENT/docs"
