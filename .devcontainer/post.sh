@@ -13,8 +13,9 @@ fi
 CERT_PATH=$SCRIPT_DIR/root.pem
 
 if [ -s $CERT_PATH ]; then
-    echo "Using SSL_CERT_DIR=$CERT_PATH"
-    export SSL_CERT_DIR=$CERT_PATH
+    echo "Using SSL_CERT_FILE=$CERT_PATH"
+    export SSL_CERT_FILE=$CERT_PATH
+    git config --global http.sslCAInfo "$CERT_PATH"
 fi
 
 DOCS_PATH="$PARENT/docs"
