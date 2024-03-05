@@ -1,7 +1,11 @@
 extends:
   - spectral:oas
   # note this only covers the 2019 top ten https://github.com/stoplightio/spectral-owasp-ruleset/issues/47
-  - https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs
+  - https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.4.3/dist/ruleset.mjs
+
+  # 2.0.0 breaks the build throwing the following error:
+  # "scope.sandbox.value.match is not a function"
+  #- https://unpkg.com/@stoplight/spectral-owasp-ruleset@2.0.0/dist/ruleset.mjs
 rules:
   # override a couple of rules that erroneously apply to HEAD requests
   "owasp:api3:2019-define-error-responses-500":
