@@ -105,10 +105,10 @@ patch:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
           example:
-            $ref: '../../example-narratives/examples/responses/forecast-proposal-invalid-units.json'
+            $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
         application/json:
           example:
-            $ref: '../../example-narratives/examples/responses/forecast-proposal-invalid-units.json'
+            $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/304/headers'
 
