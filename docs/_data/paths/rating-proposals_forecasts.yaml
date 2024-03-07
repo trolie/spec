@@ -13,7 +13,6 @@ head: &head
     - $ref: ../components/parameters/segment-filter.yaml
   responses:
     $ref: ../components/responses/read-head.yaml
-
   security: &read-authorization
     - oauth2-primary-flow:
         - read:forecast-proposals
@@ -67,7 +66,7 @@ get:
 patch:
   <<: *head
   operationId: patchRatingForecastProposal
-  description: &patch_desc Update the logged-in provider's ratings Forecast Proposal 
+  description: &patch_desc Update the logged-in provider's ratings Forecast Proposal
   summary: *patch_desc
   requestBody:
     content:
@@ -100,7 +99,19 @@ patch:
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '422':
-      $ref: '../openapi-split.yaml#/components/responses/422-problem'
+      description: Unprocessable Content
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../openapi-split.yaml#/components/schemas/problem'
+          example:
+            $ref: '../../example-narratives/examples/responses/forecast-proposal-invalid-units.json'
+        application/json:
+          example:
+            $ref: '../../example-narratives/examples/responses/forecast-proposal-invalid-units.json'
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
+
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty
