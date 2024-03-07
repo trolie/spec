@@ -4,7 +4,7 @@
         "commands": [
             {
                 "match": "docs/*",
-                "isAsync": true,
+                "isAsync": false,
                 "cmd": ".devcontainer/post.sh bundle"
             }
         ]

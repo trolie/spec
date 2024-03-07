@@ -1,0 +1,6 @@
+{
+  "type": "//trolie.example.com/spec/client-errors/422/invalid-units",
+  "title": "Unprocessable Entity: Invalid Units",
+  "status": 422,
+  "detail": "The proposal for 8badf00d at 2025-05-07T12:00:00Z specified `mw` so Active Power is assumed, but this exchange requires the power factor `pf` be specified as well."
+}
