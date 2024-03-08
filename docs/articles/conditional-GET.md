@@ -17,11 +17,9 @@ when a new version of the resource is available without having to repeatedly
 download the entire resource during polling. This helps in reducing unnecessary
 network traffic and conserving bandwidth.
 
-The Conditional GET pattern can be employed when polling to determine when a new
-version of a resource becomes available. This pattern involves using the HTTP
-`GET` method along with conditional headers such as `If-None-Match` and
-`If-Modified-Since` to check if the resource located at `/limits/forecast-snapshot`
-has been modified since the last request.
+This pattern involves using the HTTP `GET` method along with conditional headers
+such as `If-None-Match` and `If-Modified-Since` to check if the resource located
+at `/limits/forecast-snapshot` has been modified since the last request.
 
 Let's start with this initial request:
 
@@ -79,6 +77,14 @@ X-Rate-Limit-Limit: 100
 X-Rate-Limit-Remaining: 97
 X-Rate-Limit-Reset: 3400
 ```
+
+{: .nb }
+
+> <i class="fa-solid fa-triangle-exclamation"></i> **Note**:
+> The `X-Rate-Limit-Remaining` is decremented here, since
+> rate limiting is applied in all circumstances, including
+> 3XX and 4XX responses.
+
 *Otherwise*, we would have gotten a new limit forecast:
 
 ```http
@@ -94,3 +100,22 @@ Content-Encoding: br
 
 {... response body in Brotli compressed format ...}
 ```
+
+
+### Note to Implementors
+
+The use of `If-None-Match` with `ETag` headers is strongly encouraged to
+implement the Conditional GET pattern. The `ETag` should *not* be a simple
+hash of a particular representation of a resource, i.e., do not compute
+a hash of the JSON document returned to the client. Instead the `ETag` should
+be unique to the logical state of the resource. One method to do that is
+illustrated in this pseudocode:
+
+```
+ETag: hash("{resource internal id}+{last modified timestamp}")
+```
+
+This has several desirable properties for an `ETag`:
+* Unique: Minimizing the chance of collisions for different resources.
+* Opaque: Clients cannot infer anything about the resource content or structure from the ETag.
+* Stable: Changes only when the the resource is updated.
