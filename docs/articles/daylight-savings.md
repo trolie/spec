@@ -1,6 +1,6 @@
 ---
-title: Daylight Savings
-nav_order: 4
+title: How Daylight Savings is Handled
+parent: Articles
 ---
 
 # Handling Daylight Savings Transitions in TROLIE
