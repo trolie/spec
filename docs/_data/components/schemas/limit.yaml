@@ -4,7 +4,7 @@ description: |
   limit for proposals and snapshots. However, the specification supports
   defining limits on a per resource basis as well as limit types that are not
   anticipated to be used to implement Order 881. TROLIE server implementations
-  must support at least one of these limit types and should return an well known
+  must support at least one of these limit types and should return a well known
   `application/problem+json` response if they receive a proposal in an
   unsupported but valid limit type as defined here.
 

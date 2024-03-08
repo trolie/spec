@@ -17,7 +17,7 @@ For general announcements and discussion, subscribe to our [Email List <i class=
 
 ***
 
-{: .announcement-title }
+{: .announcement }
 
 > **Project News** <i class="fa-solid fa-bullhorn"></i>
 >
