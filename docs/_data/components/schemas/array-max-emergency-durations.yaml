@@ -1,0 +1,40 @@
+emergency-durations: &max
+  type: array
+  description: Defines the durations in minutes used for emergency limits.
+  minItems: 1
+  maxItems: 10
+  items:
+    type: object
+    properties:
+      name: &emergency-kind-name
+        description: |
+          A type of limit as defined in the Transmission Provider's operating manual,
+          usually indicating specific scenarios under which the limit may be used as
+          well as a maximum period for which the limit may be safely applied.
+        type: string
+        maxLength: 20
+        pattern: ^[A-Za-z\-]{3,10}$
+        example: "emergency"
+      duration-minutes:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 1440
+
+
+limit-value-set:
+  <<: *max
+  description: >
+
+    A set of general limit or rating values, each mapped to the various limit
+    bands defined by the Transmission Provider's operating manual. This
+    typically consists of a "normal" limit, as well as limits for various levels
+    of emergency conditions (typically 2-4) defined in the operations manual.
+
+  items:
+    type: object
+    description: Operating Limit
+    properties:
+        duration-name: *emergency-kind-name
+        limit:
+          $ref: ./limit.yaml

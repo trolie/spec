@@ -1,59 +1,71 @@
 {
+  "proposal-header" : {
+    "source": {
+      "last-updated": "2023-07-12T15:05:43.044267100-07:00",
+      "provider": "UTILITY-A",
+      "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+    },
+    "default-emergency-durations": [
+      { "name": "emergency", "duration-minutes": 60}
+    ],
+    "power-system-resources": [
+      { "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {"name": "segmentX", "authority": "TO-NERC-ID"},
+          {"name": "LINE1 SEG-X", "authority": "RC-NERC-ID", "mrid": "8badf00d"}
+        ]
+      }
+    ]
+  },
   "ratings": [
-    { 
-      "segment-id": "segmentX",
+    {
+      "resource-id": "8badf00d",
       "periods": [
         {
           "period-start": "2025-11-02T01:00:00-05:00",
-          "values": [
+          "period-end": "2025-11-02T02:00:00-05:00",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
             {
-             "type": "normal",
-             "value": {
-               "mva": 160
-             }
-            },
-            {
-             "type": "emergency",
-             "value": {
+              "duration-name": "emergency",
+              "limit": {
                 "mva": 165
-             }
+              }
             }
           ]
         },
         {
-            "period-start": "2025-11-02T01:00:00-06:00",
-            "values": [
-              {
-               "type": "normal",
-               "value": {
-                 "mva": 162
-               }
-              },
-              {
-               "type": "emergency",
-               "value": {
-                  "mva": 167
-               }
+          "period-start": "2025-11-02T02:00:00-05:00",
+          "period-end": "2025-11-02T03:00:00-05:00",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
+            {
+              "duration-name": "emergency",
+              "limit": {
+                "mva": 165
               }
-            ]
-        }, 
+            }
+          ]
+        },
         {
-            "period-start": "2025-11-02T02:00:00-06:00",
-            "values": [
-              {
-               "type": "normal",
-               "value": {
-                 "mva": 162
-               }
-              },
-              {
-               "type": "emergency",
-               "value": {
-                  "mva": 167
-               }
+          "period-start": "2025-11-02T03:00:00-05:00",
+          "period-end": "2025-11-02T04:00:00-05:00",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
+            {
+              "duration-name": "emergency",
+              "limit": {
+                "mva": 165
               }
-            ]
-        }              
+            }
+          ]
+        }
       ]
     }
   ]

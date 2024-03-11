@@ -17,6 +17,13 @@ For general announcements and discussion, subscribe to our [Email List <i class=
 
 ***
 
+{: .announcement-title }
+
+> **Project News** <i class="fa-solid fa-bullhorn"></i>
+>
+> The replay and Q&A is now available for the [Intro to TROLIE][intro_webinar] webinar.
+
+
 # Introduction
 
 With FERC Order 881, North American Transmission Owners, Transmission Operators, Transmission Providers, and Reliability Coordinators must establish a means to exchange ratings information based on current and forecasted ambient conditions. There is no standards body with a mandate to define a technical specification for that exchange and no vendor consortium that is working toward a specification.
@@ -31,3 +38,6 @@ The project’s specific aims are:
 
 
 We are committed establishing a vendor-neutral specification and building an inclusive community.
+
+
+[intro_webinar]: ./community-events/20240221-Intro-to-TROLIE

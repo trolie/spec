@@ -1,27 +1,45 @@
 {
     "version": "0.2",
     "ignorePaths": [
-        ".devcontainer/**"
+        ".devcontainer/*"
+        ,".github/**"
+        ,"./*.yaml"
+        ,"./docs/_config.yml"
+        ,"./**/*.lock"
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-        "CGMES"
+        "brotli"
+        ,"CGMES"
         ,"devcontainer"
         ,"ENTSO"
         ,"excalidraw"
         ,"FERC"
         ,"ICCP"
+        ,"mrid"
+        ,"MVAR"
         ,"NERC"
         ,"openapi"
+        ,"overvoltage"
         ,"owasp"
         ,"redoc"
         ,"Redocly"
         ,"ruleset"
-        ,"TROLIE"
-        ,"Vernova"
         ,"SCADA"
+        ,"TROLIE"
+        ,"undervoltage"
+        ,"Vernova"
+        ,"Vmax"
+        ,"Vmin"
     ],
+    "ignoreWords": [
+        "AMPL"
+        ,"autoplay"
+    ],
+<<<<<<< HEAD
     "ignoreWords": ["adrs"],
+=======
+>>>>>>> origin/1.0.0-wip
     "import": []
 }

@@ -92,16 +92,7 @@ info:
 servers:
   - url: https://trolie.example.com
 tags:
-  - name: Monitoring Sets
-    description: >
-      Monitoring sets are arbitrarily defined sets of network components, both
-      segments and transmission facilities, 
 
-      that may be used to filter ratings and limits returned by queries against
-      this API.  These are stored sets that may be defined
-
-      arbitrarily by users of the API, so long as those users have permission to
-      view relevant components.  
   - name: Operating Snapshots
     description: >
       Two snapshots are provided:
@@ -143,22 +134,7 @@ tags:
           window where forecast ratings are available.  
       A snapshot is provided of the resource ratings configured by the system,
       as well as their relationship to upcoming seasons.  
-  - name: Reference Data
-    description: >
-      Reference to sets of data that are referenced by ratings, limits and
-      monitoring sets.  This includes:
 
-      * List of segments and transmission facilities defined in TROLIE's network
-      model.  
-
-      * From an IEC CIM perspective, the list of GeographicalRegions and
-      SubGeographicalRegions defined in the model, and their 
-        association to transmission facilities and segments.  
-      * A list of supported seasons.  
-
-      * A list of supported limit types.  
-
-      * A list of supported naming schemes.  
   - name: Temporary AAR Exceptions
     description: >
       A TemporaryAARException is an exception to the AAR process, due to some
@@ -286,26 +262,6 @@ paths:
     $ref: paths/rating-proposals_seasonal.yaml
   /rating-proposals/seasonal/{ratings-provider}:
     $ref: paths/rating-proposals_seasonal_{ratings-provider}.yaml
-  /monitoring-sets:
-    $ref: paths/monitoring-sets.yaml
-  /monitoring-sets/{id}:
-    $ref: paths/monitoring-sets_{id}.yaml
-  /reference-data/network-segments:
-    $ref: paths/reference-data_network-segments.yaml
-  /reference-data/network-segments/{id}:
-    $ref: paths/reference-data_network-segments_{id}.yaml
-  /reference-data/transmission-facilities:
-    $ref: paths/reference-data_transmission-facilities.yaml
-  /reference-data/transmission-facilities/{id}:
-    $ref: paths/reference-data_transmission-facilities_{id}.yaml
-  /reference-data/seasons:
-    $ref: paths/reference-data_seasons.yaml
-  /reference-data/seasons/{id}:
-    $ref: paths/reference-data_seasons_{id}.yaml
-  /reference-data/limit-types:
-    $ref: paths/reference-data_limit-types.yaml
-  /reference-data/naming-schemes:
-    $ref: paths/reference-data_naming-schemes.yaml
 components:
   responses:
 
@@ -364,6 +320,9 @@ components:
         "application/problem+json":
           schema:
             $ref: '#/components/schemas/problem'
+        "application/json": # helpful errors when the request doesn't specify a TROLIE media type
+          schema:
+            $ref: '#/components/schemas/problem'
     '401-empty':
       <<: *unauthorized
       content: &empty
@@ -378,7 +337,7 @@ components:
       content: *empty
     '406-empty':
       <<: *not-acceptable
-      content: *empty
+      content: *problem
     '410-empty':
       <<: *gone
       content: *empty
@@ -398,11 +357,6 @@ components:
       content: *empty
 
   schemas:
-
-    description: &description
-      type: string
-      format: free-text
-      maxLength: 500
 
     empty:
       description: Intended to proactively avoid information disclosure
@@ -424,8 +378,10 @@ components:
             A URI reference that identifies the problem type.
             See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-type)
           example: "https://iana.org/assignments/http-problem-types#date"
-        title:
-          <<: *description
+        title: &description
+          type: string
+          format: free-text
+          maxLength: 500
           description: |
             A short, human-readable summary of the problem type.
             See [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#name-title)
@@ -517,11 +473,8 @@ components:
             write:seasonal-proposals: Submit seasonal ratings
             write:temporary-aar-exceptions: Write temporary AAR exceptions
             write:temporary-seasonal-ratings: Write temporary seasonal ratings
-            read:monitoring-set: Read monitoring set definitions
-            write:monitoring-sets: Write monitoring set definitions
             read:operating-snapshot: >-
               Read the ratings and limits snapshots in-use by the transmission
               provider
-            read:reference-data: Read reference data in the model used by TROLIE
 security:
   - oauth2-primary-flow: []

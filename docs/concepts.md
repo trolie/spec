@@ -27,6 +27,8 @@ pre-coordinated with the Transmission Provider hosting TROLIE to be the entity
 responsible for providing AARs on some set of Transmission Facilities. Ratings
 Providers implement clients to TROLIE servers.
 
+![UML concept model](<images/data model.excalidraw.png>)
+
 ## Transmission Facilities
 
 A Transmission Facility is a logical part of the electrical network that may
@@ -70,7 +72,21 @@ the latest "version" of the ratings data.
 
 ## Monitoring Sets
 
-Monitoring Sets are arbitrarily defined sets of transmission facilities that may
-be used to filter ratings and limits returned by queries against these APIs.
-Defining the contents of these monitoring sets may vary, and is up to TROLIE
-server implementations.
+Monitoring Sets are named sets of power system objects that may be used to
+filter ratings and limits returned by queries against these APIs. How Monitoring
+Sets are defined is beyond the scope of the TROLIE specification, and it is
+assumed that the sender and receiver have predefined the appropriate Monitoring
+Sets.
+
+A typical implementation might define a Monitoring Set for each Ratings
+Provider, containing all of the power system objects of interest to that Rating
+Provider, such as their owned and/or operated facilities as well as any
+additional objects whose limits they might monitor. It is generally assumed that
+the Ratings Provider's Monitoring Set would include all of the transmission
+facilities or other power system objects for which they have a Ratings
+Obligation as well as their so-called "tier 1" monitored elements.
+
+Another typical Monitoring Set would be that which nominates the complete
+footprint for the Transmission Provider. A natural choice for the
+`monitoring-set` identifier is the NERC id of the entity that defines the
+`monitoring-set`, if applicable.

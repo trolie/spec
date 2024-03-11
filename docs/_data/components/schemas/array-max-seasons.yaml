@@ -2,10 +2,21 @@ seasonal-proposals:
   type: object
   additionalProperties: false
   properties:
-    segment-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
-    seasons:
+    seasons: &max
       type: array
-      maxItems: 20 # max seasons
+      maxItems: 20
+      minItems: 0
       items:
         $ref: ./seasonal-proposal-season.yaml
+seasonal-rating-snapshot-item:
+  type: object
+  additionalProperties: false
+  properties:
+    resource-id:
+      $ref: ./generic-identifier.yaml
+    seasons:
+      <<: *max
+      items:
+        $ref: ./seasonal-rating-snapshot-value.yaml

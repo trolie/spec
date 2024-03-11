@@ -8,7 +8,7 @@ forecast-limit-item:
       type: array
       maxItems: 240
       items:
-        $ref: 'forecast-limit-period.yaml#/slim'
+        $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-slim'
 
 forecast-limit-item-detailed:
   type: object
@@ -19,31 +19,48 @@ forecast-limit-item-detailed:
     periods:
       <<: *max
       items:
-        $ref: 'forecast-limit-period.yaml#/detailed'
+        $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-detailed'
 
-forecast-proposal-for-segment:
+resource-forecast-proposal:
   type: object
   additionalProperties: false
   properties:
-    segment-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
     periods:
       <<: *max
       items:
-        $ref: ./forecast-rating-period.yaml
+        $ref: 'forecast-limit-period.yaml#/forecast-period-proposal'
 
-missing-forecast-rating-for-segment:
+  required:
+    - resource-id
+    - periods
+
+missing-forecast:
   type: object
   additionalProperties: false
   properties:
-    segment-id:
+    resource-id:
       $ref: ./generic-identifier.yaml
     periods:
       <<: *max
       items:
         $ref: ./period-start.yaml
 
-realtime-rating-proposal:
+resource-realtime-proposal:
   <<: *max
   items:
-    $ref: ./realtime-proposal-for-segment.yaml
+    type: object
+    additionalProperties: false
+    description: >
+      Real-time ratings data for a segment.  Includes status of the proposal
+      relative to this data, as well as rating values.  
+    properties:
+      resource-id:
+        $ref: ./generic-identifier.yaml
+      status:
+        $ref: ./proposal-status.yaml
+      continuous-operating-limit:
+        $ref: ./limit.yaml
+      emergency-operating-limits:
+        $ref: ./array-max-emergency-durations.yaml#/limit-value-set

@@ -13,32 +13,12 @@ get:
       description: OK
       content:
         application/vnd.trolie.seasonal-rating-proposal.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
-          example:
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            owner: UTILITY A
-            ratings:
-              - segment-id: segmentX
-                seasons:
-                  - season-id: fall
-                    status: accepted
-                    values:
-                      - type: normal
-                        value:
-                          mva: 160
-                      - type: ste
-                        value:
-                          mva: 165
-                      - type: lte
-                        value:
-                          mva: 170
-                      - type: dal
-                        value:
-                          mva: 170
+          schema: &seasonal-rating-proposal
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-proposal"
+          example: &get-example
+            $ref: ../../example-narratives/examples/seasonal-ratings-proposals-get.json
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+          schema: *seasonal-rating-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -76,29 +56,11 @@ patch:
   requestBody:
     content:
       application/vnd.trolie.seasonal-rating-proposal.v1+json:
-        schema:
-          $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+        schema: *seasonal-rating-proposal
         example:
-          ratings:
-            - segment-id: segmentX
-              seasons:
-                - season-id: fall
-                  values:
-                    - type: normal
-                      value:
-                        mva: 160
-                    - type: ste
-                      value:
-                        mva: 165
-                    - type: lte
-                      value:
-                        mva: 170
-                    - type: dal
-                      value:
-                        mva: 170
+          $ref: ../../example-narratives/examples/seasonal-ratings-proposals-patch.json
       application/json:
-        schema:
-          $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+        schema: *seasonal-rating-proposal
   responses:
     '202':
       description: >
@@ -106,32 +68,10 @@ patch:
         need to undergo additional validation and propagation to other systems.
       content:
         application/vnd.trolie.seasonal-proposal.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
-          example:
-            timestamp: '2023-07-12T15:05:43.044267100-07:00'
-            owner: UTILITY A
-            ratings:
-              - segment-id: segmentX
-                seasons:
-                  - season-id: fall
-                    status: accepted
-                    values:
-                      - type: normal
-                        value:
-                          mva: 160
-                      - type: ste
-                        value:
-                          mva: 165
-                      - type: lte
-                        value:
-                          mva: 170
-                      - type: dal
-                        value:
-                          mva: 170
+          schema: *seasonal-rating-proposal
+          example: *get-example
         application/json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/rating-proposal"
+          schema: *seasonal-rating-proposal
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 

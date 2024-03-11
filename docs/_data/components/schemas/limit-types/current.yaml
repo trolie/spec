@@ -1,6 +1,7 @@
 type: object
+title: Current
 description: >-
-  Representation of a limit in amps.  Assumes that TROLIE has a nominal voltage
+  Representation of a limit in amperes. Assumes that TROLIE has a nominal voltage
   in its model.
 additionalProperties: false
 properties:
@@ -9,3 +10,5 @@ properties:
     format: float
     minimum: 1
     maximum: 100000
+required:
+  - amps

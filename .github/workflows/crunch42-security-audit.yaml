@@ -2,9 +2,7 @@ name: "42Crunch API Security Audit"
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - '1.0.0*'
+
 jobs:
   run_42c_audit:
     permissions:

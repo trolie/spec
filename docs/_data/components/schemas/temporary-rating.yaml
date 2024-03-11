@@ -9,7 +9,7 @@ description: |
 properties:
   id:
     $ref: ./generic-identifier.yaml
-  segment-id:
+  resource-id:
     $ref: ./generic-identifier.yaml
   start-time:
     $ref: ./period-start.yaml
@@ -17,11 +17,13 @@ properties:
     $ref: ./period-start.yaml
   updated-time:
     $ref: ./timestamp.yaml
-  values:
-    $ref: ./limit-value-set.yaml
+  continuous-operating-limit:
+    $ref: ./limit.yaml
+  emergency-operating-limits:
+    $ref: ./array-max-emergency-durations.yaml#/limit-value-set
   reason:
     description: |
-      Free-form text indicating the reason for the temporary rating.  
+      Free-form text indicating the reason for the temporary rating.
     type: string
     format: free-form
     maxLength: 100

@@ -1,0 +1,42 @@
+proposal-header: &header
+  type: object
+  description: |
+
+    For simplicity, a single Proposal media type is used for both requests and
+    responses. The `provenance` object populated by the Ratings Provider in a
+    request. The Clearinghouse implementation may record this information, but
+    the response `provenance` should reflect the appropriate metadata from the
+    Clearinghouse Provider's perspective. Concretely, in a request
+    `provenance.provider` should be the Ratings Provider and in a response the
+    `provenance.provider` should be the Clearinghouse Provider.
+
+  properties:
+    source:
+      $ref: ./data-provenance.yaml
+    default-emergency-durations:
+      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+
+  required:
+    - source
+    - default-emergency-durations
+    - power-system-resources
+  additionalProperties: false
+
+snapshot-header:
+  <<: *header
+  description: Details about the snapshot provided by the Clearinghouse provider.
+  properties:
+    last-updated:
+      $ref: ./timestamp.yaml
+    snapshot-provenance:
+      $ref: ./data-provenance.yaml
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+    default-emergency-durations:
+      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+  required:
+    - last-updated
+    - snapshot-provenance
+    - power-system-resources

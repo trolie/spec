@@ -1,4 +1,11 @@
 type: string
+description: |
+
+  Contains a unique identifier for an object. Where practicable, using a URI is
+  generally recommended. However there is no functionality defined by TROLIE
+  that is contingent upon the properties or structure of a `generic-identifier`;
+  they are effectively opaque in the exchange.
+
 maxLength: 100
-pattern: ^(.){0,100}$
-example: fded654c-64f5-4db9-9467-8937d2b3f027
+pattern: ^(.){0,500}$
+example: "//trolie.example.com/limits/forecast-snapshot/2025-07-05T01:00:00-0500"

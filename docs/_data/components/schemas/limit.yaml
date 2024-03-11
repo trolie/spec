@@ -1,0 +1,19 @@
+description: |
+
+  Defines the limit. In practice, most exchanges will only support one kind of
+  limit for proposals and snapshots. However, the specification supports
+  defining limits on a per resource basis as well as limit types that are not
+  anticipated to be used to implement Order 881. TROLIE server implementations
+  must support at least one of these limit types and should return an well known
+  `application/problem+json` response if they receive a proposal in an
+  unsupported but valid limit type as defined here.
+
+oneOf:
+  - $ref: './limit-types/active-power.yaml'
+  - $ref: './limit-types/apparent-power.yaml'
+  - $ref: './limit-types/current.yaml'
+  - $ref: './limit-types/reactive-power.yaml'
+  - $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu'
+  - $ref: './limit-types/voltage.yaml#/overvoltage-threshold'
+  - $ref: './limit-types/voltage.yaml#/undervoltage-threshold-pu'
+  - $ref: './limit-types/voltage.yaml#/undervoltage-threshold'

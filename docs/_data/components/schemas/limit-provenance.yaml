@@ -33,3 +33,6 @@ properties:
 
       Schema of this object is out of scope of the TROLIE specification.  
     type: object
+required:
+  - proposals-considered
+  - limiting-segment

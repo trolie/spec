@@ -1,37 +1,74 @@
-[
-  {
-    "transmission-facility-id": "line2",
-    "proposals-considered": [
-      "c386503e-ae8f-46e7-8fcf-bdee30f4f56b"
-    ],
-    "temporary-aar-exceptions": [
-      "2d8c80e8-f533-4be9-85bf-f7f81eb73d67"
-    ],
-    "limiting-segment-id": "segmentX",
-    "override-reason": "Any reason entered by the operator for an override.",
-    "additional-data": {
-      "vendor-specific-data": {}
+{
+  "snapshot-header": {
+    "last-updated": "2023-07-12T15:05:43.044267100-07:00",
+    "snapshot-provenance": {
+      "provider": "X-AMPL",
+      "last-updated": "2023-07-12T15:05:43.044267100-07:00",
+      "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00"
     },
-    "updated-time": "2023-07-12T13:05:43.044267100-07:00",
-    "values": [
+    "default-emergency-durations": [
       {
-        "type": "normal",
-        "value": {
-          "mva": 160
-        }
+        "name": "lte",
+        "duration-minutes": 240
       },
       {
-        "type": "emergency",
-        "value": {
-          "mva": 165
-        }
+        "name": "ste",
+        "duration-minutes": 30
       },
       {
-        "type": "load-shed",
-        "value": {
-          "mva": 170
-        }
+        "name": "dal",
+        "duration-minutes": 15
+      }
+    ],
+    "power-system-resources": [
+      {
+        "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {
+            "name": "segmentX",
+            "authority": "TO-NERC-ID"
+          },
+          {
+            "name": "LINE1 SEG-X",
+            "authority": "RC-NERC-ID",
+            "mrid": "8badf00d"
+          }
+        ]
       }
     ]
-  }
-]
+  },
+  "limits": [
+    {
+      "transmission-facility-id": "line2",
+      "proposals-considered": [
+        "c386503e-ae8f-46e7-8fcf-bdee30f4f56b"
+      ],
+      "temporary-aar-exceptions": [
+        "2d8c80e8-f533-4be9-85bf-f7f81eb73d67"
+      ],
+      "limiting-segment": "segmentX",
+      "override-reason": "Any reason entered by the operator for an override.",
+      "additional-data": {
+        "vendor-specific-data": {}
+      },
+      "updated-time": "2023-07-12T13:05:43.044267100-07:00",
+      "continuous-operating-limit": {
+        "mva": 160
+      },
+      "emergency-operating-limits": [
+        {
+          "duration-name": "emergency",
+          "limit": {
+            "mva": 165
+          }
+        },
+        {
+          "duration-name": "load-shed",
+          "limit": {
+            "mva": 170
+          }
+        }
+      ]
+    }
+  ]
+}

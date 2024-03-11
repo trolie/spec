@@ -1,45 +1,92 @@
-monitoring-set:
-  description: |
-    Set of transmission facilities noteworthy to reference in queries in TROLIE.  
-    The set of segments included in the monitoring set is implied by their
-    inclusion in the transmission facilities within the monitoring set.  
+forecast-limits-snapshot:
   type: object
-  additionalProperties: false
+  description: A snapshot of the forecast for a monitoring set.
   properties:
-    id:
-      $ref: ./generic-identifier.yaml
-    description:
-      $ref: '../../openapi-split.yaml#/components/schemas/description'
-    transmission-facilities: &max
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits: &max
       type: array
       minItems: 0
       maxItems: 50000
+      description: Set of forecast limits
       items:
-        $ref: ./generic-identifier.yaml
+        $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
 
-forecast-limit-set-detailed:
+forecast-limits-detailed-snapshot:
+  type: object
+  description: A snapshot of the forecast for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Forecast including provenance information.
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+
+named-power-system-resources:
   <<: *max
-  description: Forecast including provenance information.
+  description: Collection of power system resource names
   items:
-    $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+    $ref: ./names.yaml
 
-forecast-limit-set:
+forecast-proposal:
+  type: object
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/proposal-header
+    ratings:
+      <<: *max
+      description: Forecasted Ratings
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal'
+  required:
+    - proposal-header
+    - ratings
+
+missing-forecast-rating-set:
   <<: *max
-  description: Set of forecast limits
+  description: A set of Missing Forecasted Ratings for a Forecast Window
   items:
-    $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
+    $ref: 'array-max-forecast-periods.yaml#/missing-forecast'
 
-realtime-limit-set:
-  <<: *max
-  items:
-    $ref: ./realtime-limit-item.yaml
+realtime-limits-snapshot:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Real-time limits
+      items:
+        $ref: ./realtime-limit-item.yaml
 
-realtime-limit-set-detailed:
-  <<: *max
-  items:
-    $ref: ./realtime-limit-item-detailed.yaml
+realtime-limits-detailed-snapshot:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Real-time limits including provenance.
+      items:
+        $ref: ./realtime-limit-item-detailed.yaml
 
-rating-proposal:
+realtime-proposal:
+  type: object
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/proposal-header
+    ratings:
+      <<: *max
+      description: Real-Time Ratings Proposals
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/resource-realtime-proposal'
+
+seasonal-rating-proposal:
+  description: Seasonal rating proposal
   allOf:
     - $ref: ./mutable-rating-proposal.yaml
     - type: object
@@ -48,3 +95,15 @@ rating-proposal:
           <<: *max
           items:
             $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+
+seasonal-rating-snapshot:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/snapshot-header
+    limits:
+      <<: *max
+      description: Seasonal rating snapshot
+      items:
+        $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
