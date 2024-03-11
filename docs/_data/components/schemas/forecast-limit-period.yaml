@@ -1,3 +1,14 @@
+period:
+  type: object
+  properties:
+    period-end:
+      $ref: ./period-start.yaml
+    period-start:
+      $ref: ./period-start.yaml
+  required:
+    - period-start
+    - period-end
+
 forecast-period-proposal:
   type: object
   title: Forecasted Period
@@ -8,20 +19,9 @@ forecast-period-proposal:
     in a Forecast Window. The status of the proposal as determined by the
     Clearinghouse is also included.
 
-  properties:
-    period-start:
-      $ref: ./period-start.yaml
-    period-end:
-      $ref: ./period-start.yaml
-    continuous-operating-limit:
-      $ref: ./limit.yaml
-    emergency-operating-limits:
-      $ref: ./array-max-emergency-durations.yaml#/limit-value-set
-  required:
-    - period-start
-    - period-end
-    - continuous-operating-limit
-    - emergency-operating-limits
+  allOf:
+    - $ref: '#/period'
+    - $ref: ./limit-data.yaml
 
 forecast-period-snapshot-slim:
   allOf:

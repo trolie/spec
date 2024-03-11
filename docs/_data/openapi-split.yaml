@@ -313,7 +313,7 @@ components:
       description: An unexpected error occurred
       headers: *rate-limited-headers
 
-    # Empty responses
+    # responses allowing content
     '400-problem':
       <<: *malformed
       content: &problem
@@ -357,7 +357,6 @@ components:
       content: *empty
 
   schemas:
-
     empty:
       description: Intended to proactively avoid information disclosure
       type: string

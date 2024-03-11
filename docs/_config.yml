@@ -37,5 +37,14 @@ kramdown:
       line_numbers: true
 
 callouts:
-  announcement-title:
+  announcement:
     color: green
+  nb:
+    color: purple
+
+gh_edit_link: true
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/TROLIE/spec"
+gh_edit_branch: "1.0.0-wip"
+gh_edit_source: docs
+gh_edit_view_mode: "tree"
