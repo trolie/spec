@@ -104,9 +104,11 @@ between Transmission Providers and Rating Providers.
 
 This decision also implies rules for TROLIE specification design.  Specifically:
 
-* Any identifier defined in a query parameter or request body is assumed to be
-  an identifier understood by the server.
-
 * The server may provide alternative names, based on the CIM `Name`/`NameType`
   paradigm, but only in `GET`s.  The client must never be required to provide
   them.
+
+* These headers are represented in an `alternative-identifiers` attribute of the
+  power system resource list in the header.  
+
+These changes are reflected in the current example of [In-use forecasts](../example-narratives/in-use-forecasts.md).  

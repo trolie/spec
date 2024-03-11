@@ -37,10 +37,7 @@
     "ignoreWords": [
         "AMPL"
         ,"autoplay"
+        ,"adrs"
     ],
-<<<<<<< HEAD
-    "ignoreWords": ["adrs"],
-=======
->>>>>>> origin/1.0.0-wip
     "import": []
 }
