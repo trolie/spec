@@ -37,6 +37,7 @@
     "ignoreWords": [
         "AMPL"
         ,"autoplay"
+        ,"adrs"
     ],
     "import": []
 }
