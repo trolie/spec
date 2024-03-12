@@ -1,6 +1,6 @@
 ---
-title: 9-Network Element Names and Naming Authorities
-parent: Architecture Decision Records
+title: Network Element Names and Naming Authorities
+parent: Decision Records
 ---
 
 ## Status

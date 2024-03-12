@@ -11,7 +11,7 @@ theme: just-the-docs
 
 exclude: 
   # The template isn't helpful content in the public website.  
-  - adrs/NNNN-adr-template.md
+  - decision-log/NNNN-adr-template.md
 
 plugins:
   - jekyll-remote-theme

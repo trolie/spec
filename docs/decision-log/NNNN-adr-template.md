@@ -1,6 +1,6 @@
 ---
 title: NNNN-ADR {short title of solved problem and solution}
-parent: Architecture Decision Records
+parent: Decision Records
 ---
 
 ## Status
