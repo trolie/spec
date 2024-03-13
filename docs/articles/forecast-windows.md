@@ -35,7 +35,7 @@ responses for on-time versus late Ratings Forecast Proposals.
 
 A TROLIE implementation will return `202 Accepted` when it receives an on-time
 (and valid) Ratings Forecast Proposal. As discussed in [Submitting Forecast
-Ratings](../example-narratives/submitting-forecasts.md), the client must `PATCH`
+Ratings](../example-narratives/submitting-forecasts), the client must `PATCH`
 the overall Ratings Forecast of the Clearinghouse Provider with their own
 proposal. Since the overall proposal requires additional processing *after* the
 Forecast Window deadline, the TROLIE server returns `202 Accepted` to confirm
