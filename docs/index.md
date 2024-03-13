@@ -19,9 +19,13 @@ For general announcements and discussion, subscribe to our [Email List <i class=
 
 {: .announcement }
 
-> **Project News** <i class="fa-solid fa-bullhorn"></i>
+> **Latest Updates** <i class="fa-solid fa-bullhorn"></i>
 >
-> The replay and Q&A is now available for the [Intro to TROLIE][intro_webinar] webinar.
+> * [Q&A](community-events/20240221-Intro-to-TROLIE#q--a) from the Intro to TROLIE webinar
+> * An article on [Conditional GET](articles/conditional-GET.md) and how to use it to obtain snapshots efficiently
+> * [How Units are Handled](articles/how-units-are-handled.md) to accommodate different practices by Reliability Coordinators
+> * A concise description of [Forecast Windows](articles/forecast-windows.md) and how late forecast submissions are handled
+> * A decision record on [Network Element Names and Naming Authorities](decision-log/naming)
 
 
 # Introduction
