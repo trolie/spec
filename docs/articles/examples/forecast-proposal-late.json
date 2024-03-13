@@ -1,0 +1,6 @@
+{
+  "type": "//trolie.example.com/spec/client-errors/409/forecast-Window-closed",
+  "title": "Conflict: Forecast Window Closed",
+  "status": 409,
+  "detail": "The proposed forecast was late. The first hour of the forecast was 2025-05-07T12:00:00-0500, and it was received at 2025-05-07T11:23:45-0500, but the Forecast Window closed at 2025-05-07T11:00:00-0500."
+}
