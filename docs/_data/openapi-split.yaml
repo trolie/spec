@@ -172,10 +172,8 @@ paths:
     $ref: paths/seasonal-ratings_season-instances.yaml
   /seasonal-ratings/season-instances/{id}:
     $ref: paths/seasonal-ratings_season-instances_{id}.yaml
-  /rating-proposals/forecasts:
+  /rating-proposals/forecast:
     $ref: paths/rating-proposals_forecasts.yaml
-  /rating-proposals/forecasts/{ratings-provider}:
-    $ref: paths/rating-proposals_forecasts_{ratings-provider}.yaml
   /rating-proposals/missing/forecasts:
     $ref: paths/rating-proposals_missing_forecasts.yaml
   /rating-proposals/missing/forecasts/{ratings-provider}:
