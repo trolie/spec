@@ -4,83 +4,44 @@ info:
   x-logo:
     altText: "TROLIE logo"
     url: "https://artwork.lfenergy.org/projects/trolie/horizontal/color/TROLIE-horizontal-color.svg"
-  description: >-
+  description: |
 
     Pursuant to FERC Order 881, Transmission Providers are required to support
-
     Ambient Adjusted Ratings (AARs) for most Transmission Facilities in their
-    footprint.  
-
-
-    In this context, Transmission Providers refers roughly to the FERC
-    definition of Transmission 
-
-    Provider as any public utility that owns, operates, or controls facilities
-    used for the
-
-    transmission of electric energy in interstate commerce.  This could be said
-    to apply to any entity that operates the transmission grid, including
-    ISOs.  
-
-
+    footprint.  In this context, Transmission Providers refers roughly to the
+    FERC definition of Transmission Provider as any public utility that owns,
+    operates, or controls facilities used for the transmission of electric
+    energy in interstate commerce.  This could be said to apply to any entity
+    that operates the transmission grid, including ISOs.
+    
     For the purpose of this API, Transmission Provider may be assumed to be more
-    generic- it is 
-
-    really any entity that can receive AARs.  
-
-
-    This API specification supports the information exchange necessary to
-
-    coordinate forecasted and base facility ratings between a Transmission
-    Provider
-
-    and Ratings Providers. 
-
-
-    The Transmission Provider is assumed to be the host of this information
-    exchange.
-
+    generic- it is really any entity that can receive AARs.  This API
+    specification supports the information exchange necessary to coordinate
+    forecasted and base facility ratings between a Transmission Provider and
+    Ratings Providers.  The Transmission Provider is assumed to be the host of
+    this information exchange.
 
     A Ratings Provider is defined by this specification to be any entity that
-
     has pre-coordinated with the Transmission Provider hosting this information
-    exchange
-
-    to be the entity responsible for providing AARs on some set of Transmission
-    Facilities
-
-    known to the Transmission Provider. That pre-coordination is out-of-scope
-    for
-
-    this specification.
-
-
-    The language of this API makes a strict distinction between the terms rating
-    and limit.  
+    exchange to be the entity responsible for providing AARs on some set of
+    Transmission Facilities known to the Transmission Provider. That
+    pre-coordination is out-of-scope for this specification.  The language of
+    this API makes a strict distinction between the terms rating and limit.
 
     A limit is a validated value that is actively used to make operational
-    decisions on the power grid.  
-
-    This could be limits used by the EMS or real-time market in real-time, or it
-    could be forecast limits 
-
-    used by look-ahead processes such as EMS study applications or the day-ahead
-    market. 
+    decisions on the power grid.  This could be limits used by the EMS or
+    real-time market in real-time, or it could be forecast limits used by
+    look-ahead processes such as EMS study applications or the day-ahead market.
 
     A rating, in contrast, is a calculated value from some process that is input
-    to TROLIE 
-
-    (and by extension operating power systems at large) and may be selected for
-    use as a 
-
-    limit after validation and dependent on operating conditions, time frame and
-    the operational 
-
-    decisions being made.  Seasonal ratings, forecast rating proposals, and
-    real-time rating proposals are all examples of ratings.  
-
+    to TROLIE (and by extension operating power systems at large) and may be
+    selected for use as a limit after validation and dependent on operating
+    conditions, time frame and the operational decisions being made.  Seasonal
+    ratings, forecast rating proposals, and real-time rating proposals are all
+    examples of ratings.
 
     <img src="images/TROLIE Ratings Provider interactions.excalidraw.png" alt="TROLIE Interactions by Ratings Provider" />
+
   version: 1.0.0-wip
   contact:
     name: TROLIE Maintainers
@@ -108,20 +69,24 @@ tags:
         this resource.  
   - name: Rating Proposals
     description: >
+
       Ratings Providers may submit ratings for three separate time horizons:
 
       * **Forecast Ratings** are at minimum hourly forecasts of ratings for a
       particular segment.  
 
       * **Real-Time Ratings** are provided for current operating conditions. 
-      Ratings provided in this manner
-        are an alternative for segments where ICCP communications are not available.  
+      Ratings provided in this manner are an alternative for segments where ICCP
+      communications are not available.  
+
       * **Seasonal Ratings** are recourse ratings for when applicable forecast
-      ratings are not available.  
-        In addition to use when forecast rating feeds are missing, these may be used by planning or other forward-looking
-        processes that go beyond the window for which forecasted ratings may be available.  
-        This includes ratings for scheduled calendar seasons, as well as to rating sets that apply in special named 
-        scenarios defined by the Transmission Provider, such as an extreme winter day.  
+      ratings are not available.  In addition to use when forecast rating feeds
+      are missing, these may be used by planning or other forward-looking
+      processes that go beyond the window for which forecasted ratings may be
+      available.  This includes ratings for scheduled calendar seasons, as well
+      as to rating sets that apply in special named scenarios defined by the
+      Transmission Provider, such as an extreme winter day.  
+
   - name: Seasonal Rating Snapshots
     description: >
       While not typically used directly in operational decisions, seasonal
@@ -137,94 +102,63 @@ tags:
 
   - name: Temporary AAR Exceptions
     description: >
-      A TemporaryAARException is an exception to the AAR process, due to some
-      unusual
 
-      condition on the facility.  This could be caused by a number of scenarios:
+      A TemporaryAARException is an exception to the AAR process, due to some
+      unusual condition on the facility.  This could be caused by a number of
+      scenarios:
 
       * An equipment failure.
 
       * An unforeseen condition on a related part of the power grid.
 
       * Some ambient condition that is not part of the model is heating the
-      line.
+        line.
 
       * Something in the surrounding environment is effecting the amount that a
-        line is allowed to sag.  For example, this may occur for lines over rivers when
-        very large ships pass under them. 
+      line is allowed to sag.  For example, this may occur for lines over rivers
+      when very large ships pass under them. 
 
       The purpose and behavior of a temporary rating is two-fold.
 
-
-      First, according to FERC, all exceptions to normal rating
-
-      must be documented and kept with history.  The actual numbers for the
-
-      forecasted and real-time feeds may still continue through proposals
-      submitted to 
-
-      TROLIE. However, the presence of a temporary
-
-      rating, and the reason that it occurred, must be captured in history
-      regardless
-
-      of the actual numbers.  The TemporaryAARException may be held simply for
-      that record-
-
-      keeping purpose.
-
-
-      For the purpose of record-keeping, it may need to be updated after an
-
-      incident has occurred with actual values.  The reason and the end date of
-      the
-
-      effective window may be updated after the object has been created, up to a
-
-      configurable threshold.
+      First, according to FERC, all exceptions to normal rating must be
+      documented and kept with history.  The actual numbers for the forecasted
+      and real-time feeds may still continue through proposals submitted to
+      TROLIE. However, the presence of a temporary rating, and the reason that
+      it occurred, must be captured in history regardless of the actual numbers.
+      The TemporaryAARException may be held simply for that record- keeping
+      purpose.  For the purpose of record-keeping, it may need to be updated
+      after an incident has occurred with actual values.  The reason and the end
+      date of the effective window may be updated after the object has been
+      created, up to a configurable threshold.
 
 
       If the targeted segment is getting AAR data feeds, then it may be assumed
-      that
-
-      those AAR data feeds from the RatingsProvider will simply reflect the
-      temporary
-
-      condition.
-
-
-      However, this doesn't always apply, leading to the second usage.  Actual
-      rating
-
-      values may also be provided for the TemporaryAARException, when we cannot
-      expect AAR
-
-      feeds otherwise.  This occurs in two scenarios:
+      that those AAR data feeds from the RatingsProvider will simply reflect the
+      temporary condition.  However, this doesn't always apply, leading to the
+      second usage.  Actual rating values may also be provided for the
+      TemporaryAARException, when we cannot expect AAR feeds otherwise.  This
+      occurs in two scenarios:
 
       1.  It is required when the Transmission Provider is generating forecast
-      rating proposals, 
-          from lookup tables for example.  There is no external AAR data feed, and the 
-          Transmission Provider wouldn't otherwise know
-          how to forecast the ratings given this temporary condition.  For these
-          scenarios, a complete rating value set MUST be provided.
+      rating proposals, from lookup tables for example.  There is no external
+      AAR data feed, and the Transmission Provider wouldn't otherwise know how
+      to forecast the ratings given this temporary condition.  For these
+      scenarios, a complete rating value set MUST be provided.
+
       2.  For facilities where AAR data is provided, it is possible that the AAR
-      data
-          feed could be down for some reason.  Therefore, this provides a placeholder set
-          of numbers until the AAR data feed is repaired.
+      data feed could be down for some reason.  Therefore, this provides a
+      placeholder set of numbers until the AAR data feed is repaired.
+
   - name: Temporary Seasonal Ratings
     description: >
+
       A TemporarySeasonalRating allows for temporary overrides of the seasonal
-      rating, due to some unusual
-
-      condition on the facility.  This essentially overrides the current
-      "recourse" rating used in operations.  
-
-
+      rating, due to some unusual condition on the facility.  This essentially
+      overrides the current "recourse" rating used in operations.  
 
       NOTE- this description is likely incomplete, and needs to be added to in
-      future releases.  
+      future releases.
 
-           
 paths:
   /limits/forecast-snapshot:
     $ref: paths/limits_forecast-snapshot.yaml
