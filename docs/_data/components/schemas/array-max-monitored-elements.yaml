@@ -7,7 +7,7 @@ forecast-limits-snapshot:
     limits: &max
       type: array
       minItems: 0
-      maxItems: 50000
+      maxItems: &max-facilities 50000 
       description: Set of forecast limits
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
@@ -43,6 +43,85 @@ forecast-proposal:
   required:
     - proposal-header
     - ratings
+
+forecast-proposal-status:
+  type: object
+  properties:
+    forecast-provider:
+      $ref: ./data-provenance.yaml
+    incomplete-obligation-count:
+      description: |
+
+        The number of facilities for this provider whose Ratings Obligation has
+        not been met in this forecast window. This number may be larger than the
+        size of `incomplete-facilities`, since the latter has a pre-defined
+        upper bound for performance and application security reasons.
+ 
+        ⚠️ **The Ratings Provider should assert that this value is zero when they
+        believe they have completed their submission process.️** ⚠️
+
+      type: integer
+      format: uint16
+      minimum: 0
+      maximum: *max-facilities
+
+    incomplete-obligations:
+      type: array
+      description: |
+
+        Indicates which Ratings Obligations have not been fulfilled. The size of
+        this set is bounded and may be less than the actual count of unfulfilled
+        Obligations indicated in `incomplete-obligation-count`. The intended use
+        case for this set is debugging and troubleshooting.
+
+      minItems: 0
+      maxItems: 10
+      items:
+        $ref: ./names.yaml
+
+    invalid-proposal-count:
+      description: |
+
+        The number of `resource-forecast-proposal` objects that have been
+        determined to be *invalid* during this Forecast Window for the current
+        Ratings Provider. This count is provided for troubleshooting,
+        establishing trends, and triggering alerts.
+
+      type: integer
+      format: uint16
+      minimum: 0
+      maximum: *max-facilities
+
+    proposal-validation-errors:
+      type: array
+      description: The most recent validation errors 
+      minItems: 0
+      maxItems: 50
+      items:
+        type: object
+        additionalProperties: false
+        description: Validation errors.
+        properties:
+          message:
+            type: string
+            pattern: ^(.){1,500}$
+            maxLength: 500
+            example: The `resource-forecast-proposal` for `8badf00d` is incomplete.
+          resource-id:
+            # NOTE to implementors: This intentionally is not `names`
+            # as was used in `incomplete-obligations` to mitigate the
+            # possibility of information disclosure when a Ratings Provider
+            # submits a proposal for a valid resource that they are not
+            # permitted to write to. It should be the same `resource-id` that
+            # the client submitted.
+            $ref: ./generic-identifier.yaml
+
+  required:
+    - forecast-provider
+    - incomplete-obligation-count
+    - incomplete-obligations
+    - invalid-proposal-count
+    - proposal-validation-errors
 
 realtime-limits-snapshot:
   type: object

@@ -2,13 +2,10 @@ proposal-header: &header
   type: object
   description: |
 
-    For simplicity, a single Proposal media type is used for both requests and
-    responses. The `provenance` object populated by the Ratings Provider in a
-    request. The Clearinghouse implementation may record this information, but
-    the response `provenance` should reflect the appropriate metadata from the
-    Clearinghouse Provider's perspective. Concretely, in a request
-    `provenance.provider` should be the Ratings Provider and in a response the
-    `provenance.provider` should be the Clearinghouse Provider.
+    Populated by the Ratings Provider in a request. The Clearinghouse
+    implementation should record this information, and the detail limits
+    snapshot should should reflect the appropriate metadata from the
+    Clearinghouse Provider's perspective.
 
   properties:
     source:

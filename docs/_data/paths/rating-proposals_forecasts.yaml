@@ -66,8 +66,23 @@ get:
 patch:
   <<: *head
   operationId: patchRatingForecastProposal
-  description: &patch_desc Update the logged-in provider's ratings Forecast Proposal
-  summary: *patch_desc
+  summary: Submit a Forecast Proposal
+  description: |
+
+    In every Forecast Window, a new area-wide Forecast Proposal is created on
+    the TROLIE server of the Clearinghouse Provider. Each Ratings Provider then
+    `PATCH`es the area-wide proposal with the forecasts for their respective
+    Ratings Obligations. Any unmet Ratings Obligations will result in the
+    Clearinghouse Provider using an appropriate Recourse Rating for those unmet
+    obligations.
+
+    For Ratings Providers with a natural split in their Ratings Obligations,
+    e.g., geographic or control areas, the `PATCH` semantics afford the ability
+    to submit multiple Forecast Proposals containing just proposals for the
+    relevant resources, if they choose to do so. This affordance can also be
+    leveraged to split a large proposal into one or more parts in cases where
+    that is advantageous from a performance or reliable delivery perspective.
+
   requestBody:
     content:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
@@ -76,21 +91,22 @@ patch:
           $ref: ../../example-narratives/examples/forecast-ratings-proposal-patch.json
       application/json:
         schema: *forecast-rating-proposal
+
   responses:
     '202':
-      description: >
-        The update was accepted for later processing. Updates to  ratings may
-        need to undergo additional validation and propagation to other systems. 
-        Status may be retrieved by issuing a GET using
-        `getRatingForecastProposals`
+      description: |
+
+        The update was accepted for later processing. Updates to ratings may
+        need to undergo additional validation and propagation to other systems.
+
       content:
-        application/vnd.trolie.rating-forecast-proposal.v1+json:
-          schema: *forecast-rating-proposal
-          example: *get-example
-        application/json:
-          schema: *forecast-rating-proposal
+        application/vnd.trolie.rating-forecast-proposal-status.v1+json:
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-status
+
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty

@@ -6,11 +6,13 @@
         ,"./*.yaml"
         ,"./docs/_config.yml"
         ,"./**/*.lock"
+        ,"*.svg"
     ],
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-        "brotli"
+        "affordance"
+        ,"brotli"
         ,"CGMES"
         ,"devcontainer"
         ,"ENTSO"
