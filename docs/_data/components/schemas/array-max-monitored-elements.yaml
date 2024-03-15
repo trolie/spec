@@ -44,12 +44,6 @@ forecast-proposal:
     - proposal-header
     - ratings
 
-missing-forecast-rating-set:
-  <<: *max
-  description: A set of Missing Forecasted Ratings for a Forecast Window
-  items:
-    $ref: 'array-max-forecast-periods.yaml#/missing-forecast'
-
 realtime-limits-snapshot:
   type: object
   description: A snapshot of the realtime limits for a monitoring set.

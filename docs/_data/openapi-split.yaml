@@ -174,10 +174,6 @@ paths:
     $ref: paths/seasonal-ratings_season-instances_{id}.yaml
   /rating-proposals/forecast:
     $ref: paths/rating-proposals_forecasts.yaml
-  /rating-proposals/missing/forecasts:
-    $ref: paths/rating-proposals_missing_forecasts.yaml
-  /rating-proposals/missing/forecasts/{ratings-provider}:
-    $ref: paths/rating-proposals_missing_forecasts_{ratings-provider}.yaml
   /temporary-aar-exceptions:
     $ref: paths/temporary-aar-exceptions.yaml
   /temporary-aar-exceptions/{id}:
