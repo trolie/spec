@@ -280,7 +280,7 @@ components:
         Accept:
           schema:
             type: string
-            format: mime-type-header
+            pattern: '^((application\/vnd\.trolie\.(?:[a-z-]+)\.v\d+\+json(;q=(0\.\d+|1\.0))?))(\,\s*(application\/vnd\.trolie\.(?:[a-z-]+)\.v\d+\+json(;q=(0\.\d+|1\.0))?))*$'
           examples:
             "Forecast Proposal":
               summary: Used to update the area-wide forecast
@@ -289,11 +289,13 @@ components:
               summary: Used to update the area-wide nowcast
               value: "application/vnd.trolie.rating-realtime-proposal.v1+json"
         Accept-Encoding:
+          description: |
+            The server must support and prefer Brotli yet must accept gzip for
+            compatibility.
           schema:
             type: string
-            format: mime-type-header
-            description: List of content encoding formats the server accepts.
-          example: "br,gzip"
+            enum:
+              - "br,gzip"
       content: *problem
     '422-problem':
       <<: *rate-limited
