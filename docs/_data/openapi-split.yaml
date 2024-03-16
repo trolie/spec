@@ -215,7 +215,7 @@ components:
 
     '400': &malformed
       <<: *rate-limited
-      description: Malformed request.
+      description: Malformed request
     '401': &unauthorized
       <<: *rate-limited
       description: Unauthorized
@@ -227,10 +227,10 @@ components:
       description: Not Found
     '406': &not-acceptable
       <<: *rate-limited
-      description: Not Acceptable. (Content negotiation failed)
+      description: Not Acceptable (Content negotiation failed)
     '410': &gone
       <<: *rate-limited
-      description: Gone.
+      description: Gone
     '429': &rate-limit-hit
       description: Too many requests (rate limiting)
       headers:
@@ -271,8 +271,28 @@ components:
       content: *empty
     '413-empty':
       <<: *rate-limited
-      description: Payload too large!
+      description: Payload too large
       content: *empty
+    '415-problem':
+      description: Unsupported media type
+      headers:
+        <<: *rate-limited-headers
+        Accept:
+          schema:
+            type: string
+          examples:
+            "Forecast Proposal":
+              summary: Used to update the area-wide forecast
+              value: "application/vnd.trolie.rating-forecast-proposal.v1+json"
+            "Real-Time Proposal":
+              summary: Used to update the area-wide nowcast
+              value: "application/vnd.trolie.rating-realtime-proposal.v1+json"
+        Accept-Encoding:
+          schema:
+            type: string
+            description: List of content encoding formats the server accepts.
+          example: "br,gzip"
+      content: *problem
     '422-problem':
       <<: *rate-limited
       description: Unprocessable content
