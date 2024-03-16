@@ -35,10 +35,13 @@ get:
         application/vnd.trolie.rating-forecast-proposal.v1+json:
           schema: &forecast-rating-proposal
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
-          example: &get-example
+          example:
             $ref: ../../example-narratives/examples/forecast-ratings-proposal-get.json
-        application/json:
-          schema: *forecast-rating-proposal
+        application/vnd.trolie.rating-forecast-proposal-status.v1+json: &status-response
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-status
+          example:
+            $ref: ../../example-narratives/examples/forecast-ratings-proposal-status.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -100,9 +103,7 @@ patch:
         need to undergo additional validation and propagation to other systems.
 
       content:
-        application/vnd.trolie.rating-forecast-proposal-status.v1+json:
-          schema:
-            $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-status
+        application/vnd.trolie.rating-forecast-proposal-status.v1+json: *status-response
 
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
