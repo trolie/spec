@@ -280,6 +280,7 @@ components:
         Accept:
           schema:
             type: string
+            format: mime-type-header
           examples:
             "Forecast Proposal":
               summary: Used to update the area-wide forecast
@@ -290,6 +291,7 @@ components:
         Accept-Encoding:
           schema:
             type: string
+            format: mime-type-header
             description: List of content encoding formats the server accepts.
           example: "br,gzip"
       content: *problem
