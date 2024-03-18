@@ -1,0 +1,14 @@
+@startuml
+state Processing_Forecasts {
+    [*] --> AcceptingProposals
+    AcceptingProposals --> AcceptingProposals: **Forecast Window closed🔒**
+    ---
+    [*] --> Idle
+    Idle --> SubmittingProposals: **Forecast Window closed🔒**
+    SubmittingProposals --> AwaitingSnapshot: **Proposal submitted📤**
+    AwaitingSnapshot --> Idle: **Snapshot received📥**
+    ---
+    [*] --> ServingSnapshot
+    ServingSnapshot --> ServingSnapshot: **Snapshot received📥**
+}
+@enduml
