@@ -10,8 +10,8 @@ github_username: TROLIE
 theme: just-the-docs
 
 exclude: 
-  # The template isn't helpful content in the public website.  
   - decision-log/NNNN-adr-template.md
+  - images/*.puml
 
 plugins:
   - jekyll-remote-theme
