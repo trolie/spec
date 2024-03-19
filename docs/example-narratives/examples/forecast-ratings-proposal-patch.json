@@ -6,7 +6,18 @@
       "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
     },
     "default-emergency-durations": [
-      { "name": "emergency", "duration-minutes": 60}
+      {
+        "name": "lte",
+        "duration-minutes": 240
+      },
+      {
+        "name": "ste",
+        "duration-minutes": 30
+      },
+      {
+        "name": "dal",
+        "duration-minutes": 15
+      }
     ],
     "power-system-resources": [
       { "resource-id": "8badf00d",
@@ -29,9 +40,21 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "emergency",
+              "duration-name": "lte",
               "limit": {
                 "mva": 165
+              }
+            },
+            {
+              "duration-name": "ste",
+              "limit": {
+                "mva": 170
+              }
+            },
+            {
+              "duration-name": "dal",
+              "limit": {
+                "mva": 170
               }
             }
           ]
@@ -44,24 +67,21 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "emergency",
+              "duration-name": "lte",
               "limit": {
                 "mva": 165
               }
-            }
-          ]
-        },
-        {
-          "period-start": "2025-11-02T03:00:00-05:00",
-          "period-end": "2025-11-02T04:00:00-05:00",
-          "continuous-operating-limit": {
-            "mva": 160
-          },
-          "emergency-operating-limits": [
+            },
             {
-              "duration-name": "emergency",
+              "duration-name": "ste",
               "limit": {
-                "mva": 165
+                "mva": 170
+              }
+            },
+            {
+              "duration-name": "dal",
+              "limit": {
+                "mva": 170
               }
             }
           ]

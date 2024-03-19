@@ -32,11 +32,6 @@ get:
     '200':
       description: OK
       content:
-        application/vnd.trolie.rating-forecast-proposal.v1+json:
-          schema: &forecast-rating-proposal
-            $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
-          example:
-            $ref: ../../example-narratives/examples/forecast-ratings-proposal-get.json
         application/vnd.trolie.rating-forecast-proposal-status.v1+json: &status-response
           schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-status
@@ -89,22 +84,18 @@ patch:
   requestBody:
     content:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
-        schema: *forecast-rating-proposal
+        schema:
+          $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
         example:
           $ref: ../../example-narratives/examples/forecast-ratings-proposal-patch.json
-      application/json:
-        schema: *forecast-rating-proposal
 
   responses:
     '202':
       description: |
-
         The update was accepted for later processing. Updates to ratings may
         need to undergo additional validation and propagation to other systems.
-
       content:
         application/vnd.trolie.rating-forecast-proposal-status.v1+json: *status-response
-
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -121,9 +112,6 @@ patch:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
           example:
             $ref: '../../articles/examples/forecast-proposal-late.json'
-        application/json:
-          example:
-            $ref: '../../articles/examples/forecast-proposal-late.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '413':
@@ -136,9 +124,6 @@ patch:
         application/problem+json:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
-          example:
-            $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
-        application/json:
           example:
             $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
       headers:
