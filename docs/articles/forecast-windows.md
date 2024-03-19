@@ -49,8 +49,21 @@ the Ratings Forecast of the Clearinghouse Provider's footprint. If that overall
 Ratings Forecast is no longer accepting submissions, i.e., the Forecast Window
 is closed for the forecast being proposed, attempting to `PATCH` it conflicts
 with the server's state, so a `409 Conflict` client error with an appropriate
-`application/problem+json` response.
+`application/problem+json` response, like the following:
 
 ```json
 {% include_relative examples/forecast-proposal-invalid-units.json %}
 ```
+
+
+## Forecast Processing State Machine
+
+> When one window closes, another one opens.
+
+Below is a simplified state machine that describes the three concurrent states
+of when TROLIE is processing forecasts. It illustrates how accepting Forecast
+Proposals and serving Limits Snapshot is decoupled from compiling all of the
+received forecasts and submitting them in the overall Forecast Proposal to the
+Clearinghouse.
+
+![Forecast State](../images/forecast-states.svg)
