@@ -1,33 +1,29 @@
-head: &head
-  operationId: getRatingForecastProposalsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getRatingForecastProposals`. Useful for cache invalidation.
-  summary: Obtain the Ratings Provider's proposals
-  tags:
-    - Rating Proposals
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:forecast-proposals
+get: &get
+  operationId: getRatingForecastProposalStatus
+  summary: Obtain the status of the Ratings Provider's proposal
+  description: |
 
-get:
-  <<: *head
-  operationId: getRatingForecastProposals
-  description: >
-    Obtain the Ratings Forecasts that *this* Ratings Provider has submitted.  
-    Note that the offset-period-start and period-end parameters work in a
-    similar fashion to  getLimitsForecastSnapshot, except that it will return
-    any proposal that overlaps with the implied period.  
+    Used to obtain the status of the Ratings Forecast proposal. The response is
+    implicitly restricted to the requesting Ratings Provider monitoring set.
+    Accordingly, the caller can use this endpoint to check the state of their
+    proposal submission.
+
+    Note that the same status object is returned in each
+    `patchRatingForecastProposal`, so this endpoint may seem redundant. However,
+    an anticipated use cases for this `GET` endpoint are to allow supervisor
+    processes that are setup to independently ensure the provider's program for
+    rating submission if functioning properly. For example, the Rating Provider
+    might have one program responsible for producing and submitting Ratings
+    Forecasts via `patchRatingForecastProposal`, while having a separate
+    monitoring job that checks this endpoint regularly.
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
+    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+    limiting is done on a per Ratings Provider basis, so requests from
+    independent clients used by the same provider count against the same quota.
+
+  tags:
+    - Rating Proposals
   responses:
     '200':
       description: OK
@@ -59,10 +55,12 @@ get:
     '500': &unexpected-error-empty
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:forecast-proposals
 
 patch:
-  <<: *head
+  <<: *get
   operationId: patchRatingForecastProposal
   summary: Submit a Forecast Proposal
   description: |
