@@ -8,10 +8,10 @@ get: &get
     Accordingly, the caller can use this endpoint to check the state of their
     proposal submission.
 
-    Note that the same status object is returned in each
+    Note that the same status object is returned for each
     `patchRatingForecastProposal`, so this endpoint may seem redundant. However,
-    an anticipated use cases for this `GET` endpoint are to allow supervisor
-    processes that are setup to independently ensure the provider's program for
+    an anticipated use case for this `GET` endpoint is to support supervisor
+    processes that are setup by the client to independently ensure the provider's process for
     rating submission if functioning properly. For example, the Rating Provider
     might have one program responsible for producing and submitting Ratings
     Forecasts via `patchRatingForecastProposal`, while having a separate
