@@ -5,12 +5,12 @@ parent: Articles
 
 # Conditional GET
 
-TROLIE implementations MUST support the Conditional GET pattern and client
-should use it to determine when limits snapshots are available.  While this
+TROLIE implementations MUST support the Conditional GET pattern and clients
+should use it to determine when limits snapshots are available. While this
 pattern is [well-documented by
 Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests),
-it can be helpful see a concrete example. In this article we will discuss
-this pattern in the context of obtaining a Forecast Limits Snapshot.
+it can be helpful see a concrete example. In this article we will discuss this
+pattern in the context of obtaining a Forecast Limits Snapshot.
 
 By employing the Conditional GET pattern, the client can efficiently determine
 when a new version of the resource is available without having to repeatedly
