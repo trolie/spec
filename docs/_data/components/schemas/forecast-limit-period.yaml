@@ -1,9 +1,9 @@
 period:
   type: object
   properties:
-    period-end:
-      $ref: ./period-start.yaml
     period-start:
+      $ref: ./period-start.yaml
+    period-end:
       $ref: ./period-start.yaml
   required:
     - period-start

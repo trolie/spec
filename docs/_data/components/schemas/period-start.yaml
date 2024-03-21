@@ -1,27 +1,22 @@
-description: >
+description: |
+
   RFC 3339 date-time string with *no fractional seconds component* that
-  designates an operating period (such as an hour) that
+  designates a start or end to an operating period (such as an hour) that starts
+  at a specified time. This will frequently be at the start of an hour, but may
+  be finer-grained, such as every 30 minutes, should the Clearinghouse Provider
+  choose.
 
-  starts at a specified time. This will frequently be at the start of an hour,
-  but may be finer-grained, such as 
-
-  every 30 minutes, should the Transmission Provider choose.
-
-  If the Transmission Provider is operating in EST, these are
-
-  valid and equivalent values:
+  If the Transmission Provider is operating in EST, these are valid and
+  equivalent values:
 
   * 2023-01-01T06:00Z
-
   * 2023-01-01T01:00-5:00
-
   * 2023-01-01T00:00-6:00
-
   * 2023-01-01T11:30+5:30
 
-
   The server should uniformly represent date-times in the operational time zone
-  of the Transmission Provider.
+  of the Clearinghouse Provider.
+
 type: string
 format: date-time
 maxLength: 25

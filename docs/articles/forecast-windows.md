@@ -42,6 +42,11 @@ Forecast Window deadline, the TROLIE server returns `202 Accepted` to confirm
 that the `PATCH` contained a valid proposal and will be processed by the
 Clearinghouse.
 
+{: .nb }
+> **NOTE**: The Ratings Provider populates the `proposal-header.proposal-begins`
+> to indicate the intended Forecast Window. Accordingly, the TROLIE server
+> checks `proposal-header.proposal-begins` to determine if the proposal is late or not.
+
 ### Late <i class="fa-solid fa-arrow-right-long"></i> `409 Conflict`
 
 Again, submitting a Ratings Forecast Proposal to TROLIE is done by `PATCH`ing
@@ -54,7 +59,6 @@ with the server's state, so a `409 Conflict` client error with an appropriate
 ```json
 {% include_relative examples/forecast-proposal-invalid-units.json %}
 ```
-
 
 ## Forecast Processing State Machine
 

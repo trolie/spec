@@ -10,6 +10,8 @@ proposal-header: &header
   properties:
     source:
       $ref: ./data-provenance.yaml
+    proposal-begins:
+      $ref: ./period-start.yaml
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
     power-system-resources:
@@ -17,6 +19,7 @@ proposal-header: &header
 
   required:
     - source
+    - proposal-begins
     - default-emergency-durations
     - power-system-resources
   additionalProperties: false
