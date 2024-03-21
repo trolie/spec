@@ -87,12 +87,11 @@ transmission line or a transformer.
 ## Segments
 
 For the purposes of the TROLIE specification, a Segment is a logical construct:
-A power system resource Transmission Facilities may be comprised of one or more
-Segments. A distinct Ratings Provider is assigned to each Segment. This modeling
-is pre-coordinated and is out of scope for TROLIE, so while a Transmission
-Facility is generally expected to have at least one Segment, the `resource-id`
-of a Ratings Proposal might nominate a Transmission Facility in some
-Clearinghouse implementations.
+A Transmission Facility may be comprised of one or more Segments. A distinct
+Ratings Provider is assigned to each Segment. This modeling is pre-coordinated
+and is out of scope for TROLIE, so while a Transmission Facility is generally
+expected to have at least one Segment, the `resource-id` of a Ratings Proposal
+might nominate a Transmission Facility itself in some implementations.
 
 In terms of TROLIE, ratings providers are obligated to provide rating data, in
 the form of Proposals, against segments. On jointly owned lines or tie lines for
@@ -117,6 +116,10 @@ As implied above, Snapshots are generated in TROLIE server implementations based
 on proposals and other inputs to generate in-use ratings for each Transmission
 Facility. TROLIE allows for ratings providers to fetch the latest snapshot, aka
 the latest "version" of the ratings data.
+
+## Forecast Window
+
+See [Forecast Windows](/articles/forecast-windows)
 
 ## Monitoring Sets
 

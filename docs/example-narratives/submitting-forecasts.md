@@ -7,7 +7,7 @@ toc: true
 
 
 {: .nb }
-This article assume some familiarity with HTTP in general and RESTful
+This article assumes some familiarity with HTTP in general and RESTful
 APIs in particular ([background](../articles/trolie-for-ems-and-ot)).
 
 
@@ -98,7 +98,9 @@ X-Rate-Limit-Reset: 3400
 ### Client Errors are Not Acceptable
 {:.no_toc}
 
-Bear in mind the proposal must always be [on-time](/articles/forecast-windows.html#on-time--202-accepted). Moreover, there are other client errors that are not tolerated, including:
+Bear in mind the proposal must always be
+[on-time](/articles/forecast-windows.html#on-time--202-accepted). Moreover,
+there are other client errors that are not tolerated, including:
 
 * Malformed requests, i.e., the JSON provided is not valid according to the
   media type schema.
