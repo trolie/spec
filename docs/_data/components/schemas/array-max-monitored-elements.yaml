@@ -49,6 +49,8 @@ forecast-proposal-status:
   properties:
     forecast-provider:
       $ref: ./data-provenance.yaml
+    proposal-begins: # nominates the forecast window
+      $ref: ./period-start.yaml
     incomplete-obligation-count:
       description: |
 
