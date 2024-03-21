@@ -174,10 +174,6 @@ paths:
     $ref: paths/seasonal-ratings_season-instances_{id}.yaml
   /rating-proposals/forecast:
     $ref: paths/rating-proposals_forecasts.yaml
-  /rating-proposals/missing/forecasts:
-    $ref: paths/rating-proposals_missing_forecasts.yaml
-  /rating-proposals/missing/forecasts/{ratings-provider}:
-    $ref: paths/rating-proposals_missing_forecasts_{ratings-provider}.yaml
   /temporary-aar-exceptions:
     $ref: paths/temporary-aar-exceptions.yaml
   /temporary-aar-exceptions/{id}:
@@ -219,7 +215,7 @@ components:
 
     '400': &malformed
       <<: *rate-limited
-      description: Malformed request.
+      description: Malformed request
     '401': &unauthorized
       <<: *rate-limited
       description: Unauthorized
@@ -231,10 +227,10 @@ components:
       description: Not Found
     '406': &not-acceptable
       <<: *rate-limited
-      description: Not Acceptable. (Content negotiation failed)
+      description: Not Acceptable (Content negotiation failed)
     '410': &gone
       <<: *rate-limited
-      description: Gone.
+      description: Gone
     '429': &rate-limit-hit
       description: Too many requests (rate limiting)
       headers:
@@ -275,8 +271,33 @@ components:
       content: *empty
     '413-empty':
       <<: *rate-limited
-      description: Payload too large!
+      description: Payload too large
       content: *empty
+    '415-problem':
+      description: Unsupported media type
+      headers:
+        <<: *rate-limited-headers
+        Accept:
+          schema:
+            type: string
+            pattern: '^((application\/vnd\.trolie\.(?:[a-z-]+)\.v\d+\+json(;q=(0\.\d+|1\.0))?))(\,\s*(application\/vnd\.trolie\.(?:[a-z-]+)\.v\d+\+json(;q=(0\.\d+|1\.0))?))*$'
+            maxLength: 500
+          examples:
+            "Forecast Proposal":
+              summary: Used to update the area-wide forecast
+              value: "application/vnd.trolie.rating-forecast-proposal.v1+json"
+            "Real-Time Proposal":
+              summary: Used to update the area-wide nowcast
+              value: "application/vnd.trolie.rating-realtime-proposal.v1+json"
+        Accept-Encoding:
+          description: |
+            The server must support and prefer Brotli yet must accept gzip for
+            compatibility.
+          schema:
+            type: string
+            enum:
+              - "br,gzip"
+      content: *problem
     '422-problem':
       <<: *rate-limited
       description: Unprocessable content

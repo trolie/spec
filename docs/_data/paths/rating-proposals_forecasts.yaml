@@ -1,44 +1,38 @@
-head: &head
-  operationId: getRatingForecastProposalsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getRatingForecastProposals`. Useful for cache invalidation.
-  summary: Obtain the Ratings Provider's proposals
-  tags:
-    - Rating Proposals
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:forecast-proposals
+get: &get
+  operationId: getRatingForecastProposalStatus
+  summary: Obtain the status of the Ratings Provider's proposal
+  description: |
 
-get:
-  <<: *head
-  operationId: getRatingForecastProposals
-  description: >
-    Obtain the Ratings Forecasts that *this* Ratings Provider has submitted.  
-    Note that the offset-period-start and period-end parameters work in a
-    similar fashion to  getLimitsForecastSnapshot, except that it will return
-    any proposal that overlaps with the implied period.  
+    Used to obtain the status of the Ratings Forecast proposal. The response is
+    implicitly restricted to the requesting Ratings Provider monitoring set.
+    Accordingly, the caller can use this endpoint to check the state of their
+    proposal submission.
+
+    Note that the same status object is returned for each
+    `patchRatingForecastProposal`, so this endpoint may seem redundant. However,
+    an anticipated use case for this `GET` endpoint is to support supervisor
+    processes that are setup by the client to independently ensure the provider's process for
+    rating submission if functioning properly. For example, the Rating Provider
+    might have one program responsible for producing and submitting Ratings
+    Forecasts via `patchRatingForecastProposal`, while having a separate
+    monitoring job that checks this endpoint regularly.
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
+    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+    limiting is done on a per Ratings Provider basis, so requests from
+    independent clients used by the same provider count against the same quota.
+
+  tags:
+    - Rating Proposals
   responses:
     '200':
       description: OK
       content:
-        application/vnd.trolie.rating-forecast-proposal.v1+json:
-          schema: &forecast-rating-proposal
-            $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
-          example: &get-example
-            $ref: ../../example-narratives/examples/forecast-ratings-proposal-get.json
-        application/json:
-          schema: *forecast-rating-proposal
+        application/vnd.trolie.rating-forecast-proposal-status.v1+json: &status-response
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-status
+          example:
+            $ref: ../../example-narratives/examples/forecast-ratings-proposal-status.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
 
@@ -50,76 +44,79 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/401-empty'
     '403': &forbidden-empty
       $ref: '../openapi-split.yaml#/components/responses/403-empty'
-    '404': &not-found-empty
-      $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406': &not-acceptable-empty
       $ref: '../openapi-split.yaml#/components/responses/406-empty'
-    '410':
-      $ref: '../openapi-split.yaml#/components/responses/410-empty'
     '429': &rate-limit-hit
       $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': &unexpected-error-empty
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:forecast-proposals
 
 patch:
-  <<: *head
+  <<: *get
   operationId: patchRatingForecastProposal
-  description: &patch_desc Update the logged-in provider's ratings Forecast Proposal
-  summary: *patch_desc
+  summary: Submit a Forecast Proposal
+  description: |
+
+    In every Forecast Window, a new area-wide Forecast Proposal is created on
+    the TROLIE server of the Clearinghouse Provider. Each Ratings Provider then
+    `PATCH`es the area-wide proposal with the forecasts for their respective
+    Ratings Obligations. Any unmet Ratings Obligations will result in the
+    Clearinghouse Provider using an appropriate Recourse Rating for those unmet
+    obligations.
+
+    For Ratings Providers with a natural split in their Ratings Obligations,
+    e.g., geographic or control areas, the `PATCH` semantics afford the ability
+    to submit multiple Forecast Proposals containing just proposals for the
+    relevant resources, if they choose to do so. This affordance can also be
+    leveraged to split a large proposal into one or more parts in cases where
+    that is advantageous from a performance or reliable delivery perspective.
+
   requestBody:
     content:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
-        schema: *forecast-rating-proposal
+        schema:
+          $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
         example:
           $ref: ../../example-narratives/examples/forecast-ratings-proposal-patch.json
-      application/json:
-        schema: *forecast-rating-proposal
+
   responses:
     '202':
-      description: >
-        The update was accepted for later processing. Updates to  ratings may
-        need to undergo additional validation and propagation to other systems. 
-        Status may be retrieved by issuing a GET using
-        `getRatingForecastProposals`
+      description: |
+        The update was accepted for later processing. Updates to ratings may
+        need to undergo additional validation and propagation to other systems.
       content:
-        application/vnd.trolie.rating-forecast-proposal.v1+json:
-          schema: *forecast-rating-proposal
-          example: *get-example
-        application/json:
-          schema: *forecast-rating-proposal
+        application/vnd.trolie.rating-forecast-proposal-status.v1+json: *status-response
       headers:
         $ref: '../openapi-split.yaml#/components/responses/200/headers'
+
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
-    '404': *not-found-empty
     '406': *not-acceptable-empty
     '409':
-      description: Unprocessable Content
+      description: Conflict with Forecast Window
       content:
         application/problem+json:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
-          example:
-            $ref: '../../articles/examples/forecast-proposal-late.json'
-        application/json:
           example:
             $ref: '../../articles/examples/forecast-proposal-late.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
+    '415':
+      $ref: '../openapi-split.yaml#/components/responses/415-problem'
     '422':
       description: Unprocessable Content
       content:
         application/problem+json:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
-          example:
-            $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
-        application/json:
           example:
             $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
       headers:
