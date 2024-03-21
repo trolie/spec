@@ -60,7 +60,7 @@ most useful from CIM's semantics while specifying a very conventional web API
 using JSON media types.
 
 
-<h3>Branches in our system model are nominated by a "From Bus" and a
+<h3 id="branch-names">Branches in our system model are nominated by a "From Bus" and a
 "To Bus"; they are not assigned a (synthetic) unique identifier. How will we
 be using the `resource-id` field to identify a branch when branches are not
 assigned a single identifier?</h3>
@@ -68,7 +68,7 @@ assigned a single identifier?</h3>
 We created a new issue for this: [#54](https://github.com/trolie/spec/issues/54).
 Please join the discussion there.
 
-<h3> How are Monitoring Sets, Transmission Facilities and Segments defined and
+<h3 id="monitoring-sets"> How are Monitoring Sets, Transmission Facilities and Segments defined and
 updated by Ratings Provider? What are the validation rules, and how are they
 coordinated with network model updates?</h3>
 
@@ -114,7 +114,7 @@ The example referenced above however shows timestamps in local time zones.  The
 common way to specify UTC is to use a "Z" character instead of a UTC offset as a
 suffix, like in the following example, which evaluates to 7am EDT: `2025-11-01T11:00:00Z`
 
-<h3>How are the status/state of Real-Time and Forecast snapshots communicated
+<h3 id="get-updated-snapshots">How are the status/state of Real-Time and Forecast snapshots communicated
 via TROLIE interfaces? How can we know from the TROLIE interface that a new
 update for the snapshot values is available?</h3>
 
