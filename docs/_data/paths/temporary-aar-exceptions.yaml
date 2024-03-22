@@ -44,7 +44,7 @@ get:
           schema:
             $ref: ../components/schemas/temporary-rating-set.yaml
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '304':
       $ref: '../openapi-split.yaml#/components/responses/304'
@@ -130,7 +130,7 @@ post:
           schema:
             $ref: ../components/schemas/temporary-rating.yaml
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty

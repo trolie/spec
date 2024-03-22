@@ -25,7 +25,7 @@ get:
         application/json:
           schema: *seasonal-rating-proposal
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '304':
       $ref: '../openapi-split.yaml#/components/responses/304'
@@ -76,7 +76,7 @@ patch:
         application/json:
           schema: *seasonal-rating-proposal
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '400': *malformed
     '401': *unauthorized-empty

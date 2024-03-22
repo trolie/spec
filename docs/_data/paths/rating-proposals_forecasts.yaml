@@ -34,7 +34,7 @@ get: &get
           example:
             $ref: ../../example-narratives/examples/forecast-ratings-proposal-status.json
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '304':
       $ref: '../openapi-split.yaml#/components/responses/304'
@@ -91,7 +91,7 @@ patch:
       content:
         application/vnd.trolie.rating-forecast-proposal-status.v1+json: *status-response
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '400': *malformed
     '401': *unauthorized-empty

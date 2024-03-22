@@ -36,7 +36,7 @@ get:
           example:
             $ref: "../../example-narratives/examples/forecast-limits-detailed.json"
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
     '304':
       $ref: '../openapi-split.yaml#/components/responses/304'
     '400':
