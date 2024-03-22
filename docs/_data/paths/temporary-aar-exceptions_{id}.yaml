@@ -36,7 +36,7 @@ get:
           schema:
             $ref: ../components/schemas/temporary-rating.yaml
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/200/headers'
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '304':
       $ref: '../openapi-split.yaml#/components/responses/304'
