@@ -125,4 +125,13 @@ defines `incomplete-obligation-count`:
 
 {{ site.data.paths["rating-proposals_forecasts"].patch.description }}
 
+## Jointly-Owned Facilities
 
+In a jointly-owned facility there may be one or more Ratings Providers for a
+given facility. This is expected to be fairly typical on seams. From a submittal
+perspective, this is inconsequential: Each Ratings Provider simply submits their
+own Forecast Proposal for Ratings Obligation using the appropriate
+`resource-id`. As with all `resource-id` uses, the TROLIE spec is agnostic as to
+which kind of Power System Resource is nominated by the identifier, but it will
+typically be a Segment in the case of a Jointly-Owned Facility with multiple
+Ratings Providers.
