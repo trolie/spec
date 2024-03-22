@@ -1,26 +1,12 @@
-head: &head
-  operationId: getSeasonalRatingsSnapshotHeaders
-  description: >
-    Use to obtain the headers that would be returned for
-    `getSeasonalRatingsSnapshot`. Useful for cache invalidation.
-  summary: Get headers for Seasonal Ratings
+get:
+  operationId: getSeasonalRatingsSnapshot
+  description: Retrieve the nominal and seasonal ratings.
+  summary: Get Seasonal Ratings
   tags:
     - Seasonal Rating Snapshots
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/facility-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-      - read:operating-snapshot
-
-get:
-  <<: *head
-  operationId: getSeasonalRatingsSnapshot
-  description: Retrieve the nominal and seasonal ratings.
-  summary: Get Seasonal Ratings
   responses:
     '200':
       description: OK
@@ -55,4 +41,6 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
 
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+      - read:operating-snapshot

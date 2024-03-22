@@ -1,8 +1,5 @@
-head: &head
-  operationId: getLimitsForecastSnapshotHeaders
-  description:
-    Use to obtain the headers that would be returned for 
-    `getLimitsForecastSnapshot`. Useful for cache invalidation.
+get:
+  operationId: getLimitsForecastSnapshot
   summary: Limits Forecast Snapshot
   tags:
     - Operating Snapshots
@@ -11,17 +8,7 @@ head: &head
     - $ref: ../components/parameters/period-end.yaml
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/facility-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:operating-snapshot
-
-get:
-  <<: *head
-  operationId: getLimitsForecastSnapshot
-  description: >
+  description: |
 
     Obtain the Limits Forecast the Transmission Provider is currently using in
     Operations, relative to the current time. Clients SHOULD perform Conditional
@@ -70,4 +57,6 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
 
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:operating-snapshot

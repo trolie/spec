@@ -1,22 +1,9 @@
-head: &head
-  operationId: getSeasonInstancesHeaders
-  description: >
-    Use to obtain the headers that would be returned for `getSeasonInstances`.
-    Useful for cache invalidation.
-  summary: Get HTTP headers for season instances.
-  tags:
-    - Seasonal Rating Snapshots
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:operating-snapshot
 get:
-  <<: *head
   operationId: getSeasonInstances
   description: Seasonal ratings are always bound against season instances, with effective dates.
   summary: Get Instances of Seasons
+  tags:
+    - Seasonal Rating Snapshots
   responses:
     '200':
       description: OK
@@ -55,4 +42,6 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
 
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:operating-snapshot

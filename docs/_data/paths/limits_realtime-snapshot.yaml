@@ -1,28 +1,17 @@
-head: &head
-  operationId: getRealTimeLimitsHeaders
-  description: >
-    Use to obtain the headers that would be returned for `getRealTimeLimits`.
-    Useful for cache invalidation.
-  summary: Obtain the Real Time Limits Snapshot
+get:
+  operationId: getRealTimeLimits
+  description: |
+
+    Obtain the System Operating Limits in-use by the Transmission Provider.
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response.
+
+  summary: Limits Real Time Snapshot
   tags:
     - Operating Snapshots
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/facility-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:operating-snapshot
-
-get:
-  <<: *head
-  operationId: getRealTimeLimits
-  description: >
-    Obtain the System Operating Limits in-use by the Transmission Provider.
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
   responses:
     '200':
       description: The System Operating Limits snapshot is returned.
@@ -59,4 +48,6 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
 
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:operating-snapshot

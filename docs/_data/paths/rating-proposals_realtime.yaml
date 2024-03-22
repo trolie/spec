@@ -1,30 +1,18 @@
-head: &head
-  operationId: getRealTimeRatingProposalsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getRealTimeProposals`. Useful for cache invalidation.
-  summary: Get HTTP headers
+get:
+  operationId: getRealTimeRatingProposals
+  description: |
+
+    Obtain the latest Real-Time Ratings the Ratings Provider has submitted.  
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response.
+
+  summary: Get Proposals for Real Time Ratings
   tags: &tags
     - Rating Proposals
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:realtime-proposals
-
-get:
-  <<: *head
-  operationId: getRealTimeRatingProposals
-  description: >
-    Obtain the latest Real-Time Ratings the Ratings Provider has submitted.  
-
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
-  summary: Get Proposals for Real Time Ratings
   responses:
     '200':
       description: OK
@@ -56,7 +44,10 @@ get:
     '500': &unexpected-error-empty
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
-  security: *read-authorization
+
+  security:
+    - oauth2-primary-flow:
+        - read:realtime-proposals
 
 patch:
   operationId: postRealTimeProposal
