@@ -162,8 +162,6 @@ tags:
 paths:
   /limits/forecast-snapshot:
     $ref: paths/limits_forecast-snapshot.yaml
-  /limits/forecast-snapshot/period/{period-start}:
-    $ref: paths/limits_forecast-snapshot_period_{period-start}.yaml
   /limits/realtime-snapshot:
     $ref: paths/limits_realtime-snapshot.yaml
   /seasonal-ratings/snapshot:
@@ -193,7 +191,7 @@ paths:
 components:
   responses:
 
-    # HEAD / No content responses
+    # No content responses
     '304': &rate-limited
       description: Not Modified.
       headers: &rate-limited-headers
