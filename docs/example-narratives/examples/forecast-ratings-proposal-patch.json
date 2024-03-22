@@ -5,7 +5,7 @@
       "provider": "UTILITY-A",
       "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
     },
-    "proposal-begins": "2025-11-01T01:00:00-05:00",
+    "begins": "2025-11-01T01:00:00-05:00",
     "default-emergency-durations": [
       {
         "name": "lte",

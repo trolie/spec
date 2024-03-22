@@ -10,8 +10,17 @@ proposal-header: &header
   properties:
     source:
       $ref: ./data-provenance.yaml
-    proposal-begins:
-      $ref: ./period-start.yaml
+    begins: &begins
+      type: string
+      description: |
+
+        RFC 3339 date-time string with *no fractional seconds component* that
+        must share the value of `period-start` for each individual resource
+        proposal, identifying the appropriate operational window for this
+        proposal.
+
+      allOf:
+        - $ref: ./period-start.yaml
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
     power-system-resources:
@@ -19,7 +28,7 @@ proposal-header: &header
 
   required:
     - source
-    - proposal-begins
+    - begins
     - default-emergency-durations
     - power-system-resources
   additionalProperties: false
@@ -30,6 +39,13 @@ snapshot-header:
   properties:
     last-updated:
       $ref: ./timestamp.yaml
+    begins:
+      <<: *begins
+      description: |
+
+        RFC 3339 date-time string with *no fractional seconds component* that
+        Nominates the operational window of this snapshot.
+
     snapshot-provenance:
       $ref: ./data-provenance.yaml
     power-system-resources:
