@@ -43,9 +43,9 @@ that the `PATCH` contained a valid proposal and will be processed by the
 Clearinghouse.
 
 {: .nb }
-> **NOTE**: The Ratings Provider populates the `proposal-header.proposal-begins`
+> **NOTE**: The Ratings Provider populates the `proposal-header.begins`
 > to indicate the intended Forecast Window. Accordingly, the TROLIE server
-> checks `proposal-header.proposal-begins` to determine if the proposal is late or not.
+> checks `proposal-header.begins` to determine if the proposal is late or not.
 
 ### Late <i class="fa-solid fa-arrow-right-long"></i> `409 Conflict`
 
