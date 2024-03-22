@@ -1,29 +1,18 @@
-head: &head
-  operationId: getSeasonalRatingProposalsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getSeasonalProposals`. Useful for cache invalidation.
-  summary: Get HTTP headers
+get:
+  operationId: getSeasonalRatingProposal
+  description: |
+
+    Obtain the latest Seasonal Ratings the Ratings Provider has submitted.  
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response.
+
+  summary: Get a Seasonal Rating Proposal
   tags: &tags
     - Rating Proposals
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:seasonal-proposals
-get:
-  <<: *head
-  operationId: getSeasonalRatingProposal
-  description: >
-    Obtain the latest Seasonal Ratings the Ratings Provider has submitted.  
-
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
-  summary: Get a Seasonal Rating Proposal
   responses:
     '200':
       description: OK
@@ -58,7 +47,9 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
 
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:seasonal-proposals
 
 patch:
   operationId: patchSeasonalProposal

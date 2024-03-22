@@ -1,9 +1,14 @@
-head: &head
-  operationId: getTemporarySeasonalRatingsHeaders
-  description: >
-    Use to obtain the headers that would be returned for 
-    `getTemporarySeasonalRatings`. Useful for cache invalidation.
-  summary: Get HTTP headers
+get:
+  operationId: getTemporarySeasonalRatings
+  description: |
+
+    Search for Temporary Seasonal Ratings.  Will return any Temporary Seasonal
+    Ratings that overlap with the start/end period.  
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response.
+
+  summary: Get Temporary Seasonal Ratings
   tags: &tags
     - Temporary Seasonal Ratings
   parameters:
@@ -11,24 +16,6 @@ head: &head
     - $ref: ../components/parameters/period-end.yaml
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    $ref: ../components/responses/read-head.yaml
-
-  security: &read-authorization
-    - oauth2-primary-flow:
-        - read:temporary-seasonal-ratings
-
-get:
-  <<: *head
-  operationId: getTemporarySeasonalRatings
-  description: >
-    Search for Temporary Seasonal Ratings.  Will return any Temporary Seasonal
-    Ratings that overlap with the  start/end period.  
-
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
-  # TODO: adjust language
-  summary: Get Default Static Rating
   responses:
     '200':
       description: The requested default static rating is returned.
@@ -78,7 +65,9 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
 
-  security: *read-authorization
+  security:
+    - oauth2-primary-flow:
+        - read:temporary-seasonal-ratings
 
 post:
   operationId: createTemporarySeasonalRating
