@@ -1,10 +1,7 @@
 type: string
 description: |
 
-  Contains a unique identifier for an object. Where practicable, using a URI is
-  generally recommended. However there is no functionality defined by TROLIE
-  that is contingent upon the properties or structure of a `generic-identifier`;
-  they are effectively opaque in the exchange.
+  Contains a unique identifier for an object. 
 
 maxLength: 100
 pattern: ^(.){0,500}$

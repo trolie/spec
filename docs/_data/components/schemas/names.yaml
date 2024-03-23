@@ -17,6 +17,5 @@ properties:
           $ref: ./generic-identifier.yaml
       required:
         - name
-        - authority
 required:
   - resource-id
