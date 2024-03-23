@@ -54,6 +54,9 @@ servers:
   - url: https://trolie.example.com
 tags:
 
+  - name: Forecasting
+    description: The operations related to forecasting.
+
   - name: Operating Snapshots
     description: >
       Two snapshots are provided:
