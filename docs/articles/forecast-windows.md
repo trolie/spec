@@ -57,7 +57,7 @@ with the server's state, so a `409 Conflict` client error with an appropriate
 `application/problem+json` response, like the following:
 
 ```json
-{% include_relative examples/forecast-proposal-invalid-units.json %}
+{% include_relative examples/forecast-proposal-late.json %}
 ```
 
 ## Forecast Processing State Machine
