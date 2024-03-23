@@ -22,7 +22,7 @@ APIs in particular ([background](../articles/trolie-for-ems-and-ot)).
 ## Simplified Example: Transmission Owner Sends Forecast with `curl`
 
 If a Transmission Owner is their own Ratings Provider, they must regularly send
-an Ratings Forecast to their Transmission Provider. TROLIE provides the
+a Ratings Forecast to their Transmission Provider. TROLIE provides the
 [patchRatingForecastProposal](../spec#tag/Rating-Proposals/operation/patchRatingForecastProposal)
 operation for this purpose.
 
