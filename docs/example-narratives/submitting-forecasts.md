@@ -66,20 +66,13 @@ example of this response format is given below:
 
 ## Invalid Forecasts for Individual Resources Should be Tolerated
 
-The Robustness Principle, or Postel's Law, states: Be conservative in what you
-send and liberal in what you accept. In keeping with this principle, TROLIE
-implementations should *not* reject a forecast proposal `PATCH` when only the
-forecast for any individual resource is incomplete or invalid. In other words
-the Clearinghouse Provider should abide a best effort policy when validating
-proposals, and this specification aims to support that policy in an unambiguous
-way.
-
-A specific example will help illustrate the idea. Suppose the Ratings Provider
-submits a Forecast Proposal for two resources--`8badf00d` and `d34dc0d3`.
-Further suppose that there's nothing wrong at all with the `d34dc0d3` forecast,
-but the `8badf00d` forecast is missing an hour, with everything else about the
-request being valid. In this case TROLIE should a return response like the
-following:
+The TROLIE spec supports allowing some individual resource forecasts to be
+invalid without rejecting the entire proposal. A specific example will help
+illustrate the idea. Suppose the Ratings Provider submits a Forecast Proposal
+for two resources--`8badf00d` and `d34dc0d3`.  Further suppose that there's
+nothing wrong at all with the `d34dc0d3` forecast, but the `8badf00d` forecast
+is missing an hour, with everything else about the request being valid. In this
+case TROLIE should a return response like the following:
 
 ```http
 HTTP/1.1 202 Accepted
