@@ -11,7 +11,6 @@ proposal-header: &header
     source:
       $ref: ./data-provenance.yaml
     begins: &begins
-      type: string
       description: |
 
         RFC 3339 date-time string with *no fractional seconds component* that
@@ -19,8 +18,11 @@ proposal-header: &header
         proposal, identifying the appropriate operational window for this
         proposal.
 
-      allOf:
-        - $ref: ./period-start.yaml
+      type: string
+      format: date-time
+      maxLength: 25
+      example: '2025-07-12T03:00:00-05:00'
+
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
     power-system-resources:
