@@ -35,8 +35,7 @@ their forecast. An example of the required format for the file is given below.
 ```
 
 This example also illustrates handling the fall Daylight Savings transition in
-the Central timezone. The format is one of TROLIE's [supported media
-types](../articles/supported-media-types) named
+the Central timezone. The format is one of TROLIE's supported media types named
 `application/vnd.trolie.rating-forecast-proposal.v1+json`.
 
 
