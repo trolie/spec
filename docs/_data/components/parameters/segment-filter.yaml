@@ -5,3 +5,10 @@ in: query
 required: false
 schema:
   $ref: ../schemas/generic-identifier.yaml
+examples:
+  mrid:
+    summary: An mrid
+    value: "3d5e54d7-534e-49f7-9379-98bddacd96a1"
+  circuit-id:
+    summary: A typical AC line identifier
+    value: "86753_1"

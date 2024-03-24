@@ -5,3 +5,7 @@ in: query
 required: false
 schema:
   $ref: ../schemas/generic-identifier.yaml
+examples:
+  circuit-id:
+    summary: A typical AC line identifier
+    value: "86753_1"
