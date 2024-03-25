@@ -24,6 +24,7 @@ get: &get
 
   tags:
     - Rating Proposals
+    - Forecasting
   responses:
     '200':
       description: OK

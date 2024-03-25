@@ -3,6 +3,7 @@ get:
   summary: Limits Forecast Snapshot
   tags:
     - Operating Snapshots
+    - Forecasting
   parameters:
     - $ref: ../components/parameters/offset-period-start.yaml
     - $ref: ../components/parameters/period-end.yaml
