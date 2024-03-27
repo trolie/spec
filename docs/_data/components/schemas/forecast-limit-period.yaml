@@ -9,7 +9,7 @@ period:
     - period-start
     - period-end
 
-forecast-period-proposal:
+proposal:
   type: object
   title: Forecasted Period
   description: |
@@ -23,20 +23,36 @@ forecast-period-proposal:
     - $ref: '#/period'
     - $ref: ./limit-proposal.yaml
 
-forecast-period-snapshot-slim:
+proposal-considered:
+  type: object
+  allOf:
+    - $ref: '#/proposal'
+    - type: object
+      properties:
+        source:
+          $ref: ./data-provenance.yaml
+        proposal-disposition:
+          type: string
+          enum:
+            - Used
+            - Rejected
+      required:
+        - proposal-disposition
+
+snapshot-slim:
   allOf:
     - $ref: '#/period'
     - $ref: ./limit-data.yaml
     - type: object
       properties:
-        updated-time:
+        updated-time: #TODO: remove this property???
           $ref: ./timestamp.yaml
       required:
         - updated-time
 
-forecast-period-snapshot-detailed:
+snapshot-detailed:
   type: object
   description: Period detailed limits including provenance
   allOf:
-    - $ref: '#/forecast-period-snapshot-slim'
+    - $ref: '#/snapshot-slim'
     - $ref: ./limit-provenance.yaml

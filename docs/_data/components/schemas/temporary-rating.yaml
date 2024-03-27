@@ -10,7 +10,7 @@ properties:
   id:
     $ref: ./generic-identifier.yaml
   resource-id:
-    $ref: ./generic-identifier.yaml
+    $ref: ./resource-id.yaml
   start-time:
     $ref: ./period-start.yaml
   end-time:

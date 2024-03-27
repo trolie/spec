@@ -1,48 +1,41 @@
-forecast-limit-item:
+forecast-limit-item: &limit
   type: object
   additionalProperties: false
   properties:
-    transmission-facility-id:
-      $ref: ./generic-identifier.yaml
-    periods: &max
+    resource-id: &id
+      $ref: ./resource-id.yaml
+    periods: &periods
       type: array
       maxItems: 240
       items:
-        $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-slim'
-
-forecast-limit-item-detailed:
-  type: object
-  additionalProperties: false
-  properties:
-    transmission-facility-id:
-      $ref: ./generic-identifier.yaml
-    periods:
-      <<: *max
-      items:
-        $ref: 'forecast-limit-period.yaml#/forecast-period-snapshot-detailed'
-
-resource-forecast-proposal:
-  type: object
-  additionalProperties: false
-  properties:
-    resource-id:
-      $ref: ./generic-identifier.yaml
-    periods:
-      <<: *max
-      items:
-        $ref: 'forecast-limit-period.yaml#/forecast-period-proposal'
-
+        $ref: 'forecast-limit-period.yaml#/snapshot-slim'
   required:
     - resource-id
     - periods
 
-missing-forecast:
-  type: object
-  additionalProperties: false
+forecast-limit-item-detailed:
+  <<: *limit
   properties:
-    resource-id:
-      $ref: ./generic-identifier.yaml
+    resource-id: *id
     periods:
-      <<: *max
+      <<: *periods
+      items:
+        $ref: 'forecast-limit-period.yaml#/snapshot-detailed'
+
+resource-forecast-proposal:
+  <<: *limit
+  properties:
+    resource-id: *id
+    periods:
+      <<: *periods
+      items:
+        $ref: 'forecast-limit-period.yaml#/proposal'
+
+missing-forecast:
+  <<: *limit
+  properties:
+    resource-id: *id
+    periods:
+      <<: *periods
       items:
         $ref: ./period-start.yaml

@@ -39,7 +39,7 @@
   },
   "limits": [
     {
-      "transmission-facility-id": "line2",
+      "resource-id": "line2",
       "proposals-considered": [],
       "temporary-aar-exceptions": [
         "2d8c80e8-f533-4be9-85bf-f7f81eb73d67"

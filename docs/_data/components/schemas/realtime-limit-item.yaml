@@ -2,10 +2,10 @@ type: object
 allOf:
   - type: object
     properties:
-      transmission-facility-id:
-        $ref: ./generic-identifier.yaml
+      resource-id:
+        $ref: ./resource-id.yaml
       updated-time:
         $ref: ./timestamp.yaml
   - $ref: ./limit-data.yaml
 required:
-  - transmission-facility-id
+  - resource-id

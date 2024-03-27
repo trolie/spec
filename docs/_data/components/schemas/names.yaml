@@ -1,7 +1,7 @@
 type: object
 properties:
   resource-id:
-    $ref: ./generic-identifier.yaml
+    $ref: ./resource-id.yaml
   alternate-identifiers:
     type: array
     maxItems: 10

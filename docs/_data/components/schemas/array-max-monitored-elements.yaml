@@ -116,7 +116,7 @@ forecast-proposal-status:
             # submits a proposal for a valid resource that they are not
             # permitted to write to. It should be the same `resource-id` that
             # the client submitted.
-            $ref: ./generic-identifier.yaml
+            $ref: ./resource-id.yaml
 
   required:
     - forecast-provider
@@ -168,7 +168,7 @@ realtime-proposal:
           - type: object
             properties:
               resource-id:
-                $ref: ./generic-identifier.yaml
+                $ref: ./resource-id.yaml
               status:
                 $ref: ./proposal-status.yaml
           - $ref: ./limit-data.yaml

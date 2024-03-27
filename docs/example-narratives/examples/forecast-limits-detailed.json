@@ -39,7 +39,7 @@
     },
     "limits": [
         {
-            "transmission-facility-id": "8badf00d",
+            "resource-id": "8badf00d",
             "periods": [
                 {
                     "period-start": "2023-07-12T16:00:00-07:00",
