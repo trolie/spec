@@ -21,11 +21,12 @@ forecast-period-proposal:
 
   allOf:
     - $ref: '#/period'
-    - $ref: ./limit-data.yaml
+    - $ref: ./limit-proposal.yaml
 
 forecast-period-snapshot-slim:
   allOf:
-    - $ref: '#/forecast-period-proposal'
+    - $ref: '#/period'
+    - $ref: ./limit-data.yaml
     - type: object
       properties:
         updated-time:

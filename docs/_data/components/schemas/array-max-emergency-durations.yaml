@@ -38,3 +38,7 @@ limit-value-set:
         duration-name: *emergency-kind-name
         limit:
           $ref: ./limit.yaml
+
+
+# TODO: add way to reference emergency-kind-name from limit-provenance.yaml
+# or change forecast-limit-period.yaml#/forecast-period-snapshot-detailed to reference a new limit-snapshot.yaml that has the association

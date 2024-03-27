@@ -4,42 +4,6 @@ properties:
     $ref: ./limit.yaml
   emergency-operating-limits:
     $ref: ./array-max-emergency-durations.yaml#/limit-value-set
-  inputs-used:
-    description: |
-
-      Optional list of quantities used as input to the ratings determination.
-      The particular information exchange determines which values may be expected
-      as well as the conventions used to represent those values. This property
-      is included to prescribe a way to include these inputs but 
-
-    type: array
-    minItems: 1
-    maxItems: 50
-    items:
-      type: object
-      properties:
-        name:
-          type: string
-          format: free-text
-          maxLength: 50
-        value:
-          type: object
-          description: >
-            This could be any value: a bit, float, integer, string, etc.
-        unit:
-          type: string
-          description: |
-            If the `value` is dimensionless, this property should not be
-            provided. Since we are not specifying which inputs shall be
-            provided, we cannot specify a definitive list of units, but
-            implementors are encouraged to use UnitSymbol from CIM when
-            appropriate: The CIM may not include appropriate units for
-            all inputs, e.g., wind speed.
-          format: unit
-          maxLength: 50
-      required:
-        - name
-        - value
 required:
   - continuous-operating-limit
   - emergency-operating-limits
