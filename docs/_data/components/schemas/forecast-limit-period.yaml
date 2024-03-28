@@ -14,10 +14,10 @@ proposal:
   title: Forecasted Period
   description: |
 
-    A Forecasted Period contains proposed limits for a power system
-    object, e.g., a segment, that were forecasted for a particular Period
-    in a Forecast Window. The status of the proposal as determined by the
-    Clearinghouse is also included.
+    A Forecasted Period contains proposed limits for a power system object,
+    e.g., a segment, that were forecasted for a particular Period in a Forecast
+    Window. The status of the proposal as determined by the Clearinghouse is
+    also included.
 
   allOf:
     - $ref: '#/period'
@@ -32,23 +32,28 @@ proposal-considered:
         source:
           $ref: ./data-provenance.yaml
         proposal-disposition:
+          description: |
+
+              Despite a proposal being accepted by TROLIE, the downstream
+              Clearinghouse logic may still disqualify a proposal. This might
+              occur if, for example, the upper and lower reasonability limits
+              are not aligned between TROLIE and the Clearinghouse.  To aid
+              troubleshooting, the specification requires that TROLIE instances
+              explicitly indicate if the proposal was `Used` in the
+              determination of the limit or was `Rejected`.
+
           type: string
           enum:
             - Used
             - Rejected
       required:
+        - source
         - proposal-disposition
 
 snapshot-slim:
   allOf:
     - $ref: '#/period'
     - $ref: ./limit-data.yaml
-    - type: object
-      properties:
-        updated-time: #TODO: remove this property???
-          $ref: ./timestamp.yaml
-      required:
-        - updated-time
 
 snapshot-detailed:
   type: object
