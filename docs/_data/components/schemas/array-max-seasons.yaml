@@ -3,7 +3,7 @@ seasonal-proposals:
   additionalProperties: false
   properties:
     resource-id:
-      $ref: ./generic-identifier.yaml
+      $ref: ./resource-id.yaml
     seasons: &max
       type: array
       maxItems: 20
@@ -15,7 +15,7 @@ seasonal-rating-snapshot-item:
   additionalProperties: false
   properties:
     resource-id:
-      $ref: ./generic-identifier.yaml
+      $ref: ./resource-id.yaml
     seasons:
       <<: *max
       items:

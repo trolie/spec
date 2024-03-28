@@ -27,4 +27,3 @@ properties:
 required:
   - provider
   - last-updated
-  - origin-id

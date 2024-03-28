@@ -2,7 +2,7 @@
   "snapshot-header": {
     "last-updated": "2023-07-12T15:05:43.044267100-07:00",
     "snapshot-provenance": {
-      "provider": "X-AMPL",
+      "provider": "X-AMPL-RC",
       "last-updated": "2023-07-12T15:05:43.044267100-07:00",
       "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00"
     },
@@ -39,10 +39,8 @@
   },
   "limits": [
     {
-      "transmission-facility-id": "line2",
-      "proposals-considered": [
-        "c386503e-ae8f-46e7-8fcf-bdee30f4f56b"
-      ],
+      "resource-id": "line2",
+      "proposals-considered": [],
       "temporary-aar-exceptions": [
         "2d8c80e8-f533-4be9-85bf-f7f81eb73d67"
       ],

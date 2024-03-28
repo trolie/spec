@@ -1,0 +1,9 @@
+type: string
+description: |
+
+  Contains a unique identifier for an a power system resources, such as a
+  transmission facility, segment, interface, etc. 
+
+maxLength: 250
+pattern: ^(.){0,250}$
+example: "86753_1_1"
