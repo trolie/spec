@@ -25,6 +25,7 @@ proposal:
 
 proposal-considered:
   type: object
+  description: Details a proposal that was considered by the Clearinghouse run.
   allOf:
     - $ref: '#/proposal'
     - type: object

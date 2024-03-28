@@ -14,7 +14,11 @@ forecast-limits-snapshot:
 
 forecast-limits-detailed-snapshot:
   type: object
-  description: A snapshot of the forecast for a monitoring set.
+  description: |
+
+    A detailed snapshot of the forecast for a monitoring set. These details are
+    meant to support analysis, archival, and troubleshooting.
+
   properties:
     snapshot-header:
       $ref: ./headers.yaml#/snapshot-header
