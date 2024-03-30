@@ -5,7 +5,7 @@ parent: Decision Records
 
 ## Status
 
-* Status: `proposed`
+* Status: `Committed`
 * Issue Link: [GitHub Issue](https://github.com/trolie/spec/issues/6)
 
 ## Context
