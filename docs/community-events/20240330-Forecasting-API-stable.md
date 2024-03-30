@@ -12,12 +12,12 @@ parent: Community Events
 The specification of the [Forecasting operations](/spec#tag/Forecasting) in
 TROLIE OpenAPI specification is now considered stable, closing the [associated
 milestone](https://github.com/trolie/spec/milestone/1). Specifically, no further
-changes are anticipated to the media types schemas and resource semantics (HTTP
-verbs and paths) for submitting forecasts and retrieving forecast snapshots.  We
-naming this release `1.0.0-wip-forecasting-stable` to reflect that fact that the
-specification is still under development, but we believe the forecasting
-operations effectively address the use cases that have been identified over the
-last several months.
+changes are anticipated to the media type schemas and resource semantics--the
+HTTP verbs, paths, and status codes--for submitting forecasts and retrieving
+forecast snapshots.  We naming this release `1.0.0-wip-forecasting-stable` to
+reflect that fact that the specification is still under development, but we
+believe the forecasting operations effectively address the use cases that have
+been identified over the last several months.
 
 ## Stable Use Cases
 
@@ -59,7 +59,7 @@ profile](https://github.com/trolie/spec/issues/65#issuecomment-1994413248) which
 will specify how TROLIE implementations will integrate using only some some
 simple configuration.
 
-The version `1.0.0-wip-forecast-stable` will be updated accordingly **without**
+The version `1.0.0-wip-forecasting-stable` will be updated accordingly **without**
 a version change until the next milestone is completed. However, any necessary
 changes to the forecasting operations will result in a version change and
 another announcement.
