@@ -14,7 +14,7 @@ TROLIE OpenAPI specification is now considered stable, closing the [associated
 milestone](https://github.com/trolie/spec/milestone/1). Specifically, no further
 changes are anticipated to the media type schemas and resource semantics--the
 HTTP verbs, paths, and status codes--for submitting forecasts and retrieving
-forecast snapshots.  We naming this release `1.0.0-wip-forecasting-stable` to
+forecast snapshots.  We are naming this release `1.0.0-wip-forecasting-stable` to
 reflect that fact that the specification is still under development, but we
 believe the forecasting operations effectively address the use cases that have
 been identified over the last several months.
