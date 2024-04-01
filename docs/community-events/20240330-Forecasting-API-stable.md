@@ -21,7 +21,7 @@ been identified over the last several months.
 
 ## Stable Use Cases
 
-Client developers should consider the specification stable in its support of the following use cases:
+Implementors should consider the specification stable in its support of the following use cases:
 
 * Submitting Forecast Ratings Proposals
 * Obtaining Forecast Ratings Proposal Status
