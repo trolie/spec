@@ -59,7 +59,8 @@ profile](https://github.com/trolie/spec/issues/65#issuecomment-1994413248) which
 will specify how TROLIE implementations will integrate using only some
 simple configuration.
 
-The version `1.0.0-wip-forecasting-stable` will be updated accordingly **without**
-a version change until the next milestone is completed. However, any necessary
+The specification will be updated accordingly **without** a version change until
+the next milestone is completed, remaining at `1.0.0-wip-forecasting-stable` 
+even as the Real-Time Ratings Proposals milestone is completed. However, any necessary
 changes to the forecasting operations will result in a version change and
 another announcement.
