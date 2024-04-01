@@ -1,11 +1,17 @@
 {
-	"name": "TROLIE spec devcontainer",
-	"build": {
+    "name": "TROLIE spec devcontainer",
+    "build": {
         "dockerfile": "Dockerfile"
     },
-	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {
-			"upgradePackages": true
-		}
-	}
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "upgradePackages": true
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "installTools": true,
+            "toolsToInstall": "pytest,pytest-bdd,pytest-cov,ruff",
+            "optimize": true,
+            "version": "3.12"
+        }
+    }
 }
