@@ -56,7 +56,7 @@ Real-Time Ratings Proposals. [Future
 milestones](https://github.com/trolie/spec/milestones) will include handling
 temporary AAR exceptions, seasonal ratings, and defining the [peering
 profile](https://github.com/trolie/spec/issues/65#issuecomment-1994413248) which
-will specify how TROLIE implementations will integrate using only some some
+will specify how TROLIE implementations will integrate using only some
 simple configuration.
 
 The version `1.0.0-wip-forecasting-stable` will be updated accordingly **without**
