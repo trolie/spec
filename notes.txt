@@ -1,0 +1,4 @@
+ensure VS Code picks up the venv created by poetry:
+
+`poetry config virtualenvs.in-project true`
+
