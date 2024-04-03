@@ -9,7 +9,7 @@
         },
         "ghcr.io/devcontainers/features/python:1": {
             "installTools": true,
-            "toolsToInstall": "pytest,pytest-bdd,ruff",
+            "toolsToInstall": "poetry,pytest,pytest-bdd,ruff",
             "optimize": true,
             "version": "3.12"
         }

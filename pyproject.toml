@@ -1,0 +1,7 @@
+[tool.poetry]
+package-mode = false
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+pytest-bdd = "^7.1.2"
