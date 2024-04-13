@@ -55,7 +55,7 @@ X-Rate-Limit-Limit: 100
 X-Rate-Limit-Remaining: 98
 X-Rate-Limit-Reset: 3600
 
-{% include_relative examples/forecast-proposal-invalid-units.json %}
+{% include_relative examples/proposal-invalid-units.json %}
 ```
 
 {: .nb }

@@ -1,0 +1,6 @@
+{
+  "type": "//trolie.example.com/spec/client-errors/422/incomplete-proposal",
+  "title": "Unprocessable Entity: Incomplete proposal",
+  "status": 422,
+  "detail": "The proposal is incomplete, so unprocessable. Missing from the Ratings Obligation are: 8badf00d."
+}

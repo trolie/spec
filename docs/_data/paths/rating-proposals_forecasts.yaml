@@ -119,7 +119,7 @@ patch:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
           example:
-            $ref: '../../articles/examples/forecast-proposal-invalid-units.json'
+            $ref: '../../articles/examples/proposal-invalid-units.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/304/headers'
 
