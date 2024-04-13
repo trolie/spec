@@ -57,6 +57,9 @@ tags:
   - name: Forecasting
     description: The operations related to forecasting.
 
+  - name: Real-Time
+    description: The operations related to real-time.
+
   - name: Operating Snapshots
     description: >
       Two snapshots are provided:
@@ -185,8 +188,6 @@ paths:
     $ref: paths/temporary-seasonal-ratings_{id}.yaml
   /rating-proposals/realtime:
     $ref: paths/rating-proposals_realtime.yaml
-  /rating-proposals/realtime/{proposal-id}:
-    $ref: paths/rating-proposals_realtime_{proposal-id}.yaml
   /rating-proposals/seasonal:
     $ref: paths/rating-proposals_seasonal.yaml
   /rating-proposals/seasonal/{ratings-provider}:
@@ -206,7 +207,7 @@ components:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
     '204':
       description: Operation successful. No Content.
-      headers: &caching-headers
+      headers:
         <<: *rate-limited-headers
         ETag:
           $ref: "#/components/headers/ETag"

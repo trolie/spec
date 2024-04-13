@@ -1,70 +1,30 @@
-get:
-  operationId: getRealTimeRatingProposals
+post:
+  operationId: postRealTimeProposal
+  summary: Submit Real-Time Rating Proposal
   description: |
 
-    Obtain the latest Real-Time Ratings the Ratings Provider has submitted.  
+    The Clearinghouse will make use of the most recent Ratings Proposals it has
+    received when determining Real-Time Limits. Ratings Providers with Real-Time
+    Ratings Obligations should submit their Ratings Proposals using this
+    operation.
 
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
-
-  summary: Get Proposals for Real Time Ratings
-  tags: &tags
+  tags:
     - Rating Proposals
-  parameters:
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
-  responses:
-    '200':
-      description: OK
-      content:
-        application/vnd.trolie.rating-realtime-proposal.v1+json:
-          schema: &realtime-proposal
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
-        application/json:
-          schema: *realtime-proposal
-      headers:
-        $ref: '../openapi-split.yaml#/components/responses/204/headers'
+    - Real-Time
 
-    '304':
-      $ref: '../openapi-split.yaml#/components/responses/304'
-    '400': &malformed
-      $ref: '../openapi-split.yaml#/components/responses/400-problem'
-    '401': &unauthorized-empty
-      $ref: '../openapi-split.yaml#/components/responses/401-empty'
-    '403': &forbidden-empty
-      $ref: '../openapi-split.yaml#/components/responses/403-empty'
-    '404': &not-found-empty
-      $ref: '../openapi-split.yaml#/components/responses/404-empty'
-    '406': &not-acceptable-empty
-      $ref: '../openapi-split.yaml#/components/responses/406-empty'
-    '410':
-      $ref: '../openapi-split.yaml#/components/responses/410-empty'
-    '429': &rate-limit-hit
-      $ref: '../openapi-split.yaml#/components/responses/429-empty'
-    '500': &unexpected-error-empty
-      $ref: '../openapi-split.yaml#/components/responses/500-empty'
-    default: *unexpected-error-empty
-
-  security:
-    - oauth2-primary-flow:
-        - read:realtime-proposals
-
-patch:
-  operationId: postRealTimeProposal
-  description: &post_desc Post a new RealTime Rating Proposal 
-  summary: *post_desc
-  tags: *tags
   requestBody:
     content:
       application/vnd.trolie.rating-realtime-proposal.v1+json:
-        schema: *realtime-proposal
-      application/json:
-        schema: *realtime-proposal
+        schema: &realtime-proposal
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
   responses:
     '202':
-      description: >
-        The update was accepted for later processing. Updates to  ratings may
-        need to undergo additional validation and propagation to other systems.
+      description: |
+
+        Accepted. The update was accepted for later processing by the Clearinghouse.
+        Updates to ratings may need to undergo additional validation and
+        propagation to other systems.
+
       content:
         application/vnd.trolie.rating-realtime-proposal.v1+json:
           schema: *realtime-proposal
@@ -73,17 +33,46 @@ patch:
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
-    '400': *malformed
-    '401': *unauthorized-empty
-    '403': *forbidden-empty
-    '404': *not-found-empty
-    '406': *not-acceptable-empty
+    '400':
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401':
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403':
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '406':
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '422':
-      $ref: '../openapi-split.yaml#/components/responses/422-problem'
-    '429': *rate-limit-hit
-    '500': *unexpected-error-empty
+      description: |
+
+          Unprocessable Content. The Real-Time Ratings Proposal may be
+          incomplete, or it may utilize units that are not permitted by the
+          Clearinghouse Provider. Check the response for details. Ratings
+          Providers should impute recourse ratings as necessary to ensure their
+          proposals are complete, i.e., the entire Ratings Obligation is met.
+
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../openapi-split.yaml#/components/schemas/problem'
+          # ideally this would be examples (plural) and include both invalid units and incomplete proposal
+          # but `redocly bundle` extracts examples as standalone components/examples in the consolidated spec
+          # and unfortunately `redocly lint` then gives validation errors on those examples
+          #
+          #examples:
+          #  invalid-units:
+          #    $ref: '../../articles/examples/proposal-invalid-units.json'
+          #  incomplete-proposal:
+          #    $ref: '../../articles/examples/incomplete-proposal.json'
+          example:
+            $ref: '../../articles/examples/incomplete-proposal.json'
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
+    '429':
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
   security:
     - oauth2-primary-flow:
