@@ -12,6 +12,11 @@
             "toolsToInstall": "poetry,pytest,pytest-bdd,ruff",
             "optimize": true,
             "version": "3.12"
+        },
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "dockerDashComposeVersion": "none",
+            "installDockerBuildx": false,
+            "installDockerComposeSwitch": "false"
         }
     }
 }
