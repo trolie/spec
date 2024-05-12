@@ -4,7 +4,7 @@ nav_order: 1
 ---
 
 
-<img alt="TROLIE logo" src="https://artwork.lfenergy.org/projects/trolie/icon/color/TROLIE-icon-color.svg" width="200" style="float:right"/>
+<img alt="TROLIE logo" src="https://artwork.lfess.energy/projects/TROLIE/icon/color/TROLIE-icon-color.png" width="200" style="float:right"/>
 
 # {{site.data.openapi-split.info.title}}
 
