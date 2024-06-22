@@ -3,9 +3,12 @@
 
 # TROLIE 1.0 Specification Working Group
 
-The Transmission Ratings and Operating Limits Information Exchange (TROLIE) 1.0 specification is an LF Energy Standards and Specification Working Group. The official website is [trolie.energy](https://trolie.energy).
+<img style="float:right" alt="Official LF Energy Standards and Specifications logo" src="docs/images/lf-energy-standards-and-specifications-horizontal-color.png" width="200">
 
-<img alt="Official LF Energy Standards and Specifications logo" src="https://artwork.lfess.energy/other/lf-energy-standards-and-specifications/horizontal/color/lf-energy-standards-and-specifications-horizontal-color.png" width="200">
+The Transmission Ratings and Operating Limits Information Exchange (TROLIE) 1.0
+specification is an LF Energy Standards and Specification Working Group. The
+official website is [trolie.energy](https://trolie.energy).
+
 
 ## Scope
 
