@@ -1,23 +1,31 @@
 [![Redocly OpenAPI lint](https://github.com/trolie/spec/actions/workflows/lint.yaml/badge.svg)](https://github.com/trolie/spec/actions/workflows/lint.yaml)
 [![OWASP Top 10 Spectral lint](https://github.com/trolie/spec/actions/workflows/owasp.yaml/badge.svg)](https://github.com/trolie/spec/actions/workflows/owasp.yaml)
 
-# TROLIE
+# TROLIE 1.0 Specification Working Group
 
-Transmission Ratings and Operating Limits Information Exchange
+The Transmission Ratings and Operating Limits Information Exchange (TROLIE) 1.0 specification is an LF Energy Standards and Specification Working Group. The official website is [trolie.energy](https://trolie.energy).
 
-[OpenAPI Specification docs](https://trolie.energy/spec)
+<img alt="Official LF Energy Standards and Specifications logo" src="https://artwork.lfess.energy/other/lf-energy-standards-and-specifications/horizontal/color/lf-energy-standards-and-specifications-horizontal-color.png" width="200">
 
-### License
+## Scope
 
-[Apache 2.0](https://github.com/TROLIE/spec/blob/1.0.0-wip/LICENSE)
+The aim of the Working Group is to facilitate interoperability for organizations implementing FERC Order 881. In particular we are developing an [OpenAPI Specification](https://trolie.energy/spec). Please see [Scope](./Scope.md) for a thorough description of the Working Group's charge.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/white/lf-energy-project-horizontal-white.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png">
-  <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200">
-</picture>
+## License
 
-## To Specification Editors
+The OpenAPI specification is licensed under the [Community Specification License 1.0](Community_Specification_License.md).
+
+Source code is otherwise licensed under [Apache 2.0](https://opensource.org/license/apache-2-0).
+
+For more details see [LICENSE.md](LICENSE.md).
+
+## Contributing
+
+There are three roles for contributors: Maintainers, Editors, and Participants. See the [Governance Policy](Governance.md).
+
+All contributions to the TROLIE Specification 1.0 Working Group are done under the [Community Specification Contributor License Agreement](Contributor_License_Agreement.md).
+
+### Compiling the Site and Specification Locally
 
 The `docs/` folder contains a Jekyll site for the GH Pages along with the yaml
 that is used with `redocly bundle` to create the OpenAPI specification.
@@ -25,11 +33,11 @@ that is used with `redocly bundle` to create the OpenAPI specification.
 To simplify the local setup of the toolchain, a devcontainer is provided. This
 will also install VS Code extensions to help with local editing.
 
-If your company uses MITM, self-signed certificates through your Internet proxy
-and/or proxies upstream RubyGem or npm repos, please follow the instructions in
-the next section to get the local devcontainer editing experience working.
+#### Self-Signed Certs and Repo Proxies
 
-### Self-Signed Certs and Repo Proxies
+If your company uses MITM, self-signed certificates through your Internet proxy
+and/or proxies upstream RubyGem or npm repos, please follow these instructions
+to get the local devcontainer editing experience working.
 
 Put your company's self-signed cert in a PEM file at: `.devcontainer/root.pem`
 
