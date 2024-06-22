@@ -4,13 +4,13 @@ nav_order: 1
 ---
 
 
-<img alt="TROLIE logo" src="https://artwork.lfess.energy/projects/TROLIE/icon/color/TROLIE-icon-color.png" width="200" style="float:right"/>
+<img alt="TROLIE logo" src="images/TROLIE-icon-color.png" width="200" style="float:right"/>
 
 # {{site.data.openapi-split.info.title}}
 
 
 <a href="https://lfenergy.org/projects/trolie/">
-  <img alt="Official LF Energy Project logo" src="https://artwork.lfenergy.org/other/lf-energy-project/horizontal/color/lf-energy-project-horizontal-color.png" width="200" />
+  <img alt="Official LF Energy Project logo" src="images/lf-energy-project-horizontal-color.png" width="200" />
 </a>
 
 For general announcements and discussion, subscribe to our [Email List <i
