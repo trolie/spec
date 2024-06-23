@@ -49,7 +49,7 @@ Proposals](https://trolie.energy/spec#tag/Forecasting/operation/patchRatingForec
 is certain worth scrutinizing, but for our immediate purposes, let's dilate on
 just the `ratings` object of the message.
 
-```json
+```jsonc
 {
   "proposal-header": { /* details elided for clarity */ },
   "ratings": [
