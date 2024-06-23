@@ -1,15 +1,44 @@
-proposal-header: &header
+common-header: &common-header
   type: object
+
+  properties: &common-header-props
+    source:
+      $ref: ./data-provenance.yaml
+
+    default-emergency-durations:
+      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+
+  required: 
+    - source
+    - default-emergency-durations
+    - power-system-resources
+  additionalProperties: false
+
+real-time-proposal-header: &real-time-header
+  <<: *common-header
   description: |
 
-    Populated by the Ratings Provider in a request. The Clearinghouse
-    implementation should record this information, and the detail limits
-    snapshot should should reflect the appropriate metadata from the
+    Populated by the Ratings Provider in a request to submit real-time ratings. 
+    The Clearinghouse implementation should record this information, 
+    and the detail limits snapshot should should reflect the 
+    appropriate metadata from the
+    Clearinghouse Provider's perspective.
+
+
+forecast-proposal-header: &forecast-header
+  <<: *common-header
+  description: |
+
+    Populated by the Ratings Provider in a request to submit forecast ratings. 
+    The Clearinghouse implementation should record this information, 
+    and the detail limits snapshot should should reflect the 
+    appropriate metadata from the
     Clearinghouse Provider's perspective.
 
   properties:
-    source:
-      $ref: ./data-provenance.yaml
+    <<: *common-header-props
     begins: &begins
       description: |
 
@@ -23,20 +52,14 @@ proposal-header: &header
       maxLength: 25
       example: '2025-07-12T03:00:00-05:00'
 
-    default-emergency-durations:
-      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
-    power-system-resources:
-      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
-
   required:
-    - source
     - begins
+    - source
     - default-emergency-durations
-    - power-system-resources
-  additionalProperties: false
+    - power-system-resources    
 
-snapshot-header:
-  <<: *header
+
+forecast-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
     last-updated:
@@ -55,6 +78,24 @@ snapshot-header:
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
+    - begins
     - last-updated
     - snapshot-provenance
     - power-system-resources
+
+
+real-time-snapshot-header:
+  description: Details about the snapshot provided by the Clearinghouse provider.
+  properties:
+    last-updated:
+      $ref: ./timestamp.yaml
+    snapshot-provenance:
+      $ref: ./data-provenance.yaml
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+    default-emergency-durations:
+      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+  required:
+    - last-updated
+    - snapshot-provenance
+    - power-system-resources    

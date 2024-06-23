@@ -1,12 +1,87 @@
+get: &get
+  operationId: getRealTimeProposalStatus
+  summary: Obtain the status of the Ratings Provider's Real-Time proposals
+  description: |
+
+    Used to obtain the status of real-time ratings proposals. The response is
+    implicitly restricted to the requesting Ratings Provider's obligation.
+    Accordingly, the caller can use this endpoint to check the state of their
+    proposal submission.
+
+    Note that the same status object is returned for each
+    `postRealTimeProposal`, so this endpoint may seem redundant. However,
+    an anticipated use case for this `GET` endpoint is to support supervisor
+    processes that are setup by the client to independently ensure the provider's process for
+    rating submission if functioning properly. For example, the Rating Provider
+    might have one program responsible for producing and submitting Ratings
+    Forecasts via `postRealTimeProposal`, while having a separate
+    monitoring job that checks this endpoint regularly.
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+    limiting is done on a per Ratings Provider basis, so requests from
+    independent clients used by the same provider count against the same quota.
+
+  tags:
+    - Rating Proposals
+    - Real-Time
+  responses:
+    '200':
+      description: OK
+      content:
+        application/vnd.trolie.rating-realtime-proposal-status.v1+json: &status-response
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/real-time-proposal-status
+          example:
+            $ref: ../../example-narratives/examples/forecast-ratings-proposal-status.json
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
+
+    '304':
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400': &malformed
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401': &unauthorized-empty
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403': &forbidden-empty
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '406': &not-acceptable-empty
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
+    '429': &rate-limit-hit
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    default: *unexpected-error-empty
+  security:
+    - oauth2-primary-flow:
+        - read:realtime-proposals
 post:
   operationId: postRealTimeProposal
   summary: Submit Real-Time Rating Proposal
   description: |
 
-    The Clearinghouse will make use of the most recent Ratings Proposals it has
-    received when determining Real-Time Limits. Ratings Providers with Real-Time
-    Ratings Obligations should submit their Ratings Proposals using this
-    operation.
+    At the discretion of the TROLIE server owner, Ratings Providers use 
+    this endpoint to submit ratings within the current hour.  
+    These are assumed to be real-time ratings, based on measurements
+    of ambient conditions as opposed to forecasts.  These ratings will be 
+    used by Transmission Providers in real-time grid operations processes, 
+    such as state estimator and real-time markets.  The clearinghouse for real-time ratings
+    may be run more frequently than the one for forecast ratings to adapt to real-world 
+    conditions.  
+
+    These ratings may be either AARs or DLRs.  
+
+    The API mechanics are different than forecasts, as there is no implicitly created
+    time window to modify.  Ratings providers simply `POST` new values as they are measured and computed.  
+
+    Rules for usage however are similar to forecasts; real-time proposals do not have to contain
+    every resource for which the Ratings Provider is responsible.  Data may be broken into batches
+    across the Rating Provider's footprint.  
+
+    Status of the real-time proposals also includes an indication of incomplete obligations, much
+    like forecast.  However, the semantic of this is somewhat different, as it simply indicates 
+    data that is either completely missing, or is considered stale by the TROLIE server implementation,
+    likely due to simply not recieving a value within a reasonable period, such as an hour.  
 
   tags:
     - Rating Proposals
@@ -15,7 +90,7 @@ post:
   requestBody:
     content:
       application/vnd.trolie.rating-realtime-proposal.v1+json:
-        schema: &realtime-proposal
+        schema: 
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
   responses:
     '202':
@@ -26,10 +101,9 @@ post:
         propagation to other systems.
 
       content:
-        application/vnd.trolie.rating-realtime-proposal.v1+json:
-          schema: *realtime-proposal
-        application/json:
-          schema: *realtime-proposal
+        application/vnd.trolie.rating-realtime-proposal-status.v1+json:
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/real-time-proposal-status
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -46,8 +120,8 @@ post:
     '422':
       description: |
 
-          Unprocessable Content. The Real-Time Ratings Proposal may be
-          incomplete, or it may utilize units that are not permitted by the
+          Unprocessable Content. The Real-Time Ratings Proposal may 
+          not tilize units that are not permitted by the
           Clearinghouse Provider. Check the response for details. Ratings
           Providers should impute recourse ratings as necessary to ensure their
           proposals are complete, i.e., the entire Ratings Obligation is met.

@@ -3,7 +3,7 @@ forecast-limits-snapshot:
   description: A snapshot of the forecast for a monitoring set.
   properties:
     snapshot-header:
-      $ref: ./headers.yaml#/snapshot-header
+      $ref: ./headers.yaml#/forecast-snapshot-header
     limits: &max
       type: array
       minItems: 0
@@ -21,7 +21,7 @@ forecast-limits-detailed-snapshot:
 
   properties:
     snapshot-header:
-      $ref: ./headers.yaml#/snapshot-header
+      $ref: ./headers.yaml#/forecast-snapshot-header
     limits:
       <<: *max
       description: Forecast including provenance information.
@@ -38,7 +38,7 @@ forecast-proposal:
   type: object
   properties:
     proposal-header:
-      $ref: ./headers.yaml#/proposal-header
+      $ref: ./headers.yaml#/forecast-proposal-header
     ratings:
       <<: *max
       description: Forecasted Ratings
@@ -48,13 +48,9 @@ forecast-proposal:
     - proposal-header
     - ratings
 
-forecast-proposal-status:
+common-proposal-status:
   type: object
-  properties:
-    forecast-provider:
-      $ref: ./data-provenance.yaml
-    begins: # nominates the forecast window
-      $ref: ./period-start.yaml
+  properties:  &common-proposal-status-props
     incomplete-obligation-count:
       description: |
 
@@ -123,19 +119,55 @@ forecast-proposal-status:
             $ref: ./resource-id.yaml
 
   required:
+    - incomplete-obligation-count
+    - incomplete-obligations
+    - invalid-proposal-count
+    - proposal-validation-errors
+
+
+forecast-proposal-status:
+  type: object
+  description: |
+    Status of the rating provider's forecast proposal relative to the current 
+    forecast window.  Includes any validation errors encountered while processing proposals.  
+  properties: 
+    <<: *common-proposal-status-props
+    forecast-provider:
+      $ref: ./data-provenance.yaml
+    begins: # nominates the forecast window
+      $ref: ./period-start.yaml
+
+  required:
     - forecast-provider
     - begins
     - incomplete-obligation-count
     - incomplete-obligations
     - invalid-proposal-count
-    - proposal-validation-errors
+    - proposal-validation-errors    
+
+real-time-proposal-status:
+  type: object
+  description: |
+    Status of the rating provider's real-time obligations.  
+    Includes any validation errors encountered while processing proposals.   
+  properties:
+    <<: *common-proposal-status-props  
+    ratings-provider:
+      $ref: ./data-provenance.yaml
+  required:
+    - ratings-provider
+    - incomplete-obligation-count
+    - incomplete-obligations
+    - invalid-proposal-count
+    - proposal-validation-errors        
+    
 
 realtime-limits-snapshot:
   type: object
   description: A snapshot of the realtime limits for a monitoring set.
   properties:
     snapshot-header:
-      $ref: ./headers.yaml#/snapshot-header
+      $ref: ./headers.yaml#/real-time-snapshot-header
     limits:
       <<: *max
       description: Real-time limits
@@ -147,7 +179,7 @@ realtime-limits-detailed-snapshot:
   description: A snapshot of the realtime limits for a monitoring set.
   properties:
     snapshot-header:
-      $ref: ./headers.yaml#/snapshot-header
+      $ref: ./headers.yaml#/real-time-snapshot-header
     limits:
       <<: *max
       description: Real-time limits including provenance.
@@ -158,7 +190,7 @@ realtime-proposal:
   type: object
   properties:
     proposal-header:
-      $ref: ./headers.yaml#/proposal-header
+      $ref: ./headers.yaml#/real-time-proposal-header
     ratings:
       <<: *max
       description: Real-Time Ratings Proposals
@@ -166,16 +198,17 @@ realtime-proposal:
         type: object
         additionalProperties: false
         description: >
-          Real-time ratings data for a segment.  Includes status of the proposal
-          relative to this data, as well as rating values.  
+          Real-time ratings data for a segment.  
         allOf:
-          - type: object
-            properties:
-              resource-id:
-                $ref: ./resource-id.yaml
-              status:
-                $ref: ./proposal-status.yaml
-          - $ref: ./limit-data.yaml
+        - type: object
+          properties:
+            resource-id: 
+              $ref: ./resource-id.yaml
+        - $ref: ./limit-proposal.yaml
+          
+  required:
+  - proposal-header
+  - ratings
 
 seasonal-rating-proposal:
   description: Seasonal rating proposal
@@ -193,7 +226,7 @@ seasonal-rating-snapshot:
   description: A snapshot of the realtime limits for a monitoring set.
   properties:
     snapshot-header:
-      $ref: ./headers.yaml#/snapshot-header
+      $ref: ./headers.yaml#/common-header
     limits:
       <<: *max
       description: Seasonal rating snapshot
