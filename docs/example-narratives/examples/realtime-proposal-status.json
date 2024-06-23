@@ -1,0 +1,23 @@
+{
+  "ratings-provider": {
+    "provider": "UTILITY-A",
+    "last-updated": "2023-07-12T15:05:43.044267100-07:00",
+    "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+  },
+  "incomplete-obligation-count": 1,
+  "incomplete-obligations": [
+      { "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {"name": "segmentX", "authority": "TO-NERC-ID"},
+          {"name": "LINE1 SEG-X", "authority": "RC-NERC-ID", "mrid": "8badf00d"}
+        ]
+      }
+  ],
+  "invalid-proposal-count": 1,
+  "proposal-validation-errors": [
+    {
+      "message": "Submitted continuous rating value of 2000MVA is greater than the upper reasonability limit of 1300MVA",
+      "resource-id": "8badf00d"
+    }
+  ]
+}

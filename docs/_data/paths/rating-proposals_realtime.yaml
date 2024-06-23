@@ -33,7 +33,7 @@ get: &get
           schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/real-time-proposal-status
           example:
-            $ref: ../../example-narratives/examples/forecast-ratings-proposal-status.json
+            $ref: ../../example-narratives/examples/realtime-proposal-status.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -81,7 +81,7 @@ post:
     Status of the real-time proposals also includes an indication of incomplete obligations, much
     like forecast.  However, the semantic of this is somewhat different, as it simply indicates 
     data that is either completely missing, or is considered stale by the TROLIE server implementation,
-    likely due to simply not recieving a value within a reasonable period, such as an hour.  
+    likely due to simply not receiving a value within a reasonable period, such as an hour.  
 
   tags:
     - Rating Proposals
@@ -92,6 +92,8 @@ post:
       application/vnd.trolie.rating-realtime-proposal.v1+json:
         schema: 
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
+        example:
+          $ref: ../../example-narratives/examples/realtime-proposal.json
   responses:
     '202':
       description: |
@@ -104,6 +106,8 @@ post:
         application/vnd.trolie.rating-realtime-proposal-status.v1+json:
           schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/real-time-proposal-status
+          example:
+            $ref: ../../example-narratives/examples/realtime-proposal-status.json            
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -121,7 +125,7 @@ post:
       description: |
 
           Unprocessable Content. The Real-Time Ratings Proposal may 
-          not tilize units that are not permitted by the
+          not utilize units that are not permitted by the
           Clearinghouse Provider. Check the response for details. Ratings
           Providers should impute recourse ratings as necessary to ensure their
           proposals are complete, i.e., the entire Ratings Obligation is met.

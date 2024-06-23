@@ -4,8 +4,6 @@ allOf:
     properties:
       resource-id:
         $ref: ./resource-id.yaml
-      updated-time:
-        $ref: ./timestamp.yaml
   - $ref: ./limit-data.yaml
 required:
   - resource-id
