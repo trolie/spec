@@ -55,7 +55,7 @@ servers:
 tags:
 
   - name: Forecasting
-    description: The operations related to forecasting.
+    description: The operations related to forecasted ratings.  This covers 
 
   - name: Real-Time
     description: The operations related to real-time.

@@ -1,10 +1,10 @@
 get: &get
   operationId: getRatingForecastProposalStatus
-  summary: Obtain the status of the Ratings Provider's proposal
+  summary: Obtain the status of the Ratings Provider's forecast proposal
   description: |
 
     Used to obtain the status of the Ratings Forecast proposal. The response is
-    implicitly restricted to the requesting Ratings Provider monitoring set.
+    implicitly restricted to the requesting Ratings Provider's obligation.
     Accordingly, the caller can use this endpoint to check the state of their
     proposal submission.
 
