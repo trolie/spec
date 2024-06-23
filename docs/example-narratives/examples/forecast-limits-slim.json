@@ -1,6 +1,7 @@
 {
     "snapshot-header": {
         "last-updated": "2023-07-12T16:00:00-07:00",
+        "begins": "2023-07-12T16:00:00-07:00",
         "snapshot-provenance": {
             "provider":"X-AMPL",
             "last-updated": "2023-07-12T16:00:00-07:00",

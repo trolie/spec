@@ -48,17 +48,37 @@ info:
     email: maintainers@trolie.energy
     url: https://trolie.energy
   license:
-    name: Apache License, Version 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
+    name: Community Specification License 1.0
+    url: https://spdx.org/licenses/Community-Spec-1.0.html
 servers:
   - url: https://trolie.example.com
 tags:
 
   - name: Forecasting
-    description: The operations related to forecasted ratings.  This covers 
+    description: |
+      The operations related to data exchange of forecasted ratings.  
+      
+      This data exchange specifically covers the 240-hour-ahead forecasted 
+      AAR data exchange between Ratings Providers and Transmission Providers
+      mandated FERC order 881.  It includes the ability to submit rating proposals, 
+      query back in-use limits, and monitor the health and validity of the rating 
+      proposal submissions relative the Rating Provider's obligations.  
 
   - name: Real-Time
-    description: The operations related to real-time.
+    description: |
+      At the discretion of the TROLIE server owner, Ratings Providers may
+      use these functions to exchange ratings within the current hour, 
+      either as an alternative or supplement to traditional telemetry protocols
+      such as ICCP.  
+      
+      These are assumed to be real-time ratings, based on measurements
+      of ambient conditions as opposed to forecasts.  These ratings will be 
+      used by Transmission Providers in real-time grid operations processes, 
+      such as state estimator and real-time markets.  The clearinghouse for real-time ratings
+      may be run more frequently than the one for forecast ratings to adapt to real-world 
+      conditions.  
+
+      These ratings may be either AARs or DLRs.  
 
   - name: Operating Snapshots
     description: >
