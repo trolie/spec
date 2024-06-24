@@ -20,24 +20,24 @@ handling.
 
 The goals of this article are:
 
-* Discussing the relative priority of certain quality attributes in the TROLIE
+* Discussing the relative priority of certain quality in the TROLIE
   project
 
 * Addressing the rationale for the current schema specification
 
 * Mitigating performance concerns of implementors
 
-## Quality Attribute Priorities
+## Quality Priorities
 
 TROLIE primarily exists to foster interoperability between systems that need to
 exchange ratings and limits in order to comply with FERC Order 881. Accordingly,
 the project prioritizes qualities that enhance interoperability and security
-over other qualities attributes related to performance efficiency.
+over other qualities related to performance efficiency.
 
-Attributes like clarity, compatibility/flexibility, debuggability, auditability,
+Qualities like clarity, compatibility/flexibility, debuggability, auditability,
 and [robustness](https://en.wikipedia.org/wiki/Robustness_principle) promote
-interoperability, yet these attributes are often in tension with performance
-efficiency. Consideration of these attributes led to the choice of boring,
+interoperability, yet these qualities are often in tension with performance
+efficiency. Consideration of these qualities led to the choice of boring,
 long-established technologies--JSON, HTTP, OpenAPI--to specify TROLIE. Security
 concerns like auditability and non-repudiation have also informed the schema
 design.
@@ -107,6 +107,66 @@ There are a few considerations to call out here:
   for specifying limits, of course. The TROLIE schema allows for different units
   to be used with different power system resources in the same forecast.
 
+### Additional Interop Considerations
+
+Let's return to the `proposal-header` to call out some additional interop
+considerations that are addressed by the schema.
+
+```jsonc
+{
+  "proposal-header": {
+    "source": {
+      "last-updated": "2025-10-31T15:05:43.044267100-07:00",
+      "provider": "UTILITY-A",
+      "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+    },
+    "begins": "2025-11-01T01:00:00-05:00",
+    "default-emergency-durations": [
+      {
+        "name": "lte",
+        "duration-minutes": 240
+      },
+      {
+        "name": "ste",
+        "duration-minutes": 30
+      },
+      {
+        "name": "dal",
+        "duration-minutes": 15
+      }
+    ],
+    "power-system-resources": [
+      {
+        "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {
+            "name": "segmentX",
+            "authority": "TO-NERC-ID"
+          },
+          {
+            "name": "LINE1 SEG-X",
+            "authority": "RC-NERC-ID",
+            "mrid": "8badf00d"
+          }
+        ]
+      }
+    ]
+  },
+  "ratings": [ /* details elided for clarity */ ]
+}
+```
+
+* `source` addresses the potential need for intermediaries or 3rd-parties as
+  well as troubleshooting submissions.
+
+* `power-system-resources` allows for multiple names to be associated to a power
+  system resource without mandating which of these names is the canonical
+  `resource-id` for a given exchange.
+
+* `begins` makes it efficient to establish precisely what Forecast Window is
+  targeted by this submission; late proposals can be rejected without further
+  processing.
+
 ## Mitigating Performance Concerns
 
 Still, the performance concerns are real. This article is not an attempt to 
@@ -114,7 +174,7 @@ discredit them. Let's address the one's we've heard.
 
 ### Concern 1: Transferred Bytes
 
-JSON is a *terrible* choice from a
+JSON is a generally a suboptimal choice for data-intensive applications from a
 performance perspective, but it is also ubiquitous and will be so for decades to
 come. It also has a decent schema language that OpenAPI builds upon.
 
@@ -139,10 +199,10 @@ that has to support 881, because
 #### Don't Read It All Into Memory
 
 Implementors are strongly encourages to use a streaming or event-based
-("SAX-style" for you XML aficionados) parser when reading submissions. This
+("SAX-style" in XML parlance) parser when reading submissions. This
 advice would likely apply in a general way, even given a ratings exchange
 specification that made different trade-off decisions. TROLIE specifies a
-`proposal-header` that afford the server the opportunity to make some processing
+`proposal-header` that affords the server the opportunity to make some processing
 decisions early, without waiting to receive the last byte.
 
 #### Ignore What You Don't Need
@@ -155,6 +215,8 @@ ignore these and require a submission always include 240 sequential hourly
 period forecasts; doing so would not violate the TROLIE schema, and you would
 still have an unambiguous record of the intended use of the rating if it comes
 to non-repudiation or debugging.
+
+
 
 ## Interop is a Conversation
 
