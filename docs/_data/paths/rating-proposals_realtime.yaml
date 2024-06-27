@@ -80,7 +80,7 @@ post:
 
     Status of the real-time proposals also includes an indication of incomplete obligations, much
     like forecast.  However, the meaning of this is somewhat different, as it simply indicates 
-    data that is either completely missing, or is considered stale by the TROLIE server implementation,
+    data that is either completely missing, or is considered stale by the Clearinghouse Provider,
     likely due to simply not receiving a value within a reasonable period, such as an hour.  
 
   tags:
