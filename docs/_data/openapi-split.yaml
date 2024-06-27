@@ -58,7 +58,7 @@ tags:
     description: |
       The operations related to data exchange of forecasted ratings.  
       
-      This data exchange specifically covers the 240-hour-ahead forecasted 
+      This data exchange specifically includes the 240-hour-ahead forecasted 
       AAR data exchange between Ratings Providers and Transmission Providers
       mandated FERC order 881.  It includes the ability to submit rating proposals, 
       query back in-use limits, and monitor the health and validity of the rating 
