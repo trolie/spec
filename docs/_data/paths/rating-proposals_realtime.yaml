@@ -79,7 +79,7 @@ post:
     across the Rating Provider's footprint.  
 
     Status of the real-time proposals also includes an indication of incomplete obligations, much
-    like forecast.  However, the semantic of this is somewhat different, as it simply indicates 
+    like forecast.  However, the meaning of this is somewhat different, as it simply indicates 
     data that is either completely missing, or is considered stale by the TROLIE server implementation,
     likely due to simply not receiving a value within a reasonable period, such as an hour.  
 
