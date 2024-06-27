@@ -12,15 +12,20 @@ get:
   description: |
 
     Obtain the Limits Forecast the Transmission Provider is currently using in
-    Operations, relative to the current time. Clients SHOULD perform Conditional
-    `GET` using the `If-None-Match` header and the `ETag` of a previous `GET`
-    response. This operation uses media types to control verbosity of the data
+    Operations, relative to the current time. 
+    
+    This operation uses media types to control verbosity of the data
     fetched. The default media type,
     `application/vnd.trolie.forecast-limits-snapshot.v1+json`, simply includes
     the rating data. For applications that need it, the media type
     `application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json` may be
     requested, which also references the source proposals used to generate the
     snapshot, as well as reporting data from the ratings clearing process.
+
+    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+    limiting is done on a per Ratings Provider basis, so requests from
+    independent clients used by the same provider count against the same quota.    
 
   responses:
     '200':
