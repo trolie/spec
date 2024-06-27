@@ -14,7 +14,7 @@ get: &get
     processes that are setup by the client to independently ensure the provider's process for
     rating submission if functioning properly. For example, the Rating Provider
     might have one program responsible for producing and submitting Ratings
-    Forecasts via `postRealTimeProposal`, while having a separate
+    via `postRealTimeProposal`, while having a separate
     monitoring job that checks this endpoint regularly.
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
