@@ -3,8 +3,11 @@ get:
   description: |
 
     Obtain the System Operating Limits in-use by the Transmission Provider.
+
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
+    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+    limiting is done on a per Ratings Provider basis, so requests from
+    independent clients used by the same provider count against the same quota.
 
   summary: Limits Real Time Snapshot
   tags:
