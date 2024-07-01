@@ -28,8 +28,8 @@ reliability criteria. Limits for Transmission Facilities are determined by the
 Clearinghouse after considering all Ratings Proposals for the Power System
 Resources associated with that Transmission Facility during a particular Period
 of an Operational Window.  TROLIE defines limits and ratings (described below) in 
-3 distinct time horizons, including near term "forecasts", real-time and 
-seasonal limits.  
+3 distinct time horizons, including near term "forecasts", real-time and (in future 
+releases) seasonal limits.  
 
 ### Forecast Limits
 
@@ -53,17 +53,6 @@ such as state estimator and real-time markets.  The clearinghouse for real-time 
 may be run more frequently than the one for forecast ratings to adapt to real-world 
 conditions.  
 
-### Seasonal Limits
-
-Seasonal limits apply more broadly to particular seasons, defined as months or collections
-of months (see the definition of `Seasons` below).  In operations, they are most often used
-as recourse ratings to be used in case of forecast or real-time ratings being unavailable.  
-
-However, they are enforced as limits in further reaching processes, including planning and
-financial transmission rights (FTR) markets.  
-
-**Seasonal limit exchange is not fully defined in this current version of TROLIE.  Some of this 
-terminology is subject to change in design.**
 
 ## Rating
 
@@ -177,15 +166,3 @@ Another typical Monitoring Set would be that which nominates the complete
 footprint for the Transmission Provider. A natural choice for the
 `monitoring-set` identifier is the NERC id of the entity that defines the
 `monitoring-set`, if applicable.
-
-## Seasons
-Seasons are the course-grained time boxes used as anchors for `Seasonal` ratings and 
-limits.  While FERC order 881 specifies that at least 4 seasons (winter, spring, 
-summer, fall) must be used, Transmission Providers may use seasons still more granular.
-In TROLIE, Transmission Providers may define seasons against which ratings and limits
-may be exchanged.  These seasons must start on a the first of the month, and end on the 
-last day of the month.  The seasons are then defined by subdividing the calendar year
-into a number of months.  For example, a Transmission Provider could simply elect to 
-define a separate season for each month, so that January, February and March are each
-considered separate "seasons".  Alternatively, a "winter" season could be defined 
-consisting of the months January, February, and March.   

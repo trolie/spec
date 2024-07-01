@@ -20,7 +20,7 @@ get:
     '200':
       description: The System Operating Limits snapshot is returned.
       content:
-        application/vnd.trolie.realtime-limits-slim-snapshot.v1+json:
+        application/vnd.trolie.realtime-limits-snapshot.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot"
           example:
