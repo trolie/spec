@@ -3,7 +3,7 @@ get:
   description: Retrieve the nominal and seasonal ratings.
   summary: Get Seasonal Ratings
   tags:
-    - Seasonal Rating Snapshots
+    - Seasonal
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/facility-filter.yaml

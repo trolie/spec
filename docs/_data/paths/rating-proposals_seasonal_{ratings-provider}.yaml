@@ -2,8 +2,8 @@ get:
   operationId: getSeasonalProposalForProvider
   description: &get_desc Obtain a specific rating proposal by ratings provider
   summary: *get_desc
-  tags:
-    - Rating Proposals
+  tags: &tags
+    - Seasonal
   parameters:
     - $ref: ../components/parameters/ratings-provider.yaml
     - $ref: ../components/parameters/monitoring-set-filter.yaml
@@ -49,8 +49,7 @@ patch:
   operationId: patchSeasonalProposalByProvider
   description: &patch_desc Update a given Provider's Rating Proposal 
   summary: *patch_desc
-  tags:
-    - Rating Proposals
+  tags: *tags
   parameters:
     - $ref: ../components/parameters/ratings-provider.yaml
   requestBody:
