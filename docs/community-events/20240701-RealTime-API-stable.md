@@ -7,7 +7,7 @@ parent: Community Events
 
 ## Summary
 
-<img src="../images/TROLIE-Summer.png" style="float:right;padding-left:5px;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3)" width="280" height="280"/>
+<img src="../images/TROLIE-summer.jpg" style="float:right;padding-left:5px;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3)" width="280" height="280"/>
 
 The specification of the [Real-Time Operations](/spec#tag/Real-Time) in
 TROLIE OpenAPI specification is now considered stable, closing the [associated
