@@ -11,7 +11,7 @@ Assuming a MonitoringSet "my-monitoring-set" that contains TransmissionFacilitie
 ```bash
 curl -H "Accept: application/vnd.trolie.forecast-limit-set-slim.v1+json" \
 -o output.json \
-"https://trolie.example.com/rating-proposals/forecasts?monitoring-set=my-monitoring-set"
+"https://trolie.example.com/limits/forecast-snapshot?monitoring-set=my-monitoring-set"
 ```
 
 This will return the current version of the in-use ratings for the next 240 hours into output.json.  See the following for an example:

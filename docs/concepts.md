@@ -27,7 +27,43 @@ for TROLIE is that a Limit satisfies the most limiting of any provided
 reliability criteria. Limits for Transmission Facilities are determined by the
 Clearinghouse after considering all Ratings Proposals for the Power System
 Resources associated with that Transmission Facility during a particular Period
-of an Operational Window.
+of an Operational Window.  TROLIE defines limits and ratings (described below) in 
+3 distinct time horizons, including near term "forecasts", real-time and 
+seasonal limits.  
+
+### Forecast Limits
+
+Forecast limits refer to the 240-hour-ahead forecasted AAR data set
+mandated by FERC order 881.  While this is a forecast of limits as they would be
+in real-time, in practice these are often used for various processes involved in 
+near-term planning of transmission services, including day-ahead markets and other 
+look-ahead resource commitment processes, transmission scheduling and outage 
+coordination.  
+
+### Real-Time Limits
+
+In addition to forecasts, TROLIE may also be used to exchange ratings within the 
+current hour, either as an alternative or supplement to traditional telemetry 
+protocols such as ICCP.  
+
+These are assumed to be "real-time" limits, based on measurements
+of ambient conditions as opposed to forecasts.  These limits will be 
+used by Transmission Providers in real-time grid operations processes, 
+such as state estimator and real-time markets.  The clearinghouse for real-time ratings
+may be run more frequently than the one for forecast ratings to adapt to real-world 
+conditions.  
+
+### Seasonal Limits
+
+Seasonal limits apply more broadly to particular seasons, defined as months or collections
+of months (see the definition of `Seasons` below).  In operations, they are most often used
+as recourse ratings to be used in case of forecast or real-time ratings being unavailable.  
+
+However, they are enforced as limits in further reaching processes, including planning and
+financial transmission rights (FTR) markets.  
+
+**Seasonal limit exchange is not fully defined in this current version of TROLIE.  Some of this 
+terminology is subject to change in design.**
 
 ## Rating
 
@@ -141,3 +177,15 @@ Another typical Monitoring Set would be that which nominates the complete
 footprint for the Transmission Provider. A natural choice for the
 `monitoring-set` identifier is the NERC id of the entity that defines the
 `monitoring-set`, if applicable.
+
+## Seasons
+Seasons are the course-grained time boxes used as anchors for `Seasonal` ratings and 
+limits.  While FERC order 881 specifies that at least 4 seasons (winter, spring, 
+summer, fall) must be used, Transmission Providers may use seasons still more granular.
+In TROLIE, Transmission Providers may define seasons against which ratings and limits
+may be exchanged.  These seasons must start on a the first of the month, and end on the 
+last day of the month.  The seasons are then defined by subdividing the calendar year
+into a number of months.  For example, a Transmission Provider could simply elect to 
+define a separate season for each month, so that January, February and March are each
+considered separate "seasons".  Alternatively, a "winter" season could be defined 
+consisting of the months January, February, and March.   
