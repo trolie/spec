@@ -27,7 +27,32 @@ for TROLIE is that a Limit satisfies the most limiting of any provided
 reliability criteria. Limits for Transmission Facilities are determined by the
 Clearinghouse after considering all Ratings Proposals for the Power System
 Resources associated with that Transmission Facility during a particular Period
-of an Operational Window.
+of an Operational Window.  TROLIE defines limits and ratings (described below) in 
+3 distinct time horizons, including near term "forecasts", real-time and (in future 
+releases) seasonal limits.  
+
+### Forecast Limits
+
+Forecast limits refer to the 240-hour-ahead forecasted AAR data set
+mandated by FERC order 881.  While this is a forecast of limits as they would be
+in real-time, in practice these are often used for various processes involved in 
+near-term planning of transmission services, including day-ahead markets and other 
+look-ahead resource commitment processes, transmission scheduling and outage 
+coordination.  
+
+### Real-Time Limits
+
+In addition to forecasts, TROLIE may also be used to exchange ratings within the 
+current hour, either as an alternative or supplement to traditional telemetry 
+protocols such as ICCP.  
+
+These are assumed to be "real-time" limits, based on measurements
+of ambient conditions as opposed to forecasts.  These limits will be 
+used by Transmission Providers in real-time grid operations processes, 
+such as state estimator and real-time markets.  The clearinghouse for real-time ratings
+may be run more frequently than the one for forecast ratings to adapt to real-world 
+conditions.  
+
 
 ## Rating
 

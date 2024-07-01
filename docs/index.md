@@ -22,8 +22,8 @@ class="fa-solid fa-envelope"></i>](https://lists.lfenergy.org/g/trolie-general).
 
 > **Latest Updates** <i class="fa-solid fa-bullhorn"></i>
 >
-> The TROLIE maintainers are pleased to announce that the [Forecasting API](/spec#tag/Forecasting) specification is stable.
-> Read more in the [milestone announcement](./community-events/20240330-Forecasting-API-stable).
+> The TROLIE maintainers are pleased to announce that the [Real-Time API](/spec#tag/Real-Time) specification is stable.
+> Read more in the [milestone announcement](./community-events/20240701-RealTime-API-stable).
 >
 > If you are new to the project, consider watching the replay of the [Intro to TROLIE webinar](./community-events/20240221-Intro-to-TROLIE)
 
