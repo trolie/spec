@@ -9,7 +9,7 @@ get:
 
   summary: Get a Seasonal Rating Proposal
   tags: &tags
-    - Rating Proposals
+    - Seasonal
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/segment-filter.yaml

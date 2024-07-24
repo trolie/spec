@@ -80,40 +80,7 @@ tags:
 
       These ratings may be either AARs or DLRs.  
 
-  - name: Operating Snapshots
-    description: >
-      Two snapshots are provided:
-
-      * **Operating Limits Forecast Snapshot** is the forecast of Transmission
-        Facility ratings that is in-use by the Transmission Provider at the time
-        of the request for this resource.  These are actively used for look-ahead operational decisions, such as the
-        day-ahead market, in addition to their role as recourse limits if real-time ratings
-        proposals are missing.  
-      * **Operating Limits Real-Time Snapshot** is the set of System Operating
-      Limits the
-        Transmission Provider is operating to at the time of the request for
-        this resource.  
-  - name: Rating Proposals
-    description: >
-
-      Ratings Providers may submit ratings for three separate time horizons:
-
-      * **Forecast Ratings** are at minimum hourly forecasts of ratings for a
-      particular segment.  
-
-      * **Real-Time Ratings** are provided for current operating conditions. 
-      Ratings provided in this manner are an alternative for segments where ICCP
-      communications are not available.  
-
-      * **Seasonal Ratings** are recourse ratings for when applicable forecast
-      ratings are not available.  In addition to use when forecast rating feeds
-      are missing, these may be used by planning or other forward-looking
-      processes that go beyond the window for which forecasted ratings may be
-      available.  This includes ratings for scheduled calendar seasons, as well
-      as to rating sets that apply in special named scenarios defined by the
-      Transmission Provider, such as an extreme winter day.  
-
-  - name: Seasonal Rating Snapshots
+  - name: Seasonal
     description: >
       While not typically used directly in operational decisions, seasonal
       ratings are provided for two purposes:
@@ -190,14 +157,20 @@ paths:
     $ref: paths/limits_forecast-snapshot.yaml
   /limits/realtime-snapshot:
     $ref: paths/limits_realtime-snapshot.yaml
+  /rating-proposals/forecast:
+    $ref: paths/rating-proposals_forecasts.yaml
+  /rating-proposals/realtime:
+    $ref: paths/rating-proposals_realtime.yaml
+  /rating-proposals/seasonal:
+    $ref: paths/rating-proposals_seasonal.yaml
+  /rating-proposals/seasonal/{ratings-provider}:
+    $ref: paths/rating-proposals_seasonal_{ratings-provider}.yaml
   /seasonal-ratings/snapshot:
     $ref: paths/seasonal-ratings_snapshot.yaml
   /seasonal-ratings/season-instances:
     $ref: paths/seasonal-ratings_season-instances.yaml
   /seasonal-ratings/season-instances/{id}:
     $ref: paths/seasonal-ratings_season-instances_{id}.yaml
-  /rating-proposals/forecast:
-    $ref: paths/rating-proposals_forecasts.yaml
   /temporary-aar-exceptions:
     $ref: paths/temporary-aar-exceptions.yaml
   /temporary-aar-exceptions/{id}:
@@ -206,12 +179,6 @@ paths:
     $ref: paths/temporary-seasonal-ratings.yaml
   /temporary-seasonal-ratings/{id}:
     $ref: paths/temporary-seasonal-ratings_{id}.yaml
-  /rating-proposals/realtime:
-    $ref: paths/rating-proposals_realtime.yaml
-  /rating-proposals/seasonal:
-    $ref: paths/rating-proposals_seasonal.yaml
-  /rating-proposals/seasonal/{ratings-provider}:
-    $ref: paths/rating-proposals_seasonal_{ratings-provider}.yaml
 components:
   responses:
 

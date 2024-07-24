@@ -3,7 +3,7 @@ get:
   description: Seasonal ratings are always bound against season instances, with effective dates.
   summary: Get Instances of Seasons
   tags:
-    - Seasonal Rating Snapshots
+    - Seasonal
   responses:
     '200':
       description: OK

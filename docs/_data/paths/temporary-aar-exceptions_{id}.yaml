@@ -2,7 +2,7 @@ get:
   operationId: getTemporaryAARException
   description: &get_desc Obtain a specific temporary AAR exception by Id.
   summary: *get_desc
-  tags:
+  tags: &tags
     - Temporary AAR Exceptions
   parameters:
     - $ref: ../components/parameters/id.yaml
@@ -65,8 +65,7 @@ delete:
   operationId: deleteTemporaryAARException
   description: &delete_desc Delete a specific temporary AAR Exception by Id.  
   summary: *delete_desc
-  tags:
-    - Temporary AAR Exceptions
+  tags: *tags
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
@@ -90,8 +89,7 @@ put:
   operationId: updateTemporaryAARException
   description: &put_desc Updates an existing Temporary AAR Exception.  
   summary: *put_desc
-  tags:
-    - Temporary AAR Exceptions
+  tags: *tags
   parameters:
     - $ref: ../components/parameters/id.yaml
   requestBody:

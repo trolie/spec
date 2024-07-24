@@ -1,4 +1,4 @@
-get: &get
+get:
   operationId: getRealTimeProposalStatus
   summary: Obtain the status of the Ratings Provider's Real-Time proposals
   description: |
@@ -22,14 +22,13 @@ get: &get
     limiting is done on a per Ratings Provider basis, so requests from
     independent clients used by the same provider count against the same quota.
 
-  tags:
-    - Rating Proposals
+  tags: &tags
     - Real-Time
   responses:
     '200':
       description: OK
       content:
-        application/vnd.trolie.rating-realtime-proposal-status.v1+json: &status-response
+        application/vnd.trolie.rating-realtime-proposal-status.v1+json:
           schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/real-time-proposal-status
           example:
@@ -83,9 +82,7 @@ post:
     data that is either completely missing, or is considered stale by the Clearinghouse Provider,
     likely due to simply not receiving a value within a reasonable period, such as an hour.  
 
-  tags:
-    - Rating Proposals
-    - Real-Time
+  tags: *tags
 
   requestBody:
     content:
@@ -111,14 +108,10 @@ post:
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
-    '400':
-      $ref: '../openapi-split.yaml#/components/responses/400-problem'
-    '401':
-      $ref: '../openapi-split.yaml#/components/responses/401-empty'
-    '403':
-      $ref: '../openapi-split.yaml#/components/responses/403-empty'
-    '406':
-      $ref: '../openapi-split.yaml#/components/responses/406-empty'
+    '400': *malformed
+    '401': *unauthorized-empty
+    '403': *forbidden-empty
+    '406': *not-acceptable-empty
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '422':
@@ -147,10 +140,8 @@ post:
             $ref: '../../articles/examples/incomplete-proposal.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/304/headers'
-    '429':
-      $ref: '../openapi-split.yaml#/components/responses/429-empty'
-    '500': &unexpected-error-empty
-      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    '429': *rate-limit-hit
+    '500': *unexpected-error-empty
     default: *unexpected-error-empty
   security:
     - oauth2-primary-flow:
