@@ -1,5 +1,7 @@
 source ENV['GEM_REPO']
 
+gem "faraday", '>= 2.9', '< 2.10'
+
 gem "github-pages", "~> 228", group: :jekyll_plugins
 
 gem "webrick", "~> 1.8"
