@@ -2,7 +2,6 @@ get:
   operationId: getLimitsForecastSnapshot
   summary: Limits Forecast Snapshot
   tags:
-    - Operating Snapshots
     - Forecasting
   parameters:
     - $ref: ../components/parameters/offset-period-start.yaml

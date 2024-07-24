@@ -3,7 +3,7 @@ get:
   description: &get_desc Gets a single season instance.
   summary: *get_desc
   tags:
-    - Seasonal Rating Snapshots
+    - Seasonal
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:

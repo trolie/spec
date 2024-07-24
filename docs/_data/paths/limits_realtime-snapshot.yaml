@@ -11,7 +11,6 @@ get:
 
   summary: Limits Real Time Snapshot
   tags:
-    - Operating Snapshots
     - Real-Time
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml

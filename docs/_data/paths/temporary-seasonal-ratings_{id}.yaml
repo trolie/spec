@@ -2,7 +2,7 @@ get:
   operationId: getTemporarySeasonalRating
   description: &get_desc Obtain a specific temporary seasonal rating by Id.  
   summary: *get_desc
-  tags:
+  tags: &tags
     - Temporary Seasonal Ratings
   parameters:
     - $ref: ../components/parameters/id.yaml
@@ -62,8 +62,7 @@ delete:
   operationId: deleteTemporarySeasonalRating
   description: &delete_desc Delete a specific temporary seasonal rating by its Id.
   summary: *delete_desc
-  tags:
-    - Temporary Seasonal Ratings
+  tags: *tags
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
@@ -87,8 +86,7 @@ put:
   operationId: updateTemporarySeasonalRating
   description: &put_desc Updates an existing Temporary Seasonal Rating.  
   summary: *put_desc
-  tags:
-    - Temporary Seasonal Ratings
+  tags: *tags
   parameters:
     - $ref: ../components/parameters/id.yaml
   requestBody:
