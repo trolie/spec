@@ -23,7 +23,7 @@ APIs in particular ([background](../articles/trolie-for-ems-and-ot)).
 
 If a Transmission Owner is their own Ratings Provider, they must regularly send
 a Ratings Forecast to their Transmission Provider. TROLIE provides the
-[patchRatingForecastProposal](../spec#tag/Rating-Proposals/operation/patchRatingForecastProposal)
+[patchRatingForecastProposal](../spec#tag/Forecasting/operation/patchRatingForecastProposal)
 operation for this purpose.
 
 
@@ -102,7 +102,7 @@ there are other client errors that are not tolerated, including:
 * Unprocessable content error: when none of the individual resource Forecast
   Proposals are valid, but the request is otherwise well-formed.
 
-Additional client errors are identified in the [patchRatingForecastProposal spec](../spec#tag/Rating-Proposals/operation/patchRatingForecastProposal).
+Additional client errors are identified in the [patchRatingForecastProposal spec](../spec#tag/Forecasting/operation/patchRatingForecastProposal).
 
 ### Clients Should Check the `incomplete-obligation-count`
 {:.no_toc}

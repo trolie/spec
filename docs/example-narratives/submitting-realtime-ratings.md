@@ -17,7 +17,7 @@ on [forecast](submitting-forecasts) ratings may be helpful for background.
 
 If a Transmission Owner is their own Ratings Provider, they must regularly send
 real-time ratings to their Transmission Provider. TROLIE provides the
-[postRealTimeProposal](../spec#tag/Rating-Proposals/operation/postRealTimeProposal)
+[postRealTimeProposal](../spec#tag/Real-Time/operation/postRealTimeProposal)
 operation for this purpose.
 
 
@@ -77,7 +77,7 @@ may also consider obligations for resources that would normally not have
 their ratings submitted as TROLIE proposals, but rather through other means, such as ICCP.  
 
 Therefore, clients should rely more on asynchronous use of 
-[getRealTimeProposalStatus](../spec#tag/Rating-Proposals/operation/getRealTimeProposalStatus)
+[getRealTimeProposalStatus](../spec#tag/Real-Time/operation/getRealTimeProposalStatus)
 as a way to monitor whether the Clearinghouse considers their ongoing data stream
 healthy.  
 
