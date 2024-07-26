@@ -162,4 +162,3 @@ identified](https://github.com/trolie/spec/issues/43) to properly document this
 feature. 
 
 [recap]: https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-webinar-introduction-to-trolie
-[patchForecast]: https://trolie.energy/spec#tag/Rating-Proposals/operation/patchRatingForecastProposalForProvider
