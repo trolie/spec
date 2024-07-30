@@ -1,14 +1,15 @@
 get:
-  operationId: getTemporaryAARExceptions
-  description: >
-    Search for Temporary AAR Exceptions.  Will return any Temporary AAR
-    Exceptions that overlap with the  start/end period.  
+  operationId: getSeasonalOverrides
+  description: |
+
+    Search for Seasonal Overrides.  Will return any Seasonal Overrides that overlap with the start/end period.  
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
     and the `ETag` of a previous `GET` response.
-  summary: Temporary AAR Exceptions
+
+  summary: Get Seasonal Overrides
   tags: &tags
-    - Temporary AAR Exceptions
+    - Seasonal Overrides
   parameters:
     - $ref: ../components/parameters/period-start-query.yaml
     - $ref: ../components/parameters/period-end.yaml
@@ -16,13 +17,13 @@ get:
     - $ref: ../components/parameters/segment-filter.yaml
   responses:
     '200':
-      description: OK
+      description: The requested seasonal ratings are returned.
       content:
-        application/vnd.trolie.temporary-aar-exception-set.v1+json:
+        application/vnd.trolie.seasonal-override-set.v1+json:
           schema:
-            $ref: ../components/schemas/temporary-aar-exception-set.yaml
+            $ref: ../components/schemas/seasonal-override-set.yaml
           example:
-            $ref: ../../example-narratives/examples/temporary-aar-exception-list.json
+            $ref: ../../example-narratives/examples/seasonal-override-list.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -48,31 +49,33 @@ get:
 
   security:
     - oauth2-primary-flow:
-        - read:temporary-aar-exceptions
+        - read:seasonal-overrides
 
 post:
-  operationId: createTemporaryAARException
-  description: &post_desc Create a new temporary AAR Exception
+  operationId: createSeasonalOverride
+  description: &post_desc |
+    Create a new seasonal override
   summary: *post_desc
   tags: *tags
   requestBody:
     content:
-      application/vnd.trolie.temporary-aar-exception.v1+json:
+      application/vnd.trolie.seasonal-override.v1+json: 
         schema:
-          $ref: ../components/schemas/temporary-aar-exception.yaml
+          $ref: ../components/schemas/seasonal-override.yaml
         example:
-          $ref: ../../example-narratives/examples/temporary-aar-exception-post.json
+          $ref: ../../example-narratives/examples/seasonal-override-post.json
   responses:
     '201':
-      description: The temporary AAR Exception was created.
+      description: The seasonal override was created
       content:
-        application/vnd.trolie.temporary-aar-exception.v1+json:
+        application/vnd.trolie.seasonal-override.v1+json: 
           schema:
-            $ref: ../components/schemas/temporary-aar-exception.yaml
+            $ref: ../components/schemas/seasonal-override.yaml
           example:
-            $ref: ../../example-narratives/examples/temporary-aar-exception-get.json
+            $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
+
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
@@ -89,4 +92,4 @@ post:
     default: *unexpected-error-empty
   security:
     - oauth2-primary-flow:
-        - write:temporary-aar-exceptions
+        - write:seasonal-overrides
