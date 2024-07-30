@@ -20,7 +20,7 @@ get:
       content:
         application/vnd.trolie.temporary-aar-exception-set.v1+json:
           schema:
-            $ref: ../components/schemas/temporary-aar-exception-set.yaml
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/temporary-aar-exception-set
           example:
             $ref: ../../example-narratives/examples/temporary-aar-exception-list.json
       headers:
@@ -59,7 +59,7 @@ post:
     content:
       application/vnd.trolie.temporary-aar-exception.v1+json:
         schema:
-          $ref: ../components/schemas/temporary-aar-exception.yaml
+          $ref: ../components/schemas/time-bound-static-ratings.yaml#/temporary-aar-exception-request
         example:
           $ref: ../../example-narratives/examples/temporary-aar-exception-post.json
   responses:
@@ -68,7 +68,7 @@ post:
       content:
         application/vnd.trolie.temporary-aar-exception.v1+json:
           schema:
-            $ref: ../components/schemas/temporary-aar-exception.yaml
+            $ref: ../components/schemas/time-bound-static-ratings.yaml#/temporary-aar-exception
           example:
             $ref: ../../example-narratives/examples/temporary-aar-exception-get.json
       headers:

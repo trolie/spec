@@ -1,5 +1,0 @@
-type: array
-minItems: 0
-maxItems: 1000
-items:
-  $ref: ./temporary-aar-exception.yaml

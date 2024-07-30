@@ -235,3 +235,15 @@ seasonal-rating-snapshot:
       description: Seasonal rating snapshot
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+temporary-aar-exception-set:
+  type: array
+  minItems: 0
+  maxItems: *max-facilities
+  items:
+    $ref: ./time-bound-static-ratings.yaml#/temporary-aar-exception
+seasonal-override-set:
+  type: array
+  minItems: 0
+  maxItems: *max-facilities
+  items:
+    $ref: ./time-bound-static-ratings.yaml#/seasonal-override

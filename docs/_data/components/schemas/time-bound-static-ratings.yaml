@@ -1,0 +1,78 @@
+temporary-aar-exception-request:
+  type: object
+  description: |
+    Represents a temporary AAR Exception against a resource.
+    Includes a start and (optional) end time, and a reason.  
+
+    May or may not include a set of values, depending on the business
+    context in which the temporary AAR exception is used.  
+  properties: &time-bound-static-rating
+    provenance: 
+      $ref: ./data-provenance.yaml
+    resource:
+      $ref: ./names.yaml
+    start-time:
+      $ref: ./period-start.yaml
+    end-time:
+      $ref: ./period-start.yaml
+    continuous-operating-limit:
+      $ref: ./limit.yaml
+    emergency-operating-limits:
+      $ref: ./array-max-emergency-durations.yaml#/limit-value-set
+    reason:
+      description: |
+        Free-form text indicating the reason for the exception.
+      type: string
+      format: free-form
+      maxLength: 4000
+  required:
+    - resource
+    - start-time
+
+temporary-aar-exception:
+  type: object
+  description: |
+    Data structure for a temporary AAR Exception against a resource.
+    Includes a unique ID, start and (optional) end time, and a reason.  
+
+    May or may not include a set of values, depending on the business
+    context in which the temporary AAR exception is used.  
+  allOf:
+  - $ref: '#/temporary-aar-exception-request'
+  - type: object
+    properties:
+      id:
+        $ref: ./server-generated-id.yaml
+    required:
+      - id
+
+seasonal-override-request:
+  type: object
+  description: |
+    Data structure for a seasonal override against a resource.
+    Includes a unique ID, start and (optional) end time, and a reason.  
+
+    Must also include a set of values.  
+  properties: 
+    <<: *time-bound-static-rating
+  required:
+    - resource
+    - start-time
+    - continuous-operating-limit
+    - emergency-operating-limits
+
+seasonal-override:
+  type: object
+  description: |
+    Data structure for a seasonal override against a resource.
+    Includes a unique ID, start and (optional) end time, and a reason.  
+
+    Must also include a set of values.  
+  allOf:
+    - $ref: '#/seasonal-override-request'
+    - type: object
+      properties:
+        id:
+          $ref: ./server-generated-id.yaml
+      required:
+        - id
