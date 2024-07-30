@@ -12,7 +12,7 @@ get:
       content:
         application/vnd.trolie.seasonal-override.v1+json:
           schema:
-            $ref: ../components/schemas/seasonal-override.yaml
+            $ref: ../components/schemas/time-bound-static-ratings.yaml#/seasonal-override
           example:
             $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
@@ -76,9 +76,9 @@ put:
     content:
       application/vnd.trolie.seasonal-override.v1+json:
         schema:
-          $ref: ../components/schemas/seasonal-override.yaml
+          $ref: ../components/schemas/time-bound-static-ratings.yaml#/seasonal-override
         example:
-          $ref: ../../example-narratives/examples/seasonal-override-post.json
+          $ref: ../../example-narratives/examples/seasonal-override-get.json
   responses:
     '204': *no-content
     '304': *not-modified

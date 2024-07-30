@@ -12,7 +12,7 @@ get:
       content:
         application/vnd.trolie.temporary-aar-exception.v1+json:
           schema:
-            $ref: ../components/schemas/temporary-aar-exception.yaml
+            $ref: ../components/schemas/time-bound-static-ratings.yaml#/temporary-aar-exception
           example:
             $ref: ../../example-narratives/examples/temporary-aar-exception-get.json
       headers:
@@ -76,9 +76,9 @@ put:
     content:
       application/vnd.trolie.temporary-aar-exception.v1+json:
         schema:
-          $ref: ../components/schemas/temporary-aar-exception.yaml
+          $ref: ../components/schemas/time-bound-static-ratings.yaml#/temporary-aar-exception
         example:
-          $ref: ../../example-narratives/examples/temporary-aar-exception-post.json
+          $ref: ../../example-narratives/examples/temporary-aar-exception-get.json
   responses:
     '204': *no-content
     '304': *not-modified

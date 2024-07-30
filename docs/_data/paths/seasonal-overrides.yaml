@@ -21,7 +21,7 @@ get:
       content:
         application/vnd.trolie.seasonal-override-set.v1+json:
           schema:
-            $ref: ../components/schemas/seasonal-override-set.yaml
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-override-set
           example:
             $ref: ../../example-narratives/examples/seasonal-override-list.json
       headers:
@@ -61,7 +61,7 @@ post:
     content:
       application/vnd.trolie.seasonal-override.v1+json: 
         schema:
-          $ref: ../components/schemas/seasonal-override.yaml
+          $ref: ../components/schemas/time-bound-static-ratings.yaml#/seasonal-override-request
         example:
           $ref: ../../example-narratives/examples/seasonal-override-post.json
   responses:
@@ -70,7 +70,7 @@ post:
       content:
         application/vnd.trolie.seasonal-override.v1+json: 
           schema:
-            $ref: ../components/schemas/seasonal-override.yaml
+            $ref: ../components/schemas/time-bound-static-ratings.yaml#/seasonal-override
           example:
             $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
