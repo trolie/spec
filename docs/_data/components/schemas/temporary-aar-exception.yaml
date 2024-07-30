@@ -1,29 +1,32 @@
 type: object
 additionalProperties: false
 description: |
-  Data structure for a temporary rating against a segment.
+  Data structure for a temporary AAR Exception against a resource.
   Includes a unique ID, start and (optional) end time, and a reason.  
 
-  May include a set of values, which apply if this temporary rating
-  is either an AAR Exception or temporary seasonal rating.  
+  May or may not include a set of values, depending on the business
+  context in which the temporary AAR exception is used.  
 properties:
+  provenance: 
+    $ref: ./data-provenance.yaml
   id:
-    $ref: ./generic-identifier.yaml
-  resource-id:
-    $ref: ./resource-id.yaml
+    $ref: ./server-generated-id.yaml
+  resource:
+    $ref: ./names.yaml
   start-time:
     $ref: ./period-start.yaml
   end-time:
     $ref: ./period-start.yaml
-  updated-time:
-    $ref: ./timestamp.yaml
   continuous-operating-limit:
     $ref: ./limit.yaml
   emergency-operating-limits:
     $ref: ./array-max-emergency-durations.yaml#/limit-value-set
   reason:
     description: |
-      Free-form text indicating the reason for the temporary rating.
+      Free-form text indicating the reason for the exception.
     type: string
     format: free-form
-    maxLength: 100
+    maxLength: 4000
+required:
+  - resource
+  - start-time

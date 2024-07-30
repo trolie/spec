@@ -1,37 +1,20 @@
 get:
-  operationId: getTemporarySeasonalRating
+  operationId: getSeasonalOverride
   description: &get_desc Obtain a specific temporary seasonal rating by Id.  
   summary: *get_desc
   tags: &tags
-    - Temporary Seasonal Ratings
+    - Seasonal Overrides
   parameters:
     - $ref: ../components/parameters/id.yaml
   responses:
     '200':
       description: OK
       content:
-        application/vnd.trolie.temporary-seasonal-rating.v1+json:
+        application/vnd.trolie.seasonal-override.v1+json:
           schema:
-            $ref: ../components/schemas/temporary-rating.yaml
+            $ref: ../components/schemas/seasonal-override.yaml
           example:
-            id: 46f7212b-1633-4c30-ba71-c6e987b2ded7
-            resource-id: segmentX
-            start-time: '2025-07-12T16:00:00-07:00'
-            end-time: '2025-07-13T12:00:00-07:00'
-            updated-time: '2025-07-08T13:05:43.044267100-07:00'
-            continuous-operating-limit:
-              mva: 160
-            emergency-operating-limits:
-              - duration-name: emergency
-                limit:
-                  mva: 165
-              - duration-name: "load-shed"
-                limit:
-                  mva: 170
-            reason: Free-form text reason.
-        application/json:
-          schema:
-            $ref: ../components/schemas/temporary-rating.yaml
+            $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -57,10 +40,10 @@ get:
 
   security:
     - oauth2-primary-flow:
-        - read:temporary-seasonal-ratings
+        - read:seasonal-overrides
 delete:
-  operationId: deleteTemporarySeasonalRating
-  description: &delete_desc Delete a specific temporary seasonal rating by its Id.
+  operationId: deleteSeasonalOverride
+  description: &delete_desc Delete a specific seasonal override by its Id.
   summary: *delete_desc
   tags: *tags
   parameters:
@@ -81,37 +64,21 @@ delete:
 
   security: &authorize-admin
     - oauth2-primary-flow:
-        - write:temporary-seasonal-ratings
+        - write:seasonal-overrides
 put:
-  operationId: updateTemporarySeasonalRating
-  description: &put_desc Updates an existing Temporary Seasonal Rating.  
+  operationId: updateSeasonalOverride
+  description: &put_desc Updates an existing Seasonal override 
   summary: *put_desc
   tags: *tags
   parameters:
     - $ref: ../components/parameters/id.yaml
   requestBody:
     content:
-      application/vnd.trolie.temporary-seasonal-rating.v1+json:
+      application/vnd.trolie.seasonal-override.v1+json:
         schema:
-          $ref: ../components/schemas/temporary-rating.yaml
+          $ref: ../components/schemas/seasonal-override.yaml
         example:
-          id: 46f7212b-1633-4c30-ba71-c6e987b2ded7
-          resource-id: segmentX
-          start-time: '2025-07-12T16:00:00-07:00'
-          end-time: '2025-07-13T12:00:00-07:00'
-          continuous-operating-limit:
-            mva: 160
-          emergency-operating-limits:
-            - duration-name: emergency
-              limit:
-                mva: 165
-            - duration-name: "load-shed"
-              limit:
-                mva: 170
-          reason: Free-form text reason.
-      application/json:
-        schema:
-          $ref: ../components/schemas/temporary-rating.yaml
+          $ref: ../../example-narratives/examples/seasonal-override-post.json
   responses:
     '204': *no-content
     '304': *not-modified
@@ -122,6 +89,8 @@ put:
     '406': *not-acceptable-empty
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
+    '415':
+      $ref: '../openapi-split.yaml#/components/responses/415-problem'      
     '422':
       $ref: '../openapi-split.yaml#/components/responses/422-problem'
     '429': *rate-limit-hit

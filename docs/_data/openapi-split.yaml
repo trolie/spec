@@ -142,10 +142,10 @@ tags:
       data feed could be down for some reason.  Therefore, this provides a
       placeholder set of numbers until the AAR data feed is repaired.
 
-  - name: Temporary Seasonal Ratings
+  - name: Seasonal Overrides
     description: >
 
-      A TemporarySeasonalRating allows for temporary overrides of the seasonal
+      A Seasonal Override allows for temporary overrides of the seasonal
       rating, due to some unusual condition on the facility.  This essentially
       overrides the current "recourse" rating used in operations.  
 
@@ -175,10 +175,10 @@ paths:
     $ref: paths/temporary-aar-exceptions.yaml
   /temporary-aar-exceptions/{id}:
     $ref: paths/temporary-aar-exceptions_{id}.yaml
-  /temporary-seasonal-ratings:
-    $ref: paths/temporary-seasonal-ratings.yaml
-  /temporary-seasonal-ratings/{id}:
-    $ref: paths/temporary-seasonal-ratings_{id}.yaml
+  /seasonal-overrides:
+    $ref: paths/seasonal-overrides.yaml
+  /seasonal-overrides/{id}:
+    $ref: paths/seasonal-overrides_{id}.yaml
 components:
   responses:
 

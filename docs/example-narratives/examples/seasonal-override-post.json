@@ -1,0 +1,36 @@
+{
+  "resource": {
+    "resource-id": "8badf00d",
+    "alternate-identifiers": [
+      {
+        "name": "segmentX",
+        "authority": "TO-NERC-ID"
+      },
+      {
+        "name": "LINE1 SEG-X",
+        "authority": "RC-NERC-ID",
+        "mrid": "8badf00d"
+      }
+    ]
+  },
+  "start-time": "2025-07-12T16:00:00-07:00",
+  "end-time": "2025-08-01T00:00:00-07:00",
+  "continuous-operating-limit": {
+    "mva": 160
+  },
+  "emergency-operating-limits": [
+    { 
+      "duration-name": "emergency",
+      "limit": {
+        "mva": 165
+      }
+    },
+    { 
+      "duration-name": "load-shed",
+      "limit": {
+        "mva": 170
+      }
+    }     
+  ],
+  "reason": "Increased vegitation proximity"
+}
