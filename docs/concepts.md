@@ -60,6 +60,45 @@ For TROLIE's purposes, a Rating is simply a **proposed** Limit for a Period of
 an Operational Window from a Ratings Provider for a particular Power System
 Resource.
 
+### Recourse Ratings
+
+For background the reader is directed to sections 180 and 182 of the FERC Order
+881 Final Rule as well as [this paragraph](https://www.federalregister.gov/d/2021-27735/p-1394)
+from the pro forma Attachment M which states:
+
+> "The Transmission Provider must use Seasonal Line Ratings as a recourse rating in the event that an AAR otherwise required to be used under this Attachment is unavailable."
+
+Additionally, in section 180:
+
+> "Further, while this provision establishes the seasonal line rating as the default recourse rating, the transmission provider retains the ability [...] to use a different recourse rating where the transmission provider reasonably determines such a rating is necessary to ensure the safety and reliability of the transmission system."
+
+Here we are concerned with three circumstances that require might require a recourse rating:
+
+1. A Ratings Provider cannot determine an AAR for a facility with a Ratings Obligation.
+2. The Clearinghouse Provider is not in possession of a rating for a Ratings Obligation.
+3. The Clearinghouse Provider determines that the rating in its possession is apparently inaccurate.
+
+{: .nb }
+> In no situation requiring a recourse rating does the TROLIE specification
+> constrain or dictate a course of action. However, in order to have a *working
+> definition* of "recourse rating" useful in documenting the specification, we
+> examine anticipated uses of recourse ratings in the three circumstances
+> identified in the preceding paragraph.
+
+In the first case, under the assumption that the Clearinghouse Provider will
+receive the rating, it is anticipated that the Ratings Provider shall send an
+appropriate recourse rating, e.g., the effective seasonal rating, when the
+Ratings Provider cannot determine an AAR.
+
+The second and third cases might occur when there is a communication outage or
+when the rating proposed by the Ratings Provider did not meet pre-coordinated
+validation criteria such as timeliness or lying within reasonability bounds.
+Regardless, in such circumstances the Clearinghouse Provider is obliged to use a
+recourse rating. Typically, the recourse rating in these circumstances is
+anticipated to be a rating provided by the Ratings Provider separately, such as
+the effective seasonal rating, a verbal override, or even a previously
+forecasted rating.
+
 ## Power System Resource, or simply _Resource_
 
 A term borrowed from CIM, in the context of TROLIE, a "Resource" is an object of
