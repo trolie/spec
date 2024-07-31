@@ -81,12 +81,12 @@ Here we are concerned with three circumstances that require might require a reco
 {: .nb }
 > In no situation requiring a recourse rating does the TROLIE specification
 > constrain or dictate a course of action. However, in order to have a *working
-> definition* of recourse rating useful in documenting the specification, we
+> definition* of "recourse rating" useful in documenting the specification, we
 > examine anticipated uses of recourse ratings in the three circumstances
 > identified in the preceding paragraph.
 
 In the first case, under the assumption that the Clearinghouse Provider will
-receive the rating, it is anticipated that the Ratings Provider send an
+receive the rating, it is anticipated that the Ratings Provider shall send an
 appropriate recourse rating, e.g., the effective seasonal rating, when the
 Ratings Provider cannot determine an AAR.
 
@@ -94,7 +94,7 @@ The second and third cases might occur when there is a communication outage or
 when the rating proposed by the Ratings Provider did not meet pre-coordinated
 validation criteria such as timeliness or lying within reasonability bounds.
 Regardless, in such circumstances the Clearinghouse Provider is obliged to use a
-recourse rating. Typically, the recourse rating in this circumstances is
+recourse rating. Typically, the recourse rating in these circumstances is
 anticipated to be a rating provided by the Ratings Provider separately, such as
 the effective seasonal rating, a verbal override, or even a previously
 forecasted rating.
