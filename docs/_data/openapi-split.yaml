@@ -40,7 +40,7 @@ info:
     ratings, forecast rating proposals, and real-time rating proposals are all
     examples of ratings.
 
-    <img src="images/TROLIE Ratings Provider interactions.excalidraw.png" alt="TROLIE Interactions by Ratings Provider" />
+    <img src="images/TROLIE Ratings Provider interactions.excalidraw.png" alt="Primary Interactions with Ratings Provider" />
 
   version: 1.0.0-wip-realtime-stable
   contact:
