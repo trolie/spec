@@ -235,5 +235,5 @@ Even if seasons across two Transmission Providers have the same name, such as "s
 the start and end dates may differ.  TROLIE is designed to be agnostic to these definitions as much as
 possible, so that the data may be exchanged in a more accurate and precise manner.  While seasonal "aliases"
 such as "winter" may sometimes be provided as hints, seasonal rating schedules are ultimately defined in terms 
-of start and end dates.  Queries and submittals of seasonal ratings are done in terms of start and end dates, and 
-TROLIE servers may decide how to enforce their adherance to specific named seasons that they use.  
+of start and end dates.  Seasonal ratings in TROLIE are represented in terms of start and end dates, and 
+TROLIE servers may decide how to enforce adherance to specific named seasons that they use.  

@@ -25,7 +25,7 @@ grid operators may assign seasonal ratings to well-known named seasons such as `
 can differ significantly between grid operators:
 
 * Assumed start and end dates can be different.
-* The FERC order specifies only that they must be updated _at least_ anually.  In practice, the times they may be changed can be different.
+* The FERC order specifies only that they must be updated _at least_ annually.  In practice, the times they may be changed can be different.
 
 The diagram below illustrates an example of rating providers with different season definitions.  Consider the challenges 
 for `Transmission Provider 1` to exchange seasonal ratings with `Ratings Provider A` and `Transmission Provider 2`:
@@ -39,7 +39,7 @@ TROLIE will add support for a seasonal clearinghouse, using the same pattern as 
 real-time ratings.  Support for either accepting proposals or querying snapshots is technically optional, 
 although it is likely most Transmission Providers must support at least sharing 
 their snapshots of in-use seasonal ratings.  In practice, clearinghouse implementations may take seasonal proposals, 
-seasonal ratings from modeling systems, seasonal ratings from other unaforementioned systems, or any combination of these into account.  
+seasonal ratings from modeling systems, seasonal ratings from other systems, or any combination of these into account.  
 
 The familiar TROLIE concepts of proposals, 
 snapshots and a clearinghouse have multiple benefits for seasonal ratings:
