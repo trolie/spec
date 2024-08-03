@@ -1,24 +1,23 @@
 get:
-  operationId: getSeasonInstances
-  description: Seasonal ratings are always bound against season instances, with effective dates.
-  summary: Get Instances of Seasons
+  operationId: getSeasonalRatingsSnapshot
+  description: Retrieve the nominal and seasonal ratings.
+  summary: Get Seasonal Ratings
   tags:
     - Seasonal
+  parameters:
+    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/facility-filter.yaml
   responses:
     '200':
       description: OK
       content:
-        application/vnd.trolie.season-instance-set.v1+json:
-          schema:
-            $ref: ../components/schemas/season-instance-set.yaml
-          example:
-            - season: fall
-              id: fall-2023
-              effective-time: '2023-09-10T00:00:00-07:00'
-              active: true
+        application/vnd.trolie.seasonal-rating-snapshot.v1+json:
+          schema: &seasonal-rating-snapshot
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-snapshot
+          #example:
+            #$ref: '../../example-narratives/examples/seasonal-limits-snapshot.json'
         application/json:
-          schema:
-            $ref: ../components/schemas/season-instance-set.yaml
+          schema: *seasonal-rating-snapshot
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -44,4 +43,4 @@ get:
 
   security:
     - oauth2-primary-flow:
-        - read:operating-snapshot
+      - read:operating-snapshot

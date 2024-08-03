@@ -2,21 +2,26 @@ seasonal-proposals:
   type: object
   additionalProperties: false
   properties:
-    resource-id:
+    resource-id: &id
       $ref: ./resource-id.yaml
-    seasons: &max
+    periods: &periods
       type: array
-      maxItems: 20
+      maxItems: 24
       minItems: 0
       items:
-        $ref: ./seasonal-proposal-season.yaml
+        $ref: ./forecast-limit-period.yaml#/seasonal-proposal
+
+seasonal-proposals-slim:
+  <<: *periods
+  items:
+    $ref: ./forecast-limit-period.yaml#/seasonal-proposal-slim
+
 seasonal-rating-snapshot-item:
   type: object
   additionalProperties: false
   properties:
-    resource-id:
-      $ref: ./resource-id.yaml
-    seasons:
-      <<: *max
+    resource-id: *id
+    periods:
+      <<: *periods
       items:
         $ref: ./seasonal-rating-snapshot-value.yaml

@@ -1,13 +1,52 @@
 {
-  "timestamp": "2023-07-12T15:05:43.044267100-07:00",
-  "owner": "UTILITY A",
+  "proposal-header": {
+    "source": {
+      "last-updated": "2025-10-31T15:05:43.044267100-07:00",
+      "provider": "UTILITY-A",
+      "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+    },
+    "default-emergency-durations": [
+      {
+        "name": "emergency",
+        "duration-minutes": 240
+      }
+    ],
+    "power-system-resources": [
+      {
+        "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {
+            "name": "segmentX",
+            "authority": "TO-NERC-ID"
+          }
+        ]
+      }
+    ]
+  },
   "ratings": [
     {
-      "resource-id": "segmentX",
-      "seasons": [
+      "resource-id": "8badf00d",
+      "periods": [
         {
-          "season-id": "fall",
-          "status": "accepted",
+          "season-name": "WINTER",
+          "period-start": "2024-11-15T00:00:00-05:00",
+          "period-end": "2025-03-01T00:00:00-05:00",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
+            {
+              "duration-name": "emergency",
+              "limit": {
+                "mva": 165
+              }
+            }
+          ]
+        },
+        {
+          "season-name": "SPRING",
+          "period-start": "2025-03-01T00:00:00-05:00",
+          "period-end": "2025-06-15T00:00:00-05:00",
           "continuous-operating-limit": {
             "mva": 160
           },
@@ -17,17 +56,37 @@
               "limit": {
                 "mva": 165
               }
-            },
+            }
+          ]
+        },
+        {
+          "season-name": "SUMMER",
+          "period-start": "2025-06-15T00:00:00-05:00",
+          "period-end": "2025-09-01T00:00:00-05:00",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
             {
-              "duration-name": "ste",
+              "duration-name": "lte",
               "limit": {
-                "mva": 170
+                "mva": 165
               }
-            },
+            }
+          ]
+        },
+        {
+          "season-name": "FALL",
+          "period-start": "2025-09-01T00:00:00-05:00",
+          "period-end": "2025-11-15T00:00:00-05:00",
+          "continuous-operating-limit": {
+            "mva": 160
+          },
+          "emergency-operating-limits": [
             {
-              "duration-name": "dal",
+              "duration-name": "lte",
               "limit": {
-                "mva": 170
+                "mva": 165
               }
             }
           ]

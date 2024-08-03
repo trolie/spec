@@ -23,6 +23,25 @@ proposal:
     - $ref: '#/period'
     - $ref: ./limit-proposal.yaml
 
+seasonal-proposal:
+  type: object
+  title: Seasonal Period Proposal
+  allOf:
+    - $ref: '#/proposal'
+    - type: object
+      properties:
+        season-name:
+          type: string
+          description: An optional name for the season.
+
+seasonal-proposal-slim:
+  type: array
+  title: Seasonal Period Proposal slim
+  items:
+    type: array
+    items:
+      type: number
+
 proposal-considered:
   type: object
   description: Details a proposal that was considered by the Clearinghouse run.
@@ -35,13 +54,13 @@ proposal-considered:
         proposal-disposition:
           description: |
 
-              Despite a proposal being accepted by TROLIE, the downstream
-              Clearinghouse logic may still disqualify a proposal. This might
-              occur if, for example, the upper and lower reasonability limits
-              are not aligned between TROLIE and the Clearinghouse.  To aid
-              troubleshooting, the specification requires that TROLIE instances
-              explicitly indicate if the proposal was `Used` in the
-              determination of the limit or was `Rejected`.
+            Despite a proposal being accepted by TROLIE, the downstream
+            Clearinghouse logic may still disqualify a proposal. This might
+            occur if, for example, the upper and lower reasonability limits are
+            not aligned between TROLIE and the Clearinghouse.  To aid
+            troubleshooting, the specification requires that TROLIE instances
+            explicitly indicate if the proposal was `Used` in the determination
+            of the limit or was `Rejected`.
 
           type: string
           enum:

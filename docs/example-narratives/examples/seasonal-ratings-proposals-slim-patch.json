@@ -1,0 +1,99 @@
+{
+  "proposal-header": {
+    "source": {
+      "last-updated": "2024-11-20T15:05:43.044267100-07:00",
+      "provider": "UTILITY-A",
+      "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+    },
+    "default-emergency-durations": [
+      {
+        "name": "emergency",
+        "duration-minutes": 240
+      }
+    ],
+    "power-system-resources": [
+      {
+        "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {
+            "name": "segmentX",
+            "authority": "TO-NERC-ID"
+          }
+        ]
+      },
+      {
+        "resource-id": "f34d3d",
+        "alternate-identifiers": [
+          {
+            "name": "segmentY",
+            "authority": "TO-NERC-ID"
+          }
+        ]
+      }
+    ],
+    "default-seasonal-schedule": {
+      "schedule": [
+        {
+          "season-name": "WINTER",
+          "begins": "2024-11-15T00:00:00-05:00"
+        },
+        {
+          "season-name": "SPRING",
+          "begins": "2025-03-01T00:00:00-05:00"
+        },
+        {
+          "season-name": "SUMMER",
+          "begins": "2025-06-15T00:00:00-05:00"
+        },
+        {
+          "season-name": "FALL",
+          "begins": "2025-09-01T00:00:00-05:00"
+        }
+      ],
+      "ends": "2025-11-15T00:00:00-05:00"
+    },
+    "limit-type": {
+      "mva": 1
+    }
+  },
+  "ratings": [
+    [
+      [
+        [
+          160,
+          170
+        ],
+        [
+          155,
+          160
+        ],
+        [
+          145,
+          150
+        ],
+        [
+          155,
+          160
+        ]
+      ],
+      [
+        [
+          161,
+          171
+        ],
+        [
+          156,
+          161
+        ],
+        [
+          146,
+          151
+        ],
+        [
+          156,
+          161
+        ]
+      ]
+    ]
+  ]
+}

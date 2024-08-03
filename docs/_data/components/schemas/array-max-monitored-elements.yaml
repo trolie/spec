@@ -102,7 +102,16 @@ common-proposal-status:
       items:
         type: object
         additionalProperties: false
-        description: Validation errors.
+        description: |
+          Validation errors.
+
+          Note to implementors, the property `resource-id` intentionally is not `names`
+          as was used in `incomplete-obligations` to mitigate the
+          possibility of information disclosure when a Ratings Provider
+          submits a proposal for a valid resource that they are not
+          permitted to write to. It should be the same `resource-id` that
+          the client submitted.
+
         properties:
           message:
             type: string
@@ -110,12 +119,6 @@ common-proposal-status:
             maxLength: 500
             example: The `resource-forecast-proposal` for `8badf00d` is incomplete.
           resource-id:
-            # NOTE to implementors: This intentionally is not `names`
-            # as was used in `incomplete-obligations` to mitigate the
-            # possibility of information disclosure when a Ratings Provider
-            # submits a proposal for a valid resource that they are not
-            # permitted to write to. It should be the same `resource-id` that
-            # the client submitted.
             $ref: ./resource-id.yaml
 
   required:
@@ -123,7 +126,6 @@ common-proposal-status:
     - incomplete-obligations
     - invalid-proposal-count
     - proposal-validation-errors
-
 
 forecast-proposal-status:
   type: object
@@ -160,7 +162,6 @@ real-time-proposal-status:
     - incomplete-obligations
     - invalid-proposal-count
     - proposal-validation-errors        
-    
 
 realtime-limits-snapshot:
   type: object
@@ -213,16 +214,40 @@ realtime-proposal:
   - proposal-header
   - ratings
 
-seasonal-rating-proposal:
-  description: Seasonal rating proposal
+seasonal-ratings-proposal:
+  type: object
+  description: Seasonal ratings proposal
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/seasonal-proposal-header
+    ratings:
+      <<: *max
+      description: Seasonal Ratings proposals
+      items:
+        $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+  required:
+    - proposal-header
+    - ratings
+
+seasonal-ratings-proposal-slim:
+  type: object
+  description: Seasonal ratings proposal
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/seasonal-proposal-header-slim
+    ratings:
+      <<: *max
+      description: Seasonal Ratings proposals
+      items:
+        $ref: 'array-max-seasons.yaml#/seasonal-proposals-slim'
+  required:
+    - proposal-header
+    - ratings
+
+seasonal-ratings-proposal-status:
+  description: Seasonal rating proposal status
   allOf:
-    - $ref: ./mutable-rating-proposal.yaml
-    - type: object
-      properties:
-        ratings:
-          <<: *max
-          items:
-            $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+    - $ref: '#/seasonal-ratings-proposal'
 
 seasonal-rating-snapshot:
   type: object
@@ -235,12 +260,14 @@ seasonal-rating-snapshot:
       description: Seasonal rating snapshot
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+
 temporary-aar-exception-set:
   type: array
   minItems: 0
   maxItems: *max-facilities
   items:
     $ref: ./time-bound-static-ratings.yaml#/temporary-aar-exception
+
 seasonal-override-set:
   type: array
   minItems: 0

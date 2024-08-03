@@ -10,30 +10,29 @@ common-header: &common-header
     power-system-resources:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
 
-  required: 
+  required:
     - source
     - default-emergency-durations
     - power-system-resources
   additionalProperties: false
 
-real-time-proposal-header: &real-time-header
+real-time-proposal-header:
   <<: *common-header
   description: |
 
-    Populated by the Ratings Provider in a request to submit real-time ratings. 
-    The Clearinghouse implementation should record this information, 
-    and the detail limits snapshot should should reflect the 
+    Populated by the Ratings Provider in a request to submit real-time ratings.
+    The Clearinghouse implementation should record this information,
+    and the detail limits snapshot should should reflect the
     appropriate metadata from the
     Clearinghouse Provider's perspective.
 
-
-forecast-proposal-header: &forecast-header
+forecast-proposal-header:
   <<: *common-header
   description: |
 
-    Populated by the Ratings Provider in a request to submit forecast ratings. 
-    The Clearinghouse implementation should record this information, 
-    and the detail limits snapshot should should reflect the 
+    Populated by the Ratings Provider in a request to submit forecast ratings.
+    The Clearinghouse implementation should record this information,
+    and the detail limits snapshot should should reflect the
     appropriate metadata from the
     Clearinghouse Provider's perspective.
 
@@ -56,8 +55,7 @@ forecast-proposal-header: &forecast-header
     - begins
     - source
     - default-emergency-durations
-    - power-system-resources    
-
+    - power-system-resources
 
 forecast-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
@@ -83,7 +81,6 @@ forecast-snapshot-header:
     - snapshot-provenance
     - power-system-resources
 
-
 real-time-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
@@ -98,4 +95,46 @@ real-time-snapshot-header:
   required:
     - last-updated
     - snapshot-provenance
-    - power-system-resources    
+    - power-system-resources
+
+seasonal-proposal-header:
+  <<: *common-header
+  description: TODO
+  properties: &seasonal-props
+    <<: *common-header-props
+    default-seasonal-schedule:
+      properties:
+        schedule:
+          type: array
+          items:
+            minItems: 4 # min of four seasons per 881
+            maxItems: 240 # monthly "seasons" for twenty years
+            type: object
+            properties:
+              season-name:
+                type: string
+              begins:
+                $ref: ./period-start.yaml
+            required:
+              - season-name
+              - begins
+        ends:
+          $ref: ./period-start.yaml
+      required:
+        - schedule
+        - ends
+
+seasonal-proposal-header-slim:
+  <<: *common-header
+  description: TODO
+  properties:
+    <<: *seasonal-props
+    limit-type:
+      $ref: ./limit.yaml
+
+  required:
+    - source
+    - default-emergency-durations
+    - power-system-resources
+    - default-seasonal-schedule
+    - limit-type
