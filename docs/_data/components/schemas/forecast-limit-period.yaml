@@ -38,9 +38,7 @@ seasonal-proposal-slim:
   type: array
   title: Seasonal Period Proposal slim
   items:
-    type: array
-    items:
-      type: number
+    type: number
 
 proposal-considered:
   type: object
