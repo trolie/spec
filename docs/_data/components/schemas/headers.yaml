@@ -106,13 +106,13 @@ seasonal-proposal-header:
       properties:
         schedule:
           type: array
+          minItems: 4 # min of four seasons per 881
+          maxItems: 240 # monthly "seasons" for twenty years
           items:
-            minItems: 4 # min of four seasons per 881
-            maxItems: 240 # monthly "seasons" for twenty years
             type: object
             properties:
               season-name:
-                type: string
+                $ref: ./season-name.yaml
               begins:
                 $ref: ./period-start.yaml
             required:

@@ -31,12 +31,13 @@ seasonal-proposal:
     - type: object
       properties:
         season-name:
-          type: string
-          description: An optional name for the season.
+          $ref: ./season-name.yaml
 
 seasonal-proposal-slim:
   type: array
   title: Seasonal Period Proposal slim
+  maxItems: 20 # (max continuous + emergency ratings) * max num fields in limit type, e.g. MW and p.f.
+  minItems: 1
   items:
     type: number
 

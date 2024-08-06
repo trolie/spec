@@ -408,12 +408,12 @@ components:
             read:realtime-proposals: Read real-time rating proposals
             read:seasonal-proposals: Read seasonal rating proposals
             read:temporary-aar-exceptions: Read temporary AAR exceptions
-            read:temporary-seasonal-ratings: Read temporary seasonal ratings
+            read:seasonal-overrides: Read seasonal overrides
             write:forecast-proposals: Submit forecasted ratings
             write:realtime-proposals: Submit realtime ratings
             write:seasonal-proposals: Submit seasonal ratings
             write:temporary-aar-exceptions: Write temporary AAR exceptions
-            write:temporary-seasonal-ratings: Write temporary seasonal ratings
+            write:seasonal-overrides: Write seasonal overrides
             read:operating-snapshot: >-
               Read the ratings and limits snapshots in-use by the transmission
               provider
