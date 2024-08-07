@@ -32,6 +32,8 @@ seasonal-proposal:
       properties:
         season-name:
           $ref: ./season-name.yaml
+        day-night:
+          $ref: ./day-night.yaml
 
 seasonal-proposal-slim:
   type: array

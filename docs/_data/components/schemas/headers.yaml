@@ -120,6 +120,8 @@ seasonal-proposal-header:
               - begins
         ends:
           $ref: ./period-start.yaml
+        day-night:
+          $ref: ./day-night.yaml
       required:
         - schedule
         - ends

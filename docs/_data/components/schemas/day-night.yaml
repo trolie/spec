@@ -1,0 +1,7 @@
+description: |
+  Optional label to specify if the proposed seasonal ratings is meant
+  to be used only during the day or only a night.
+type: string
+enum:
+  - DAY
+  - NIGHT
