@@ -18,6 +18,8 @@
     "postStartCommand": ".devcontainer/post.sh start",
     "containerEnv": {
         "GEM_REPO": "https://rubygems.org",
-        "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org"
+        "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org",
+        "NODE_EXTRA_CA_CERTS": "/workspaces/spec/.devcontainer/root.pem"
+
     }
 }
