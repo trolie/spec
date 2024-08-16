@@ -99,7 +99,7 @@ real-time-snapshot-header:
 
 seasonal-proposal-header:
   <<: *common-header
-  description: TODO
+  description: Describes the contents of the seasonal proposal.
   properties: &seasonal-props
     <<: *common-header-props
     default-seasonal-schedule:
@@ -128,7 +128,6 @@ seasonal-proposal-header:
 
 seasonal-proposal-header-slim:
   <<: *common-header
-  description: TODO
   properties:
     <<: *seasonal-props
     limit-type:
