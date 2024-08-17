@@ -25,7 +25,8 @@ proposal:
 
 seasonal-proposal:
   type: object
-  title: Seasonal Period Proposal
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
   allOf:
     - $ref: '#/proposal'
     - type: object

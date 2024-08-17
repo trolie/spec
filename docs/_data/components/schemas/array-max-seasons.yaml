@@ -6,10 +6,34 @@ seasonal-proposals:
       $ref: ./resource-id.yaml
     periods: &periods
       type: array
-      maxItems: 24
+      maxItems: 24 # monthly "seasons" for two years
       minItems: 0
       items:
         $ref: ./forecast-limit-period.yaml#/seasonal-proposal
+
+seasonal-schedule:
+
+  description: |
+
+    Defines the seasonal ratings schedule adopted in this proposal. Each season
+    is given a `season-name` with the beginning of the season starting on
+    `begins` and ending on the `begins` of the next season chronologically. 
+
+    It is required that the seasons are listed chronologically.
+
+  type: array
+  minItems: 4 # min of four seasons per 881
+  maxItems: 24 # monthly "seasons" for twenty years
+  items:
+    type: object
+    properties:
+      season-name:
+        $ref: ./season-name.yaml
+      begins:
+        $ref: ./period-start.yaml
+    required:
+      - season-name
+      - begins
 
 seasonal-proposals-slim:
   <<: *periods

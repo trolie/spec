@@ -99,25 +99,33 @@ real-time-snapshot-header:
 
 seasonal-proposal-header:
   <<: *common-header
-  description: Describes the contents of the seasonal proposal.
-  properties: &seasonal-props
+  description: |
+
+    Describes the contents of this seasonal ratings proposal.
+
+
+seasonal-proposal-header-slim:
+  <<: *common-header
+  description: |
+
+    Describes the contents of the seasonal proposal. In particular, the
+    structure of the `ratings` is determined by the details provided in this
+    header.
+
+  properties:
     <<: *common-header-props
     default-seasonal-schedule:
+      description: |
+
+        Defines the seasonal schedule that is used in the proposal.  Each season
+        is defined in the `schedule` array and the `ends` property defines the
+        end of the last season.
+
+        Each individual facility proposal must have 
+
       properties:
         schedule:
-          type: array
-          minItems: 4 # min of four seasons per 881
-          maxItems: 240 # monthly "seasons" for twenty years
-          items:
-            type: object
-            properties:
-              season-name:
-                $ref: ./season-name.yaml
-              begins:
-                $ref: ./period-start.yaml
-            required:
-              - season-name
-              - begins
+          $ref: ./array-max-seasons.yaml#/seasonal-schedule
         ends:
           $ref: ./period-start.yaml
         day-night:
@@ -125,11 +133,6 @@ seasonal-proposal-header:
       required:
         - schedule
         - ends
-
-seasonal-proposal-header-slim:
-  <<: *common-header
-  properties:
-    <<: *seasonal-props
     limit-type:
       $ref: ./limit.yaml
 
