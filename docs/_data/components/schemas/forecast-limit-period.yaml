@@ -43,9 +43,32 @@ seasonal-proposal-slim:
   minItems: 1
   items:
     type: number
+    title: Continuous and Emergency Ratings values
+    description: |
+      
+      Each number in this array corresponds to a value of the continuous and
+      emergency ratings for a particular period.  The first values correspond to
+      the continuous (normal) rating and the subsequent values correspond to the
+      emergency ratings in order of decreasing duration.  The durations are
+      defined in the `proposal-header.default-emergency-durations` field.
 
-proposal-considered:
-  type: object
+      The exact number of values in this array is further determined by the
+      `proposal-header.limit-type` field. If the `limit-type` is a single value
+      like "Apparent Power", e.g., `{"mva":1}`, then the array will have a
+      single value for each rating. For example, if there was only one emergency
+      duration defined, then the array would have two values, e.g. [50, 55],
+      corresponding to a 50MVA continuous rating and 55MVA emergency rating,
+      respectively.
+
+      However, if the `limit-type` is an "Active Power and Power Factor", e.g.,
+      `{"mw":1, "pf":1}`, then the array will have two values for each rating.
+      If we continue with the example of having only one emergency duration
+      defined, then the array would have four values.  So instead of
+      `[normal_MVA, emergency_MVA]` we have `[normal_MW, normal_pf, emerg_MW,
+      emerg_pf]`, e.g., `[50, 1.0, 55, 1.0]`.
+
+proposal-considered:  
+
   description: Details a proposal that was considered by the Clearinghouse run.
   allOf:
     - $ref: '#/proposal'

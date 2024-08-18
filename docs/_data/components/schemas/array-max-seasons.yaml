@@ -1,18 +1,4 @@
-seasonal-proposals:
-  type: object
-  additionalProperties: false
-  properties:
-    resource-id: &id
-      $ref: ./resource-id.yaml
-    periods: &periods
-      type: array
-      maxItems: 24 # monthly "seasons" for two years
-      minItems: 0
-      items:
-        $ref: ./forecast-limit-period.yaml#/seasonal-proposal
-
-seasonal-schedule:
-
+seasonal-schedule: &schedule
   description: |
 
     Defines the seasonal ratings schedule adopted in this proposal. Each season
@@ -35,10 +21,36 @@ seasonal-schedule:
       - season-name
       - begins
 
+seasonal-proposals:
+  x-tags:
+    - Seasonal
+  title: Per-Resource Seasonal Ratings Schedule
+  type: object
+  additionalProperties: false
+  properties:
+    resource-id: &id
+      $ref: ./resource-id.yaml
+    periods:
+      <<: *schedule
+      items:
+        $ref: ./forecast-limit-period.yaml#/seasonal-proposal
+
+
 seasonal-proposals-slim:
-  <<: *periods
+  <<: *schedule
+  x-tags:
+    - Seasonal
+  title: Per-Resource Seasonal Ratings Schedule (slim)
+  description: |
+
+    A proposal for the seasonal ratings for a power system object, e.g., a
+    segment. The proposal's structure is determined by the contents of the
+    `proposal-header`. In particular, this element should have an entry corresponding
+    to each season in the `default-seasonal-schedule`.
+
   items:
     $ref: ./forecast-limit-period.yaml#/seasonal-proposal-slim
+  example: [[50, 55, 60, 65], [70, 75, 80, 85], [90, 95, 100, 105],[90, 95, 100, 105]]
 
 seasonal-rating-snapshot-item:
   type: object
@@ -46,6 +58,6 @@ seasonal-rating-snapshot-item:
   properties:
     resource-id: *id
     periods:
-      <<: *periods
+      <<: *schedule
       items:
         $ref: ./seasonal-rating-snapshot-value.yaml
