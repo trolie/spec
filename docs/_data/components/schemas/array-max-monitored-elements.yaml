@@ -216,7 +216,6 @@ realtime-proposal:
 
 seasonal-ratings-proposal:
   type: object
-  description: Seasonal ratings proposal
   properties:
     proposal-header:
       $ref: ./headers.yaml#/seasonal-proposal-header
@@ -231,7 +230,7 @@ seasonal-ratings-proposal:
 
 seasonal-ratings-proposal-slim:
   type: object
-  description: Seasonal ratings proposal
+  description: THE Seasonal ratings proposal
   properties:
     proposal-header:
       $ref: ./headers.yaml#/seasonal-proposal-header-slim
