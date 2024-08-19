@@ -1,3 +1,14 @@
+season:
+  type: object
+  properties:
+    season-name:
+      $ref: ./season-name.yaml
+    begins:
+      $ref: ./period-start.yaml
+  required:
+    - season-name
+    - begins
+
 seasonal-schedule: &schedule
   description: |
 
@@ -8,18 +19,10 @@ seasonal-schedule: &schedule
     It is required that the seasons are listed chronologically.
 
   type: array
-  minItems: 4 # min of four seasons per 881
-  maxItems: 24 # monthly "seasons" for twenty years
+  minItems: 1
+  maxItems: 240 # monthly "seasons" for twenty years
   items:
-    type: object
-    properties:
-      season-name:
-        $ref: ./season-name.yaml
-      begins:
-        $ref: ./period-start.yaml
-    required:
-      - season-name
-      - begins
+    $ref: '#/season'
 
 seasonal-proposals:
   x-tags:
@@ -35,6 +38,19 @@ seasonal-proposals:
       items:
         $ref: ./forecast-limit-period.yaml#/seasonal-proposal
 
+missing-seasonal-obligation:
+  type: object
+  additionalProperties: false
+  properties:
+    resource-id: *id
+    obligation-period-begins: # nominates the beginning of the seasonal rating obligation window
+      $ref: ./period-start.yaml
+    obligation-period-ends: # nominates the end of seasonal rating obligation window
+      $ref: ./period-start.yaml
+    periods:
+      <<: *schedule
+      items:
+        $ref: '#/season'
 
 seasonal-proposals-slim:
   <<: *schedule

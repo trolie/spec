@@ -74,7 +74,7 @@ common-proposal-status:
       minimum: 0
       maximum: *max-facilities
 
-    incomplete-obligations:
+    incomplete-obligations: &incomplete-obligations
       type: array
       description: |
 
@@ -253,9 +253,27 @@ seasonal-ratings-proposal-slim:
     - ratings
 
 seasonal-ratings-proposal-status:
+  type: object
   description: Seasonal rating proposal status
-  allOf:
-    - $ref: '#/seasonal-ratings-proposal'
+  x-tags:
+    - Seasonal
+  properties:
+    <<: *common-proposal-status-props
+    incomplete-obligations:
+      <<: *incomplete-obligations
+      description: |
+
+        Indicates which Seasonal Ratings Obligations have not been fulfilled.
+        The size of this set is bounded and may be less than the actual count of
+        unfulfilled Obligations indicated in `incomplete-obligation-count`.
+      items:
+        $ref: ./array-max-seasons.yaml#/missing-seasonal-obligation
+    provider-info:
+      $ref: ./data-provenance.yaml
+  required:
+    - provider-info
+    - incomplete-obligation-count
+    - invalid-proposal-count
 
 seasonal-rating-snapshot:
   type: object

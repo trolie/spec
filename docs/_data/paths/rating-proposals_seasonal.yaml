@@ -32,8 +32,13 @@ get: &get
         application/vnd.trolie.seasonal-ratings-proposal-status.v1+json:
           schema: &seasonal-ratings-proposal-status
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-status"
-          example:
-            $ref: ../../example-narratives/examples/seasonal-ratings-proposals-get.json
+          examples:
+            complete:
+              value:
+                $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status.json
+            incomplete:
+              value:
+                $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status-incomplete.json
         application/json:
           schema: *seasonal-ratings-proposal-status
       headers:
