@@ -1,0 +1,89 @@
+proposal:
+  type: object
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  allOf:
+    - $ref: 'forecast-limit-period.yaml#/proposal'
+    - type: object
+      properties:
+        season-name:
+          $ref: ./season-name.yaml
+        day-night:
+          $ref: ./day-night.yaml
+
+proposal-slim:
+  type: array
+  title: Seasonal Period Proposal slim
+  maxItems: 20 # (max continuous + emergency ratings) * max num fields in limit type, e.g. MW and p.f.
+  minItems: 1
+  items:
+    type: number
+    title: Continuous and Emergency Ratings values
+    description: |
+
+      Each number in this array corresponds to a value of the continuous and
+      emergency ratings for a particular period.  The first values correspond to
+      the continuous (normal) rating and the subsequent values correspond to the
+      emergency ratings in order of decreasing duration.  The durations are
+      defined in the `proposal-header.default-emergency-durations` field.
+
+      The exact number of values in this array is further determined by the
+      `proposal-header.limit-type` field. If the `limit-type` is a single value
+      like "Apparent Power", e.g., `{"mva":1}`, then the array will have a
+      single value for each rating. For example, if there was only one emergency
+      duration defined, then the array would have two values, e.g. `[50, 55]`,
+      corresponding to a 50MVA continuous rating and 55MVA emergency rating,
+      respectively.
+
+      However, if the `limit-type` is an "Active Power and Power Factor", e.g.,
+      `{"mw":1, "pf":1}`, then the array will have two values for each rating.
+      If we continue with the example of having only one emergency duration
+      defined, then the array would have four values.  Thus, instead of
+      `[normal_MVA, emergency_MVA]`, we would have `[normal_MW, normal_pf,
+      emergency_MW, emergency_pf]`, e.g., `[300, 1.0, 350, 1.0]`.
+
+snapshot:
+  type: object
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  allOf:
+    - $ref: 'forecast-limit-period.yaml#/snapshot-slim'
+    - type: object
+      properties:
+        season-name:
+          $ref: ./season-name.yaml
+        day-night:
+          $ref: ./day-night.yaml
+
+snapshot-detailed:
+  type: object
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  allOf:
+    - $ref: '#/snapshot'
+    - type: object
+      properties:
+        proposals-considered:
+          description: |
+
+            The seasonal ratings proposals considered when determining the
+            seasonal ratings of a power system resource, e.g., a line or
+            transformer.
+
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            allOf:
+              - $ref: '#/proposal'
+              - type: object
+                properties:
+                  source:
+                    $ref: ./data-provenance.yaml
+                  resource-id:
+                    $ref: ./resource-id.yaml
+            required:
+              - source
+              - resource-id
+      required:
+        - proposals-considered

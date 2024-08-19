@@ -36,7 +36,7 @@ seasonal-proposals:
     periods:
       <<: *schedule
       items:
-        $ref: ./forecast-limit-period.yaml#/seasonal-proposal
+        $ref: ./seasonal-rating-period.yaml#/proposal
 
 missing-seasonal-obligation:
   type: object
@@ -65,7 +65,7 @@ seasonal-proposals-slim:
     to each season in the `default-seasonal-schedule`.
 
   items:
-    $ref: ./forecast-limit-period.yaml#/seasonal-proposal-slim
+    $ref: ./seasonal-rating-period.yaml#/proposal-slim
   example: [[50, 55, 60, 65], [70, 75, 80, 85], [90, 95, 100, 105],[90, 95, 100, 105]]
 
 seasonal-rating-snapshot-item:
@@ -76,7 +76,7 @@ seasonal-rating-snapshot-item:
     periods:
       <<: *schedule
       items:
-        $ref: ./forecast-limit-period.yaml#/seasonal-snapshot
+        $ref: ./seasonal-rating-period.yaml#/snapshot
 
 seasonal-rating-snapshot-item-detailed:
   type: object
@@ -86,4 +86,4 @@ seasonal-rating-snapshot-item-detailed:
     periods:
       <<: *schedule
       items:
-        $ref: ./forecast-limit-period.yaml#/seasonal-snapshot-detailed
+        $ref: ./seasonal-rating-period.yaml#/snapshot-detailed
