@@ -34,9 +34,11 @@ get: &get
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-status"
           examples:
             complete:
+              summary: Status reflects no errors or outstanding obligations
               value:
                 $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status.json
             incomplete:
+              summary: Status reflects outstanding obligations
               value:
                 $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status-incomplete.json
         application/json:
