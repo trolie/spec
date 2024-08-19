@@ -6,7 +6,7 @@ properties:
   effective-date:
     $ref: ./period-start.yaml
   continuous-operating-limit:
-    $ref: ./limit.yaml
+    $ref: ./limit.yaml#/cleared
   emergency-operating-limits:
     $ref: ./array-max-emergency-durations.yaml#/limit-value-set
   conditional-values:

@@ -37,4 +37,4 @@ limit-value-set:
     properties:
         duration-name: *emergency-kind-name
         limit:
-          $ref: ./limit.yaml
+          $ref: ./limit.yaml#/proposed

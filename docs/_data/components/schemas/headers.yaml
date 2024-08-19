@@ -134,7 +134,7 @@ seasonal-proposal-header-slim:
         - schedule
         - ends
     limit-type:
-      $ref: ./limit.yaml
+      $ref: ./limit.yaml#/prototype
 
   required:
     - source
