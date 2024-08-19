@@ -14,11 +14,13 @@ get:
         application/vnd.trolie.seasonal-rating-snapshot.v1+json:
           schema: &seasonal-rating-snapshot
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot
-          #example:
-            #$ref: '../../example-narratives/examples/seasonal-limits-snapshot.json'
+          example:
+            $ref: '../../example-narratives/examples/seasonal-ratings-snapshot.json'
         application/vnd.trolie.seasonal-rating-snapshot-detailed.v1+json:
           schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot-detailed
+          example:
+            $ref: '../../example-narratives/examples/seasonal-ratings-snapshot-detailed.json'
         application/json:
           schema: *seasonal-rating-snapshot
       headers:
