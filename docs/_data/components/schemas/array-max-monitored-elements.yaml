@@ -7,7 +7,7 @@ forecast-limits-snapshot:
     limits: &max
       type: array
       minItems: 0
-      maxItems: &max-facilities 50000 
+      maxItems: &max-facilities 50000
       description: Set of forecast limits
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
@@ -65,7 +65,7 @@ common-proposal-status:
         not been met in this forecast window. This number may be larger than the
         size of `incomplete-facilities`, since the latter has a pre-defined
         upper bound for performance and application security reasons.
- 
+
         ⚠️ **The Ratings Provider should check that this value is zero when they
         believe they have completed their submission process.️** ⚠️
 
@@ -103,7 +103,7 @@ common-proposal-status:
 
     proposal-validation-errors:
       type: array
-      description: The most recent validation errors 
+      description: The most recent validation errors
       minItems: 0
       maxItems: 50
       items:
@@ -137,9 +137,12 @@ common-proposal-status:
 forecast-proposal-status:
   type: object
   description: |
-    Status of the rating provider's forecast proposal relative to the current 
-    forecast window.  Includes any validation errors encountered while processing proposals.  
-  properties: 
+
+    Status of the rating provider's forecast proposal relative to the current
+    forecast window.  Includes any validation errors encountered while
+    processing proposals.
+
+  properties:
     <<: *common-proposal-status-props
     forecast-provider:
       $ref: ./data-provenance.yaml
@@ -152,15 +155,15 @@ forecast-proposal-status:
     - incomplete-obligation-count
     - incomplete-obligations
     - invalid-proposal-count
-    - proposal-validation-errors    
+    - proposal-validation-errors
 
 real-time-proposal-status:
   type: object
   description: |
-    Status of the rating provider's real-time obligations.  
-    Includes any validation errors encountered while processing proposals.   
+    Status of the rating provider's real-time obligations.
+    Includes any validation errors encountered while processing proposals.
   properties:
-    <<: *common-proposal-status-props  
+    <<: *common-proposal-status-props
     ratings-provider:
       $ref: ./data-provenance.yaml
   required:
@@ -168,7 +171,7 @@ real-time-proposal-status:
     - incomplete-obligation-count
     - incomplete-obligations
     - invalid-proposal-count
-    - proposal-validation-errors        
+    - proposal-validation-errors
 
 realtime-limits-snapshot:
   type: object
@@ -205,18 +208,18 @@ realtime-proposal:
       items:
         type: object
         description: >
-          Real-time ratings data for a segment.  
+          Real-time ratings data for a segment.
         allOf:
         - type: object
           properties:
-            resource-id: 
+            resource-id:
               $ref: ./resource-id.yaml
         - $ref: ./limit-proposal.yaml
         required:
         - resource-id
         - continuous-operating-limit
         - emergency-operating-limits
-          
+
   required:
   - proposal-header
   - ratings
