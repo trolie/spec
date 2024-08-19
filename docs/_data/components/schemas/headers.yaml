@@ -114,6 +114,8 @@ seasonal-proposal-header-slim:
 
   properties:
     <<: *common-header-props
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/ordered-named-power-system-resources
     default-seasonal-schedule:
       description: |
 

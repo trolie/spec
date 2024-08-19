@@ -28,11 +28,18 @@ forecast-limits-detailed-snapshot:
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
 
-named-power-system-resources:
+named-power-system-resources: &psr
   <<: *max
   description: Collection of power system resource names
   items:
     $ref: ./names.yaml
+
+ordered-named-power-system-resources:
+  <<: *psr
+  description: |
+
+    Ordered array of power system resource names. The order of these items
+    determines the order of the ratings proposals in the `ratings` array.
 
 forecast-proposal:
   type: object
@@ -230,13 +237,12 @@ seasonal-ratings-proposal:
 
 seasonal-ratings-proposal-slim:
   type: object
-  description: THE Seasonal ratings proposal
   properties:
     proposal-header:
       $ref: ./headers.yaml#/seasonal-proposal-header-slim
     ratings:
       <<: *max
-      description: Seasonal Ratings proposals
+      description: Seasonal Ratings proposals (slim)
       items:
         $ref: 'array-max-seasons.yaml#/seasonal-proposals-slim'
   required:
