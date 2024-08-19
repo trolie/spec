@@ -67,7 +67,7 @@ seasonal-proposal-slim:
       `[normal_MVA, emergency_MVA]`, we would have `[normal_MW, normal_pf,
       emergency_MW, emergency_pf]`, e.g., `[300, 1.0, 350, 1.0]`.
 
-proposal-considered:  
+proposal-considered:
 
   description: Details a proposal that was considered by the Clearinghouse run.
   allOf:
@@ -106,3 +106,16 @@ snapshot-detailed:
   allOf:
     - $ref: '#/snapshot-slim'
     - $ref: ./limit-provenance.yaml
+
+seasonal-snapshot-detailed:
+  type: object
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  allOf:
+    - $ref: '#/snapshot-detailed'
+    - type: object
+      properties:
+        season-name:
+          $ref: ./season-name.yaml
+        day-night:
+          $ref: ./day-night.yaml

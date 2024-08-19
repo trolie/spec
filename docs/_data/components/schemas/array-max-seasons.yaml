@@ -76,4 +76,4 @@ seasonal-rating-snapshot-item:
     periods:
       <<: *schedule
       items:
-        $ref: ./seasonal-rating-snapshot-value.yaml
+        $ref: ./forecast-limit-period.yaml#/seasonal-snapshot-detailed

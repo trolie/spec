@@ -182,8 +182,8 @@ paths:
   /rating-proposals/forecast:
     $ref: paths/rating-proposals_forecasts.yaml
 
-  /seasonal-ratings-schedule/snapshot:
-    $ref: paths/seasonal-ratings-schedule_snapshot.yaml
+  /seasonal-ratings/snapshot:
+    $ref: paths/seasonal-ratings-snapshot.yaml
   /rating-proposals/seasonal:
     $ref: paths/rating-proposals_seasonal.yaml
 

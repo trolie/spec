@@ -13,7 +13,7 @@ get:
       content:
         application/vnd.trolie.seasonal-rating-snapshot.v1+json:
           schema: &seasonal-rating-snapshot
-            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-snapshot
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot
           #example:
             #$ref: '../../example-narratives/examples/seasonal-limits-snapshot.json'
         application/json:

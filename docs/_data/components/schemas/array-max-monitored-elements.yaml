@@ -255,8 +255,6 @@ seasonal-ratings-proposal-slim:
 seasonal-ratings-proposal-status:
   type: object
   description: Seasonal rating proposal status
-  x-tags:
-    - Seasonal
   properties:
     <<: *common-proposal-status-props
     incomplete-obligations:
@@ -275,15 +273,14 @@ seasonal-ratings-proposal-status:
     - incomplete-obligation-count
     - invalid-proposal-count
 
-seasonal-rating-snapshot:
+seasonal-ratings-snapshot:
   type: object
-  description: A snapshot of the realtime limits for a monitoring set.
+  description: A snapshot of the seasonal ratings for a monitoring set.
   properties:
     snapshot-header:
       $ref: ./headers.yaml#/common-header
     limits:
       <<: *max
-      description: Seasonal rating snapshot
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
 
