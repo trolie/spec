@@ -16,6 +16,9 @@ get:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot
           #example:
             #$ref: '../../example-narratives/examples/seasonal-limits-snapshot.json'
+        application/vnd.trolie.seasonal-rating-snapshot-detailed.v1+json:
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot-detailed
         application/json:
           schema: *seasonal-rating-snapshot
       headers:

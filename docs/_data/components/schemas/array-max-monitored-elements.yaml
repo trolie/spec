@@ -276,13 +276,22 @@ seasonal-ratings-proposal-status:
 seasonal-ratings-snapshot:
   type: object
   description: A snapshot of the seasonal ratings for a monitoring set.
-  properties:
+  properties: &seasonal-rating-snapshot-props
     snapshot-header:
       $ref: ./headers.yaml#/common-header
-    limits:
+    ratings:
       <<: *max
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+
+seasonal-ratings-snapshot-detailed:
+  description: A snapshot of the seasonal ratings for a monitoring set.
+  properties:
+    <<: *seasonal-rating-snapshot-props
+    ratings:
+      <<: *max
+      items:
+        $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item-detailed
 
 temporary-aar-exception-set:
   type: array

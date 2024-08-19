@@ -107,15 +107,46 @@ snapshot-detailed:
     - $ref: '#/snapshot-slim'
     - $ref: ./limit-provenance.yaml
 
-seasonal-snapshot-detailed:
+seasonal-snapshot:
   type: object
   description: Proposes the continuous and emergency ratings for the specified Season.
   title: Seasonal Rating Proposal
   allOf:
-    - $ref: '#/snapshot-detailed'
+    - $ref: '#/snapshot-slim'
     - type: object
       properties:
         season-name:
           $ref: ./season-name.yaml
         day-night:
           $ref: ./day-night.yaml
+
+seasonal-snapshot-detailed:
+  type: object
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  allOf:
+    - $ref: '#/seasonal-snapshot'
+    - type: object
+      properties:
+        proposals-considered:
+          description: |
+
+            The seasonal ratings proposals considered when determining the
+            seasonal ratings of a power system resource, e.g., a line or
+            transformer.
+
+          type: array
+          maxItems: 10
+          items:
+            allOf:
+              - $ref: '#/seasonal-proposal'
+              - type: object
+                properties:
+                  source:
+                    $ref: ./data-provenance.yaml
+                  resource-id:
+                    $ref: ./resource-id.yaml
+            required:
+              - source
+              - resource-id
+              
