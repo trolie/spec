@@ -114,6 +114,8 @@ post:
     '406': *not-acceptable-empty
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
+    '415':
+      $ref: '../openapi-split.yaml#/components/responses/415-problem'      
     '422':
       description: |
 
