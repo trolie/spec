@@ -80,7 +80,8 @@ put:
           $ref: ../../example-narratives/examples/seasonal-override-get.json
   responses:
     '204': *no-content
-    '304': *not-modified
+    '304': 
+      $ref: '../openapi-split.yaml#/components/responses/304'      
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
