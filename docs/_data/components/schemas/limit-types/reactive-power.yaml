@@ -1,10 +1,9 @@
 type: object
-title: Reactive Power
-description: Representation of a limit in megavolt-amperes reactive (MVAR).
 additionalProperties: false
 properties:
   mvar:
     type: number
+    description: Representation of a limit in megavolt-amperes reactive (MVAR).
     format: float
     minimum: -10000
     maximum:  10000

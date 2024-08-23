@@ -28,14 +28,20 @@ proposal-slim:
       defined in the `proposal-header.default-emergency-durations` field.
 
       The exact number of values in this array is further determined by the
-      `proposal-header.limit-type` field. If the `limit-type` is a single value
-      like "Apparent Power", e.g., `{"mva":1}`, then the array will have a
-      single value for each rating. For example, if there was only one emergency
-      duration defined, then the array would have two values, e.g. `[50, 55]`,
-      corresponding to a 50MVA continuous rating and 55MVA emergency rating,
-      respectively.
+      `limit-type` parameter of the media type.
+      ```http
+      Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
+      ```
+      If the [limit-type](#tag/limit-type) is single valued, like
+      `apparent-power`, then the array will have a single value for each rating.
+      For example, if there was only one emergency duration defined, then the
+      array would have two values, e.g. `[50, 55]`, corresponding to a 50MVA
+      continuous rating and 55MVA emergency rating, respectively. A
+      single-valued limit type is anticipated to be the most common case in
+      practice.
 
-      However, if the `limit-type` is an "Active Power and Power Factor", e.g.,
+      However, if the [limit-type](#tag/limit-type) is `active-power` and the
+      Clearinghouse Provider has required both MW and power factor, e.g.,
       `{"mw":1, "pf":1}`, then the array will have two values for each rating.
       If we continue with the example of having only one emergency duration
       defined, then the array would have four values.  Thus, instead of

@@ -170,6 +170,21 @@ tags:
       data feed could be down for some reason.  Therefore, this provides a
       placeholder set of numbers until the AAR data feed is repaired.
 
+  - name: limit-type
+    description: <SchemaDefinition schemaRef="#/components/schemas/limit" />
+    x-displayName: Limit Type
+
+x-tagGroups:
+  - name: Operations
+    tags:
+    - Real-Time
+    - Forecasting
+    - Seasonal
+    - Seasonal Overrides
+    - Temporary AAR Exceptions
+  - name: Common Schemas
+    tags:
+    - limit-type
 
 paths:
   /limits/forecast-snapshot:

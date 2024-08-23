@@ -30,7 +30,7 @@ get: &get
       description: OK
       content: &status
         application/vnd.trolie.seasonal-ratings-proposal-status.v1+json:
-          schema: &seasonal-ratings-proposal-status
+          schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-status"
           examples:
             complete:
@@ -41,8 +41,6 @@ get: &get
               summary: Status reflects outstanding obligations
               value:
                 $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status-incomplete.json
-        application/json:
-          schema: *seasonal-ratings-proposal-status
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -77,9 +75,32 @@ patch:
     Provider to determine the Seasonal Ratings Schedule.
 
   requestBody:
+    description: |
+
+      There are two supported media types for a Seasonal Ratings proposals.
+
+      `application/vnd.trolie.seasonal-ratings-proposal.v1+json` allows the 
+      Ratings Provider to combine different limit types, such as
+      `apparent-power` (MVA) and `current` (MW), in a single proposal.
+
+      `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json` for
+      proposals that only require a single limit type, e.g., `apparent-power`.
+      Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
+      parameter. For example,
+      ```http
+      PATCH /ratings-proposals/seasonal HTTP/1.1
+      Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
+      ```
+      Note that this format is much more concise but requires significant care
+      in serialization/deserialization.  For details, see the schema description
+      for the [seasonal ratings proposal of an individual
+      resource](#schema/seasonal-proposals-slim) which is the description for
+      each element of the `ratings` array.
+
+    required: true
     content:
       application/vnd.trolie.seasonal-ratings-proposal.v1+json:
-        schema: &seasonal-ratings-proposal
+        schema:
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal"
         example:
           $ref: ../../example-narratives/examples/seasonal-ratings-proposals-patch.json
@@ -88,8 +109,6 @@ patch:
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-slim"
         example:
           $ref: ../../example-narratives/examples/seasonal-ratings-proposals-slim-patch.json
-      application/json:
-        schema: *seasonal-ratings-proposal
   responses:
     '202':
       description: |

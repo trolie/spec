@@ -1,7 +1,7 @@
 type: object
 properties:
   continuous-operating-limit:
-    $ref: ./limit.yaml#/proposed
+    $ref: ./limit.yaml
   emergency-operating-limits:
     $ref: ./array-max-emergency-durations.yaml#/limit-value-set
 required:

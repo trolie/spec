@@ -135,12 +135,9 @@ seasonal-proposal-header-slim:
       required:
         - schedule
         - ends
-    limit-type:
-      $ref: ./limit.yaml#/prototype
 
   required:
     - source
     - default-emergency-durations
     - power-system-resources
     - default-seasonal-schedule
-    - limit-type
