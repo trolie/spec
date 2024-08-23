@@ -1,0 +1,17 @@
+name: static-only
+description: |
+
+  Only return limits determined by static ratings.  Without this parameter a
+  forecast limits snapshot would include contain limits determined by
+  considering dynamic ratings, like AARs or DLRs, when those were available for
+  a particular forecast period.
+
+  With `static-only=true`, the forecast limits snapshot would only include
+  limits that were determined using static ratings, such as seasonal ratings,
+  seasonal overrides, temporary AAR exceptions, operator overrides, etc.
+
+in: query
+required: false
+schema:
+  type: boolean
+  default: false
