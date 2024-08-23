@@ -1,22 +1,89 @@
+season:
+  type: object
+  properties:
+    season-name:
+      $ref: ./season-name.yaml
+    begins:
+      $ref: ./period-start.yaml
+  required:
+    - season-name
+    - begins
+
+seasonal-schedule: &schedule
+  description: |
+
+    Defines the seasonal ratings schedule adopted in this proposal. Each season
+    is given a `season-name` with the beginning of the season starting on
+    `begins` and ending on the `begins` of the next season chronologically. 
+
+    It is required that the seasons are listed chronologically.
+
+  type: array
+  minItems: 1
+  maxItems: 240 # monthly "seasons" for twenty years
+  items:
+    $ref: '#/season'
+
 seasonal-proposals:
+  x-tags:
+    - Seasonal
+  title: Per-Resource Seasonal Ratings Schedule
   type: object
   additionalProperties: false
   properties:
-    resource-id:
+    resource-id: &id
       $ref: ./resource-id.yaml
-    seasons: &max
-      type: array
-      maxItems: 20
-      minItems: 0
+    periods:
+      <<: *schedule
       items:
-        $ref: ./seasonal-proposal-season.yaml
+        $ref: ./seasonal-rating-period.yaml#/proposal
+
+missing-seasonal-obligation:
+  type: object
+  additionalProperties: false
+  properties:
+    resource-id: *id
+    obligation-period-begins: # nominates the beginning of the seasonal rating obligation window
+      $ref: ./period-start.yaml
+    obligation-period-ends: # nominates the end of seasonal rating obligation window
+      $ref: ./period-start.yaml
+    periods:
+      <<: *schedule
+      items:
+        $ref: '#/season'
+
+seasonal-proposals-slim:
+  <<: *schedule
+  x-tags:
+    - Seasonal
+  title: Per-Resource Seasonal Ratings Schedule (slim)
+  description: |
+
+    A proposal for the seasonal ratings for a power system object, e.g., a
+    segment. The proposal's structure is determined by the contents of the
+    `proposal-header`. In particular, this element should have an entry corresponding
+    to each season in the `default-seasonal-schedule`.
+
+  items:
+    $ref: ./seasonal-rating-period.yaml#/proposal-slim
+  example: [[50, 55, 60, 65], [70, 75, 80, 85], [90, 95, 100, 105],[90, 95, 100, 105]]
+
 seasonal-rating-snapshot-item:
   type: object
   additionalProperties: false
   properties:
-    resource-id:
-      $ref: ./resource-id.yaml
-    seasons:
-      <<: *max
+    resource-id: *id
+    periods:
+      <<: *schedule
       items:
-        $ref: ./seasonal-rating-snapshot-value.yaml
+        $ref: ./seasonal-rating-period.yaml#/snapshot
+
+seasonal-rating-snapshot-item-detailed:
+  type: object
+  additionalProperties: false
+  properties:
+    resource-id: *id
+    periods:
+      <<: *schedule
+      items:
+        $ref: ./seasonal-rating-period.yaml#/snapshot-detailed

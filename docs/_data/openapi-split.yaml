@@ -54,44 +54,72 @@ servers:
   - url: https://trolie.example.com
 tags:
 
-  - name: Forecasting
-    description: |
-      The operations related to data exchange of forecasted ratings.  
-      
-      This data exchange specifically includes the 240-hour-ahead forecasted 
-      AAR data exchange between Ratings Providers and Transmission Providers
-      mandated FERC order 881.  It includes the ability to submit rating proposals, 
-      query back in-use limits, and monitor the health and validity of the rating 
-      proposal submissions relative the Rating Provider's obligations.  
-
   - name: Real-Time
     description: |
-      At the discretion of the TROLIE server owner, Ratings Providers may
-      use these functions to exchange ratings within the current hour, 
-      either as an alternative or supplement to traditional telemetry protocols
-      such as ICCP.  
-      
-      These are assumed to be real-time ratings, based on measurements
-      of ambient conditions as opposed to forecasts.  These ratings will be 
-      used by Transmission Providers in real-time grid operations processes, 
-      such as state estimator and real-time markets.  The clearinghouse for real-time ratings
-      may be run more frequently than the one for forecast ratings to adapt to real-world 
-      conditions.  
 
-      These ratings may be either AARs or DLRs.  
+      At the discretion of the TROLIE server owner, Ratings Providers may use
+      these functions to exchange ratings within the current hour, either as an
+      alternative or supplement to traditional telemetry protocols such as ICCP.
+
+      These are assumed to be real-time ratings, based on measurements of
+      ambient conditions as opposed to forecasts.  These ratings will be used by
+      Transmission Providers in real-time grid operations processes, such as
+      state estimator and real-time markets.  The clearinghouse for real-time
+      ratings may be run more frequently than the one for forecast ratings to
+      adapt to real-world conditions.
+
+      These ratings may be either AARs or DLRs.
+
+  - name: Forecasting
+    description: |
+
+      The operations related to data exchange of forecasted ratings.
+
+      This data exchange specifically includes the 240-hour-ahead forecasted AAR
+      data exchange between Ratings Providers and Transmission Providers
+      mandated FERC order 881.  It includes the ability to submit rating
+      proposals, query back in-use limits, and monitor the health and validity
+      of the rating proposal submissions relative the Rating Provider's
+      obligations.
 
   - name: Seasonal
-    description: >
-      While not typically used directly in operational decisions, seasonal
-      ratings are provided for two purposes:
+    description: |
 
-      1.  They are used when applicable forecast ratings are not available.  
+      Seasonal ratings are static ratings associated with extended durations,
+      typically months. These are used in both planning and operations.
+      
+      For Ratings Obligations with an AAR Exemption, the power system resource
+      will be generally operated to a seasonal rating. For Ratings Obligations
+      that *are* satisfied with dynamic ratings, a seasonal rating is still
+      required, because the seasonal rating is typically used as a recourse
+      rating when a dynamic rating is unavailable for any reason. For example, a
+      dynamic rating would likely not be available during a communication outage
+      or when determining a forecast rating for the power system resource beyond
+      the period for which a forecast has been provided, e.g., beyond the ten
+      day forecast required by FERC Order 881.
 
-      2.  They may be used in future-looking studies that look out (potentially
-      far) beyond the time 
-          window where forecast ratings are available.  
       A snapshot is provided of the resource ratings configured by the system,
-      as well as their relationship to upcoming seasons.  
+      as well as their relationship to upcoming seasons.
+
+  - name: Seasonal Overrides
+    description: |
+
+      A Seasonal Override is an instruction to use a temporary static rating set
+      in lieu of any concurrent Seasonal Rating for a given segment.
+
+      A typical use case is a so-called "de-rate" due to temporary clearance
+      issue for a transmission facility that is exempt from providing AARs.
+      Exempt facilities normally operate against a seasonal rating, yet rather
+      than provide a seasonal ratings schedule update, the Ratings Provider
+      could send a Seasonal Override. During the provided duration of the
+      override, the Transmission Provider would operate to the Seasonal Override
+      rather than any ratings that would have been used from the seasonal rating
+      schedule.
+
+      In contrast, for a segment that is *not* exempt from providing AARs, the
+      Ratings Provider would issue a Temporary AAR Exception to the
+      Clearinghouse Provider to address a clearance issue or other temporary
+      operating condition that calls for a static rating.
 
   - name: Temporary AAR Exceptions
     description: >
@@ -142,43 +170,49 @@ tags:
       data feed could be down for some reason.  Therefore, this provides a
       placeholder set of numbers until the AAR data feed is repaired.
 
-  - name: Seasonal Overrides
-    description: >
+  - name: limit-type
+    description: <SchemaDefinition schemaRef="#/components/schemas/limit" />
+    x-displayName: Limit Type
 
-      A Seasonal Override allows for temporary overrides of the seasonal
-      rating, due to some unusual condition on the facility.  This essentially
-      overrides the current "recourse" rating used in operations.  
-
-      NOTE- this description is likely incomplete, and needs to be added to in
-      future releases.
+x-tagGroups:
+  - name: Operations
+    tags:
+    - Real-Time
+    - Forecasting
+    - Seasonal
+    - Seasonal Overrides
+    - Temporary AAR Exceptions
+  - name: Common Schemas
+    tags:
+    - limit-type
 
 paths:
   /limits/forecast-snapshot:
     $ref: paths/limits_forecast-snapshot.yaml
+  /rating-proposals/realtime:
+    $ref: paths/rating-proposals_realtime.yaml
+
   /limits/realtime-snapshot:
     $ref: paths/limits_realtime-snapshot.yaml
   /rating-proposals/forecast:
     $ref: paths/rating-proposals_forecasts.yaml
-  /rating-proposals/realtime:
-    $ref: paths/rating-proposals_realtime.yaml
+
+  /seasonal-ratings/snapshot:
+    $ref: paths/seasonal-ratings-snapshot.yaml
   /rating-proposals/seasonal:
     $ref: paths/rating-proposals_seasonal.yaml
-  /rating-proposals/seasonal/{ratings-provider}:
-    $ref: paths/rating-proposals_seasonal_{ratings-provider}.yaml
-  /seasonal-ratings/snapshot:
-    $ref: paths/seasonal-ratings_snapshot.yaml
-  /seasonal-ratings/season-instances:
-    $ref: paths/seasonal-ratings_season-instances.yaml
-  /seasonal-ratings/season-instances/{id}:
-    $ref: paths/seasonal-ratings_season-instances_{id}.yaml
-  /temporary-aar-exceptions:
-    $ref: paths/temporary-aar-exceptions.yaml
-  /temporary-aar-exceptions/{id}:
-    $ref: paths/temporary-aar-exceptions_{id}.yaml
+
   /seasonal-overrides:
     $ref: paths/seasonal-overrides.yaml
   /seasonal-overrides/{id}:
     $ref: paths/seasonal-overrides_{id}.yaml
+
+  /temporary-aar-exceptions:
+    $ref: paths/temporary-aar-exceptions.yaml
+  /temporary-aar-exceptions/{id}:
+    $ref: paths/temporary-aar-exceptions_{id}.yaml
+
+
 components:
   responses:
 
@@ -389,12 +423,12 @@ components:
             read:realtime-proposals: Read real-time rating proposals
             read:seasonal-proposals: Read seasonal rating proposals
             read:temporary-aar-exceptions: Read temporary AAR exceptions
-            read:temporary-seasonal-ratings: Read temporary seasonal ratings
+            read:seasonal-overrides: Read seasonal overrides
             write:forecast-proposals: Submit forecasted ratings
             write:realtime-proposals: Submit realtime ratings
             write:seasonal-proposals: Submit seasonal ratings
             write:temporary-aar-exceptions: Write temporary AAR exceptions
-            write:temporary-seasonal-ratings: Write temporary seasonal ratings
+            write:seasonal-overrides: Write seasonal overrides
             read:operating-snapshot: >-
               Read the ratings and limits snapshots in-use by the transmission
               provider
