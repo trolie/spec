@@ -7,7 +7,7 @@ forecast-limits-snapshot:
     limits: &max
       type: array
       minItems: 0
-      maxItems: &max-facilities 50000 
+      maxItems: &max-facilities 50000
       description: Set of forecast limits
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
@@ -28,11 +28,18 @@ forecast-limits-detailed-snapshot:
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
 
-named-power-system-resources:
+named-power-system-resources: &psr
   <<: *max
   description: Collection of power system resource names
   items:
     $ref: ./names.yaml
+
+ordered-named-power-system-resources:
+  <<: *psr
+  description: |
+
+    Ordered array of power system resource names. The order of these items
+    determines the order of the ratings proposals in the `ratings` array.
 
 forecast-proposal:
   type: object
@@ -58,7 +65,7 @@ common-proposal-status:
         not been met in this forecast window. This number may be larger than the
         size of `incomplete-facilities`, since the latter has a pre-defined
         upper bound for performance and application security reasons.
- 
+
         ⚠️ **The Ratings Provider should check that this value is zero when they
         believe they have completed their submission process.️** ⚠️
 
@@ -67,7 +74,7 @@ common-proposal-status:
       minimum: 0
       maximum: *max-facilities
 
-    incomplete-obligations:
+    incomplete-obligations: &incomplete-obligations
       type: array
       description: |
 
@@ -96,13 +103,22 @@ common-proposal-status:
 
     proposal-validation-errors:
       type: array
-      description: The most recent validation errors 
+      description: The most recent validation errors
       minItems: 0
       maxItems: 50
       items:
         type: object
         additionalProperties: false
-        description: Validation errors.
+        description: |
+          Validation errors.
+
+          Note to implementors, the property `resource-id` intentionally is not `names`
+          as was used in `incomplete-obligations` to mitigate the
+          possibility of information disclosure when a Ratings Provider
+          submits a proposal for a valid resource that they are not
+          permitted to write to. It should be the same `resource-id` that
+          the client submitted.
+
         properties:
           message:
             type: string
@@ -110,12 +126,6 @@ common-proposal-status:
             maxLength: 500
             example: The `resource-forecast-proposal` for `8badf00d` is incomplete.
           resource-id:
-            # NOTE to implementors: This intentionally is not `names`
-            # as was used in `incomplete-obligations` to mitigate the
-            # possibility of information disclosure when a Ratings Provider
-            # submits a proposal for a valid resource that they are not
-            # permitted to write to. It should be the same `resource-id` that
-            # the client submitted.
             $ref: ./resource-id.yaml
 
   required:
@@ -124,13 +134,15 @@ common-proposal-status:
     - invalid-proposal-count
     - proposal-validation-errors
 
-
 forecast-proposal-status:
   type: object
   description: |
-    Status of the rating provider's forecast proposal relative to the current 
-    forecast window.  Includes any validation errors encountered while processing proposals.  
-  properties: 
+
+    Status of the rating provider's forecast proposal relative to the current
+    forecast window.  Includes any validation errors encountered while
+    processing proposals.
+
+  properties:
     <<: *common-proposal-status-props
     forecast-provider:
       $ref: ./data-provenance.yaml
@@ -143,15 +155,15 @@ forecast-proposal-status:
     - incomplete-obligation-count
     - incomplete-obligations
     - invalid-proposal-count
-    - proposal-validation-errors    
+    - proposal-validation-errors
 
 real-time-proposal-status:
   type: object
   description: |
-    Status of the rating provider's real-time obligations.  
-    Includes any validation errors encountered while processing proposals.   
+    Status of the rating provider's real-time obligations.
+    Includes any validation errors encountered while processing proposals.
   properties:
-    <<: *common-proposal-status-props  
+    <<: *common-proposal-status-props
     ratings-provider:
       $ref: ./data-provenance.yaml
   required:
@@ -159,8 +171,7 @@ real-time-proposal-status:
     - incomplete-obligation-count
     - incomplete-obligations
     - invalid-proposal-count
-    - proposal-validation-errors        
-    
+    - proposal-validation-errors
 
 realtime-limits-snapshot:
   type: object
@@ -197,50 +208,98 @@ realtime-proposal:
       items:
         type: object
         description: >
-          Real-time ratings data for a segment.  
+          Real-time ratings data for a segment.
         allOf:
         - type: object
           properties:
-            resource-id: 
+            resource-id:
               $ref: ./resource-id.yaml
         - $ref: ./limit-proposal.yaml
         required:
         - resource-id
         - continuous-operating-limit
         - emergency-operating-limits
-          
+
   required:
   - proposal-header
   - ratings
 
-seasonal-rating-proposal:
-  description: Seasonal rating proposal
-  allOf:
-    - $ref: ./mutable-rating-proposal.yaml
-    - type: object
-      properties:
-        ratings:
-          <<: *max
-          items:
-            $ref: 'array-max-seasons.yaml#/seasonal-proposals'
-
-seasonal-rating-snapshot:
+seasonal-ratings-proposal:
   type: object
-  description: A snapshot of the realtime limits for a monitoring set.
   properties:
+    proposal-header:
+      $ref: ./headers.yaml#/seasonal-proposal-header
+    ratings:
+      <<: *max
+      description: Seasonal Ratings proposals
+      items:
+        $ref: 'array-max-seasons.yaml#/seasonal-proposals'
+  required:
+    - proposal-header
+    - ratings
+
+seasonal-ratings-proposal-slim:
+  type: object
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/seasonal-proposal-header-slim
+    ratings:
+      <<: *max
+      description: Seasonal Ratings proposals (slim)
+      items:
+        $ref: 'array-max-seasons.yaml#/seasonal-proposals-slim'
+  required:
+    - proposal-header
+    - ratings
+
+seasonal-ratings-proposal-status:
+  type: object
+  description: Seasonal rating proposal status
+  properties:
+    <<: *common-proposal-status-props
+    incomplete-obligations:
+      <<: *incomplete-obligations
+      description: |
+
+        Indicates which Seasonal Ratings Obligations have not been fulfilled.
+        The size of this set is bounded and may be less than the actual count of
+        unfulfilled Obligations indicated in `incomplete-obligation-count`.
+      items:
+        $ref: ./array-max-seasons.yaml#/missing-seasonal-obligation
+    provider-info:
+      $ref: ./data-provenance.yaml
+  required:
+    - provider-info
+    - incomplete-obligation-count
+    - invalid-proposal-count
+
+seasonal-ratings-snapshot:
+  type: object
+  description: A snapshot of the seasonal ratings for a monitoring set.
+  properties: &seasonal-rating-snapshot-props
     snapshot-header:
       $ref: ./headers.yaml#/common-header
-    limits:
+    ratings:
       <<: *max
-      description: Seasonal rating snapshot
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+
+seasonal-ratings-snapshot-detailed:
+  description: A snapshot of the seasonal ratings for a monitoring set.
+  properties:
+    <<: *seasonal-rating-snapshot-props
+    ratings:
+      <<: *max
+      items:
+        $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item-detailed
+
 temporary-aar-exception-set:
   type: array
   minItems: 0
   maxItems: *max-facilities
   items:
     $ref: ./time-bound-static-ratings.yaml#/temporary-aar-exception
+
 seasonal-override-set:
   type: array
   minItems: 0

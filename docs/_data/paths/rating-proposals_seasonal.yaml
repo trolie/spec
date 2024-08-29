@@ -1,29 +1,46 @@
-get:
-  operationId: getSeasonalRatingProposal
+get: &get
+  operationId: getSeasonalRatingProposalStatus
+  summary: Obtain seasonal rating proposal status
   description: |
 
-    Obtain the latest Seasonal Ratings the Ratings Provider has submitted.  
+    Used to obtain the status of the Seasonal Ratings proposal. The response is
+    implicitly restricted to the requesting Ratings Provider's obligation.
+    Accordingly, the caller can use this endpoint to check the state of their
+    proposal submission.
+
+    Note that the same status object is returned for each
+    `patchSeasonalRatingsProposal`, so this endpoint may seem redundant.
+    However, an anticipated use case for this `GET` endpoint is to support
+    supervisor processes that are setup by the client to independently ensure
+    the provider's process for rating submission if functioning properly. For
+    example, the Rating Provider might have one program responsible for
+    producing and submitting Seasonal Ratings via
+    `patchSeasonalRatingsProposal`, while having a separate monitoring job that
+    checks this endpoint regularly.
 
     Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response.
+    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+    limiting is done on a per Ratings Provider basis, so requests from
+    independent clients used by the same provider count against the same quota.
 
-  summary: Get a Seasonal Rating Proposal
-  tags: &tags
+  tags:
     - Seasonal
-  parameters:
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/segment-filter.yaml
   responses:
     '200':
       description: OK
-      content:
-        application/vnd.trolie.seasonal-rating-proposal.v1+json:
-          schema: &seasonal-rating-proposal
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-rating-proposal"
-          example: &get-example
-            $ref: ../../example-narratives/examples/seasonal-ratings-proposals-get.json
-        application/json:
-          schema: *seasonal-rating-proposal
+      content: &status
+        application/vnd.trolie.seasonal-ratings-proposal-status.v1+json:
+          schema:
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-status"
+          examples:
+            complete:
+              summary: Status reflects no errors or outstanding obligations
+              value:
+                $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status.json
+            incomplete:
+              summary: Status reflects outstanding obligations
+              value:
+                $ref: ../../example-narratives/examples/seasonal-ratings-proposal-status-incomplete.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
@@ -35,12 +52,8 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/401-empty'
     '403': &forbidden-empty
       $ref: '../openapi-split.yaml#/components/responses/403-empty'
-    '404': &not-found-empty
-      $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406': &not-acceptable-empty
       $ref: '../openapi-split.yaml#/components/responses/406-empty'
-    '410':
-      $ref: '../openapi-split.yaml#/components/responses/410-empty'
     '429': &rate-limit-hit
       $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': &unexpected-error-empty
@@ -52,41 +65,81 @@ get:
         - read:seasonal-proposals
 
 patch:
-  operationId: patchSeasonalProposal
-  description: &patch_desc Update this Provider's Rating Proposal 
-  summary: *patch_desc
-  tags: *tags
+  <<: *get
+  operationId: patchSeasonalRatingsProposal
+  summary: Submit a Seasonal Ratings proposal 
+  description: |
+
+    This operation allows the Ratings Provider to provide a partial or complete
+    updates of their Seasonal Ratings that will be used by the Clearinghouse
+    Provider to determine the Seasonal Ratings Schedule.
+
   requestBody:
+    description: |
+
+      There are two supported media types for a Seasonal Ratings proposals.
+
+      `application/vnd.trolie.seasonal-ratings-proposal.v1+json` allows the 
+      Ratings Provider to combine different limit types, such as
+      `apparent-power` (MVA) and `current` (MW), in a single proposal.
+
+      `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json` for
+      proposals that only require a single limit type, e.g., `apparent-power`.
+      Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
+      parameter. For example,
+      ```http
+      PATCH /ratings-proposals/seasonal HTTP/1.1
+      Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
+      ```
+      Note that this format is much more concise but requires significant care
+      in serialization/deserialization.  For details, see the schema description
+      for the [seasonal ratings proposal of an individual
+      resource](#schema/seasonal-proposals-slim) which is the description for
+      each element of the `ratings` array.
+
+    required: true
     content:
-      application/vnd.trolie.seasonal-rating-proposal.v1+json:
-        schema: *seasonal-rating-proposal
+      application/vnd.trolie.seasonal-ratings-proposal.v1+json:
+        schema:
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal"
         example:
           $ref: ../../example-narratives/examples/seasonal-ratings-proposals-patch.json
-      application/json:
-        schema: *seasonal-rating-proposal
+      application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json:
+        schema:
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-slim"
+        example:
+          $ref: ../../example-narratives/examples/seasonal-ratings-proposals-slim-patch.json
   responses:
     '202':
-      description: >
-        The update was accepted for later processing. Updates to  ratings may
+      description: |
+        The update was accepted for later processing. Updates to ratings may
         need to undergo additional validation and propagation to other systems.
-      content:
-        application/vnd.trolie.seasonal-proposal.v1+json:
-          schema: *seasonal-rating-proposal
-          example: *get-example
-        application/json:
-          schema: *seasonal-rating-proposal
+      content: *status
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
-    '404': *not-found-empty
     '406': *not-acceptable-empty
+    '409':
+      description: Conflict with Seasonal Ratings Schedule
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../openapi-split.yaml#/components/schemas/problem'
+          # TODO: an example, e.g., all proposed extents are in the past.
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
+    '415':
+      $ref: '../openapi-split.yaml#/components/responses/415-problem'
     '422':
       $ref: '../openapi-split.yaml#/components/responses/422-problem'
+      # TODO example of violating a Clearinghouse processing rule
+      # but still be syntactically valid, e.g., if the CP requires
+      # seasons to begin on the first of the month
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty

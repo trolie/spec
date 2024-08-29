@@ -11,5 +11,5 @@ schema:
   $ref: ../schemas/generic-identifier.yaml
 examples:
   nerc-id:
-    summary: A NERC id that nominates a `monitoring-set`.
+    summary: A pre-coordinated id that nominates a `monitoring-set`.
     value: "X-AMPL"
