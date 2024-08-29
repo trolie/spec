@@ -64,7 +64,7 @@ delete:
           example:
             $ref: '../../example-narratives/examples/cant-delete-seasonal-override.json'
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/409-problem/headers'
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty

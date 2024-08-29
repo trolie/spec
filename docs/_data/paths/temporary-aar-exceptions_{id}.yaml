@@ -62,9 +62,9 @@ delete:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
           example:
-            $ref: '../../example-narratives/examples/cant-delete-temporary-aar-exception.json'
+            $ref: '../../example-narratives/examples/cant-delete-aar-exception.json'
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/409-problem/headers'
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty
