@@ -80,6 +80,7 @@ put:
   parameters:
     - $ref: ../components/parameters/id.yaml
   requestBody:
+    required: true
     content:
       application/vnd.trolie.seasonal-override.v1+json:
         schema:

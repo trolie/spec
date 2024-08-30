@@ -58,6 +58,7 @@ post:
   summary: *post_desc
   tags: *tags
   requestBody:
+    required: true
     content:
       application/vnd.trolie.seasonal-override.v1+json: 
         schema:
@@ -74,14 +75,7 @@ post:
           example:
             $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
-        X-Rate-Limit-Limit:
-          $ref: '../openapi-split.yaml#/components/headers/X-Rate-Limit-Limit'
-        X-Rate-Limit-Remaining:
-          $ref: '../openapi-split.yaml#/components/headers/X-Rate-Limit-Remaining'
-        X-Rate-Limit-Reset:
-          $ref: '../openapi-split.yaml#/components/headers/X-Rate-Limit-Reset'
-        Location:
-          $ref: '../openapi-split.yaml#/components/headers/Location'
+        $ref: '../openapi-split.yaml#/components/responses/201/headers'
 
     '400': *malformed
     '401': *unauthorized-empty

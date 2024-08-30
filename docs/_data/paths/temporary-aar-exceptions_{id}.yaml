@@ -80,6 +80,7 @@ put:
   parameters:
     - $ref: ../components/parameters/id.yaml
   requestBody:
+    required: true
     content:
       application/vnd.trolie.temporary-aar-exception.v1+json:
         schema:
