@@ -8,6 +8,7 @@ get:
     - $ref: ../components/parameters/period-end.yaml
     - $ref: ../components/parameters/monitoring-set-filter.yaml
     - $ref: ../components/parameters/facility-filter.yaml
+    - $ref: ../components/parameters/static-only.yaml
   description: |
 
     Obtain the Limits Forecast the Transmission Provider is currently using in
