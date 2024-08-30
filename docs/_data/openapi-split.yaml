@@ -228,10 +228,16 @@ components:
           $ref: '#/components/headers/X-Rate-Limit-Reset'
     '204':
       description: Operation successful. No Content.
-      headers:
+      headers: &accepted-headers
         <<: *rate-limited-headers
         ETag:
           $ref: "#/components/headers/ETag"
+    '201':
+      description: Created.
+      headers:
+        <<: *accepted-headers
+        Location:
+          $ref: "#/components/headers/Location"
 
     # responses allowing content
     '400-problem':

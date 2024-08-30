@@ -85,6 +85,7 @@ post:
   tags: *tags
 
   requestBody:
+    required: true
     content:
       application/vnd.trolie.rating-realtime-proposal.v1+json:
         schema: 
