@@ -374,6 +374,16 @@ components:
         maxLength: 256
         additionalProperties: false
 
+    Location:
+      description: >
+        The "Location" header field is used in some responses to refer to a specific 
+        resource in relation to the response. In TROLIE, this is always associated with
+        a 201 response (a POST), and therefore refers to the URI of the resource created.
+      schema:
+        type: string
+        format: uri-reference
+        maxLength: 1000
+
     X-Rate-Limit-Limit:
       description: The number of allowed requests in the current period
       schema:

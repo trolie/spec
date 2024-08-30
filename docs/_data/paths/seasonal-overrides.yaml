@@ -74,7 +74,14 @@ post:
           example:
             $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/204/headers'
+        X-Rate-Limit-Limit:
+          $ref: '../openapi-split.yaml#/components/headers/X-Rate-Limit-Limit'
+        X-Rate-Limit-Remaining:
+          $ref: '../openapi-split.yaml#/components/headers/X-Rate-Limit-Remaining'
+        X-Rate-Limit-Reset:
+          $ref: '../openapi-split.yaml#/components/headers/X-Rate-Limit-Reset'
+        Location:
+          $ref: '../openapi-split.yaml#/components/headers/Location'
 
     '400': *malformed
     '401': *unauthorized-empty
