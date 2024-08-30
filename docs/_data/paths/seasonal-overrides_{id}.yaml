@@ -56,7 +56,7 @@ delete:
     '403': *forbidden-empty
     '404': *not-found-empty
     '409':
-      description: Conflict with Forecast Window
+      description: Seasonal overrides already employed in Operations cannot be deleted.
       content:
         application/problem+json:
           schema:
