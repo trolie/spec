@@ -1,0 +1,6 @@
+{
+  "type": "//trolie.example.com/spec/client-errors/409/seasonal-override-in-use",
+  "title": "Conflict: Seasonal Override in Use",
+  "status": 409,
+  "detail": "Seasonal Override with id 'fb06e551-37a8-4a98-8c97-fded702530d6' may not be deleted, as it has been used in operations and is now part of the record."
+}

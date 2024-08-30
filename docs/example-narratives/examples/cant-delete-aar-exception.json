@@ -1,0 +1,6 @@
+{
+  "type": "//trolie.example.com/spec/client-errors/409/temporary-aar-exception-in-use",
+  "title": "Conflict: Temporary AAR Exception in Use",
+  "status": 409,
+  "detail": "Temporary AAR Exception with id 'fb06e551-37a8-4a98-8c97-fded702530d6' may not be deleted, as it has been used in rating snapshots and is now part of the record."
+}

@@ -51,13 +51,20 @@ delete:
   responses:
     '204': &no-content
       $ref: '../openapi-split.yaml#/components/responses/204'
-    '304': &not-modified
-      $ref: '../openapi-split.yaml#/components/responses/304'
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
     '404': *not-found-empty
-    '406': *not-acceptable-empty
+    '409':
+      description: Temporary AAR Exceptions already employed in Operations cannot be deleted.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../openapi-split.yaml#/components/schemas/problem'
+          example:
+            $ref: '../../example-narratives/examples/cant-delete-aar-exception.json'
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty
@@ -81,7 +88,6 @@ put:
           $ref: ../../example-narratives/examples/temporary-aar-exception-get.json
   responses:
     '204': *no-content
-    '304': *not-modified
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
