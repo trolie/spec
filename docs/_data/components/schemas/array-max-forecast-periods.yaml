@@ -6,7 +6,7 @@ forecast-limit-item: &limit
       $ref: ./resource-id.yaml
     periods: &periods
       type: array
-      maxItems: 240
+      maxItems: 300
       items:
         $ref: 'forecast-limit-period.yaml#/snapshot-slim'
   required:
