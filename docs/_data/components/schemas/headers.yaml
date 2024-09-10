@@ -60,8 +60,6 @@ forecast-proposal-header:
 forecast-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    last-updated:
-      $ref: ./timestamp.yaml
     begins:
       <<: *begins
       description: |
@@ -77,15 +75,12 @@ forecast-snapshot-header:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
     - begins
-    - last-updated
     - snapshot-provenance
     - power-system-resources
 
 real-time-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    last-updated:
-      $ref: ./timestamp.yaml
     snapshot-provenance:
       $ref: ./data-provenance.yaml
     power-system-resources:
@@ -93,7 +88,6 @@ real-time-snapshot-header:
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
-    - last-updated
     - snapshot-provenance
     - power-system-resources
 

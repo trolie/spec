@@ -1,6 +1,5 @@
 {
     "snapshot-header": {
-        "last-updated": "2023-07-12T16:00:00-07:00",
         "begins": "2023-07-12T16:00:00-07:00",
         "snapshot-provenance": {
             "provider":"X-AMPL",
@@ -45,7 +44,6 @@
                 {
                     "period-start": "2023-07-12T16:00:00-07:00",
                     "period-end": "2023-07-12T17:00:00-07:00",
-                    "updated-time": "2023-07-12T13:05:43.044267100-07:00",
                     "continuous-operating-limit": {
                         "mw": 160,
                         "pf": 1.0
