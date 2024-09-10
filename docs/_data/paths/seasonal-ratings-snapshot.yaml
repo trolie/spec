@@ -12,7 +12,7 @@ get:
       description: OK
       content:
         application/vnd.trolie.seasonal-rating-snapshot.v1+json:
-          schema: &seasonal-rating-snapshot
+          schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot
           example:
             $ref: '../../example-narratives/examples/seasonal-ratings-snapshot.json'
@@ -21,8 +21,6 @@ get:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot-detailed
           example:
             $ref: '../../example-narratives/examples/seasonal-ratings-snapshot-detailed.json'
-        application/json:
-          schema: *seasonal-rating-snapshot
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 

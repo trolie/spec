@@ -41,6 +41,9 @@ callouts:
     color: green
   nb:
     color: purple
+  important:
+    title: Important!
+    color: red
 
 gh_edit_link: true
 gh_edit_link_text: "Edit this page on GitHub"
