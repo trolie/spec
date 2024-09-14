@@ -1,3 +1,5 @@
+type: object
+title: Limit
 description: |
 
   Defines the limit. In practice, most exchanges will only support one kind of

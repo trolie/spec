@@ -76,6 +76,7 @@ patch:
     that is advantageous from a performance or reliable delivery perspective.
 
   requestBody:
+    required: true
     content:
       application/vnd.trolie.rating-forecast-proposal.v1+json:
         schema:

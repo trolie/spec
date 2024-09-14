@@ -28,6 +28,8 @@ temporary-aar-exception-request:
   required:
     - resource
     - start-time
+    - continuous-operating-limit
+    - emergency-operating-limits
 
 temporary-aar-exception:
   type: object

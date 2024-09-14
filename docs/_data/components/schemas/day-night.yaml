@@ -1,0 +1,10 @@
+description: |
+
+  Optional label to specify if the proposed seasonal ratings schedule is meant
+  to be used only during the day or only a night. If this field is not provided,
+  the schedule is assumed to be valid for both day and night.
+
+type: string
+enum:
+  - DAY
+  - NIGHT

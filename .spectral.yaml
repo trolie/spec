@@ -52,3 +52,14 @@ rules:
         function: truthy
       - field: "422.content.application/problem+json"
         function: truthy
+overrides:
+  - files:
+      # the created response's headers are used but
+      # since the bodies are not empty, the entire
+      # response is not used anywhere. However, for consistency
+      # and to keep the individual responses DRY, we want
+      # to keep the 201 in the root openapi file, so we
+      # disable the unused component rule for this response
+      - "docs/openapi.yaml#/components/responses/201"
+    rules:
+      oas3-unused-component: "off"

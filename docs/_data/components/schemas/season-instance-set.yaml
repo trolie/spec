@@ -1,5 +1,0 @@
-type: array
-minItems: 0
-maxItems: 100
-items:
-  $ref: ./season-instance.yaml

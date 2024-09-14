@@ -51,13 +51,20 @@ delete:
   responses:
     '204': &no-content
       $ref: '../openapi-split.yaml#/components/responses/204'
-    '304': &not-modified
-      $ref: '../openapi-split.yaml#/components/responses/304'
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty
     '404': *not-found-empty
-    '406': *not-acceptable-empty
+    '409':
+      description: Seasonal overrides already employed in Operations cannot be deleted.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../openapi-split.yaml#/components/schemas/problem'
+          example:
+            $ref: '../../example-narratives/examples/cant-delete-seasonal-override.json'
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '429': *rate-limit-hit
     '500': *unexpected-error-empty
     default: *unexpected-error-empty
@@ -73,6 +80,7 @@ put:
   parameters:
     - $ref: ../components/parameters/id.yaml
   requestBody:
+    required: true
     content:
       application/vnd.trolie.seasonal-override.v1+json:
         schema:
@@ -80,8 +88,7 @@ put:
         example:
           $ref: ../../example-narratives/examples/seasonal-override-get.json
   responses:
-    '204': *no-content
-    '304': *not-modified
+    '204': *no-content    
     '400': *malformed
     '401': *unauthorized-empty
     '403': *forbidden-empty

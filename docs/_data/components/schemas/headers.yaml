@@ -10,30 +10,29 @@ common-header: &common-header
     power-system-resources:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
 
-  required: 
+  required:
     - source
     - default-emergency-durations
     - power-system-resources
   additionalProperties: false
 
-real-time-proposal-header: &real-time-header
+real-time-proposal-header:
   <<: *common-header
   description: |
 
-    Populated by the Ratings Provider in a request to submit real-time ratings. 
-    The Clearinghouse implementation should record this information, 
-    and the detail limits snapshot should should reflect the 
+    Populated by the Ratings Provider in a request to submit real-time ratings.
+    The Clearinghouse implementation should record this information,
+    and the detail limits snapshot should should reflect the
     appropriate metadata from the
     Clearinghouse Provider's perspective.
 
-
-forecast-proposal-header: &forecast-header
+forecast-proposal-header:
   <<: *common-header
   description: |
 
-    Populated by the Ratings Provider in a request to submit forecast ratings. 
-    The Clearinghouse implementation should record this information, 
-    and the detail limits snapshot should should reflect the 
+    Populated by the Ratings Provider in a request to submit forecast ratings.
+    The Clearinghouse implementation should record this information,
+    and the detail limits snapshot should should reflect the
     appropriate metadata from the
     Clearinghouse Provider's perspective.
 
@@ -56,14 +55,11 @@ forecast-proposal-header: &forecast-header
     - begins
     - source
     - default-emergency-durations
-    - power-system-resources    
-
+    - power-system-resources
 
 forecast-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    last-updated:
-      $ref: ./timestamp.yaml
     begins:
       <<: *begins
       description: |
@@ -79,16 +75,12 @@ forecast-snapshot-header:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
     - begins
-    - last-updated
     - snapshot-provenance
     - power-system-resources
-
 
 real-time-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    last-updated:
-      $ref: ./timestamp.yaml
     snapshot-provenance:
       $ref: ./data-provenance.yaml
     power-system-resources:
@@ -96,6 +88,50 @@ real-time-snapshot-header:
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
-    - last-updated
     - snapshot-provenance
-    - power-system-resources    
+    - power-system-resources
+
+seasonal-proposal-header:
+  <<: *common-header
+  description: |
+
+    Describes the contents of this seasonal ratings proposal.
+
+
+seasonal-proposal-header-slim:
+  <<: *common-header
+  description: |
+
+    Describes the contents of the seasonal proposal. In particular, the
+    structure of the `ratings` is determined by the details provided in this
+    header.
+
+  properties:
+    <<: *common-header-props
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/ordered-named-power-system-resources
+    default-seasonal-schedule:
+      description: |
+
+        Defines the seasonal schedule that is used in the proposal.  Each season
+        is defined in the `schedule` array and the `ends` property defines the
+        end of the last season.
+
+        Each individual facility proposal must have 
+
+      properties:
+        schedule:
+          $ref: ./array-max-seasons.yaml#/seasonal-schedule
+        ends:
+          $ref: ./period-start.yaml
+        day-night:
+          $ref: ./day-night.yaml
+      required:
+        - schedule
+        - ends
+
+  required:
+    - source
+    - default-emergency-durations
+    - power-system-resources
+    - default-seasonal-schedule

@@ -58,6 +58,7 @@ post:
   summary: *post_desc
   tags: *tags
   requestBody:
+    required: true
     content:
       application/vnd.trolie.seasonal-override.v1+json: 
         schema:
@@ -74,7 +75,7 @@ post:
           example:
             $ref: ../../example-narratives/examples/seasonal-override-get.json
       headers:
-        $ref: '../openapi-split.yaml#/components/responses/204/headers'
+        $ref: '../openapi-split.yaml#/components/responses/201/headers'
 
     '400': *malformed
     '401': *unauthorized-empty
