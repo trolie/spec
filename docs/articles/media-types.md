@@ -10,8 +10,7 @@ parent: Articles
 > For detailed walkthroughs of specific TROLIE use cases, please see
 > [Usage Examples](../usage-examples). The article focuses on how the various
 > messages required for those use cases are specified in this standard. If you
-> are unfamiliar with Web APIs in general or HTTP headers in particular, this
-> article is for you.
+> are unfamiliar with the use of media types in Web APIs this article is for you.
 
 ## Overview
 {:.no_toc}
@@ -32,11 +31,11 @@ As an OpenAPI specification, TROLIE uses [JSON
 Schema](https://swagger.io/docs/specification/data-models/keywords/) to describe
 the data formats of [media
 types](https://swagger.io/docs/specification/media-types/), so to define
-processing models for these media types, TROLIE only needs to describe
-the semantics of the transmitted JSON. For the most part, the [TROLIE OpenAPI
-Specification](../spec) does a decent job of explaining what each of the JSON
-elements mean, but that can be unfamiliar to navigate. This article aims to give
-the reader a map of the kinds of messages that TROLIE specifies to help
+processing models for these media types, TROLIE only needs to describe the
+semantics of the transmitted JSON. The [TROLIE OpenAPI Specification](../spec)
+does describe what each of the JSON elements mean, but it also assumes
+familiarity with the use of media types in an API. This article aims to give the
+reader a map of the kinds of messages that TROLIE specifies to help
 contextualize those details.
 
 ## TROLIE Media Types
@@ -87,7 +86,7 @@ HTTP the `PATCH` and `PUT` requests specified by TROLIE.
 
 For example, here is how you could use `curl` to submit forecasted ratings
 assuming the file `forecast.json` was a valid document per the
-`application/vnd.trolie.rating-forecast-proposal.v1+json` schema. TODO: links
+`application/vnd.trolie.rating-forecast-proposal.v1+json` schema.
 
 ```sh
 curl -X PATCH \
@@ -103,10 +102,14 @@ details.
 
 |               Request               | Provided Media Types                                            | Description                                           |
 |-------------------------------------|-----------------------------------------------------------------|-------------------------------------------------------|
-| `PATCH /ratings-proposals/forecast` | `application/vnd.trolie.rating-forecast-proposal.v1+json`       | Used by a Ratings Provider to send ratings forecasts. |
-| `POST  /ratings-proposals/realtime` | `application/vnd.trolie.rating-realtime-proposal.v1+json`       | Used by a Ratings Provider to send real-time ratings. |
-| `PATCH /ratings-proposals/seasonal` | `application/vnd.trolie.seasonal-ratings-proposal.v1+json`      | Used by a Ratings Provider to send seasonal ratings.  |
+| `PATCH /ratings-proposals/forecast` | `application/vnd.trolie.rating-forecast-proposal.v1+json`       | Used to send ratings forecasts. |
+| `POST  /ratings-proposals/realtime` | `application/vnd.trolie.rating-realtime-proposal.v1+json`       | Used to send real-time ratings. |
+| `PATCH /ratings-proposals/seasonal` | `application/vnd.trolie.seasonal-ratings-proposal.v1+json`      | Used to send seasonal ratings.  |
 | `PATCH /ratings-proposals/seasonal` | `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json` | Same as above but much more compact, see [Slim Media Types](#slim-media-types) below. |
+| `POST  /seasonal-overrides`         | `application/vnd.trolie.seasonal-override.v1+json`              | Used to [override seasonal ratings](../concepts#seasonal-overrides). |
+| `PUT   /seasonal-overrides/{id}`    | `application/vnd.trolie.seasonal-override.v1+json`              | Same as above. |
+| `POST  /temporary-aar-exceptions`   | `application/vnd.trolie.temporary-aar-exception.v1+json`        | Used to defined a [temporary AAR exception](../concepts#temporary-aar-exception). |
+| `PUT /temporary-aar-exceptions/{id}`| `application/vnd.trolie.temporary-aar-exception.v1+json`        | Same as above. |
 
 #### Slim Media Types
 {: .no_toc }
@@ -121,9 +124,13 @@ The media types in the table above are verbose because they make intentional
 trade-offs between efficiency and other qualities. For more information please
 review the article [Performance Trade-offs in the TROLIE Schema Design](./tradeoffs).
 
-The "slim" media type use for seasonal ratings,
-`application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json`, is much more
-space-efficient but requires a few processing steps and assumptions:
+Because the TROLIE specification chose to [leverage media types to evolve the
+interface](../decision-log/media-type-versioning), the project was able to
+implement a "slim" media type use for seasonal ratings,
+`application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json`, that
+complements `application/vnd.trolie.seasonal-ratings-proposal.v1+json`. This
+"slim" format is much more space-efficient but requires a few processing steps
+and assumptions:
 
 1. The `limit-type` used in the proposal is specified by the Ratings Provider as
 a parameter of the media type. The `limit-type` chosen determines the layout of
