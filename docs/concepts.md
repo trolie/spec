@@ -174,6 +174,23 @@ a distinct data set from Proposals. Proposals may be queried as well as
 submitted, so that the rating provider's original input data is always kept
 separately from the in-use ratings.
 
+## Seasonal Overrides
+
+A seasonal override is submitted by a Ratings Provider in order to instruct the
+Clearinghouse Provider to use an alternate rating instead of the seasonal rating
+when the seasonal rating would have otherwise been used as the limit. Typically,
+a seasonal override is needed for facilities that do not provide AARs and are
+being derated.
+
+## Temporary AAR Exception
+
+For facilities that are not exempt from providing AARs under Order 881, there 
+still exists the possibility of temporary operational conditions where the
+facility rating cannot be ambient-adjusted for due to reliability risk, for
+example. Under such conditions a temporary AAR exception is submitted by the
+Ratings Provider to the Clearinghouse Provider, instructing the latter to use
+the provided static rating in lieu of an AAR for a specified period of time.
+
 ## Limits Snapshots
 
 As implied above, Snapshots are generated in TROLIE server implementations based
