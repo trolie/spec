@@ -9,7 +9,7 @@ nav_order: 4
 Assuming a MonitoringSet "my-monitoring-set" that contains TransmissionFacilities of interest, then the current in-use real-time limits may be fetched with the following command:
 
 ```bash
-curl -H "Accept: application/vnd.trolie.realtime-limits-slim-snapshot.v1+json" \
+curl -H "Accept: application/vnd.trolie.realtime-limits-snapshot.v1+json" \
 -o output.json \
 "https://trolie.example.com/limits/realtime-snapshot?monitoring-set=my-monitoring-set"
 ```
@@ -20,7 +20,7 @@ they were submitted through TROLIE, through ICCP, or derived by the Transmission
 through some other means.  See the following for an example:
 
 ```json
-{% include_relative examples/realtime-limit-set-slim.json %}
+{% include_relative examples/realtime-limit-set.json %}
 ```
 
 **NOTE**: This query is an example of an HTTP GET.  In addition to curl, the same URL may also be placed in a web browser to see the data.  
