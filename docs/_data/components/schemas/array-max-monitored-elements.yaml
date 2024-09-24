@@ -55,6 +55,20 @@ forecast-proposal:
     - proposal-header
     - ratings
 
+forecast-proposal-slim:
+  type: object
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/forecast-proposal-slim-header
+    ratings:
+      <<: *max
+      description: Forecasted Ratings
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+  required:
+    - proposal-header
+    - ratings
+
 common-proposal-status:
   type: object
   properties:  &common-proposal-status-props

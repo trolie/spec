@@ -83,6 +83,11 @@ patch:
           $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal
         example:
           $ref: ../../example-narratives/examples/forecast-ratings-proposal-patch.json
+      application/vnd.trolie.rating-forecast-proposal-slim.v1+json:
+        schema:
+          $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-slim
+        example:
+          $ref: ../../example-narratives/examples/forecast-ratings-proposal-slim-patch.json
 
   responses:
     '202':
