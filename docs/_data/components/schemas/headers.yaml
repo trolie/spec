@@ -76,9 +76,9 @@ forecast-proposal-slim-header:
     - default-emergency-durations
     - power-system-resources
 
-forecast-snapshot-header:
+forecast-snapshot-header: &forecast-snapshot-header
   description: Details about the snapshot provided by the Clearinghouse provider.
-  properties:
+  properties: &forecast-snapshot-header-props
     begins:
       <<: *begins
       description: |
@@ -96,6 +96,26 @@ forecast-snapshot-header:
     - begins
     - snapshot-provenance
     - power-system-resources
+    - default-emergency-durations
+
+forecast-snapshot-slim-header:
+  <<: *forecast-snapshot-header
+  properties:
+    <<: *forecast-snapshot-header-props
+    ends:
+      <<: *begins
+      description: |
+
+        RFC 3339 date-time string with *no fractional seconds component* that
+        indicates that last period for each individual resource proposal,
+        identifying the appropriate operational window for this proposal.
+
+  required:
+    - begins
+    - ends
+    - snapshot-provenance
+    - power-system-resources
+    - default-emergency-durations
 
 real-time-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.

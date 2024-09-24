@@ -35,7 +35,12 @@ get:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot"
           example:
-            $ref: '../../example-narratives/examples/forecast-limits-slim.json'
+            $ref: '../../example-narratives/examples/forecast-limits.json'
+        application/vnd.trolie.forecast-limits-slim-snapshot.v1+json:
+          schema:
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-slim-snapshot"
+          example:
+            $ref: '../../example-narratives/examples/forecast-limits-slim-active-power.json'
         application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-detailed-snapshot"

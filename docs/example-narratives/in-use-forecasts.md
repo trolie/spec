@@ -17,7 +17,7 @@ curl -H "Accept: application/vnd.trolie.forecast-limit-set-slim.v1+json" \
 This will return the current version of the in-use ratings for the next 240 hours into output.json.  See the following for an example:
 
 ```json
-{% include_relative examples/forecast-limits-slim.json %}
+{% include_relative examples/forecast-limits.json %}
 ```
 
 The above example assumes the next 240 hours as determined by the computer clock where TROLIE server is running.  Given that there are edge cases in time and the user’s clocks are likely slightly off from the TROLIE server's clock, it is recommended to specify the times more explicitly to ensure that users are getting what is expected.  This may be done by specifying the "offset-period-start" parameter, like in the following example:
