@@ -11,7 +11,7 @@ parent: Decision Records
 ## Context
 
 There are certain transmission lines that can have different ratings depending on their 
-configuration. The most frequent examples are underwater lines with cables packed tightly in 
+configuration. A commonly cited example is underwater lines with cables packed tightly in 
 trays, where certain combinations of the conductors may be turned on and off. Switching 
 conductors on and off obviously changes the amount of copper that can carry 
 electrons. However, to add additional complexity, the wires are close enough together
