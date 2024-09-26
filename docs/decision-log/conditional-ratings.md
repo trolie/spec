@@ -18,7 +18,7 @@ electrons. However, to add additional complexity, the wires are close enough tog
 that they can heat each other up as well, and the overall rating must take this into 
 account. Therefore, each possible combination will have a unique rating.
 
-When computing AARs however, it is best practice to take the configuration into account
+When computing AARs however, it is necessary to take the configuration into account
 so that the AAR accounts for the actual or forecasted configuration of the line.  Therefore,
 no special accommodation needs to be considered for AAR exchange in TROLIE.  
 
