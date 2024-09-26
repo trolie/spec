@@ -20,7 +20,7 @@ FERC 881 creates a practical need to be able to share these ratings in a more st
 some support for seasonal ratings makes sense in TROLIE, even if it is optional.  
 
 However seasonal rating interop is challenging, because the definition and meaning of each season differs 
-between grid operators.  The definition for [seasons](../concepts.md#seasons) in the FERC 881 context is 4
+between grid operators.  The definition for [seasons](../concepts.md#seasons) in the FERC 881 context is
 quite flexible.  While internally, grid operators may assign seasonal ratings to well-known named seasons 
 such as `Fall`, the practices around `Fall` ratings can differ significantly between grid operators:
 
