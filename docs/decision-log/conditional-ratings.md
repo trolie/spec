@@ -11,14 +11,14 @@ parent: Decision Records
 ## Context
 
 There are certain transmission lines that can have different ratings depending on their 
-configuration. The most frequent examples are underwater lines with cables packed tightly in 
+configuration. A commonly cited example is underwater lines with cables packed tightly in 
 trays, where certain combinations of the conductors may be turned on and off. Switching 
 conductors on and off obviously changes the amount of copper that can carry 
 electrons. However, to add additional complexity, the wires are close enough together
 that they can heat each other up as well, and the overall rating must take this into 
 account. Therefore, each possible combination will have a unique rating.
 
-When computing AARs however, it is best practice to take the configuration into account
+When computing AARs however, it is necessary to take the configuration into account
 so that the AAR accounts for the actual or forecasted configuration of the line.  Therefore,
 no special accommodation needs to be considered for AAR exchange in TROLIE.  
 
