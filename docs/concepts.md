@@ -99,24 +99,6 @@ anticipated to be a rating provided by the Ratings Provider separately, such as
 the effective seasonal rating, a verbal override, or even a previously
 forecasted rating.
 
-### Seasonal Ratings
-
-Seasonal Line Ratings, or simply Seasonal Ratings in TROLIE, are based on the 
-formal definition in the pro forma attachment M of FERC order 881, which states:
-
-> (3) “Seasonal Line Rating” means a Transmission Line Rating that:
-
-> (a) Applies to a specified season, where seasons are defined by the Transmission Provider to include not fewer than four seasons in each year, and to reasonably reflect portions of the year where expected high temperatures are relatively consistent.
-
-> (b) Reflects an up-to-date forecast of ambient air temperature across the relevant season over which the rating applies.
-
-> (c) Is calculated annually, if not more frequently, for each season in the future for which Transmission Service can be requested.
-
-Seasonal ratings are used as [Recourse Ratings](#recourse-ratings) in a TROLIE context, as described above.  They also may be used for other purposes that go beyond the AAR timeline, 
-such as planning and other long-term studies.  
-
-Seasonal Ratings are defined against [Seasons](#seasons).  
-
 ## Power System Resource, or simply _Resource_
 
 A term borrowed from CIM, in the context of TROLIE, a "Resource" is an object of
@@ -191,6 +173,24 @@ will integrate them into a final in-use rating set. In-use limit Snapshots are
 a distinct data set from Proposals. Proposals may be queried as well as
 submitted, so that the rating provider's original input data is always kept
 separately from the in-use ratings.
+
+## Seasonal Ratings
+
+Seasonal Line Ratings, or simply Seasonal Ratings in TROLIE, are based on the 
+formal definition in the pro forma attachment M of FERC order 881, which states:
+
+> (3) "Seasonal Line Rating" means a Transmission Line Rating that:
+
+> (a) Applies to a specified season, where seasons are defined by the Transmission Provider to include not fewer than four seasons in each year, and to reasonably reflect portions of the year where expected high temperatures are relatively consistent.
+
+> (b) Reflects an up-to-date forecast of ambient air temperature across the relevant season over which the rating applies.
+
+> (c) Is calculated annually, if not more frequently, for each season in the future for which Transmission Service can be requested.
+
+Seasonal ratings are used as [Recourse Ratings](#recourse-ratings) in a TROLIE context, as described above.  They also may be used for other purposes that go beyond the AAR timeline, 
+such as planning and other long-term studies.  
+
+Seasonal Ratings are defined against [Seasons](#seasons).  
 
 ## Seasonal Overrides
 
