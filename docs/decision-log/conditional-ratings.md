@@ -5,7 +5,7 @@ parent: Decision Records
 
 ## Status
 
-* Status: `Specification-in-progress`
+* Status: `accepted`
 * Issue Link: [GitHub Issue](https://github.com/trolie/spec/issues/129)
 
 ## Context
@@ -47,4 +47,4 @@ the facility ID with an ID for each possible condition.
 
 ## Consequences
 
-TODO: Link to an example article once the seasonal rating structure is complete.  
+An example is provided in [the seasonal ratings examples](../example-narratives/seasonal-ratings.md).
