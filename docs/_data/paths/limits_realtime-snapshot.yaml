@@ -23,7 +23,7 @@ get:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot"
           example:
-            $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
+            $ref: '../../example-narratives/examples/realtime-limit-set.json'
         application/vnd.trolie.realtime-limits-detailed-snapshot.v1+json:
           schema:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-detailed-snapshot"
