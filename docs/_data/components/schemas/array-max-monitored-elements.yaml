@@ -12,6 +12,17 @@ forecast-limits-snapshot:
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
 
+forecast-limits-slim-snapshot:
+  type: object
+  description: A snapshot of the forecast for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/forecast-snapshot-slim-header
+    limits:
+      <<: *max
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+
 forecast-limits-detailed-snapshot:
   type: object
   description: |
@@ -51,6 +62,20 @@ forecast-proposal:
       description: Forecasted Ratings
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal'
+  required:
+    - proposal-header
+    - ratings
+
+forecast-proposal-slim:
+  type: object
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/forecast-proposal-slim-header
+    ratings:
+      <<: *max
+      description: Forecasted Ratings
+      items:
+        $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
   required:
     - proposal-header
     - ratings

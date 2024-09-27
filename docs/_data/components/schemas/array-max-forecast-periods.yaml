@@ -31,6 +31,16 @@ resource-forecast-proposal:
       items:
         $ref: 'forecast-limit-period.yaml#/proposal'
 
+resource-forecast-proposal-slim:
+  <<: *periods
+  items:
+    type: array
+    title: Forecasted Period
+    minItems: 1
+    maxItems: 11 # 1 continuous + 10 max emergency durations
+    items:
+      type: number
+
 missing-forecast:
   <<: *limit
   properties:
