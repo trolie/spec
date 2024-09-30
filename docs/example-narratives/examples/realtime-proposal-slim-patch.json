@@ -1,0 +1,26 @@
+{
+  "proposal-header" : {
+    "source": {
+      "last-updated": "2025-10-31T15:05:43.044267100-07:00",
+      "provider": "UTILITY-A",
+      "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+    },
+    "default-emergency-durations": [
+      {
+        "name": "emergency",
+        "duration-minutes": 240
+      }
+    ],
+    "power-system-resources": [
+      { "resource-id": "8badf00d",
+        "alternate-identifiers": [
+          {"name": "segmentX", "authority": "TO-NERC-ID"},
+          {"name": "LINE1 SEG-X", "authority": "RC-NERC-ID", "mrid": "8badf00d"}
+        ]
+      }
+    ]
+  },
+  "ratings": [
+    [160, 170]
+  ]
+}
