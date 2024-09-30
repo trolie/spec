@@ -17,10 +17,17 @@
           {"name": "segmentX", "authority": "TO-NERC-ID"},
           {"name": "LINE1 SEG-X", "authority": "RC-NERC-ID", "mrid": "8badf00d"}
         ]
+      },
+      { "resource-id": "f34d3d",
+        "alternate-identifiers": [
+          {"name": "segmentY", "authority": "TO-NERC-ID"},
+          {"name": "LINE2 SEG-Y", "authority": "RC-NERC-ID", "mrid": "8badf00d"}
+        ]
       }
     ]
   },
   "ratings": [
-    [160, 170]
+    [160, 170],
+    [155, 160]
   ]
 }
