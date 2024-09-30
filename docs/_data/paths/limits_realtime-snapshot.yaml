@@ -29,6 +29,11 @@ get:
             $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-detailed-snapshot"
           example:
               $ref: '../../example-narratives/examples/realtime-limit-set-detailed.json'
+        application/vnd.trolie.realtime-limits-snapshot-slim.v1+json:
+          schema:
+            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot-slim"
+          example:
+            $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
     '304':

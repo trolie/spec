@@ -222,6 +222,18 @@ realtime-limits-detailed-snapshot:
       items:
         $ref: ./realtime-limit-item-detailed.yaml
 
+realtime-limits-snapshot-slim:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/real-time-snapshot-header
+    limits:
+      <<: *max
+      description: Real-time limits
+      items:
+        $ref: 'array-max-emergency-ratings.yaml#/slim'
+
 realtime-proposal:
   type: object
   properties:
