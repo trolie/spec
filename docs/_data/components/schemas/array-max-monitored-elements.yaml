@@ -91,8 +91,8 @@ common-proposal-status:
         size of `incomplete-facilities`, since the latter has a pre-defined
         upper bound for performance and application security reasons.
 
-        ⚠️ **The Ratings Provider should check that this value is zero when they
-        believe they have completed their submission process.️** ⚠️
+        The Ratings Provider should check that this value is zero when they
+        believe they have completed their submission process.
 
       type: integer
       format: uint16
