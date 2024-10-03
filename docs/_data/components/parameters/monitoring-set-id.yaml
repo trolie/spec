@@ -1,0 +1,15 @@
+name: id
+description: |
+
+  Identity of the associated
+  `monitoring-set`. The identifier for a `monitoring-set` is pre-coordinated,
+  but using the NERC id of the associated Ratings Provider is recommended.
+
+in: path
+required: false
+schema:
+  $ref: ../schemas/generic-identifier.yaml
+examples:
+  nerc-id:
+    summary: A pre-coordinated id that nominates a `monitoring-set`.
+    value: "X-AMPL"

@@ -170,6 +170,15 @@ tags:
       data feed could be down for some reason.  Therefore, this provides a
       placeholder set of numbers until the AAR data feed is repaired.
 
+  - name: Monitoring Sets
+    description: >      
+      
+      Monitoring Sets are named sets of power system objects that may be used to
+      filter ratings and limits returned by queries against these APIs. How Monitoring
+      Sets are defined is beyond the scope of the TROLIE specification, and it is
+      assumed that the sender and receiver have predefined the appropriate Monitoring
+      Sets.  More on monitoring sets may be found at https://trolie.energy/concepts.html#monitoring-sets
+
   - name: limit-type
     description: <SchemaDefinition schemaRef="#/components/schemas/limit" />
     x-displayName: Limit Type
@@ -182,6 +191,7 @@ x-tagGroups:
     - Seasonal
     - Seasonal Overrides
     - Temporary AAR Exceptions
+    - Monitoring Sets
   - name: Common Schemas
     tags:
     - limit-type
@@ -211,6 +221,9 @@ paths:
     $ref: paths/temporary-aar-exceptions.yaml
   /temporary-aar-exceptions/{id}:
     $ref: paths/temporary-aar-exceptions_{id}.yaml
+
+  /monitoring-sets/{id}:
+    $ref: paths/monitoring-sets_{id}.yaml
 
 
 components:
@@ -435,6 +448,7 @@ components:
         clientCredentials:
           tokenUrl: https://no-server/oauth2
           scopes:
+            read:monitoring-sets: Read monitoring sets
             read:forecast-proposals: Read Forecast rating proposals
             read:realtime-proposals: Read real-time rating proposals
             read:seasonal-proposals: Read seasonal rating proposals

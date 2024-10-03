@@ -1,0 +1,26 @@
+type: object
+description: |
+  See https://trolie.energy/concepts.html#monitoring-sets for info on the 
+  monitoring set concept in TROLIE.  
+
+  This representation is intended to be enough for consumers to read it and tell where 
+  the monitoring set came from, using metadata such as a source and an optional description.  
+  It also includes the list of resources included in the monitoring set, as well as all
+  their known aliases.  
+
+properties:
+  source:
+    $ref: ./data-provenance.yaml
+  id:
+    $ref: ./generic-identifier.yaml
+  description:
+    type: string
+    description: |
+      A freeform text description of this monitoring set
+    maxLength: 1000
+  power-system-resources:
+    $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+required:
+- source
+- id
+- power-system-resources
