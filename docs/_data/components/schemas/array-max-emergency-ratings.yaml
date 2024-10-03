@@ -1,0 +1,7 @@
+slim:
+  type: array
+  title: Slim Period
+  minItems: 1
+  maxItems: 11 # 1 continuous + 10 max emergency durations
+  items:
+    type: number

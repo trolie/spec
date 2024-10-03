@@ -51,7 +51,7 @@ proposal-considered:
         - source
         - proposal-disposition
 
-snapshot-slim:
+snapshot:
   allOf:
     - $ref: '#/period'
     - $ref: ./limit-data.yaml
@@ -60,5 +60,5 @@ snapshot-detailed:
   type: object
   description: Period detailed limits including provenance
   allOf:
-    - $ref: '#/snapshot-slim'
+    - $ref: '#/snapshot'
     - $ref: ./limit-provenance.yaml

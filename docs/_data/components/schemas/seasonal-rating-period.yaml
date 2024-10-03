@@ -53,7 +53,7 @@ snapshot:
   description: Proposes the continuous and emergency ratings for the specified Season.
   title: Seasonal Rating Proposal
   allOf:
-    - $ref: 'forecast-limit-period.yaml#/snapshot-slim'
+    - $ref: 'forecast-limit-period.yaml#/snapshot'
     - type: object
       properties:
         season-name:

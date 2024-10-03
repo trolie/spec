@@ -91,8 +91,8 @@ common-proposal-status:
         size of `incomplete-facilities`, since the latter has a pre-defined
         upper bound for performance and application security reasons.
 
-        ⚠️ **The Ratings Provider should check that this value is zero when they
-        believe they have completed their submission process.️** ⚠️
+        The Ratings Provider should check that this value is zero when they
+        believe they have completed their submission process.
 
       type: integer
       format: uint16
@@ -222,6 +222,18 @@ realtime-limits-detailed-snapshot:
       items:
         $ref: ./realtime-limit-item-detailed.yaml
 
+realtime-limits-snapshot-slim:
+  type: object
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/real-time-snapshot-header
+    limits:
+      <<: *max
+      description: Real-time limits
+      items:
+        $ref: 'array-max-emergency-ratings.yaml#/slim'
+
 realtime-proposal:
   type: object
   properties:
@@ -231,23 +243,26 @@ realtime-proposal:
       <<: *max
       description: Real-Time Ratings Proposals
       items:
-        type: object
-        description: >
-          Real-time ratings data for a segment.
-        allOf:
-        - type: object
-          properties:
-            resource-id:
-              $ref: ./resource-id.yaml
-        - $ref: ./limit-proposal.yaml
-        required:
-        - resource-id
-        - continuous-operating-limit
-        - emergency-operating-limits
+        $ref: 'realtime-limit-period.yaml#/proposal'
 
   required:
   - proposal-header
   - ratings
+
+realtime-proposal-slim:
+  type: object
+  description: Used to propose real-time ratings for a set of resources.
+  properties:
+    proposal-header:
+      $ref: ./headers.yaml#/real-time-proposal-header
+    ratings:
+      <<: *max
+      description: Real-Time Ratings Proposals
+      items:
+        $ref: "array-max-emergency-ratings.yaml#/slim"
+  required:
+    - proposal-header
+    - ratings
 
 seasonal-ratings-proposal:
   type: object

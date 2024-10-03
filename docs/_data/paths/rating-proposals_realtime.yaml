@@ -92,6 +92,11 @@ post:
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
         example:
           $ref: ../../example-narratives/examples/realtime-proposal.json
+      application/vnd.trolie.rating-realtime-proposal-slim.v1+json:
+        schema: 
+          $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal-slim"
+        example:
+          $ref: ../../example-narratives/examples/realtime-proposal-slim-patch.json
   responses:
     '202':
       description: |
@@ -105,7 +110,7 @@ post:
           schema:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/real-time-proposal-status
           example:
-            $ref: ../../example-narratives/examples/realtime-proposal-status.json            
+            $ref: ../../example-narratives/examples/realtime-proposal-status.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 
