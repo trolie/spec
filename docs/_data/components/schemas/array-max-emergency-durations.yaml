@@ -20,7 +20,9 @@ emergency-durations: &max
         format: int32
         minimum: 0
         maximum: 1440
-
+    required:
+    - name
+    - duration-minutes
 
 limit-value-set:
   <<: *max
@@ -35,6 +37,9 @@ limit-value-set:
     type: object
     description: Operating Limit
     properties:
-        duration-name: *emergency-kind-name
-        limit:
-          $ref: ./limit.yaml
+      duration-name: *emergency-kind-name
+      limit:
+        $ref: ./limit.yaml
+    required:
+    - duration-name 
+    - limit
