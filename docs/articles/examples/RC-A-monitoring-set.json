@@ -1,0 +1,23 @@
+{
+  "source": {
+    "last-updated": "2025-10-01T12:00:00.044267100-07:00",
+    "provider": "RC-A",
+    "origin-id": "efa3f807-9a5c-4448-8e63-273fb173d183"
+  },  
+  "id":"RC-B",
+  "description": "RC B's Tier 1 facilities",
+  "power-system-resources": [
+    { "resource-id": "e300d2c2-45bb-49f6-a3bc-a3e5d5a30ce6",
+      "alternate-identifiers": [
+        {
+          "name": "MYSUBSTN.LN.12345", 
+          "type": "EMSID"
+        },
+        {
+          "name": "DLR_OUT_LINE_5742_NORM",
+          "type": "ICCP-NORM-MVA-OUT" 
+        }
+      ]
+    }
+  ]
+}
