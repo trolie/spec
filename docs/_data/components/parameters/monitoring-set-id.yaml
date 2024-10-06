@@ -6,7 +6,7 @@ description: |
   but using the NERC id of the associated Ratings Provider is recommended.
 
 in: path
-required: false
+required: true
 schema:
   $ref: ../schemas/generic-identifier.yaml
 examples:

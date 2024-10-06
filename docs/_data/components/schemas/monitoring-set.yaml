@@ -15,6 +15,7 @@ properties:
     $ref: ./generic-identifier.yaml
   description:
     type: string
+    format: free-form
     description: |
       A freeform text description of this monitoring set
     maxLength: 1000
