@@ -13,8 +13,8 @@ have to share ratings.  Each TROLIE server must be able to act as a client to ac
 with each reaching out to one another.  
 
 This article specifically covers coordination of resource models on the seam between reliability 
-coordinators, or really any two TROLIE implementations that can act as peers.  It uses monitoring sets 
-as a foundation for discovery of mapped models.  
+coordinators, or really any two TROLIE implementations that can act as peers.  It uses each RC's 
+default monitoring sets as a foundation for discovery of mapped models.  
 
 This article defines a design pattern recommended as a best practice, as it ultimately must 
 be implemented within TROLIE servers and is only supported by the TROLIE communications specification 
@@ -35,7 +35,7 @@ mapped to the external RC's system.  Some of this complexity is unavoidable.
 TROLIE servers can mitigate some of this complexity by introspecting monitoring 
 sets.  The Venn diagram below illustrates two [monitoring sets](../concepts.md#monitoring-sets) owned 
 by RCs (A and B), one in each of the other's TROLIE servers.  Each RC must coordinate creation of 
-monitoring sets in the other's  TROLIE in order to monitor ratings, as described in the operations 
+monitoring sets in the other's TROLIE in order to monitor ratings, as described in the operations 
 [getLimitsForecastSnapshot](../spec#tag/Forecasting/operation/getLimitsForecastSnapshot) and
 [getRealTimeLimits](../spec#tag/Real-Time/operation/getRealTimeLimits).
 
