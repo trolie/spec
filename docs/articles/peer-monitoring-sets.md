@@ -139,10 +139,10 @@ naming conventions.  Also, RC B has chosen to use CIM MRIDs as their `resource-i
 use EMS IDs as their `resource-id`.  
 
 However, when querying a new version of `B-in`, monitoring set reconciler function in the RC A TROLIE can see that 
-one of the aliases, specifically the value "DLR_OUT_LINE_5742_NORM" matches another alias it has in its 
-database.  It can then determine that the resource RC-A refers to as "e300d2c2-45bb-49f6-a3bc-a3e5d5a30ce6" 
-may be referred to as "MYSUBST-LINE-5742" whenever it interacts with RC B's TROLIE.  It should store this mapping
-and assume it on all future calls.  
+one of the aliases, specifically the ICCP point name "DLR_OUT_LINE_5742_NORM" matches another alias it has in its 
+database, with the matching name type and authority.  The reconciler function can then determine that the resource 
+RC-A refers to as "e300d2c2-45bb-49f6-a3bc-a3e5d5a30ce6" may be referred to as "MYSUBST-LINE-5742" whenever it 
+interacts with RC B's TROLIE.  It should store this mapping and assume it on all future calls.  
 
 # Seam Monitoring Sets 
 The seam monitoring set, as described above, would be derived by finding the overlap between `B-in` and 

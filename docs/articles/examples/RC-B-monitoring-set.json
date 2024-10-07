@@ -11,11 +11,13 @@
       "alternate-identifiers": [
         {
           "name": "a276c684-aa68-4799-8c00-44913c61e77a", 
-          "type": "CIMMRID"
+          "type": "CIMMRID",
+          "authority": "RC-B"
         },
         {
           "name": "DLR_OUT_LINE_5742_NORM",
-          "type": "ICCP_NORM_IN" 
+          "type": "ICCP-NORM-MVA-OUT",
+          "authority": "RC-A"
         }
       ]
     }

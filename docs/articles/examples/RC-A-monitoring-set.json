@@ -11,11 +11,13 @@
       "alternate-identifiers": [
         {
           "name": "MYSUBSTN.LN.12345", 
-          "type": "EMSID"
+          "type": "EMSID",
+          "authority":"RC-A"
         },
         {
           "name": "DLR_OUT_LINE_5742_NORM",
-          "type": "ICCP-NORM-MVA-OUT" 
+          "type": "ICCP-NORM-MVA-OUT",
+          "authority": "RC-A"
         }
       ]
     }

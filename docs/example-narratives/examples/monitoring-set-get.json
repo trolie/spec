@@ -11,11 +11,13 @@
       "alternate-identifiers": [
         {
           "name": "MYSUBSTN.LN.12345", 
-          "type": "EMSID"
+          "type": "EMSID",
+          "authority":"RC-NERC-ID"
         },
         {
           "name": "X-00001785-A",
-          "type": "AssetRegForm" 
+          "type": "AssetRegForm",
+          "authority":"RC-NERC-ID"
         }
       ]
     },
@@ -24,11 +26,13 @@
       "alternate-identifiers": [
         {
           "name": "MYSUBSTN.LN.67890", 
-          "type": "EMSID"
+          "type": "EMSID",
+          "authority":"RC-NERC-ID"
         },
         {
           "name": "X-00001787-C",
-          "type": "AssetRegForm" 
+          "type": "AssetRegForm",
+          "authority":"RC-NERC-ID"
         }
       ]
       

@@ -5,11 +5,10 @@ description: |
   `monitoring-set`. The identifier for a `monitoring-set` is pre-coordinated,
   but using the NERC id of the associated Ratings Provider is recommended.
 
+  This parameter also supports use of the special string "default", which 
+  indicates the logged-in user's default monitoring set.  
+
 in: path
 required: true
 schema:
   $ref: ../schemas/generic-identifier.yaml
-examples:
-  nerc-id:
-    summary: A pre-coordinated id that nominates a `monitoring-set`.
-    value: "X-AMPL"
