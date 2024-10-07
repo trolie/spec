@@ -173,7 +173,7 @@ tags:
   - name: Monitoring Sets
     description: >      
       
-      Monitoring Sets are named sets of power system objects that may be used to
+      Monitoring Sets are named sets of power system resources that may be used to
       filter ratings and limits returned by queries against these APIs. How Monitoring
       Sets are defined is beyond the scope of the TROLIE specification, and it is
       assumed that the sender and receiver have predefined the appropriate Monitoring
