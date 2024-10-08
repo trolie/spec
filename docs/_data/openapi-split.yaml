@@ -221,9 +221,11 @@ paths:
     $ref: paths/temporary-aar-exceptions.yaml
   /temporary-aar-exceptions/{id}:
     $ref: paths/temporary-aar-exceptions_{id}.yaml
-    
+
   /monitoring-sets/{id}:
     $ref: paths/monitoring-sets_{id}.yaml
+  /default-monitoring-set:
+    $ref: paths/monitoring-sets-default.yaml
 
 
 components:
