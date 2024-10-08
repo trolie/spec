@@ -99,7 +99,7 @@ stored in the TROLIE server's database:
 # Automatic Resource Alias Mapping
 In practice, most Transmission Providers have at least the following identifiers for each resource:
 
-* An identity for the resource in a modeling system and/or asset registration system.  Since many modeling tools are CIM-based, this is typically a master resource identifier (MrID) in the form of a UUID.  
+* An identity for the resource in a modeling system and/or asset registration system.  Since many modeling tools are CIM-based, this is typically a master resource identifier (mRID) in the form of a UUID.  
 * An identity for the resource in an EMS system.  These may be the same as the modeling system identities, but since most EMS technologies pre-date CIM modeling practices, they typically do not.  Instead, they often follow some convention established by the specific EMS technology in combination with company-specific naming conventions and modeling practices.  
 
 As discussed above, typically none of these identifiers are the same across grid operators.  Also, each 
