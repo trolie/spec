@@ -39,8 +39,6 @@ get:
       $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406': &not-acceptable-empty
       $ref: '../openapi-split.yaml#/components/responses/406-empty'
-    '410':
-      $ref: '../openapi-split.yaml#/components/responses/410-empty'
     '429': &rate-limit-hit
       $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': &unexpected-error-empty
