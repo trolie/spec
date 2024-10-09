@@ -1,0 +1,5 @@
+description: Type of the name being referenced.  Corresponds to the IEC CIM `NameType` concept.
+type: string
+maxLength: 20
+pattern: ^[A-Za-z0-9\-]{3,20}$
+example: EMSID

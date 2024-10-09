@@ -36,6 +36,9 @@ kramdown:
     block:
       line_numbers: true
 
+mermaid:
+  version: "11.3.0"
+
 callouts:
   announcement:
     color: green

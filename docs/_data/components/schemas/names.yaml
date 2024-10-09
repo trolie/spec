@@ -11,6 +11,8 @@ properties:
       properties:
         name:
           $ref: ./generic-identifier.yaml
+        type:
+          $ref: ./name-type.yaml
         authority:
           $ref: ./entity-id.yaml
         mrid:

@@ -50,6 +50,10 @@
         ,"adrs"
         ,"puml"
         ,"rgba"
+        ,"MYSUBST"
+        ,"MYSUBSTN"
+        ,"EMSID"
+        ,"CIMMRID"
     ],
     "import": []
 }

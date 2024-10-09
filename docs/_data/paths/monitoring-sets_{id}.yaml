@@ -1,0 +1,41 @@
+get:
+  operationId: getMonitoringSet
+  description: &get_desc Obtain a specific monitoring set by identifier.  
+  summary: *get_desc
+  tags: 
+    - Monitoring Sets
+  parameters:
+    - $ref: ../components/parameters/monitoring-set-id.yaml
+  responses:
+    '200':
+      description: OK
+      content:
+        application/vnd.trolie.monitoring-set.v1+json:
+          schema:
+            $ref: ../components/schemas/monitoring-set.yaml
+          example:
+            $ref: ../../example-narratives/examples/monitoring-set-get.json
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/204/headers'
+
+    '304':
+      $ref: '../openapi-split.yaml#/components/responses/304'
+    '400': 
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401': 
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403': 
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '404': 
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
+    '406': 
+      $ref: '../openapi-split.yaml#/components/responses/406-empty'
+    '429': 
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    default: *unexpected-error-empty
+
+  security:
+    - oauth2-primary-flow:
+        - read:monitoring-sets

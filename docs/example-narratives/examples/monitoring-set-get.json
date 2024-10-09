@@ -1,0 +1,41 @@
+{
+  "source": {
+    "last-updated": "2025-10-31T15:05:43.044267100-07:00",
+    "provider": "RC-NERC-ID",
+    "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
+  },  
+  "id":"UTILITY123",
+  "description": "Lines in utility 123's footprint and immediate neighbors",
+  "power-system-resources": [
+    { "resource-id": "01925421-0766-771a-a92d-1631a49f647c",
+      "alternate-identifiers": [
+        {
+          "name": "MYSUBSTN.LN.12345", 
+          "type": "EMSID",
+          "authority":"RC-NERC-ID"
+        },
+        {
+          "name": "X-00001785-A",
+          "type": "AssetRegForm",
+          "authority":"RC-NERC-ID"
+        }
+      ]
+    },
+    { 
+      "resource-id": "01925421-b967-78de-a746-7497c5105939",
+      "alternate-identifiers": [
+        {
+          "name": "MYSUBSTN.LN.67890", 
+          "type": "EMSID",
+          "authority":"RC-NERC-ID"
+        },
+        {
+          "name": "X-00001787-C",
+          "type": "AssetRegForm",
+          "authority":"RC-NERC-ID"
+        }
+      ]
+      
+    }
+  ]
+}

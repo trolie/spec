@@ -1,0 +1,25 @@
+{
+  "source": {
+    "last-updated": "2024-10-06T19:23:18-07:00",
+    "provider": "RC-B",
+    "origin-id": "27a6b9ac-db4d-4340-a5ea-080271f7b072"
+  },  
+  "id":"RC-A",
+  "description": "RC A's Tier 1 facilities",
+  "power-system-resources": [
+    { "resource-id": "MYSUBST-LINE-5742",
+      "alternate-identifiers": [
+        {
+          "name": "a276c684-aa68-4799-8c00-44913c61e77a", 
+          "type": "CIMMRID",
+          "authority": "RC-B"
+        },
+        {
+          "name": "DLR_OUT_LINE_5742_NORM",
+          "type": "ICCP-NORM-MVA-OUT",
+          "authority": "RC-A"
+        }
+      ]
+    }
+  ]
+}

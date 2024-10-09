@@ -1,0 +1,12 @@
+name: id
+description: |
+
+  Identity of the associated
+  `monitoring-set`. The identifier for a `monitoring-set` is pre-coordinated,
+  but using the NERC id of the associated Ratings Provider is recommended.
+
+
+in: path
+required: true
+schema:
+  $ref: ../schemas/generic-identifier.yaml
