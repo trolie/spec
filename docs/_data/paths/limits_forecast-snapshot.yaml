@@ -1,71 +1,104 @@
-get:
-  operationId: getLimitsForecastSnapshot
-  summary: Limits Forecast Snapshot
-  tags:
-    - Forecasting
-  parameters:
-    - $ref: ../components/parameters/offset-period-start.yaml
-    - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
-    - $ref: ../components/parameters/static-only.yaml
-  description: |
+current:
+  get: &get
+    operationId: getLimitsForecastSnapshot
+    summary: Limits Forecast Snapshot
+    tags:
+      - Forecasting
+    parameters:
+      - $ref: ../components/parameters/offset-period-start.yaml
+      - $ref: ../components/parameters/period-end.yaml
+      - $ref: ../components/parameters/monitoring-set-filter.yaml
+      - $ref: ../components/parameters/facility-filter.yaml
+      - $ref: ../components/parameters/static-only.yaml
+    description: |
 
-    Obtain the Limits Forecast the Transmission Provider is currently using in
-    Operations, relative to the current time. 
-    
-    This operation uses media types to control verbosity of the data
-    fetched. The default media type,
-    `application/vnd.trolie.forecast-limits-snapshot.v1+json`, simply includes
-    the rating data. For applications that need it, the media type
-    `application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json` may be
-    requested, which also references the source proposals used to generate the
-    snapshot, as well as reporting data from the ratings clearing process.
+      Obtain the Limits Forecast the Transmission Provider is currently using in
+      Operations, relative to the current time. 
+      
+      This operation uses media types to control verbosity of the data
+      fetched. The default media type,
+      `application/vnd.trolie.forecast-limits-snapshot.v1+json`, simply includes
+      the rating data. For applications that need it, the media type
+      `application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json` may be
+      requested, which also references the source proposals used to generate the
+      snapshot, as well as reporting data from the ratings clearing process.
 
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
-    limiting is done on a per Ratings Provider basis, so requests from
-    independent clients used by the same provider count against the same quota.    
+      Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+      and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+      limiting is done on a per Ratings Provider basis, so requests from
+      independent clients used by the same provider count against the same quota.    
 
-  responses:
-    '200':
-      description: The requested operating forecast snapshot is returned.
-      content:
-        application/vnd.trolie.forecast-limits-snapshot.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot"
-          example:
-            $ref: '../../example-narratives/examples/forecast-limits.json'
-        application/vnd.trolie.forecast-limits-slim-snapshot.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-slim-snapshot"
-          example:
-            $ref: '../../example-narratives/examples/forecast-limits-slim-active-power.json'
-        application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-detailed-snapshot"
-          example:
-            $ref: "../../example-narratives/examples/forecast-limits-detailed.json"
-      headers:
-        $ref: '../openapi-split.yaml#/components/responses/204/headers'
-    '304':
-      $ref: '../openapi-split.yaml#/components/responses/304'
-    '400':
-      $ref: '../openapi-split.yaml#/components/responses/400-problem'
-    '401':
-      $ref: '../openapi-split.yaml#/components/responses/401-empty'
-    '403':
-      $ref: '../openapi-split.yaml#/components/responses/403-empty'
-    '404':
-      $ref: '../openapi-split.yaml#/components/responses/404-empty'
-    '406':
-      $ref: '../openapi-split.yaml#/components/responses/406-empty'
-    '429':
-      $ref: '../openapi-split.yaml#/components/responses/429-empty'
-    '500': &unexpected-error-empty
-      $ref: '../openapi-split.yaml#/components/responses/500-empty'
-    default: *unexpected-error-empty
+    responses: &responses
+      '200':
+        description: The requested operating forecast snapshot is returned.
+        content:
+          application/vnd.trolie.forecast-limits-snapshot.v1+json:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot"
+            example:
+              $ref: '../../example-narratives/examples/forecast-limits.json'
+          application/vnd.trolie.forecast-limits-slim-snapshot.v1+json:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-slim-snapshot"
+            example:
+              $ref: '../../example-narratives/examples/forecast-limits-slim-active-power.json'
+          application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-detailed-snapshot"
+            example:
+              $ref: "../../example-narratives/examples/forecast-limits-detailed.json"
+        headers:
+          $ref: '../openapi-split.yaml#/components/responses/204/headers'
+      '304':
+        $ref: '../openapi-split.yaml#/components/responses/304'
+      '400':
+        $ref: '../openapi-split.yaml#/components/responses/400-problem'
+      '401':
+        $ref: '../openapi-split.yaml#/components/responses/401-empty'
+      '403':
+        $ref: '../openapi-split.yaml#/components/responses/403-empty'
+      '404':
+        $ref: '../openapi-split.yaml#/components/responses/404-empty'
+      '406':
+        $ref: '../openapi-split.yaml#/components/responses/406-empty'
+      '429':
+        $ref: '../openapi-split.yaml#/components/responses/429-empty'
+      '500': &unexpected-error-empty
+        $ref: '../openapi-split.yaml#/components/responses/500-empty'
+      default: *unexpected-error-empty
 
-  security:
-    - oauth2-primary-flow:
-        - read:operating-snapshot
+    security:
+      - oauth2-primary-flow:
+          - read:operating-snapshot
+
+historical:
+  get:
+    <<: *get
+    operationId: getHistoricalLimitsForecastSnapshot
+    summary: Historical Limits Forecast Snapshot
+    parameters: # cannot merge lists, only maps, so this is a copy from "current"
+      - $ref: ../components/parameters/offset-period-start.yaml
+      - $ref: ../components/parameters/period-end.yaml
+      - $ref: ../components/parameters/monitoring-set-filter.yaml
+      - $ref: ../components/parameters/facility-filter.yaml
+      - $ref: ../components/parameters/static-only.yaml
+      - name: period
+        description: |
+          Returns the Forecast Limits snapshot for the period requested rather
+          than the current snapshot.
+        in: path
+        required: true
+        schema:
+          $ref: ../components/schemas/period-start.yaml
+    description: |
+
+      Obtain the Limits Forecast the Transmission Provider used or is currently
+      using in Operations as of the period requested.
+
+      See the [Limits Forecast Snapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot)
+      operation for more information.
+
+    responses:
+      <<: *responses
+      '410':
+        $ref: '../openapi-split.yaml#/components/responses/410-problem'

@@ -198,7 +198,9 @@ x-tagGroups:
 
 paths:
   /limits/forecast-snapshot:
-    $ref: paths/limits_forecast-snapshot.yaml
+    $ref: paths/limits_forecast-snapshot.yaml#/current
+  /limits/forecast-snapshot/{period}:
+    $ref: paths/limits_forecast-snapshot.yaml#/historical
   /rating-proposals/realtime:
     $ref: paths/rating-proposals_realtime.yaml
 
