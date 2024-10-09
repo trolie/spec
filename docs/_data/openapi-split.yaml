@@ -285,10 +285,14 @@ components:
       <<: *rate-limited
       description: Not Acceptable (Content negotiation failed)
       content: *problem
-    '410-empty':
+    '410-problem':
       <<: *rate-limited
-      description: Gone
-      content: *empty
+      description: |
+        Gone. The requested resource is no longer available.  TROLIE
+        implementations MAY return this status code when a resource is known to
+        have been deleted or archived, if the authenticated client would
+        otherwise have had authorized access to the resource.
+      content: *problem
     '413-empty':
       <<: *rate-limited
       description: Payload too large
