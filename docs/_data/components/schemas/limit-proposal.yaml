@@ -3,6 +3,8 @@ allOf:
   - $ref: ./limit-data.yaml
   - type: object
     properties:
+      current-source:
+        $ref: ./quality-class-current-source.yaml
       inputs-used:
         description: |
 

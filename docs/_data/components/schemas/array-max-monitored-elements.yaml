@@ -254,7 +254,7 @@ realtime-proposal-slim:
   description: Used to propose real-time ratings for a set of resources.
   properties:
     proposal-header:
-      $ref: ./headers.yaml#/real-time-proposal-header
+      $ref: ./headers.yaml#/real-time-proposal-slim-header
     ratings:
       <<: *max
       description: Real-Time Ratings Proposals
