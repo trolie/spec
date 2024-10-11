@@ -1,52 +1,71 @@
 overvoltage-threshold-pu:
   type: object
+  title: Overvoltage Threshold per unit (nominal voltage assumed)
+  description: >
+    An upper limit to voltage for a transmission facility in per unit with
+    the base voltage assumed to be the nominal voltage.
   additionalProperties: false
   properties:
     voltage-pu-max: &pu
       type: number
-      description: >
-        An upper limit to voltage for a transmission facility in per unit.
       format: float
       minimum: 0
       maximum: 2
-    base-kV: &voltage
-      type: number
-      description: >
-        The base voltage in kilovolts for the per unit voltage.
-      format: int32
-      minimum: 0
-      maximum: 1100
   required:
   - voltage-pu-max
 
 overvoltage-threshold:
   type: object
+  title: Overvoltage Threshold
+  description: An upper limit to voltage for a transmission facility in kilovolts.
   additionalProperties: false
   properties:
-    kV-max: 
-      <<: *voltage
-      description: >
-        An upper limit to voltage for a transmission facility in kilovolts.
+    kV-max: &voltage
+      type: number
+      format: int32
+      minimum: 0
+      maximum: 1100
   required:
     - kV-max
 
 undervoltage-threshold-pu:
   type: object
+  title: Undervoltage Threshold per unit (nominal voltage assumed)
+  description: >
+    An lower limit to voltage for a transmission facility in per unit
+    with the nominal voltage assumed to be the base voltage.
   additionalProperties: false
   properties:
     voltage-pu-min:
       <<: *pu
-      description: An lower limit to voltage for a transmission facility in per unit.
-    base-kV: *voltage
   required:
   - voltage-pu-min
 
 undervoltage-threshold:
   type: object
+  title: Undervoltage Threshold
+  description: A lower limit to voltage for a transmission facility in kilovolts.
   additionalProperties: false
   properties:
     kV-min:
       <<: *voltage
-      description: A lower limit to voltage for a transmission facility in kilovolts.
   required:
     - kV-min
+
+current-with-kV:
+  type: object
+  title: Current
+  description: Representation of a limit in amperes and associated voltage.
+  additionalProperties: false
+  properties:
+    amps:
+      type: number
+      format: float
+      minimum: 1
+      maximum: 100000
+    kV:
+      <<: *voltage
+      description: The voltage in kilovolts for the current limit.
+  required:
+    - amps
+    - kV

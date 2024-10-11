@@ -2,7 +2,7 @@ type: object
 title: Limit
 description: |
 
-  Defines the limit. In practice, most exchanges will only support one kind of
+  Defines the limit. In practice most exchanges will only support one kind of
   limit for proposals and snapshots. However, the specification supports
   defining limits on a per resource basis as well as limit types that are not
   anticipated to be used to implement Order 881. TROLIE server implementations
@@ -12,8 +12,10 @@ description: |
 
 oneOf:
   - $ref: './limit-types/active-power.yaml'
+  - $ref: './limit-types/active-power-with-power-factor.yaml'
   - $ref: './limit-types/apparent-power.yaml'
   - $ref: './limit-types/current.yaml'
+  - $ref: './limit-types/voltage.yaml#/current-with-kV'
   - $ref: './limit-types/reactive-power.yaml'
   - $ref: './limit-types/voltage.yaml#/overvoltage-threshold-pu'
   - $ref: './limit-types/voltage.yaml#/overvoltage-threshold'

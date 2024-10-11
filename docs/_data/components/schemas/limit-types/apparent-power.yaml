@@ -1,4 +1,5 @@
 type: object
+title: Apparent Power
 additionalProperties: false
 properties:
   mva:

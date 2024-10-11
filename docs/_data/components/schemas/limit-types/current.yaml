@@ -1,11 +1,12 @@
 type: object
+title: Current (nominal voltage assumed)
+description: >-
+  Representation of a limit in amperes. Assumes that Clearinghouse Provider
+  has the nominal voltage in its model.
 additionalProperties: false
 properties:
   amps:
     type: number
-    description: >-
-      Representation of a limit in amperes. Assumes that Clearinghouse Provider
-      has the nominal voltage in its model.
     format: float
     minimum: 1
     maximum: 100000
