@@ -169,13 +169,13 @@ forecast-proposal-status:
 
   properties:
     <<: *common-proposal-status-props
-    forecast-provider:
+    source:
       $ref: ./data-provenance.yaml
     begins: # nominates the forecast window
       $ref: ./period-start.yaml
 
   required:
-    - forecast-provider
+    - source
     - begins
     - incomplete-obligation-count
     - incomplete-obligations
@@ -189,10 +189,10 @@ real-time-proposal-status:
     Includes any validation errors encountered while processing proposals.
   properties:
     <<: *common-proposal-status-props
-    ratings-provider:
+    source:
       $ref: ./data-provenance.yaml
   required:
-    - ratings-provider
+    - source
     - incomplete-obligation-count
     - incomplete-obligations
     - invalid-proposal-count
@@ -306,10 +306,10 @@ seasonal-ratings-proposal-status:
         unfulfilled Obligations indicated in `incomplete-obligation-count`.
       items:
         $ref: ./array-max-seasons.yaml#/missing-seasonal-obligation
-    provider-info:
+    source:
       $ref: ./data-provenance.yaml
   required:
-    - provider-info
+    - source
     - incomplete-obligation-count
     - invalid-proposal-count
 

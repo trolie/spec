@@ -1,5 +1,5 @@
 {
-  "provenance": {
+  "source": {
     "provider":"X-AMPL",
     "last-updated": "2023-07-12T15:05:43.044267100-07:00",
     "origin-id": "//trolie.example.com/seasonal-overrides/513a7cb3-5d3c-4b7e-849c-e4015846db53"
@@ -25,18 +25,18 @@
     "mva": 160
   },
   "emergency-operating-limits": [
-    { 
+    {
       "duration-name": "emergency",
       "limit": {
         "mva": 165
       }
     },
-    { 
+    {
       "duration-name": "load-shed",
       "limit": {
         "mva": 170
       }
-    }     
+    }
   ],
   "reason": "Increased vegetation proximity"
 }

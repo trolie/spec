@@ -86,7 +86,7 @@ forecast-snapshot-header: &forecast-snapshot-header
         RFC 3339 date-time string with *no fractional seconds component* that
         Nominates the operational window of this snapshot.
 
-    snapshot-provenance:
+    source:
       $ref: ./data-provenance.yaml
     power-system-resources:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
@@ -94,7 +94,7 @@ forecast-snapshot-header: &forecast-snapshot-header
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
     - begins
-    - snapshot-provenance
+    - source
     - power-system-resources
     - default-emergency-durations
 
@@ -113,21 +113,21 @@ forecast-snapshot-slim-header:
   required:
     - begins
     - ends
-    - snapshot-provenance
+    - source
     - power-system-resources
     - default-emergency-durations
 
 real-time-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    snapshot-provenance:
+    source:
       $ref: ./data-provenance.yaml
     power-system-resources:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
   required:
-    - snapshot-provenance
+    - source
     - power-system-resources
 
 seasonal-proposal-header:
@@ -135,7 +135,6 @@ seasonal-proposal-header:
   description: |
 
     Describes the contents of this seasonal ratings proposal.
-
 
 seasonal-proposal-header-slim:
   <<: *common-header
