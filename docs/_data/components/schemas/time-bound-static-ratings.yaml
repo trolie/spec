@@ -41,7 +41,7 @@ temporary-aar-exception: &time-bound-static-limit
 
     May or may not include a set of values, depending on the business
     context in which the temporary AAR exception is used.  
-  properties:
+  properties: &time-bound-static-limit-props
     <<: *time-bound-static-rating-props
     id:
       $ref: ./server-generated-id.yaml
@@ -59,6 +59,10 @@ seasonal-override-request:
   description: |
     Data structure for a seasonal override against a resource.
     Must also include a set of values.  
+  properties:
+    <<: *time-bound-static-rating-props
+    day-night:
+      $ref: ./day-night.yaml
 
 seasonal-override:
   <<: *time-bound-static-limit
@@ -66,3 +70,7 @@ seasonal-override:
     Data structure for a seasonal override against a resource.  Includes a
     unique ID, start and (optional) end time, and a reason.  Must also include a
     set of values.
+  properties:
+    <<: *time-bound-static-limit-props
+    day-night:
+      $ref: ./day-night.yaml
