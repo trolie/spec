@@ -1,6 +1,6 @@
 {
     "snapshot-header": {
-        "snapshot-provenance": {
+        "source": {
             "provider":"X-AMPL",
             "last-updated": "2023-07-12T15:05:43.044267100-07:00",
             "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00"

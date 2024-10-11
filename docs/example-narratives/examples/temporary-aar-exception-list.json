@@ -1,6 +1,6 @@
 [
   {
-    "provenance": {
+    "source": {
       "provider":"X-AMPL",
       "last-updated": "2023-07-12T15:05:43.044267100-07:00",
       "origin-id": "//trolie.example.com/temporary-aar-exceptions/46f7212b-1633-4c30-ba71-c6e987b2ded7"
@@ -26,18 +26,18 @@
       "mva": 160
     },
     "emergency-operating-limits": [
-      { 
+      {
         "duration-name": "emergency",
         "limit": {
           "mva": 165
         }
       },
-      { 
+      {
         "duration-name": "load-shed",
         "limit": {
           "mva": 170
         }
-      }     
+      }
     ],
     "reason": "High wildfire risk forecasted until mid-day 7/13/25"
   }
