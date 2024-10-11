@@ -28,26 +28,8 @@ the original question for clarity, based on our reading of them.
 
 ### Does the TROLIE interface handle day/night ratings?
 
-The TROLIE Specification currently has no particular means to differentiate
-ratings based on the ambient conditions that were used to determine the ratings.
-
-When a Ratings Provider proposes ratings to TROLIE, they do so according to
-their own Facility Ratings Methodology which must, per the Order, take
-insolation into account. Typically, active insolation is assumed to occur at a
-facility between sunrise and sunset, but this remains a factor determined solely
-by the Ratings Provider, not the TROLIE Clearinghouse Provider (Reliability
-Coordinator), so the Specification has no concept of "day/night".
-
-There are multiple ways to interpret this question that could imply
-useful extensions to TROLIE:
-
-1.  Is it important to track whether the rating provided is based on a
-    day or night rating? Is this a common use case for interop?
-2.  Currently, the exchange of temperature-to-rating tables is not in TROLIE scope.
-    Should it be? Is this a common enough interop need?
-
-Please submit further questions or propose TROLIE scope changes at
-[https://github.com/trolie/spec/issues](https://github.com/trolie/spec/issues).
+Update 2024-10-09: See the
+[FAQ](../faq.md#does-the-trolie-interface-handle-daynight-ratings).
 
 ### How does CIM relate to the TROLIE Specification?
 
