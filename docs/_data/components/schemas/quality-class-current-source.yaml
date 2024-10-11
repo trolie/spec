@@ -1,0 +1,21 @@
+type: string
+description: |
+
+  This property is modeled after the Quality Class called "Current Source"
+  in ICCP. It is used to indicate the source of the current value of the
+  proposed rating. The natural mapping of this property to the kinds of ratings
+  or rating sources described in Order 881 is as follows.
+
+  | ICCP        | TROLIE            |
+  --------------|--------------------
+  | telemetered | DLR               |
+  | calculated  | AAR               |
+  | estimated   | Recourse Rating  / time-bound static rating |
+  | manual      | Operator Override |
+
+enum:
+  - Telemetered
+  - Calculated
+  - Estimated
+  - Manual
+default: Calculated
