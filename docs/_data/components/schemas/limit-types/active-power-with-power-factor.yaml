@@ -1,5 +1,5 @@
 type: object
-title: Active Power
+title: Active Power and Power Factor
 additionalProperties: false
 properties:
   mw:
@@ -8,5 +8,12 @@ properties:
     format: float
     minimum: 1
     maximum: 10000
+  pf:
+    type: number
+    description: Assumed power factor.
+    format: float
+    minimum: 0
+    maximum: 1
 required:
   - mw
+  - pf
