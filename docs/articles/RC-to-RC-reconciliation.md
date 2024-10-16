@@ -3,7 +3,7 @@ title: RC-to-RC Reconciliation
 parent: Articles
 ---
 
-# Reconciling AARs on Tie Lines
+# Reconciling AARs on RC-RC Interties
 
 In TROLIE's simplest usage, rating providers send rating proposals to Transmission Providers
 using the workflow described in [Forecast Submittal](../example-narratives/submitting-forecasts.md).  
