@@ -150,4 +150,4 @@ The seam monitoring set, as described above, would be derived by finding the ove
 `B-out`.  This monitoring set has various uses in monitoring system behavior:
 
 * If the TROLIE implementation pre-configures the expected seam, then this configuration may be checked against the seam modeling set for differences, therefore spotting modeling errors.  
-* [RC-to-RC Reconciliation](RC-to-RC-reconciliation.md) shows how the seam monitoring set may be used to monitor reconciliation of ratings across RCs.  
+* [RC-to-RC Reconciliation](RC-to-RC-reconciliation) shows how the seam monitoring set may be used to monitor reconciliation of ratings across RCs.  
