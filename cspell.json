@@ -43,6 +43,8 @@
         ,"Vernova"
         ,"Vmax"
         ,"Vmin"
+        ,"RLR"
+        ,"GLR"
     ],
     "ignoreWords": [
         "AMPL"

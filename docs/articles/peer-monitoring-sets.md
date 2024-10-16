@@ -10,7 +10,8 @@ using the workflow described in [Forecast Submittal](../example-narratives/submi
 
 However, two neighboring Transmission Providers, each running independent clearinghouses, will also
 have to share ratings.  Each TROLIE server must be able to act as a client to achieve this coordination, 
-with each reaching out to one another.  
+with each reaching out to one another.  These Transmission Providers also serve in the NERC role of 
+Reliability Coordinator (RC), which will be the term used throughout this article.  
 
 This article specifically covers coordination of resource models on the seam between reliability 
 coordinators, or really any two TROLIE implementations that can act as peers.  It uses each RC's 
@@ -149,4 +150,4 @@ The seam monitoring set, as described above, would be derived by finding the ove
 `B-out`.  This monitoring set has various uses in monitoring system behavior:
 
 * If the TROLIE implementation pre-configures the expected seam, then this configuration may be checked against the seam modeling set for differences, therefore spotting modeling errors.  
-* In future articles, we will show how the seam monitoring set may be used to monitor reconciliation of ratings across RCs.  
+* [RC-to-RC Reconciliation](RC-to-RC-reconciliation.md) shows how the seam monitoring set may be used to monitor reconciliation of ratings across RCs.  

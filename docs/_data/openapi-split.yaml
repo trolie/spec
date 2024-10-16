@@ -201,11 +201,15 @@ paths:
     $ref: paths/limits_forecast-snapshot.yaml#/current
   /limits/forecast-snapshot/{period}:
     $ref: paths/limits_forecast-snapshot.yaml#/historical
+  /limits/regional/forecast-snapshot:
+    $ref: paths/limits_forecast-snapshot.yaml#/regional    
   /rating-proposals/realtime:
     $ref: paths/rating-proposals_realtime.yaml
 
   /limits/realtime-snapshot:
-    $ref: paths/limits_realtime-snapshot.yaml
+    $ref: paths/limits_realtime-snapshot.yaml#/global
+  /limits/regional/realtime-snapshot:
+    $ref: paths/limits_realtime-snapshot.yaml#/regional    
   /rating-proposals/forecast:
     $ref: paths/rating-proposals_forecasts.yaml
 

@@ -4,7 +4,7 @@ current:
     summary: Limits Forecast Snapshot
     tags:
       - Forecasting
-    parameters:
+    parameters: &commonParams
       - $ref: ../components/parameters/offset-period-start.yaml
       - $ref: ../components/parameters/period-end.yaml
       - $ref: ../components/parameters/monitoring-set-filter.yaml
@@ -102,3 +102,25 @@ historical:
       <<: *responses
       '410':
         $ref: '../openapi-split.yaml#/components/responses/410-problem'
+
+regional:
+  get:
+    <<: *get
+    operationId: getRegionalLimitsForecastSnapshot
+    summary: Regional Limits Forecast Snapshot
+    parameters: *commonParams
+    description: |
+    
+      Similar to [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot), 
+      except that it specifically returns only the latest **regionally** limiting ratings
+      used by the Transmission Provider.  
+
+      This is explicitly designed to be used when reconciling forecasts between Transmission Providers
+      in order to generate globally limiting ratings for general use.  See the article on 
+      [RC-to-RC Reconciliation](https://trolie.energy/articles/RC-to-RC-reconciliation.html) for more details.
+
+      Outside of this use case, most users should use
+      [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot) to get globally
+      limiting ratings.  
+
+    responses: *responses   

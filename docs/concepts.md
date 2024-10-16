@@ -172,7 +172,8 @@ to the limit "clearing" process internal to TROLIE server implementations that
 will integrate them into a final in-use rating set. In-use limit Snapshots are
 a distinct data set from Proposals. Proposals may be queried as well as
 submitted, so that the rating provider's original input data is always kept
-separately from the in-use ratings.
+separately from the in-use ratings.  The values in rating proposals are also 
+known as locally limiting ratings or [LLRs](#locally-limiting-rating).  
 
 ## Seasonal Ratings
 
@@ -214,7 +215,9 @@ the provided static rating in lieu of an AAR for a specified period of time.
 As implied above, Snapshots are generated in TROLIE server implementations based
 on proposals and other inputs to generate in-use ratings for each Transmission
 Facility. TROLIE allows for ratings providers to fetch the latest snapshot, aka
-the latest "version" of the ratings data.
+the latest "version" of the ratings data.  Depending on the context, limit 
+snapshots may represent either [RLRs](#regionally-limiting-rating) or 
+[GLRs](#globally-limiting-rating).  
 
 ## Forecast Window
 
@@ -254,3 +257,24 @@ possible, so that the data may be exchanged in a more accurate and precise manne
 such as "winter" may sometimes be provided as hints, seasonal rating schedules are ultimately defined in terms 
 of start and end dates.  Seasonal ratings in TROLIE are represented in terms of start and end dates, and 
 TROLIE servers may decide how to enforce adherence to specific named seasons that they use.  
+
+## Locally Limiting Rating
+Locally Limiting Ratings (LLRs) refer to the output of individual ratings calculations, 
+pre-clearinghouse.  LLRs are what is represented in rating [proposals](#ratings-proposals) in 
+TROLIE.  Nominally, LLRs are used as RLRs, and ultimately as GLRs.  This is ultimately subject 
+to the output of the clearinghouse.  
+
+## Regionally Limiting Rating
+Regionally Limiting Ratings (RLRs) refer to the output of rating clearinghouses for a particular Transmission 
+Provider.  For most facilities, these are the ratings the system is operated to.  These ratings 
+are the best they can be based on knowledge within the Transmission Provider's region.  RLRs for most facilities
+are naturally Globally Limiting Ratings (GLRs).  However, for interties 
+between transmission providers, known colloquially as "tie lines", RLRs are incomplete.  They need to be
+reconciled with the appropriate neighbor clearinghouse to be known as GLRs.  
+
+## Globally Limiting Rating
+Globally Limiting Ratings (GLRs) refer to the resulting ratings that the power grid is operated to _after_ 
+all ratings have been coordinated.  For most facilities, these should simply be RLRs passed through.  However,
+this is not the case for inter-ties across Transmission Providers, colloquially known as tie lines.  RLRs on
+tie-lines must be reconciled across the different regions in order to become global.  The word "global" implies 
+that the rating now incorporates knowledge across regions.  

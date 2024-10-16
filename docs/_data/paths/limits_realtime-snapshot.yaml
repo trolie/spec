@@ -1,59 +1,85 @@
-get:
-  operationId: getRealTimeLimits
-  description: |
+global:
+  get:
+    operationId: getRealTimeLimits
+    description: |
 
-    Obtain the System Operating Limits in-use by the Transmission Provider.
+      Obtain the System Operating Limits in-use by the Transmission Provider.
 
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
-    limiting is done on a per Ratings Provider basis, so requests from
-    independent clients used by the same provider count against the same quota.
+      Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+      and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+      limiting is done on a per Ratings Provider basis, so requests from
+      independent clients used by the same provider count against the same quota.
 
-  summary: Limits Real Time Snapshot
-  tags:
-    - Real-Time
-  parameters:
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
-  responses:
-    '200':
-      description: The System Operating Limits snapshot is returned.
-      content:
-        application/vnd.trolie.realtime-limits-snapshot.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot"
-          example:
-            $ref: '../../example-narratives/examples/realtime-limit-set.json'
-        application/vnd.trolie.realtime-limits-detailed-snapshot.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-detailed-snapshot"
-          example:
-              $ref: '../../example-narratives/examples/realtime-limit-set-detailed.json'
-        application/vnd.trolie.realtime-limits-snapshot-slim.v1+json:
-          schema:
-            $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot-slim"
-          example:
-            $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
-      headers:
-        $ref: '../openapi-split.yaml#/components/responses/204/headers'
-    '304':
-      $ref: '../openapi-split.yaml#/components/responses/304'
-    '400':
-      $ref: '../openapi-split.yaml#/components/responses/400-problem'
-    '401':
-      $ref: '../openapi-split.yaml#/components/responses/401-empty'
-    '403':
-      $ref: '../openapi-split.yaml#/components/responses/403-empty'
-    '404':
-      $ref: '../openapi-split.yaml#/components/responses/404-empty'
-    '406':
-      $ref: '../openapi-split.yaml#/components/responses/406-empty'
-    '429':
-      $ref: '../openapi-split.yaml#/components/responses/429-empty'
-    '500': &unexpected-error-empty
-      $ref: '../openapi-split.yaml#/components/responses/500-empty'
-    default: *unexpected-error-empty
+    summary: Limits Real Time Snapshot
+    tags:
+      - Real-Time
+    parameters: &params
+      - $ref: ../components/parameters/monitoring-set-filter.yaml
+      - $ref: ../components/parameters/facility-filter.yaml
+    responses: &responses
+      '200':
+        description: The System Operating Limits snapshot is returned.
+        content:
+          application/vnd.trolie.realtime-limits-snapshot.v1+json:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot"
+            example:
+              $ref: '../../example-narratives/examples/realtime-limit-set.json'
+          application/vnd.trolie.realtime-limits-detailed-snapshot.v1+json:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-detailed-snapshot"
+            example:
+                $ref: '../../example-narratives/examples/realtime-limit-set-detailed.json'
+          application/vnd.trolie.realtime-limits-snapshot-slim.v1+json:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot-slim"
+            example:
+              $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
+        headers:
+          $ref: '../openapi-split.yaml#/components/responses/204/headers'
+      '304':
+        $ref: '../openapi-split.yaml#/components/responses/304'
+      '400':
+        $ref: '../openapi-split.yaml#/components/responses/400-problem'
+      '401':
+        $ref: '../openapi-split.yaml#/components/responses/401-empty'
+      '403':
+        $ref: '../openapi-split.yaml#/components/responses/403-empty'
+      '404':
+        $ref: '../openapi-split.yaml#/components/responses/404-empty'
+      '406':
+        $ref: '../openapi-split.yaml#/components/responses/406-empty'
+      '429':
+        $ref: '../openapi-split.yaml#/components/responses/429-empty'
+      '500': &unexpected-error-empty
+        $ref: '../openapi-split.yaml#/components/responses/500-empty'
+      default: *unexpected-error-empty
 
-  security:
-    - oauth2-primary-flow:
-        - read:operating-snapshot
+    security: &security
+      - oauth2-primary-flow:
+          - read:operating-snapshot
+
+regional:
+  get:
+    operationId: getRegionalRealTimeLimits
+    description: |
+
+      Similar to [getRealTimeLimits](#tag/Real-Time/operation/getRealTimeLimits), 
+      except that it specifically returns only the latest **regionally** limiting ratings
+      used by the Transmission Provider.  
+
+      This is explicitly designed to be used when reconciling real-time ratings between Transmission Providers
+      in order to generate globally limiting ratings for general use.  See the article on 
+      [RC-to-RC Reconciliation](https://trolie.energy/articles/RC-to-RC-reconciliation.html) for more details.
+
+      Outside of this use case, most users should use
+      [getRealTimeLimits](#tag/Real-Time/operation/getRealTimeLimits) to get globally
+      limiting ratings.  
+
+
+    summary: Regional Limits Real Time Snapshot
+    tags:
+      - Real-Time
+    parameters: *params
+    responses: *responses
+    security: *security
