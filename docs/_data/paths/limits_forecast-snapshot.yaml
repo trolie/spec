@@ -112,15 +112,22 @@ regional:
     description: |
     
       Similar to [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot), 
-      except that it specifically returns only the latest **regionally** limiting ratings
+      except that it specifically returns only the latest **regionally** limiting ratings 
+      ([RLRs](https://trolie.energy/concepts#regionally-limiting-rating))
       used by the Transmission Provider.  
 
       This is explicitly designed to be used when reconciling forecasts between Transmission Providers
-      in order to generate globally limiting ratings for general use.  See the article on 
+      in order to generate globally limiting ratings ([GLRs](https://trolie.energy/concepts#globally-limiting-rating))
+      for general use.  See the article on 
       [RC-to-RC Reconciliation](https://trolie.energy/articles/RC-to-RC-reconciliation.html) for more details.
 
       Outside of this use case, most users should use
       [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot) to get globally
       limiting ratings.  
+
+      Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
+      and the `ETag` of a previous `GET` response to poll this endpoint. Rate
+      limiting is done on a per Ratings Provider basis, so requests from
+      independent clients used by the same provider count against the same quota.          
 
     responses: *responses   
