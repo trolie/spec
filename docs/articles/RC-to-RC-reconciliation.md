@@ -67,7 +67,7 @@ sequenceDiagram
   Clock->>RC TROLIE: Trigger for RLR clearinghouse
   RC TROLIE->>RC TROLIE: Generate RLR snapshot
 
-  Neighbor RC 2->>RC TROLIE: Return RLR snapshot
+  Neighbor RC 1->>RC TROLIE: Return RLR snapshot
 
   Clock->>RC TROLIE: Trigger for GLR clearinghouse
   RC TROLIE->>RC TROLIE: Generate GLR snapshot
@@ -85,7 +85,7 @@ sequence numbers in the diagram above:
 5.  Neighbor RC 2 may clear its RLRs before the RC TROLIE is ready to clear its own RLRs.  The RC TROLIE must account for this in its design.  
 6.  At an appointed time, the forecast clearinghouse for RLRs starts.  All proposals for that forecast window _should_ have been submitted.  
 7.  RC TROLIE generates a forecast snapshot with RLRs.  It is available for other neighbor RCs to query.  
-8.  Neighbor RC2 clears its RLRs, shortly after they are cleared in the RC TROLIE.  RC TROLIE becomes aware of this for use in generating GLRs.  
+8.  Neighbor RC 1 clears its RLRs, shortly after they are cleared in the RC TROLIE.  RC TROLIE becomes aware of this for use in generating GLRs.  
 9.  At an appointed time, the forecast clearinghouse for GLRs starts.  All RLR forecasts from neighboring RCs _should_ have been created and be visible to the RC TROLIE.  
 10.  RC TROLIE generates GLR snapshot, that makes deltas to its original RLR snapshot, accommodating the RLR snapshots it received from Neighbor RCs 1 and 2.  Note that it never received anything from RC 3.  This is a contingency that the RC TROLIE must handle.  If RC 3 doesn't generate a forecast on time, then the RC TROLIE should be explicitly aware of that and engage in whatever recourse logic necessary to handle missing data from RC 3.  
 
