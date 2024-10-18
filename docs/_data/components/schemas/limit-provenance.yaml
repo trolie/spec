@@ -1,63 +1,75 @@
-type: object
-description: Given a limit value, a set of data defining the provenance of that limit.
-properties:
-  proposals-considered:
-    description: |
+forecast: &forecast
+  type: object
+  description: Contains the provenance data for a given limit.
+  properties: &props
+    proposals-considered: &considered
+      description: |
 
-      The forecast proposals provided by the Ratings Providers during the
-      Forecast Window for this limits snapshot.
+        The ratings proposals provided by the Ratings Providers that were
+        considered when determining the limits of the facility for a specific
+        period.
 
-    type: array
-    maxItems: &max-proposals 10
-    items:
-      allOf:
-        - $ref: 'forecast-limit-period.yaml#/proposal-considered'
-        - type: object
-          properties:
-            resource-id:
-              $ref: ./resource-id.yaml
+        If `resource-id` is not provided for a proposal, the ratings proposal is
+        assumed to be for the overall facility nominated by the `resource-id` of
+        this limit.
+        
+        If it is provided, it corresponds to the [segment](https://trolie.energy/concepts#segments).
 
-  temporary-aar-exceptions:
-    description: |
+      type: array
+      maxItems: &max-proposals 10
+      items:
+        $ref: 'proposal-considered.yaml#/forecast'
 
-      The temporary AAR exceptions for the facility that were active when this
-      snapshot was generated.
+    temporary-aar-exceptions:
+      description: |
 
-    type: array
-    maxItems: *max-proposals
-    items:
-      $ref: ./resource-id.yaml
+        The temporary AAR exceptions for the facility that were active when this
+        snapshot was generated.
 
-  overrides:
-    type: array
-    minItems: 0
-    maxItems: *max-proposals
-    items:
+      type: array
+      maxItems: *max-proposals
+      items:
+        $ref: ./resource-id.yaml
+
+    overrides:
+      type: array
+      minItems: 0
+      maxItems: *max-proposals
+      items:
+        type: object
+        properties:
+          override:
+            $ref: ./limit-data.yaml
+          override-reason:
+            type: string
+            description:
+
+              Indicates that this limit was overridden for some reason, the reason
+              itself.
+
+            format: free-text
+            maxLength: 500
+        required:
+          - override
+          - override-reason
+
+    additional-data:
+      description: |
+
+        Implementors may use this object to provide freeform extensions with
+        additional traceability / provenance data to be included with the limit.
+        Schema of this object is out of scope of the TROLIE specification.
+
       type: object
-      properties:
-        override:
-          $ref: ./limit-data.yaml
-        override-reason:
-          type: string
-          description:
 
-            Indicates that this limit was overridden for some reason, the reason
-            itself.
+  required:
+    - proposals-considered
 
-          format: free-text
-          maxLength: 500
-      required:
-        - override
-        - override-reason
-
-  additional-data:
-    description: |
-
-      Implementors may use this object to provide freeform extensions with
-      additional traceability / provenance data to be included with the limit.
-      Schema of this object is out of scope of the TROLIE specification.
-
-    type: object
-
-required:
-  - proposals-considered
+real-time:
+  <<: *forecast
+  properties:
+    <<: *props
+    proposals-considered:
+      <<: *considered
+      items:
+        $ref: 'proposal-considered.yaml#/real-time'

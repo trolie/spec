@@ -208,7 +208,7 @@ realtime-limits-snapshot:
       <<: *max
       description: Real-time limits
       items:
-        $ref: ./realtime-limit-item.yaml
+        $ref: './realtime-limit-item.yaml#/normal'
 
 realtime-limits-detailed-snapshot:
   type: object
@@ -220,7 +220,7 @@ realtime-limits-detailed-snapshot:
       <<: *max
       description: Real-time limits including provenance.
       items:
-        $ref: ./realtime-limit-item-detailed.yaml
+        $ref: './realtime-limit-item.yaml#/detailed'
 
 realtime-limits-snapshot-slim:
   type: object
@@ -243,7 +243,17 @@ realtime-proposal:
       <<: *max
       description: Real-Time Ratings Proposals
       items:
-        $ref: 'realtime-limit-period.yaml#/proposal'
+        type: object
+        description: >
+          Real-time ratings data for a segment.
+        allOf:
+        - type: object
+          properties:
+            resource-id:
+              $ref: ./resource-id.yaml
+          required:
+          - resource-id
+        - $ref: ./limit-proposal.yaml
 
   required:
   - proposal-header

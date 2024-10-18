@@ -43,9 +43,11 @@
       "period-end":"2025-07-12T16:00:00-07:00",
       "proposals-considered": [
         {
+          "resource-id": "8badf00d-UTILITY-A-SEG-id",
           "source":{
             "last-updated": "2025-07-12T14:10:12-07:00",
-            "provider": "UTILITY-A"
+            "provider": "UTILITY-A",
+            "origin-id": "8badf00d-UTILITY-A-correlation-id"
           },
           "period-start":"2025-07-12T15:00:00-07:00",
           "period-end":"2025-07-12T16:00:00-07:00",
@@ -74,9 +76,11 @@
             }
           ]
         },{
+          "resource-id": "8badf00d-UTILITY-B-SEG-id",
           "source":{
             "last-updated": "2025-07-12T14:10:12-07:00",
-            "provider": "UTILITY-B"
+            "provider": "UTILITY-B",
+            "origin-id": "8badf00d-UTILITY-B-correlation-id"
           },
           "period-start":"2025-07-12T15:00:00-07:00",
           "period-end":"2025-07-12T16:00:00-07:00",
