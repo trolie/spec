@@ -104,7 +104,7 @@ historical:
         $ref: '../openapi-split.yaml#/components/responses/410-problem'
 
 regional:
-  get:
+  get: &regional
     <<: *get
     operationId: getRegionalLimitsForecastSnapshot
     summary: Regional Limits Forecast Snapshot
@@ -128,6 +128,30 @@ regional:
       Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
       and the `ETag` of a previous `GET` response to poll this endpoint. Rate
       limiting is done on a per Ratings Provider basis, so requests from
-      independent clients used by the same provider count against the same quota.          
+      independent clients used by the same provider count against the same quota.
 
-    responses: *responses   
+    responses: *responses
+
+    security:
+      - oauth2-primary-flow:
+          - read:regional-operating-snapshot
+
+  post:
+    <<: *regional
+    operationId: postRegionalLimitsForecastSnapshot
+    summary: Update Regional Limits Forecast Snapshot
+    parameters: []
+    description: |
+
+      Update the Regional Limits Forecast with a Regional Limits Forecast
+      Snapshot from an adjacent Transmission Provider (Reliability Coordinator)
+      that does not conform to the TROLIE peering profile as described in
+      [RC-to-RC Reconciliation](https://trolie.energy/articles/RC-to-RC-reconciliation.html).
+
+    requestBody:
+      $ref: ./rating-proposals_forecasts.yaml#/patch/requestBody
+    responses:
+      $ref: ./rating-proposals_forecasts.yaml#/patch/responses
+    security:
+      - oauth2-primary-flow:
+          - write:regional-operating-snapshot
