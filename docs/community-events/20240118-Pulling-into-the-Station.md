@@ -4,7 +4,7 @@ parent: Community Events
 ---
 
 {: .announcement }
-Join us on Wednesday November 20th, 2024 at 1:30pm ET for the webinar [A Lap Around TROLIE 1.0](javascript:alert('TODO'))!
+Join us on Wednesday November 20th, 2024 at 1:30pm ET for the webinar [A Lap Around TROLIE 1.0](https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-a-lap-around-trolie-10/)!
 
 # Pulling into the Station--TROLIE 1.0 Nears Journey's End
 
