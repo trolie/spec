@@ -54,6 +54,14 @@ temporary-aar-exception: &time-bound-static-limit
     - continuous-operating-limit
     - emergency-operating-limits
 
+temporary-aar-exception-provenance:
+  <<: *time-bound-static-limit
+  required:
+    - id
+    - start-time
+    - continuous-operating-limit
+    - emergency-operating-limits
+
 seasonal-override-request:
   <<: *time-bound-static-rating
   description: |

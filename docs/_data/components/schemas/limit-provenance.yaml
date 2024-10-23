@@ -29,7 +29,7 @@ forecast: &forecast
       type: array
       maxItems: *max-proposals
       items:
-        $ref: ./resource-id.yaml
+        $ref: 'time-bound-static-ratings.yaml#/temporary-aar-exception-provenance'
 
     overrides:
       type: array
