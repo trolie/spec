@@ -49,6 +49,10 @@ forecast: &forecast
 
             format: free-text
             maxLength: 500
+          start-time:
+            $ref: ./period-start.yaml
+          end-time:
+            $ref: ./period-start.yaml
         required:
           - override
           - override-reason
