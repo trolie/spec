@@ -3,7 +3,7 @@
         "begins": "2023-07-12T16:00:00-07:00",
         "source": {
             "provider": "X-AMPL-RC",
-            "last-updated": "2023-07-12T16:00:00-07:00",
+            "last-updated": "2024-07-12T16:00:00-07:00",
             "origin-id": "//trolie.example.com/snapshots/2024-08-05T11%3a00%3a00-07%3a00"
         },
         "default-emergency-durations": [
@@ -82,7 +82,7 @@
                     ],
                     "temporary-aar-exceptions": [
                         {
-                            "id": "284928-2025-07-12T16:00:00-07:00",
+                            "id": "https://trolie.example.com/temporary-aar-exceptions/1234",
                             "source": {
                                 "origin-id": "2d8c80e8-f533-4be9-85bf-f7f81eb73d67",
                                 "provider": "UTILITY-A",
@@ -120,32 +120,19 @@
                     ],
                     "overrides": [
                         {
-                            "override": {
-                                "continuous-operating-limit": {
-                                    "mva": 160
-                                },
-                                "emergency-operating-limits": [
-                                    {
-                                        "duration-name": "lte",
-                                        "limit": {
-                                            "mva": 165
-                                        }
-                                    },
-                                    {
-                                        "duration-name": "ste",
-                                        "limit": {
-                                            "mva": 170
-                                        }
-                                    },
-                                    {
-                                        "duration-name": "dal",
-                                        "limit": {
-                                            "mva": 180
-                                        }
-                                    }
-                                ]
+                            "continuous-operating-limit": {
+                                "mva": 160
                             },
-                            "override-reason": "TOI 20250701-01"
+                            "emergency-operating-limits": [
+                                {
+                                    "duration-name": "lte",
+                                    "limit": {
+                                        "mva": 165
+                                    }
+                                }
+                            ],
+                            "override-reason": "TOI 20250701-01",
+                            "start-time": "2025-07-01T00:00:00-07:00"
                         }
                     ],
                     "additional-data": {

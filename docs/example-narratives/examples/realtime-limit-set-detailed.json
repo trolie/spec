@@ -151,32 +151,19 @@
       ],
       "overrides": [
         {
-          "override": {
-            "continuous-operating-limit": {
-              "mva": 160
-            },
-            "emergency-operating-limits": [
-              {
-                "duration-name": "lte",
-                "limit": {
-                  "mva": 165
-                }
-              },
-              {
-                "duration-name": "ste",
-                "limit": {
-                  "mva": 170
-                }
-              },
-              {
-                "duration-name": "dal",
-                "limit": {
-                  "mva": 180
-                }
-              }
-            ]
+          "continuous-operating-limit": {
+            "mva": 160
           },
-          "override-reason": "TOI 20250701-01"
+          "emergency-operating-limits": [
+            {
+              "duration-name": "lte",
+              "limit": {
+                "mva": 165
+              }
+            }
+          ],
+          "override-reason": "TOI 20250701-01",
+          "start-time": "2025-07-01T00:00:00-07:00"
         }
       ],
       "additional-data": {

@@ -48,10 +48,16 @@ given period:
 { // note that other fields have been elided for clarity
   "proposals-considered": [],
   "temporary-aar-exceptions": [],
-  "override-reason": ""
+  "overrides": []
 }
 ```
-Let's explore these three fields, starting with `proposals-considered`.
+
+Note there's no explicit indication that a particular proposal's continuous
+rating set the continuous limit or that a proposal's emergency duration rating
+was used for the emergency limit. However, this can be reconstructed by
+examining the inputs, i.e., `proposals-considered`, `overrides`, and
+`temporary-aar-exceptions`.  Let's explore these three fields, starting with
+`proposals-considered`.
 
 ### Proposals Considered
 
@@ -64,20 +70,23 @@ Here's an example of a `proposals-considered` entry when there is only one
 Ratings Provider for the facility.
 
 ```jsonc
-{ // some fields elided for clarity
-    "resource-id": "8badf00d-UTILITY-A-SEG-id", // logical segment id
-    "source":{
-      "last-updated": "2025-07-12T14:10:12-07:00",
-      "provider": "UTILITY-A",
-      "origin-id": "8badf00d-UTILITY-A-correlation-id" // from original ratings proposal message
-    },
-    "proposal-disposition": "Used",
-    "continuous-operating-limit": { "mva": 150 },
-    "emergency-operating-limits": [
-        { "duration-name": "emergency",
-          "limit": { "mva": 165 }
-        }
-    ]
+{ // several fields elided for clarity
+  "proposals-considered":[
+  {
+      "resource-id": "8badf00d-UTILITY-A-SEG-id", // logical segment id
+      "source":{
+        "last-updated": "2025-07-12T14:10:12-07:00",
+        "provider": "UTILITY-A",
+        "origin-id": "8badf00d-UTILITY-A-correlation-id" // from original ratings proposal message
+      },
+      "proposal-disposition": "Used",
+      "continuous-operating-limit": { "mva": 150 },
+      "emergency-operating-limits": [
+          { "duration-name": "emergency",
+            "limit": { "mva": 165 }
+          }
+      ]
+  }]
 }
 ```
 
@@ -188,28 +197,37 @@ Such is the case with [Temporary AAR Exceptions](../concepts.md#temporary-aar-ex
 ```jsonc
 { // fields have been elided for clarity
   "proposals-considered": [],
-  "temporary-aar-exceptions": [ "https://trolie.example.com/temporary-aar-exceptions/1234" ],
-  "override-reason": ""
+  "temporary-aar-exceptions": [
+    {
+      "id": "https://trolie.example.com/temporary-aar-exceptions/1234",
+      "start-time": "2025-07-12T16:00:00-07:00",
+      "end-time": "2025-08-01T00:00:00-07:00", // optional
+      "continuous-operating-limit": { "mva": 160 },
+      "emergency-operating-limits": [ /* emergency limits elided */],
+      "source": { // optional
+        "origin-id": "2d8c80e8-f533-4be9-85bf-f7f81eb73d67",
+        "provider": "UTILITY-A",
+        "last-updated": "2025-07-12T16:00:00-07:00"
+      },
+      "resource": { // optional
+        "resource-id": "8badf00d-UTILITY-A-SEG", // segment
+        "alternate-identifiers": [ /* if present, must have at least one entry */]
+      }
+    }
+  ],
+  "overrides": []
 }
 ```
 
 The presence of an entry in `temporary-aar-exceptions` indicates that there was
-an active temporary AAR exception for that period, but note that only the unique
-identifier of the exception is provided. The example identifier is meant to
-illustrate a clearinghouse provider using a URL to identify exceptions: This
-could be used to [obtain more details about the exception](../spec#tag/Temporary-AAR-Exceptions/operation/getTemporaryAARException),
-such as what the static ratings were for the exception and which Ratings
-Obligation it is satisfies.
-
-{: .important }
-
-The provenance information in the detailed representations is not meant to allow
-for a perfect reconstruction of the clearing process nor is it meant to be
-sufficient (on its own) to populate the transparency archive required by Order 881.
-Rather it supports troubleshooting and post facto analysis of how limits
-were determined. For example, there's no explicit indication that a particular
-proposal's continuous rating set the continuous limit or that a
-proposal's emergency duration rating was used for the emergency limit.
+an active temporary AAR exception for that period. Note that only the `id`,
+`start-time`, and the limit values are required. The `end-time` is optional to
+accommodate situations where an estimate for an outage resolution is
+unavailable. The `source` property (if provided) would indicate what upstream
+system originally created the exception, and the `resource` property serves the
+same function as `resource-id` in `proposals-considered`, i.e., it nominates the
+underlying power system resource that has the exception if it is not the overall
+facility.
 
 ### Operator Overrides
 
@@ -220,9 +238,28 @@ an override was in place for the given period.
 { // fields have been elided for clarity
   "proposals-considered": [],
   "temporary-aar-exceptions": [],
-  "override-reason": "TO requests static rating until forced outage #123456 is resolved."
+  "overrides": [
+    {
+      "continuous-operating-limit": {
+        "mva": 160
+      },
+      "emergency-operating-limits": [ /* elided for clarity */ ],
+      "override-reason": "TOI 20250701-01",
+      "start-time": "2025-07-12T16:00:00-07:00",
+      "end-time":   "2025-09-12T16:00:00-07:00", // optional
+      "id": "ems-operator-override-id-1", // optional
+      "resource": { "resource-id": "8badf00d-UTILITY-A-SEG" }, // optional
+      "source": { // optional
+        "last-updated": "2025-07-12T14:10:12-07:00",
+        "provider": "ISO-A",
+        "origin-id": "8badf00d-ISO-A-outage-id"
+      }
+    }
+  ]
 }
 ```
 
-Again, we do not have the actual override value defined here, but the limit
-itself is assumed to be value of the override.
+Typically only a single override would be present if at all, but it's possible
+that a jointly-owned facility might have concurrent overrides on multiple
+segments, for example. Most of the provenance information for the override is
+optional; the primary use case for that info is debugging and troubleshooting.
