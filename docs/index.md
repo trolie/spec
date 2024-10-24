@@ -21,11 +21,10 @@ class="fa-solid fa-envelope"></i>](https://lists.lfenergy.org/g/trolie-general).
 {: .announcement }
 
 > **Latest Updates** <i class="fa-solid fa-bullhorn"></i>
+> 
+> Join us on Wednesday November 20th, 2024 at 1:30pm ET for the webinar [A Lap Around TROLIE 1.0](https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-a-lap-around-trolie-10/)!
 >
-> The TROLIE maintainers are pleased to announce that the [Real-Time API](/spec#tag/Real-Time) specification is stable.
-> Read more in the [milestone announcement](./community-events/20240701-RealTime-API-stable).
->
-> If you are new to the project, consider watching the replay of the [Intro to TROLIE webinar](./community-events/20240221-Intro-to-TROLIE)
+> Read more in the [latest status update](./community-events/20240118-Pulling-into-the-Station.md).
 
 # Introduction
 
