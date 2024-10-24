@@ -15,7 +15,7 @@ to wrap up, including [documentation improvements](https://github.com/trolie/spe
 and [some small refinements to the media types](https://github.com/trolie/spec/milestone/7),
 but the [use cases in 1.0 scope](#supported-use-cases) are satisfied by the current [spec](https://trolie.energy/spec).
 
-Since our last [Community Post](../community-events/), we've accomplished a lot.
+Since our last [Community Post](../community_events.md), we've accomplished a lot.
 
 * Defined [RC-to-RC rating reconciliation](../articles/RC-to-RC-reconciliation.md) and the underlying
   [monitoring set reconciliation pattern](../articles/peer-monitoring-sets.md)
