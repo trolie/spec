@@ -35,7 +35,7 @@ allOf:
                 provided, we cannot specify a definitive list of units, but
                 implementors are encouraged to use UnitSymbol from CIM when
                 appropriate: The CIM may not include appropriate units for
-                all inputs, e.g., wind speed.
+                all inputs, e.g., wind speed, degrees Fahrenheit, etc.
               format: unit
               maxLength: 50
           required:
