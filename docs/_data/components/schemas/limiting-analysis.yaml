@@ -1,0 +1,35 @@
+type: string
+description: |
+
+  Indicates how a operating limit was determined. This is used to
+  provide context for the ratings proposals and limits snapshots. When defined
+  in the header, this is assumed to apply to any limit that does not specify its
+  own limiting analysis. When defined for a period, it applies to the
+  `continuous-operating-limit` as well as the associated
+  `emergency-operating-limits`, unless the `emergency-operating-limits` specify
+  their own limiting analysis.
+
+  THERMAL_RATING - The limit was determined by the thermal rating of underlying
+  equipment.
+
+  TRANSIENT_SECURITY_ASSESSMENT - Studies of the system's transient stability
+  determined the limit.
+
+  VOLTAGE_SECURITY_ASSESSMENT - Studies of the system's voltage stability determined the limit.
+
+  SMALL_SIGNAL_STABILITY_ASSESSMENT - Small-signal stability studies determined the limit.
+
+  CONTRACT_CAPACITY_LIMIT - The available facility transfer capacity is limited by contractual obligations.
+
+  REGULATORY_CONSTRAINTS - The limit is imposed by regulatory requirements.
+
+  OTHER - The limit was determined by some other means not anticipated in this standard.
+
+enum:
+  - THERMAL_RATING
+  - TRANSIENT_SECURITY_ASSESSMENT
+  - VOLTAGE_SECURITY_ASSESSMENT
+  - SMALL_SIGNAL_STABILITY_ASSESSMENT
+  - CONTRACT_CAPACITY_LIMIT
+  - REGULATORY_CONSTRAINTS
+  - OTHER

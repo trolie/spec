@@ -40,6 +40,8 @@ limit-value-set:
       duration-name: *emergency-kind-name
       limit:
         $ref: ./limit.yaml
+      limiting-analysis:
+        $ref: ./limiting-analysis.yaml
     required:
     - duration-name 
     - limit
