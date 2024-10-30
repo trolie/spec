@@ -58,7 +58,7 @@ gh_edit_view_mode: "tree"
 defaults:
   -
     scope:
-      path: ""
+      path: "*.md"
       type: "pages"
     values:
       layout: "analytics"
