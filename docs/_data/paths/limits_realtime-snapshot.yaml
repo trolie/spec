@@ -30,7 +30,7 @@ global:
               $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-detailed-snapshot"
             example:
                 $ref: '../../example-narratives/examples/realtime-limit-set-detailed.json'
-          application/vnd.trolie.realtime-limits-snapshot-slim.v1+json:
+          application/vnd.trolie.realtime-limits-snapshot-slim.v1+json; limit-type=apparent-power:
             schema:
               $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot-slim"
             example:

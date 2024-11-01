@@ -12,7 +12,7 @@ forecast-limits-snapshot:
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
 
-forecast-limits-slim-snapshot:
+forecast-limits-snapshot-slim:
   type: object
   description: A snapshot of the forecast for a monitoring set.
   properties:
