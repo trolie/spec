@@ -21,15 +21,19 @@ description: |
   SMALL_SIGNAL_STABILITY_ASSESSMENT - Small-signal stability studies determined
   the limit.
 
-  SYSTEM_SPECIFIC_CONSTRAINTS - This could account for limits imposed by
-  specific system characteristics, such as the presence of sensitive loads, the
-  need to maintain specific power flows, or other reliability/volatility
-  reasons.
+  SYSTEM_SPECIFIC - This could account for limits imposed by specific system
+  characteristics, such as the presence of sensitive loads, the need to maintain
+  specific power flows, or other reliability/volatility reasons. These include
+  limits defined by Special Protection Schemes and Remedial Action Schemes.
 
-  CONTRACT_CAPACITY_LIMIT - The available facility transfer capacity is limited
+  ENVIRONMENTAL_CONDITIONS - The limit was determined by exceptional
+  environmental conditions such as wildfire risk, ice loading, excessive
+  wind/galloping, or other factors.
+
+  CONTRACT_CAPACITY - The available facility transfer capacity is limited
   by contractual obligations.
 
-  REGULATORY_CONSTRAINTS - The limit is imposed by regulatory requirements.
+  REGULATORY_REQUIREMENTS - The limit is imposed by regulatory requirements.
 
   OTHER - The limit was determined by some other means not anticipated in this
   standard.
@@ -39,7 +43,8 @@ enum:
   - TRANSIENT_SECURITY_ASSESSMENT
   - VOLTAGE_SECURITY_ASSESSMENT
   - SMALL_SIGNAL_STABILITY_ASSESSMENT
-  - SYSTEM_SPECIFIC_CONSTRAINTS
-  - CONTRACT_CAPACITY_LIMIT
-  - REGULATORY_CONSTRAINTS
+  - SYSTEM_SPECIFIC
+  - ENVIRONMENTAL_CONDITIONS
+  - REGULATORY_REQUIREMENTS
+  - CONTRACT_CAPACITY
   - OTHER
