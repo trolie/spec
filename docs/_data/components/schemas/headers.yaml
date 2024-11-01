@@ -9,6 +9,8 @@ common-header: &common-header
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
     power-system-resources:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+    default-limiting-analysis:
+      $ref: ./limiting-analysis.yaml
 
   required:
     - source
@@ -89,6 +91,7 @@ forecast-proposal-slim-header:
 forecast-snapshot-header-elide-psr:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties: &forecast-snapshot-header-elide-psr-props
+    <<: *common-header-props
     begins:
       <<: *begins
       description: |
@@ -139,12 +142,7 @@ forecast-snapshot-slim-header:
 real-time-snapshot-header:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    source:
-      $ref: ./data-provenance.yaml
-    power-system-resources:
-      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
-    default-emergency-durations:
-      $ref: ./array-max-emergency-durations.yaml#/emergency-durations
+    <<: *common-header-props
   required:
     - source
     - power-system-resources

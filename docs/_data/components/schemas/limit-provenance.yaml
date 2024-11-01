@@ -12,7 +12,7 @@ forecast: &forecast
         If `resource-id` is not provided for a proposal, the ratings proposal is
         assumed to be for the overall facility nominated by the `resource-id` of
         this limit.
-        
+
         If it is provided, it corresponds to the [segment](https://trolie.energy/concepts#segments).
 
       type: array
@@ -29,29 +29,14 @@ forecast: &forecast
       type: array
       maxItems: *max-proposals
       items:
-        $ref: ./resource-id.yaml
+        $ref: 'time-bound-static-ratings.yaml#/temporary-aar-exception-provenance'
 
     overrides:
       type: array
       minItems: 0
       maxItems: *max-proposals
       items:
-        type: object
-        properties:
-          override:
-            $ref: ./limit-data.yaml
-          override-reason:
-            type: string
-            description:
-
-              Indicates that this limit was overridden for some reason, the reason
-              itself.
-
-            format: free-text
-            maxLength: 500
-        required:
-          - override
-          - override-reason
+        $ref: 'time-bound-static-ratings.yaml#/operator-override-limit-provenance'
 
     additional-data:
       description: |
