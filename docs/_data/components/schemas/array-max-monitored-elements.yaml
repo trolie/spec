@@ -1,4 +1,4 @@
-forecast-limits-snapshot:
+forecast-limits-snapshot: &forecast-limit-snapshot
   type: object
   description: A snapshot of the forecast for a monitoring set.
   properties:
@@ -11,9 +11,12 @@ forecast-limits-snapshot:
       description: Set of forecast limits
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
+  required:
+    - snapshot-header
+    - limits
 
 forecast-limits-snapshot-slim:
-  type: object
+  <<: *forecast-limit-snapshot
   description: A snapshot of the forecast for a monitoring set.
   properties:
     snapshot-header:
@@ -23,21 +26,35 @@ forecast-limits-snapshot-slim:
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
 
-forecast-limits-detailed-snapshot:
-  type: object
+forecast-limits-snapshot-elide-psr:
+  <<: *forecast-limit-snapshot
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/forecast-snapshot-header-elide-psr
+    limits: *max
+
+forecast-limits-detailed-snapshot-elide-psr: &forecast-limit-detailed
+  <<: *forecast-limit-snapshot
   description: |
 
     A detailed snapshot of the forecast for a monitoring set. These details are
     meant to support analysis, archival, and troubleshooting.
 
-  properties:
+  properties: &forecast-limit-detailed-props
     snapshot-header:
-      $ref: ./headers.yaml#/forecast-snapshot-header
+      $ref: ./headers.yaml#/forecast-snapshot-header-elide-psr
     limits:
       <<: *max
       description: Forecast including provenance information.
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+
+forecast-limits-detailed-snapshot:
+  <<: *forecast-limit-detailed
+  properties:
+    <<: *forecast-limit-detailed-props
+    snapshot-header:
+      $ref: ./headers.yaml#/forecast-snapshot-header
 
 named-power-system-resources: &psr
   <<: *max
