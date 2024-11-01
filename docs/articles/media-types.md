@@ -114,12 +114,6 @@ details.
 #### Slim Media Types
 {: .no_toc }
 
-{: .nb }
-> At the time of this writing,
-> `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json` is the only
-> "slim" media type that has been implemented, but others are
-> [planned](https://github.com/trolie/spec/issues/152).
-
 The media types in the table above are verbose because they make intentional
 trade-offs between efficiency and other qualities. For more information please
 review the article [Performance Trade-offs in the TROLIE Schema Design](./tradeoffs).
@@ -128,148 +122,10 @@ Because the TROLIE specification chose to [leverage media types to evolve the
 interface](../decision-log/media-type-versioning), the project was able to
 implement a "slim" media type use for seasonal ratings,
 `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json`, that
-complements `application/vnd.trolie.seasonal-ratings-proposal.v1+json`. This
-"slim" format is much more space-efficient but requires a few processing steps
-and assumptions:
-
-1. The `limit-type` used in the proposal is specified by the Ratings Provider as
-a parameter of the media type. The `limit-type` chosen determines the layout of
-the ratings values.
-2. The ratings are provided in order of decreasing duration, e.g., continuous
-then emergency then load shed.
-3. The facilities are required to be in the same order they appear in the
-header.
-4. The seasons are required to be in the same order they appear in the header.
-5. Each forecast must have the number of hourly forecasts corresponding to the
-new header field hours with the assumption that the begins header is the first
-entry and each subsequent entry represents the subsequent hour's forecast.
-
-This is discussed in further detail in the
-[spec](../spec#schema/seasonal-proposals-slim). Here we can breakdown a concrete
-example. We'll start with a `curl` request, then discuss the HTTP request itself
-in two parts, the headers then the JSON payload.
-
-##### `curl` Example
-{: .no_toc }
-
-{% include_relative snippets/_accept-header-placeholder-warning.md %}
-```sh
-curl -X PATCH \
-     -H "Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power" \
-     -H "Accept: application/vnd.trolie.seasonal-ratings-proposal-status.v1+json, */*" \
-     -d @seasonal-ratings.json \
-     $TROLIE_SERVER_URL/ratings-proposals/seasonal
-```
-
-{: .important }
-> The `limit-type` parameter in the `Content-Type` header (line 2 above) is
-> required by the TROLIE specification for the
-> `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json` media type, as
-> no default `limit-type` can be assumed. See [Limit
-> Types](../spec#tag/limit-type) for the other options defined in the spec.
+complements `application/vnd.trolie.seasonal-ratings-proposal.v1+json`.
 
 {: .nb }
-> The `Accept` header in this example specifies one of the 
-> [Status Responses](#status-responses).
-
-##### HTTP Headers
-{: .no_toc }
-
-The previous `curl` request would result in an HTTP request like the following:
-
-```http
-PATCH /ratings-proposals/seasonal HTTP/1.1
-Host: trolie.example.com
-Accept: application/vnd.trolie.seasonal-ratings-proposal-status.v1+json, */*
-Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
-```
-
-##### Payload
-{: .no_toc }
-
-{: .important }
-> For illustrative purposes here, we present the JSON payload with inline
-> comments.  However, comments are **not** permitted in the TROLIE media types.
-
-```jsonc
-{
-  "proposal-header": {
-    "source": { /* ...details elided for clarity... */ },
-    "default-emergency-durations": [
-      { "name": "emergency", "duration-minutes": 240 },
-      { "name": "load shed", "duration-minutes": 15  }
-    ],
-    "power-system-resources": [
-      { "resource-id": "8badf00d",
-        "alternate-identifiers": [ { "name": "segmentX", "authority": "TO-NERC-ID" } ]
-      }, {
-        "resource-id": "f34d3d",
-        "alternate-identifiers": [ { "name": "segmentY", "authority": "TO-NERC-ID" } ]
-      }
-    ],
-    "default-seasonal-schedule": {
-      "schedule": [
-        { "season-name": "WINTER", "begins": "2024-11-15T00:00:00-05:00" },
-        { "season-name": "SPRING", "begins": "2025-03-01T00:00:00-05:00" },
-        { "season-name": "SUMMER", "begins": "2025-06-15T00:00:00-05:00" },
-        { "season-name": "FALL",   "begins": "2025-09-01T00:00:00-05:00" }
-      ],
-      "ends": "2025-11-15T00:00:00-05:00"
-    }
-  },
-  "ratings": [
-    // note all values are assumed to be MVA because the header in this example
-    // Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
-    // specifies the apparent-power limit type which has a single value of MVA
-    // see https://trolie.energy/spec#tag/limit-type
-
-    [ // resource-id: 8badf00d
-      [ // season-name: WINTER
-        160, //continuous MVA
-        170, //emergency MVA
-        200, //load shed MVA
-      ],
-      [ // season-name: SPRING
-        155, //continuous MVA
-        160, //emergency MVA
-        200  //load shed MVA
-      ],
-      [ // season-name: SUMMER
-        145, //continuous MVA
-        150, //emergency MVA
-        200  //load shed MVA
-      ],
-      [ // season-name: FALL
-        155, //continuous MVA
-        160, //emergency MVA
-        200  //load shed MVA
-      ]
-    ],
-    [ // resource-id: f34d3d
-      [ // season-name: WINTER
-        161, //continuous MVA
-        171, //emergency MVA
-        201  //load shed MVA
-      ],
-      [ // season-name: SPRING
-        156, //continuous MVA
-        161, //emergency MVA
-        201  //load shed MVA
-      ],
-      [ // season-name: SUMMER
-        146, //continuous MVA
-        151, //emergency MVA
-        201  //load shed MVA
-      ],
-      [ // season-name: FALL
-        156, //continuous MVA
-        161, //emergency MVA
-        201  //load shed MVA
-      ]
-    ]
-  ]
-}
-```
+> For more information see [Using Slim Media Types](../example-narratives/using-slim-media-types)
 
 ### Status Responses
 
