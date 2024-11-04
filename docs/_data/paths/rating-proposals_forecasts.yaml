@@ -104,8 +104,15 @@ patch:
       application/vnd.trolie.rating-forecast-proposal-slim.v1+json; limit-type=apparent-power:
         schema:
           $ref: ../components/schemas/array-max-monitored-elements.yaml#/forecast-proposal-slim
-        example:
-          $ref: ../../example-narratives/examples/forecast-ratings-proposal-slim-patch.json
+        examples:
+          "No Inputs Provided":
+            summary: No Inputs Provided in the Forecast Proposal
+            value:
+              $ref: ../../example-narratives/examples/forecast-ratings-proposal-slim-patch.json
+          "Dry Bulb Temp Provided":
+            summary: Dry Bulb Temp Provided in the Forecast Proposal
+            value:
+              $ref: ../../example-narratives/examples/forecast-ratings-proposal-slim-patch-dry-bulb.json
 
   responses:
     '202':

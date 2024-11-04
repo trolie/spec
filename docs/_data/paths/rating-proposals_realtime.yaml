@@ -112,8 +112,11 @@ post:
       application/vnd.trolie.rating-realtime-proposal-slim.v1+json; limit-type=apparent-power:
         schema: 
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal-slim"
-        example:
-          $ref: ../../example-narratives/examples/realtime-proposal-slim-patch.json
+        examples:
+          "No Inputs Provided":
+            summary: No Inputs Provided in the Real-Time Proposal
+            value:
+              $ref: ../../example-narratives/examples/realtime-proposal-slim-patch.json
   responses:
     '202':
       description: |
