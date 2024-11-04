@@ -6,7 +6,7 @@ toc: true
 ---
 
 # Temporary Ratings
-FERC order 881 includes a provision for a "reliability safety valve" that allows grid operators
+FERC Order 881 includes a provision that allows grid operators
 to temporarily set aside AARs to address immediate threats to reliability by 
 temporarily using an alternate static rating for a facility.  These temporary ratings used 
 must be documented and stored in a database, accessible for 5 years.  
