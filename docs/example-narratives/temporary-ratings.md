@@ -17,7 +17,7 @@ TROLIE includes two kinds of temporary ratings objects:
 * [**Seasonal Overrides**](../concepts#seasonal-overrides) are to be used by the Clearinghouse in lieu of seasonal ratings on a temporary basis. Their structure is identical to Temporary AAR Exceptions (assuming DAY/NIGHT seasonal ratings are not involved).  However, the use cases are quite different.  Examples include:
   * For resources that are AAR-exempt and only support seasonal ratings, the Seasonal Override serves a similar purpose to Temporary AAR Exceptions.  
   * Adjacent Transmission Providers update seasonal ratings independently. Sometimes these changes are temporary or occur on an offset schedule. Seasonal Overrides provide a tool to handle these updates without requiring a model build. 
-  * If for any reason it makes sense to temporarily update the recourse rating for a given resource.  
+  * Where the seasonal rating is used as a recourse rating, a Seasonal Override is effectively the recourse rating.
 
 ## Creating Temporary Ratings
 Temporary ratings, whether they be Temporary AAR Exceptions or Seasonal Overrides, are created in 
