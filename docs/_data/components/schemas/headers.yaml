@@ -1,22 +1,24 @@
-common-header: &common-header
+base-header: &base-header
   type: object
-
-  properties: &common-header-props
+  properties: &base-header-props
     source:
       $ref: ./data-provenance.yaml
-
     default-emergency-durations:
       $ref: ./array-max-emergency-durations.yaml#/emergency-durations
-    power-system-resources:
-      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
     default-limiting-analysis:
       $ref: ./limiting-analysis.yaml
+  additionalProperties: false
 
+common-header: &common-header
+  <<: *base-header
+  properties: &common-header-props
+    <<: *base-header-props
+    power-system-resources:
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
   required:
     - source
     - default-emergency-durations
     - power-system-resources
-  additionalProperties: false
 
 real-time-proposal-header: &forecast-proposal-header
   <<: *common-header
@@ -93,7 +95,7 @@ forecast-snapshot-header-elide-psr:
     Details about the snapshot provided by the Clearinghouse provider. The
     `power-system-resources` property is omitted from this header.
   properties: &forecast-snapshot-header-elide-psr-props
-    <<: *common-header-props
+    <<: *base-header-props
     begins:
       <<: *begins
       description: |
@@ -141,13 +143,17 @@ forecast-snapshot-slim-header:
     - power-system-resources
     - default-emergency-durations
 
-real-time-snapshot-header:
+real-time-snapshot-header-elide-psr:
   description: Details about the snapshot provided by the Clearinghouse provider.
   properties:
-    <<: *common-header-props
+    <<: *base-header-props
   required:
     - source
-    - power-system-resources
+    - default-emergency-durations
+
+real-time-snapshot-header:
+  <<: *common-header
+  description: Details about the snapshot provided by the Clearinghouse provider.
 
 seasonal-proposal-header:
   <<: *common-header

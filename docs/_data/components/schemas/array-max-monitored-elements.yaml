@@ -67,9 +67,6 @@ forecast-limits-snapshot-slim:
           - name
           - values
           - unit
-  required:
-    - snapshot-header
-    - limits
 
 forecast-limits-snapshot-elide-psr:
   <<: *forecast-limit-snapshot
@@ -265,10 +262,10 @@ real-time-proposal-status:
     - invalid-proposal-count
     - proposal-validation-errors
 
-realtime-limits-snapshot:
+realtime-limits-snapshot: &realtime-limit-snapshot
   type: object
   description: A snapshot of the realtime limits for a monitoring set.
-  properties:
+  properties: &realtime-limit-snapshot-props
     snapshot-header:
       $ref: ./headers.yaml#/real-time-snapshot-header
     limits:
@@ -276,25 +273,15 @@ realtime-limits-snapshot:
       description: Real-time limits
       items:
         $ref: './realtime-limit-item.yaml#/normal'
-
-realtime-limits-detailed-snapshot:
-  type: object
-  description: A snapshot of the realtime limits for a monitoring set.
-  properties:
-    snapshot-header:
-      $ref: ./headers.yaml#/real-time-snapshot-header
-    limits:
-      <<: *max
-      description: Real-time limits including provenance.
-      items:
-        $ref: './realtime-limit-item.yaml#/detailed'
+  required:
+    - snapshot-header
+    - limits
 
 realtime-limits-snapshot-slim:
-  type: object
+  <<: *realtime-limit-snapshot
   description: A snapshot of the realtime limits for a monitoring set.
   properties:
-    snapshot-header:
-      $ref: ./headers.yaml#/real-time-snapshot-header
+    <<: *realtime-limit-snapshot-props
     limits:
       <<: *max
       description: Real-time limits
@@ -320,9 +307,32 @@ realtime-limits-snapshot-slim:
               format: float
               nullable: true
 
-  required:
-    - snapshot-header
-    - limits
+realtime-limits-snapshot-elide-psr:
+  <<: *realtime-limit-snapshot
+  properties:
+    <<: *realtime-limit-snapshot-props
+    snapshot-header:
+      $ref: ./headers.yaml#/real-time-snapshot-header-elide-psr
+
+realtime-limits-detailed-snapshot-elide-psr:
+  <<: *realtime-limit-snapshot
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/real-time-snapshot-header-elide-psr
+    limits:
+      <<: *max
+      description: Real-time limits including provenance.
+      items:
+        $ref: './realtime-limit-item.yaml#/detailed'
+
+realtime-limits-detailed-snapshot:
+  <<: *realtime-limit-snapshot
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    <<: *realtime-limit-snapshot-props
+    limits:
+     $ref: "#/realtime-limits-detailed-snapshot-elide-psr/properties/limits"
 
 realtime-proposal:
   type: object
