@@ -21,6 +21,11 @@ get:
             $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot-detailed
           example:
             $ref: '../../example-narratives/examples/seasonal-ratings-snapshot-detailed.json'
+        application/vnd.trolie.seasonal-rating-snapshot-detailed.v1+json; include-psr-header=false:
+          schema:
+            $ref: ../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-snapshot-detailed-elide-psr
+          example:
+            $ref: '../../example-narratives/examples/seasonal-ratings-snapshot-detailed-elide-psr.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
 

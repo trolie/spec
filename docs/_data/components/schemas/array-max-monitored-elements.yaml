@@ -459,25 +459,40 @@ seasonal-ratings-proposal-status:
     - incomplete-obligation-count
     - invalid-proposal-count
 
-seasonal-ratings-snapshot:
+seasonal-ratings-snapshot: &seasonal-rating-snapshot
   type: object
   description: A snapshot of the seasonal ratings for a monitoring set.
-  properties: &seasonal-rating-snapshot-props
+  properties: 
     snapshot-header:
       $ref: ./headers.yaml#/common-header
     ratings:
       <<: *max
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+  required:
+    - snapshot-header
+    - ratings
+
 
 seasonal-ratings-snapshot-detailed:
+  <<: *seasonal-rating-snapshot
   description: A snapshot of the seasonal ratings for a monitoring set.
   properties:
-    <<: *seasonal-rating-snapshot-props
+    snapshot-header:
+      $ref: ./headers.yaml#/common-header
     ratings:
       <<: *max
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item-detailed
+
+seasonal-ratings-snapshot-detailed-elide-psr:
+  <<: *seasonal-rating-snapshot
+  description: A snapshot of the seasonal ratings for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/base-header
+    ratings:
+      $ref: "#/seasonal-ratings-snapshot-detailed/properties/ratings"
 
 temporary-aar-exception-set:
   type: array

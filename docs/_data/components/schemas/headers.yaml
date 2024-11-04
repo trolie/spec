@@ -8,6 +8,9 @@ base-header: &base-header
     default-limiting-analysis:
       $ref: ./limiting-analysis.yaml
   additionalProperties: false
+  required:
+    - source
+    - default-emergency-durations
 
 common-header: &common-header
   <<: *base-header
@@ -144,12 +147,8 @@ forecast-snapshot-slim-header:
     - default-emergency-durations
 
 real-time-snapshot-header-elide-psr:
+  <<: *base-header
   description: Details about the snapshot provided by the Clearinghouse provider.
-  properties:
-    <<: *base-header-props
-  required:
-    - source
-    - default-emergency-durations
 
 real-time-snapshot-header:
   <<: *common-header
