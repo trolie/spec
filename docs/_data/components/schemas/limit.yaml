@@ -10,6 +10,21 @@ description: |
   `application/problem+json` response if they receive a proposal in an
   unsupported but valid limit type as defined here.
 
+  When used as the media type parameter `limit-type`, these are nominated by
+  the following names.
+
+    * `active-power`
+    * `active-power-with-power-factor`
+    * `apparent-power`
+    * `current`
+    * `current-with-kV`
+    * `reactive-power`
+    * `overvoltage-threshold-pu`
+    * `overvoltage-threshold`
+    * `undervoltage-threshold-pu`
+    * `undervoltage-threshold`
+
+
 oneOf:
   - $ref: './limit-types/active-power.yaml'
   - $ref: './limit-types/active-power-with-power-factor.yaml'
