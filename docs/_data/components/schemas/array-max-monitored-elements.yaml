@@ -22,6 +22,51 @@ forecast-limits-slim-snapshot:
       <<: *max
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+    inputs-used: &inputs-used-slim
+      description: |
+
+        Optional list of quantities used as input to the ratings determination.
+        The particular information exchange determines which values may be expected
+        as well as the conventions used to represent those values. This property
+        is included to prescribe a way to include these inputs.
+
+      type: array
+      minItems: 1
+      maxItems: 50
+      items: &inputs-used-slim-items
+        type: object
+        properties: &inputs-used-slim-items-props
+          name:
+            type: string
+            format: free-text
+            maxLength: 50
+          values: &inputs-used-slim-items-props-values
+            <<: *max
+            description: >
+              Since this is expected to be used for wind speed or temperature,
+              we expect an array of numbers for each resource. An empty array
+              is used to indicate that the inputs are not available for a
+              particular resource. This could occur if the inputs were not provided
+              by the Ratings Provider or if a recourse rating was utilized.
+            items:
+              $ref: ./array-max-forecast-periods.yaml#/resource-forecast-inputs
+          unit:
+            type: string
+            description: |
+              Since we are not specifying which inputs shall be
+              provided, we cannot specify a definitive list of units, but
+              implementors are encouraged to use UnitSymbol from CIM when
+              appropriate: The CIM may not include appropriate units for
+              all inputs, e.g., wind speed, degrees Fahrenheit, etc.
+            format: unit
+            maxLength: 50
+        required:
+          - name
+          - values
+          - unit
+  required:
+    - snapshot-header
+    - limits
 
 forecast-limits-detailed-snapshot:
   type: object
@@ -38,6 +83,9 @@ forecast-limits-detailed-snapshot:
       description: Forecast including provenance information.
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+  required:
+    - snapshot-header
+    - limits
 
 named-power-system-resources: &psr
   <<: *max
@@ -76,6 +124,8 @@ forecast-proposal-slim:
       description: Forecasted Ratings
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+    inputs-used:
+      <<: *inputs-used-slim
   required:
     - proposal-header
     - ratings
@@ -208,7 +258,7 @@ realtime-limits-snapshot:
       <<: *max
       description: Real-time limits
       items:
-        $ref: ./realtime-limit-item.yaml
+        $ref: './realtime-limit-item.yaml#/normal'
 
 realtime-limits-detailed-snapshot:
   type: object
@@ -220,7 +270,7 @@ realtime-limits-detailed-snapshot:
       <<: *max
       description: Real-time limits including provenance.
       items:
-        $ref: ./realtime-limit-item-detailed.yaml
+        $ref: './realtime-limit-item.yaml#/detailed'
 
 realtime-limits-snapshot-slim:
   type: object
@@ -233,6 +283,29 @@ realtime-limits-snapshot-slim:
       description: Real-time limits
       items:
         $ref: 'array-max-emergency-ratings.yaml#/slim'
+    inputs-used:
+      <<: *inputs-used-slim
+      items:
+        <<: *inputs-used-slim-items
+        properties:
+          <<: *inputs-used-slim-items-props
+          values:
+            <<: *inputs-used-slim-items-props-values
+            description: |
+              This is aligned with the `limits` property such that each resource
+              entry is in the same position here.
+
+              A null is used to indicate that the input is not available for a
+              particular resource. This could occur if the inputs were not provided
+              by the Ratings Provider or if a recourse rating was utilized.
+            items:
+              type: number
+              format: float
+              nullable: true
+
+  required:
+    - snapshot-header
+    - limits
 
 realtime-proposal:
   type: object
@@ -243,8 +316,52 @@ realtime-proposal:
       <<: *max
       description: Real-Time Ratings Proposals
       items:
-        $ref: 'realtime-limit-period.yaml#/proposal'
+        type: object
+        description: >
+          Real-time ratings data for a segment.
+        allOf:
+        - type: object
+          properties:
+            resource-id:
+              $ref: ./resource-id.yaml
+          required:
+          - resource-id
+        - $ref: ./limit-proposal.yaml
 
+    inputs-used: &inputs-used-slim-rt
+      <<: *inputs-used-slim
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            format: free-text
+            maxLength: 50
+          values:
+            <<: *max
+            type: array
+            description: >
+              Since this is expected to be used for wind speed or temperature,
+              we expect an array of numbers for each resource. An empty array
+              is used to indicate that the inputs are not available for a
+              particular resource. This could occur if the inputs were not provided
+              by the Ratings Provider or if a recourse rating was utilized.
+            items:
+              $ref: ./array-max-forecast-periods.yaml#/resource-forecast-inputs
+          unit:
+            type: string
+            description: |
+              Since we are not specifying which inputs shall be
+              provided, we cannot specify a definitive list of units, but
+              implementors are encouraged to use UnitSymbol from CIM when
+              appropriate: The CIM may not include appropriate units for
+              all inputs, e.g., wind speed, degrees Fahrenheit, etc.
+            format: unit
+            maxLength: 50
+        required:
+          - name
+          - values
+          - unit
   required:
   - proposal-header
   - ratings
@@ -260,6 +377,8 @@ realtime-proposal-slim:
       description: Real-Time Ratings Proposals
       items:
         $ref: "array-max-emergency-ratings.yaml#/slim"
+    inputs-used:
+      <<: *inputs-used-slim
   required:
     - proposal-header
     - ratings

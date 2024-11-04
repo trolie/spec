@@ -26,7 +26,7 @@ Implementors should consider the specification stable in its support of the foll
 * Submitting Forecast Ratings Proposals
 * Obtaining Forecast Ratings Proposal Status
 * Obtaining Forecast Limits Snapshots, including:
-  - "Slim" snapshots that provide just the determined limits
+  - ~~Slim~~ Normal snapshots that provide just the determined limits
   - Detailed snapshots that provide all of the inputs used by the Clearinghouse
     Provider to determine the limits, including all proposals and overrides.
 

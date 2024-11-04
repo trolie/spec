@@ -1,9 +1,16 @@
-type: object
-allOf:
-  - type: object
-    properties:
-      resource-id:
-        $ref: ./resource-id.yaml
-  - $ref: ./limit-data.yaml
-required:
-  - resource-id
+normal:
+  type: object
+  allOf:
+    - type: object
+      properties:
+        resource-id:
+          $ref: ./resource-id.yaml
+      required:
+        - resource-id
+    - $ref: ./limit-data.yaml
+
+detailed:
+  type: object
+  allOf:
+    - $ref: '#/normal'
+    - $ref: './limit-provenance.yaml#/real-time'

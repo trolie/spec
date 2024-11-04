@@ -13,8 +13,8 @@ current:
     description: |
 
       Obtain the Limits Forecast the Transmission Provider is currently using in
-      Operations, relative to the current time. 
-      
+      Operations, relative to the current time.
+
       This operation uses media types to control verbosity of the data
       fetched. The default media type,
       `application/vnd.trolie.forecast-limits-snapshot.v1+json`, simply includes
@@ -26,7 +26,7 @@ current:
       Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
       and the `ETag` of a previous `GET` response to poll this endpoint. Rate
       limiting is done on a per Ratings Provider basis, so requests from
-      independent clients used by the same provider count against the same quota.    
+      independent clients used by the same provider count against the same quota.
 
     responses: &responses
       '200':
@@ -104,30 +104,54 @@ historical:
         $ref: '../openapi-split.yaml#/components/responses/410-problem'
 
 regional:
-  get:
+  get: &regional
     <<: *get
     operationId: getRegionalLimitsForecastSnapshot
     summary: Regional Limits Forecast Snapshot
     parameters: *commonParams
     description: |
-    
-      Similar to [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot), 
-      except that it specifically returns only the latest **regionally** limiting ratings 
+
+      Similar to [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot),
+      except that it specifically returns only the latest **regionally** limiting ratings
       ([RLRs](https://trolie.energy/concepts#regionally-limiting-rating))
-      used by the Transmission Provider.  
+      used by the Transmission Provider.
 
       This is explicitly designed to be used when reconciling forecasts between Transmission Providers
       in order to generate globally limiting ratings ([GLRs](https://trolie.energy/concepts#globally-limiting-rating))
-      for general use.  See the article on 
+      for general use.  See the article on
       [RC-to-RC Reconciliation](https://trolie.energy/articles/RC-to-RC-reconciliation.html) for more details.
 
       Outside of this use case, most users should use
       [getLimitsForecastSnapshot](#tag/Forecasting/operation/getLimitsForecastSnapshot) to get globally
-      limiting ratings.  
+      limiting ratings.
 
       Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
       and the `ETag` of a previous `GET` response to poll this endpoint. Rate
       limiting is done on a per Ratings Provider basis, so requests from
-      independent clients used by the same provider count against the same quota.          
+      independent clients used by the same provider count against the same quota.
 
-    responses: *responses   
+    responses: *responses
+
+    security:
+      - oauth2-primary-flow:
+          - read:regional-operating-snapshot
+
+  post:
+    <<: *regional
+    operationId: postRegionalLimitsForecastSnapshot
+    summary: Update Regional Limits Forecast Snapshot
+    parameters: []
+    description: |
+
+      Update the Regional Limits Forecast with a Regional Limits Forecast
+      Snapshot from an adjacent Transmission Provider (Reliability Coordinator)
+      that does not conform to the TROLIE peering profile as described in
+      [RC-to-RC Reconciliation](https://trolie.energy/articles/RC-to-RC-reconciliation.html).
+
+    requestBody:
+      $ref: ./rating-proposals_forecasts.yaml#/patch/requestBody
+    responses:
+      $ref: ./rating-proposals_forecasts.yaml#/patch/responses
+    security:
+      - oauth2-primary-flow:
+          - write:regional-operating-snapshot
