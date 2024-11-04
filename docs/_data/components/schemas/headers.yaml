@@ -89,7 +89,9 @@ forecast-proposal-slim-header:
     - power-system-resources
 
 forecast-snapshot-header-elide-psr:
-  description: Details about the snapshot provided by the Clearinghouse provider.
+  description: |
+    Details about the snapshot provided by the Clearinghouse provider. The
+    `power-system-resources` property is omitted from this header.
   properties: &forecast-snapshot-header-elide-psr-props
     <<: *common-header-props
     begins:
@@ -170,9 +172,8 @@ seasonal-proposal-header-slim:
 
         Defines the seasonal schedule that is used in the proposal.  Each season
         is defined in the `schedule` array and the `ends` property defines the
-        end of the last season.
-
-        Each individual facility proposal must have 
+        end of the last season.  Each individual facility proposal must have
+        corresponding entry for each entry In the `schedule` array.
 
       properties:
         schedule:
