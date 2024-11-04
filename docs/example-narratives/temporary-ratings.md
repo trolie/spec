@@ -76,8 +76,8 @@ curl -d @output.json \
 "https://trolie.example.com/temporary-aar-exceptions/46f7212b-1633-4c30-ba71-c6e987b2ded7"
 ```
 
-Finally, the temporary rating may also have been created by mistake.  It may be 
-canceled by deleting it using 
+Finally, the temporary rating may also have been created by mistake.  As long as it hasn't started
+yet, it may be deleted it using 
 [deleteTemporaryAARException](../spec#tag/Temporary%20AAR%20Exceptions/operation/deleteTemporaryAARException)
 This can be done with the following command:
 
@@ -86,6 +86,9 @@ curl
 -X DELETE \
 "https://trolie.example.com/temporary-aar-exceptions/46f7212b-1633-4c30-ba71-c6e987b2ded7"
 ```
+
+Alternatively, if a temporary rating's window has begun, then it may be effectively "canceled" by updating its
+end time to the current time.  
 
 ## Searching for Temporary Ratings
 Temporary ratings that have been submitted to TROLIE may be searched, using either
