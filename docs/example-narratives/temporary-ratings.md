@@ -15,7 +15,7 @@ TROLIE includes two kinds of temporary ratings objects:
 
 * [**Temporary AAR Exceptions**](../concepts##temporary-aar-exception) are temporary exemptions from AAR obligations due to exceptional circumstances. These are records that include a time-bound set of static ratings against a particular resource, with a free-text explanation as to why the exception occurred.  This typically relates to an outage or other physical need to "de-rate" a line.  
 * [**Seasonal Overrides**](../concepts#seasonal-overrides) are to be used by the Clearinghouse in lieu of seasonal ratings on a temporary basis. Their structure is identical to Temporary AAR Exceptions (assuming DAY/NIGHT seasonal ratings are not involved).  However, the use cases are quite different.  Examples include:
-  * For resources that are AAR-exempt and only support seasonal ratings, the seasonal override serves a similar purpose to Temporary AAR Exceptions.  
+  * For resources that are AAR-exempt and only support seasonal ratings, the Seasonal Override serves a similar purpose to Temporary AAR Exceptions.  
   * Resources at Transmission Provider seams may have seasonal ratings updated at offset schedules.  Seasonal Overrides provide a tool to handle these offsets in operational systems.  
   * If for any reason it makes sense to temporarily update the recourse rating for a given resource.  
 
