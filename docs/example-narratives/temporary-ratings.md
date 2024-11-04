@@ -8,7 +8,7 @@ toc: true
 # Temporary Ratings
 FERC Order 881 includes a provision that allows grid operators
 to temporarily set aside AARs to address immediate threats to reliability by 
-temporarily using an alternate static rating for a facility.  These temporary ratings used 
+[temporarily using an alternate static rating](https://www.federalregister.gov/d/2021-27735/p-71) for a facility.  These temporary ratings used 
 must be documented and stored in a database, accessible for 5 years.  
 
 TROLIE includes two kinds of temporary ratings objects:
