@@ -45,6 +45,11 @@ global:
               $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot-slim"
             example:
               $ref: '../../example-narratives/examples/realtime-limit-set-slim.json'
+          application/vnd.trolie.realtime-limits-snapshot-slim.v1+json; limit-type=apparent-power; inputs-used=true:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-limits-snapshot-slim-inputs-used"
+            example:
+              $ref: '../../example-narratives/examples/realtime-limit-set-slim-dry-bulb.json'
         headers:
           $ref: '../openapi-split.yaml#/components/responses/204/headers'
       '304':

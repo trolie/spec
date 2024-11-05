@@ -279,14 +279,22 @@ realtime-limits-snapshot: &realtime-limit-snapshot
 
 realtime-limits-snapshot-slim:
   <<: *realtime-limit-snapshot
-  description: A snapshot of the realtime limits for a monitoring set.
-  properties:
+  description: A slim snapshot of the realtime limits for a monitoring set.
+  properties: &realtime-limit-snapshot-slim-props
     <<: *realtime-limit-snapshot-props
     limits:
       <<: *max
       description: Real-time limits
       items:
         $ref: 'array-max-emergency-ratings.yaml#/slim'
+
+realtime-limits-snapshot-slim-inputs-used:
+  <<: *realtime-limit-snapshot
+  description: |
+    A slim snapshot of the realtime limits for a monitoring set, including the
+    inputs used to determine the limits.
+  properties:
+    <<: *realtime-limit-snapshot-slim-props
     inputs-used:
       <<: *inputs-used-slim
       items:
@@ -306,6 +314,10 @@ realtime-limits-snapshot-slim:
               type: number
               format: float
               nullable: true
+  required:
+    - snapshot-header
+    - limits
+    - inputs-used
 
 realtime-limits-snapshot-elide-psr:
   <<: *realtime-limit-snapshot
