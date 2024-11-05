@@ -297,7 +297,7 @@ realtime-limits-snapshot: &realtime-limit-snapshot
       <<: *max
       description: Real-time limits
       items:
-        $ref: './period-limit.yaml#/rt-normal'
+        $ref: './period-limit.yaml#/realtime-snapshot'
   required:
     - snapshot-header
     - limits
@@ -361,7 +361,7 @@ realtime-limits-detailed-snapshot-elide-psr: &realtime-limit-detailed
       <<: *max
       description: Real-time limits including provenance.
       items:
-        $ref: './period-limit.yaml#/rt-detailed'
+        $ref: './period-limit.yaml#/realtime-snapshot-detailed'
     provenance:
       <<: *max
       items:
@@ -373,7 +373,7 @@ realtime-limits-detailed-snapshot-elide-psr: &realtime-limit-detailed
             type: array
             maxItems: 10
             items:
-              $ref: 'proposal-considered.yaml#/real-time'
+              $ref: 'period-limit.yaml#/real-time-provenance'
           temporary-aar-exceptions:
             <<: *considered
             items:

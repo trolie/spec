@@ -22,31 +22,28 @@ limit-data: &limit-data
     - continuous-operating-limit
     - emergency-operating-limits
 
-snapshot: &snapshot
+forecast-snapshot: &forecast-snapshot
   <<: *period
-  properties: &snapshot-props
+  properties: &forecast-snapshot-props
     <<: [*period-props, *limit-data-properties]
-  required: &snapshot-required
+  required: &forecast-snapshot-required
     - period-start
     - period-end
     - continuous-operating-limit
     - emergency-operating-limits
-snapshot-detailed:
-  <<: *snapshot
-  description: Period detailed limits including provenance
+
+forecast-snapshot-detailed:
+  <<: *forecast-snapshot
   properties:
-    <<: *snapshot-props
+    <<: *forecast-snapshot-props
     additional-data: &additional-data
       type: object
       description: |
-
         Implementors may use this object to provide freeform extensions with
         additional traceability / provenance data to be included with the limit.
         Schema of this object is out of scope of the TROLIE specification.
 
-  required: *snapshot-required
-
-rt-normal: &rt-normal
+realtime-snapshot: &rt-normal
   type: object
   properties: &rt-normal-props
     <<: *limit-data-properties
@@ -57,7 +54,7 @@ rt-normal: &rt-normal
     - continuous-operating-limit
     - emergency-operating-limits
 
-rt-detailed:
+realtime-snapshot-detailed:
   <<: *rt-normal
   properties:
     <<: *rt-normal-props
@@ -107,13 +104,13 @@ proposal: &proposal
           - name
           - value
 
-real-time-proposal:
+real-time-proposal: &real-time-proposal
   <<: *proposal
-  properties:
+  properties: &real-time-proposal-props
     <<: [*rt-normal-props, *proposal-props]
   required: *rt-normal-required
 
-forecast-proposal:
+forecast-proposal: &forecast-proposal
   <<: *proposal
   title: Forecasted Period
   description: |
@@ -121,7 +118,59 @@ forecast-proposal:
     e.g., a segment, that were forecasted for a particular Period in a Forecast
     Window. The status of the proposal as determined by the Clearinghouse is
     also included.
-  properties:
+  properties: &forecast-proposal-props
     <<: [*period-props, *proposal-props]
-  required: *snapshot-required
+  required: *forecast-snapshot-required
 
+provenance:
+  type: object
+  properties: &provenance-props
+    source:
+      $ref: ./data-provenance.yaml
+    proposal-disposition:
+      description: |
+
+        Despite a proposal being accepted by TROLIE, the downstream
+        Clearinghouse logic may still disqualify a proposal. This might
+        occur if, for example, the upper and lower reasonability limits are
+        not aligned between TROLIE and the Clearinghouse.  To aid
+        troubleshooting, the specification requires that TROLIE instances
+        explicitly indicate if the proposal was `Used` in the determination
+        of the limit or was `Rejected`.
+
+      type: string
+      enum:
+        - Used
+        - Rejected
+    resource-id:
+      $ref: ./resource-id.yaml
+  required:
+    - source
+    - proposal-disposition
+
+forecast-provenance:
+  <<: *forecast-proposal
+  description: >
+    Details a proposal that was considered by the Clearinghouse run.
+    If `resource-id` is not provided, the ratings data is assumed to be for the
+    overall facility.
+  properties:
+    <<: [*forecast-proposal-props, *provenance-props]
+  required:
+    - period-start
+    - period-end
+    - continuous-operating-limit
+    - emergency-operating-limits
+    - source
+    - proposal-disposition
+
+real-time-provenance:
+  <<: *real-time-proposal
+  properties:
+    <<: [*real-time-proposal-props, *provenance-props]
+  required:
+    - resource-id
+    - continuous-operating-limit
+    - emergency-operating-limits
+    - source
+    - proposal-disposition

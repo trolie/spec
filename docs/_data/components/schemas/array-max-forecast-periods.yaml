@@ -8,7 +8,7 @@ forecast-limit-item: &limit
       type: array
       maxItems: 300
       items:
-        $ref: 'period-limit.yaml#/snapshot'
+        $ref: 'period-limit.yaml#/forecast-snapshot'
   required:
     - resource-id
     - periods
@@ -20,7 +20,7 @@ forecast-limit-item-detailed:
     periods:
       <<: *periods
       items:
-        $ref: 'period-limit.yaml#/snapshot-detailed'
+        $ref: 'period-limit.yaml#/forecast-snapshot-detailed'
 
 resource-forecast-proposal:
   <<: *limit
@@ -55,7 +55,7 @@ proposals-considered: &considered
   type: array
   maxItems: 1200 # 300 periods * 4 proposals per period
   items:
-    $ref: 'proposal-considered.yaml#/forecast'
+    $ref: 'period-limit.yaml#/forecast-provenance'
 
 temporary-aar-exceptions:
   <<: *considered # 1200 active exceptions across a footprint in a 10-day window
