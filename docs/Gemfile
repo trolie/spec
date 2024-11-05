@@ -2,7 +2,7 @@ source ENV['GEM_REPO']
 
 gem "github-pages", "~> 232", group: :jekyll_plugins
 
-gem "webrick", "~> 1.8.2"
+gem "webrick", "~> 1.8"
 
 gem "just-the-docs"
 
