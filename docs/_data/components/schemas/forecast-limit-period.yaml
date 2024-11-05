@@ -33,4 +33,4 @@ snapshot-detailed:
   description: Period detailed limits including provenance
   allOf:
     - $ref: '#/snapshot'
-    - $ref: './limit-provenance.yaml#/forecast'
+    - $ref: './limit-provenance.yaml#/forecast/properties/additional-data'

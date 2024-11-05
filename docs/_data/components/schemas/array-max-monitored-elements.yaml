@@ -6,7 +6,7 @@ forecast-limits-snapshot: &forecast-limit-snapshot
       $ref: ./headers.yaml#/forecast-snapshot-header
     limits: &max
       type: array
-      minItems: 0
+      minItems: 1
       maxItems: &max-facilities 50000
       description: Set of forecast limits
       items:
@@ -97,9 +97,26 @@ forecast-limits-detailed-snapshot-elide-psr: &forecast-limit-detailed
       description: Forecast including provenance information.
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item-detailed'
+    provenance:
+      <<: *max
+      items:
+        type: object
+        properties:
+          resource-id:
+            $ref: ./resource-id.yaml
+          proposals-considered:
+            $ref: './array-max-forecast-periods.yaml#/proposals-considered'
+          temporary-aar-exceptions:
+            $ref: './array-max-forecast-periods.yaml#/temporary-aar-exceptions'
+          overrides:
+            $ref: './array-max-forecast-periods.yaml#/overrides'
+        required:
+          - resource-id
+          - proposals-considered
   required:
     - snapshot-header
     - limits
+    - provenance
 
 forecast-limits-detailed-snapshot:
   <<: *forecast-limit-detailed
