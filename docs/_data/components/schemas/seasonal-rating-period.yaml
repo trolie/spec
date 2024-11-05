@@ -3,7 +3,7 @@ proposal:
   description: Proposes the continuous and emergency ratings for the specified Season.
   title: Seasonal Rating Proposal
   allOf:
-    - $ref: 'period-limit.yaml#/proposal'
+    - $ref: 'period-limit.yaml#/forecast-proposal'
     - type: object
       properties:
         season-name:

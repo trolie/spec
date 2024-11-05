@@ -25,6 +25,7 @@ forecast-limits-snapshot-slim:
       <<: *max
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+
 forecast-limits-snapshot-slim-inputs-used:
   <<: *forecast-limit-snapshot
   description: |
@@ -406,19 +407,9 @@ realtime-proposal:
       <<: *max
       description: Real-Time Ratings Proposals
       items:
-        type: object
-        description: >
-          Real-time ratings data for a segment.
-        allOf:
-        - type: object
-          properties:
-            resource-id:
-              $ref: ./resource-id.yaml
-          required:
-          - resource-id
-        - $ref: ./limit-proposal.yaml
+        $ref: './period-limit.yaml#/real-time-proposal'
 
-    inputs-used: &inputs-used-slim-rt
+    inputs-used:
       <<: *inputs-used-slim
       items:
         type: object

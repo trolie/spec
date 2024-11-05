@@ -9,7 +9,7 @@ period: &period
     - period-start
     - period-end
 
-limit-data:
+limit-data: &limit-data
   type: object
   properties: &limit-data-properties
     continuous-operating-limit:
@@ -22,18 +22,52 @@ limit-data:
     - continuous-operating-limit
     - emergency-operating-limits
 
-proposal:
+snapshot: &snapshot
   <<: *period
-  title: Forecasted Period
-  description: |
-
-    A Forecasted Period contains proposed limits for a power system object,
-    e.g., a segment, that were forecasted for a particular Period in a Forecast
-    Window. The status of the proposal as determined by the Clearinghouse is
-    also included.
-
-  properties:
+  properties: &snapshot-props
     <<: [*period-props, *limit-data-properties]
+  required: &snapshot-required
+    - period-start
+    - period-end
+    - continuous-operating-limit
+    - emergency-operating-limits
+snapshot-detailed:
+  <<: *snapshot
+  description: Period detailed limits including provenance
+  properties:
+    <<: *snapshot-props
+    additional-data: &additional-data
+      type: object
+      description: |
+
+        Implementors may use this object to provide freeform extensions with
+        additional traceability / provenance data to be included with the limit.
+        Schema of this object is out of scope of the TROLIE specification.
+
+  required: *snapshot-required
+
+rt-normal: &rt-normal
+  type: object
+  properties: &rt-normal-props
+    <<: *limit-data-properties
+    resource-id:
+      $ref: ./resource-id.yaml
+  required: &rt-normal-required
+    - resource-id
+    - continuous-operating-limit
+    - emergency-operating-limits
+
+rt-detailed:
+  <<: *rt-normal
+  properties:
+    <<: *rt-normal-props
+    additional-data: *additional-data
+  required: *rt-normal-required
+
+proposal: &proposal
+  <<: *limit-data
+  properties: &proposal-props
+    <<: *limit-data-properties
     current-source:
       $ref: ./quality-class-current-source.yaml
     inputs-used:
@@ -72,47 +106,22 @@ proposal:
         required:
           - name
           - value
-  required: &snapshot-required
-    - period-start
-    - period-end
-    - continuous-operating-limit
-    - emergency-operating-limits
 
-snapshot: &snapshot
-  <<: *period
-  properties: &snapshot-props
-    <<: [*period-props, *limit-data-properties]
-  required: *snapshot-required
-
-snapshot-detailed:
-  <<: *snapshot
-  description: Period detailed limits including provenance
+real-time-proposal:
+  <<: *proposal
   properties:
-    <<: *snapshot-props
-    additional-data: &additional-data
-      type: object
-      description: |
-
-        Implementors may use this object to provide freeform extensions with
-        additional traceability / provenance data to be included with the limit.
-        Schema of this object is out of scope of the TROLIE specification.
-
-  required: *snapshot-required
-
-rt-normal: &rt-normal
-  type: object
-  properties: &rt-normal-props
-    <<: *limit-data-properties
-    resource-id:
-      $ref: ./resource-id.yaml
-  required: &rt-normal-required
-    - resource-id
-    - continuous-operating-limit
-    - emergency-operating-limits
-
-rt-detailed:
-  <<: *rt-normal
-  properties:
-    <<: *rt-normal-props
-    additional-data: *additional-data
+    <<: [*rt-normal-props, *proposal-props]
   required: *rt-normal-required
+
+forecast-proposal:
+  <<: *proposal
+  title: Forecasted Period
+  description: |
+    A Forecasted Period contains proposed limits for a power system object,
+    e.g., a segment, that were forecasted for a particular Period in a Forecast
+    Window. The status of the proposal as determined by the Clearinghouse is
+    also included.
+  properties:
+    <<: [*period-props, *proposal-props]
+  required: *snapshot-required
+

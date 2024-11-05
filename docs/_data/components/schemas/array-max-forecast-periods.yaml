@@ -29,7 +29,7 @@ resource-forecast-proposal:
     periods:
       <<: *periods
       items:
-        $ref: './period-limit.yaml#/proposal'
+        $ref: './period-limit.yaml#/forecast-proposal'
 
 resource-forecast-proposal-slim:
   <<: *periods
