@@ -281,7 +281,7 @@ DEPENDENCIES
   github-pages (~> 232)
   jekyll-redirect-from
   just-the-docs
-  webrick (~> 1.8.2)
+  webrick (~> 1.8)
 
 BUNDLED WITH
    2.3.7
