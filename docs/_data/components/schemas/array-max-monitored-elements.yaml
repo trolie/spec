@@ -17,14 +17,21 @@ forecast-limits-snapshot: &forecast-limit-snapshot
 
 forecast-limits-snapshot-slim:
   <<: *forecast-limit-snapshot
-  description: A snapshot of the forecast for a monitoring set.
-  properties:
+  description: A slim snapshot of the forecast for a monitoring set.
+  properties: &forecast-limit-snapshot-slim-props
     snapshot-header:
       $ref: ./headers.yaml#/forecast-snapshot-slim-header
     limits:
       <<: *max
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+forecast-limits-snapshot-slim-inputs-used:
+  <<: *forecast-limit-snapshot
+  description: |
+    A slim snapshot of the forecast for a monitoring set, including the inputs
+    that were used to determine the continuous limits.
+  properties:
+    <<: *forecast-limit-snapshot-slim-props
     inputs-used: &inputs-used-slim
       description: |
 
@@ -292,7 +299,7 @@ realtime-limits-snapshot-slim-inputs-used:
   <<: *realtime-limit-snapshot
   description: |
     A slim snapshot of the realtime limits for a monitoring set, including the
-    inputs used to determine the limits.
+    inputs used to determine the continuous limits.
   properties:
     <<: *realtime-limit-snapshot-slim-props
     inputs-used:
