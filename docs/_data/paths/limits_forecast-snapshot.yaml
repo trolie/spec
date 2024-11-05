@@ -70,6 +70,11 @@ current:
               $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot-slim"
             example:
               $ref: '../../example-narratives/examples/forecast-limits-slim-active-power.json'
+          application/vnd.trolie.forecast-limits-snapshot-slim.v1+json; limit-type=apparent-power, inputs-used=true:
+            schema:
+              $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-snapshot-slim"
+            example:
+              $ref: '../../example-narratives/examples/forecast-limits-slim-active-power-dry-bulb.json'
           application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json:
             schema:
               $ref: "../components/schemas/array-max-monitored-elements.yaml#/forecast-limits-detailed-snapshot"
