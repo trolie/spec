@@ -144,7 +144,7 @@
                             "limit": { "mva": 165 }
                         }
                     ],
-                    "override-reason": "TOI 20250701-01",
+                    "reason": "TOI 20250701-01",
                     "start-time": "2025-07-01T00:00:00-07:00"
                 }
             ]

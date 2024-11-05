@@ -19,7 +19,7 @@ temporary-aar-exception-request: &time-bound-static-rating
       $ref: ./limit.yaml
     emergency-operating-limits:
       $ref: ./array-max-emergency-durations.yaml#/limit-value-set
-    reason:
+    reason: &reason
       description: |
         Free-form text indicating the reason for the exception.
       type: string
@@ -63,20 +63,15 @@ operator-override-limit-provenance:
   <<: *time-bound-static-limit
   properties:
     <<: *time-bound-static-limit-props
-    override-reason:
-      type: string
-      description:
-
-        Indicates that this limit was overridden for some reason, the reason
-        itself.
-
-      format: free-text
-      maxLength: 500
+    reason:
+      <<: *reason
+      description: |
+        The reason given for the limit override.
   required:
     - start-time
     - continuous-operating-limit
     - emergency-operating-limits
-    - override-reason
+    - reason
 
 seasonal-override-request:
   <<: *time-bound-static-rating

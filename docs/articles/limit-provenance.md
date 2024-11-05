@@ -244,7 +244,7 @@ an override was in place for the given period.
         "mva": 160
       },
       "emergency-operating-limits": [ /* elided for clarity */ ],
-      "override-reason": "TOI 20250701-01",
+      "reason": "TOI 20250701-01",
       "start-time": "2025-07-12T16:00:00-07:00",
       "end-time":   "2025-09-12T16:00:00-07:00", // optional
       "id": "ems-operator-override-id-1", // optional
