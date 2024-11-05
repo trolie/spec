@@ -13,4 +13,4 @@ detailed:
   type: object
   allOf:
     - $ref: '#/normal'
-    - $ref: './limit-provenance.yaml#/real-time'
+    - $ref: './limit-provenance.yaml#/forecast/properties/additional-data'

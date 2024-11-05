@@ -350,10 +350,10 @@ realtime-limits-snapshot-elide-psr:
     snapshot-header:
       $ref: ./headers.yaml#/real-time-snapshot-header-elide-psr
 
-realtime-limits-detailed-snapshot-elide-psr:
+realtime-limits-detailed-snapshot-elide-psr: &realtime-limit-detailed
   <<: *realtime-limit-snapshot
   description: A snapshot of the realtime limits for a monitoring set.
-  properties:
+  properties: &realtime-limit-snapshot-detailed-props
     snapshot-header:
       $ref: ./headers.yaml#/real-time-snapshot-header-elide-psr
     limits:
@@ -361,14 +361,41 @@ realtime-limits-detailed-snapshot-elide-psr:
       description: Real-time limits including provenance.
       items:
         $ref: './realtime-limit-item.yaml#/detailed'
+    provenance:
+      <<: *max
+      items:
+        type: object
+        properties:
+          resource-id:
+            $ref: ./resource-id.yaml
+          proposals-considered: &considered
+            type: array
+            maxItems: 10
+            items:
+              $ref: 'proposal-considered.yaml#/real-time'
+          temporary-aar-exceptions:
+            <<: *considered
+            items:
+              $ref: 'time-bound-static-ratings.yaml#/temporary-aar-exception-provenance'
+          overrides:
+            <<: *considered
+            items:
+              $ref: 'time-bound-static-ratings.yaml#/operator-override-limit-provenance'
+        required:
+          - resource-id
+          - proposals-considered
+  required:
+    - snapshot-header
+    - limits
+    - provenance
 
 realtime-limits-detailed-snapshot:
-  <<: *realtime-limit-snapshot
+  <<: *realtime-limit-detailed
   description: A snapshot of the realtime limits for a monitoring set.
   properties:
-    <<: *realtime-limit-snapshot-props
-    limits:
-     $ref: "#/realtime-limits-detailed-snapshot-elide-psr/properties/limits"
+    <<: *realtime-limit-snapshot-detailed-props
+    snapshot-header:
+      $ref: "#/realtime-limits-snapshot/properties/snapshot-header"
 
 realtime-proposal:
   type: object
@@ -508,7 +535,6 @@ seasonal-ratings-snapshot: &seasonal-rating-snapshot
   required:
     - snapshot-header
     - ratings
-
 
 seasonal-ratings-snapshot-detailed:
   <<: *seasonal-rating-snapshot
