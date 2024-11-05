@@ -105,7 +105,7 @@ tags:
     description: |
 
       A Seasonal Override is an instruction to use a temporary static rating set
-      in lieu of any concurrent Seasonal Rating for a given segment.
+      in lieu of any concurrent Seasonal Rating for a given resource.
 
       A typical use case is a so-called "de-rate" due to temporary clearance
       issue for a transmission facility that is exempt from providing AARs.
@@ -116,7 +116,7 @@ tags:
       rather than any ratings that would have been used from the seasonal rating
       schedule.
 
-      In contrast, for a segment that is *not* exempt from providing AARs, the
+      In contrast, for a resource that is *not* exempt from providing AARs, the
       Ratings Provider would issue a Temporary AAR Exception to the
       Clearinghouse Provider to address a clearance issue or other temporary
       operating condition that calls for a static rating.
@@ -124,8 +124,8 @@ tags:
   - name: Temporary AAR Exceptions
     description: >
 
-      A TemporaryAARException is an exception to the AAR process, due to some
-      unusual condition on the facility.  This could be caused by a number of
+      A Temporary AAR Exception is an exception to the AAR process, due to some
+      unusual condition on the facility.  This could occur in various
       scenarios:
 
       * An equipment failure.
@@ -146,18 +146,20 @@ tags:
       and real-time feeds may still continue through proposals submitted to
       TROLIE. However, the presence of a temporary rating, and the reason that
       it occurred, must be captured in history regardless of the actual numbers.
-      The TemporaryAARException may be held simply for that record- keeping
-      purpose.  For the purpose of record-keeping, it may need to be updated
-      after an incident has occurred with actual values.  The reason and the end
+      The Temporary AAR Exception may be held simply for that record-keeping
+      purpose.  It must also include a specific rating used during the incident,
+      which is typically a recourse rating.  The reason and the end
       date of the effective window may be updated after the object has been
       created, up to a configurable threshold.
 
-
-      If the targeted segment is getting AAR data feeds, then it may be assumed
-      that those AAR data feeds from the RatingsProvider will simply reflect the
-      temporary condition.  However, this doesn't always apply, leading to the
-      second usage.  Actual rating values may also be provided for the
-      TemporaryAARException, when we cannot expect AAR feeds otherwise.  This
+      If the targeted resource is getting AAR data feeds, then it _may_ be assumed
+      that those AAR data feeds from the Ratings Provider will simply reflect the
+      temporary condition.  The ClearingHouse Provider then may decide whether to use
+      the raw AAR data feeds or the ratings from the temporary AAR exception.  
+      
+      However, this doesn't always apply, leading to the
+      second usage.  Actual rating values must in Temporary AAR Exceptions
+      must be used when we cannot expect AAR feeds otherwise.  This
       occurs in two scenarios:
 
       1.  It is required when the Transmission Provider is generating forecast
