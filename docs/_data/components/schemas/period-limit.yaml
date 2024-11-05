@@ -1,0 +1,118 @@
+period: &period
+  type: object
+  properties: &period-props
+    period-start:
+      $ref: ./period-start.yaml
+    period-end:
+      $ref: ./period-start.yaml
+  required:
+    - period-start
+    - period-end
+
+limit-data:
+  type: object
+  properties: &limit-data-properties
+    continuous-operating-limit:
+      $ref: ./limit.yaml
+    emergency-operating-limits:
+      $ref: ./array-max-emergency-durations.yaml#/limit-value-set
+    limiting-analysis:
+      $ref: ./limiting-analysis.yaml
+  required:
+    - continuous-operating-limit
+    - emergency-operating-limits
+
+proposal:
+  <<: *period
+  title: Forecasted Period
+  description: |
+
+    A Forecasted Period contains proposed limits for a power system object,
+    e.g., a segment, that were forecasted for a particular Period in a Forecast
+    Window. The status of the proposal as determined by the Clearinghouse is
+    also included.
+
+  properties:
+    <<: [*period-props, *limit-data-properties]
+    current-source:
+      $ref: ./quality-class-current-source.yaml
+    inputs-used:
+      description: |
+
+        Optional list of quantities used as input to the ratings determination.
+        The particular information exchange determines which values may be expected
+        as well as the conventions used to represent those values. This property
+        is included to prescribe a way to include these inputs.
+
+      type: array
+      minItems: 1
+      maxItems: 50
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            format: free-text
+            maxLength: 50
+          value:
+            type: object
+            description: >
+              This could be any value: a bit, float, integer, string, etc.
+          unit:
+            type: string
+            description: |
+              If the `value` is dimensionless, this property should not be
+              provided. Since we are not specifying which inputs shall be
+              provided, we cannot specify a definitive list of units, but
+              implementors are encouraged to use UnitSymbol from CIM when
+              appropriate: The CIM may not include appropriate units for
+              all inputs, e.g., wind speed, degrees Fahrenheit, etc.
+            format: unit
+            maxLength: 50
+        required:
+          - name
+          - value
+  required: &snapshot-required
+    - period-start
+    - period-end
+    - continuous-operating-limit
+    - emergency-operating-limits
+
+snapshot: &snapshot
+  <<: *period
+  properties: &snapshot-props
+    <<: [*period-props, *limit-data-properties]
+  required: *snapshot-required
+
+snapshot-detailed:
+  <<: *snapshot
+  description: Period detailed limits including provenance
+  properties:
+    <<: *snapshot-props
+    additional-data: &additional-data
+      type: object
+      description: |
+
+        Implementors may use this object to provide freeform extensions with
+        additional traceability / provenance data to be included with the limit.
+        Schema of this object is out of scope of the TROLIE specification.
+
+  required: *snapshot-required
+
+rt-normal: &rt-normal
+  type: object
+  properties: &rt-normal-props
+    <<: *limit-data-properties
+    resource-id:
+      $ref: ./resource-id.yaml
+  required: &rt-normal-required
+    - resource-id
+    - continuous-operating-limit
+    - emergency-operating-limits
+
+rt-detailed:
+  <<: *rt-normal
+  properties:
+    <<: *rt-normal-props
+    additional-data: *additional-data
+  required: *rt-normal-required

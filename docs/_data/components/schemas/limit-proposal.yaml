@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: ./limit-data.yaml
+  - $ref: ./period-limit.yaml#/limit-data
   - type: object
     properties:
       current-source:

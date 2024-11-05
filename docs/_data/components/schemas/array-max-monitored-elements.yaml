@@ -296,7 +296,7 @@ realtime-limits-snapshot: &realtime-limit-snapshot
       <<: *max
       description: Real-time limits
       items:
-        $ref: './realtime-limit-item.yaml#/normal'
+        $ref: './period-limit.yaml#/rt-normal'
   required:
     - snapshot-header
     - limits
@@ -360,7 +360,7 @@ realtime-limits-detailed-snapshot-elide-psr: &realtime-limit-detailed
       <<: *max
       description: Real-time limits including provenance.
       items:
-        $ref: './realtime-limit-item.yaml#/detailed'
+        $ref: './period-limit.yaml#/rt-detailed'
     provenance:
       <<: *max
       items:

@@ -30,7 +30,7 @@ forecast:
     If `resource-id` is not provided, the ratings data is assumed to be for the
     overall facility.
   allOf:
-    - $ref: './forecast-limit-period.yaml#/proposal'
+    - $ref: './period-limit.yaml#/proposal'
     - $ref: '#/provenance'
 real-time:
   allOf:

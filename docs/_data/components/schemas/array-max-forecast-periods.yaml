@@ -8,7 +8,7 @@ forecast-limit-item: &limit
       type: array
       maxItems: 300
       items:
-        $ref: 'forecast-limit-period.yaml#/snapshot'
+        $ref: 'period-limit.yaml#/snapshot'
   required:
     - resource-id
     - periods
@@ -20,7 +20,7 @@ forecast-limit-item-detailed:
     periods:
       <<: *periods
       items:
-        $ref: 'forecast-limit-period.yaml#/snapshot-detailed'
+        $ref: 'period-limit.yaml#/snapshot-detailed'
 
 resource-forecast-proposal:
   <<: *limit
@@ -29,7 +29,7 @@ resource-forecast-proposal:
     periods:
       <<: *periods
       items:
-        $ref: 'forecast-limit-period.yaml#/proposal'
+        $ref: './period-limit.yaml#/proposal'
 
 resource-forecast-proposal-slim:
   <<: *periods
