@@ -111,11 +111,50 @@ The flip-side of this accommodative approach is that clients will not receive an
 error response when one of their resource forecasts is invalid, so the spec
 defines `incomplete-obligation-count`:
 
-> {{ site.data.components.schemas["array-max-monitored-elements"].forecast-proposal-status.properties.incomplete-obligation-count.description }}
+> The number of facilities for this provider whose Ratings Obligation has
+> not been met in this forecast window. This number may be larger than the
+> size of `incomplete-facilities`, since the latter has a pre-defined
+> upper bound for performance and application security reasons.
+
+> The Ratings Provider should check that this value is zero when they
+> believe they have completed their submission process.
 
 ## Multiple Submissions per Forecast Window
 
-{{ site.data.paths["rating-proposals_forecasts"].patch.description }}
+In every Forecast Window, a new area-wide Forecast Proposal is created on
+the TROLIE server of the Clearinghouse Provider. Each Ratings Provider then
+`PATCH`es the area-wide proposal with the forecasts for their respective
+Ratings Obligations. Any unmet Ratings Obligations will result in the
+Clearinghouse Provider using an appropriate Recourse Rating for those unmet
+obligations.
+
+For Ratings Providers with a natural split in their Ratings Obligations,
+e.g., geographic or control areas, the `PATCH` semantics afford the ability
+to submit multiple Forecast Proposals containing just proposals for the
+relevant resources, if they choose to do so. This affordance can also be
+leveraged to split a large proposal into one or more parts in cases where
+that is advantageous from a performance or reliable delivery perspective.
+
+There are two supported media types for a Real-Time Ratings proposals.
+
+`application/vnd.trolie.rating-forecast-proposal.v1+json` allows the 
+Ratings Provider to combine different limit types, such as
+`apparent-power` (MVA) and `current` (MW), in a single proposal.
+
+`application/vnd.trolie.rating-forecast-proposal-slim.v1+json` for
+proposals that only require a single limit type, e.g., `apparent-power`.
+Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
+parameter. For example,
+
+```http
+PATCH /ratings-proposals/forecast HTTP/1.1
+Content-Type: application/vnd.trolie.rating-forecast-proposal-slim.v1+json; limit-type=apparent-power
+```
+
+Note that this format is much more concise but requires significant care in
+serialization/deserialization.  For details, see [Using Slim Media
+Types](../example-narratives/using-slim-media-types).
+
 
 ## Jointly-Owned Facilities
 
