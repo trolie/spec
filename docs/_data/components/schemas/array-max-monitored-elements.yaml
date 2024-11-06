@@ -1,4 +1,4 @@
-forecast-limits-snapshot:
+forecast-limits-snapshot: &forecast-limit-snapshot
   type: object
   description: A snapshot of the forecast for a monitoring set.
   properties:
@@ -11,17 +11,27 @@ forecast-limits-snapshot:
       description: Set of forecast limits
       items:
         $ref: 'array-max-forecast-periods.yaml#/forecast-limit-item'
+  required:
+    - snapshot-header
+    - limits
 
-forecast-limits-slim-snapshot:
-  type: object
-  description: A snapshot of the forecast for a monitoring set.
-  properties:
+forecast-limits-snapshot-slim:
+  <<: *forecast-limit-snapshot
+  description: A slim snapshot of the forecast for a monitoring set.
+  properties: &forecast-limit-snapshot-slim-props
     snapshot-header:
       $ref: ./headers.yaml#/forecast-snapshot-slim-header
     limits:
       <<: *max
       items:
         $ref: 'array-max-forecast-periods.yaml#/resource-forecast-proposal-slim'
+forecast-limits-snapshot-slim-inputs-used:
+  <<: *forecast-limit-snapshot
+  description: |
+    A slim snapshot of the forecast for a monitoring set, including the inputs
+    that were used to determine the continuous limits.
+  properties:
+    <<: *forecast-limit-snapshot-slim-props
     inputs-used: &inputs-used-slim
       description: |
 
@@ -64,20 +74,24 @@ forecast-limits-slim-snapshot:
           - name
           - values
           - unit
-  required:
-    - snapshot-header
-    - limits
 
-forecast-limits-detailed-snapshot:
-  type: object
+forecast-limits-snapshot-elide-psr:
+  <<: *forecast-limit-snapshot
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/forecast-snapshot-header-elide-psr
+    limits: *max
+
+forecast-limits-detailed-snapshot-elide-psr: &forecast-limit-detailed
+  <<: *forecast-limit-snapshot
   description: |
 
     A detailed snapshot of the forecast for a monitoring set. These details are
     meant to support analysis, archival, and troubleshooting.
 
-  properties:
+  properties: &forecast-limit-detailed-props
     snapshot-header:
-      $ref: ./headers.yaml#/forecast-snapshot-header
+      $ref: ./headers.yaml#/forecast-snapshot-header-elide-psr
     limits:
       <<: *max
       description: Forecast including provenance information.
@@ -86,6 +100,13 @@ forecast-limits-detailed-snapshot:
   required:
     - snapshot-header
     - limits
+
+forecast-limits-detailed-snapshot:
+  <<: *forecast-limit-detailed
+  properties:
+    <<: *forecast-limit-detailed-props
+    snapshot-header:
+      $ref: ./headers.yaml#/forecast-snapshot-header
 
 named-power-system-resources: &psr
   <<: *max
@@ -248,10 +269,10 @@ real-time-proposal-status:
     - invalid-proposal-count
     - proposal-validation-errors
 
-realtime-limits-snapshot:
+realtime-limits-snapshot: &realtime-limit-snapshot
   type: object
   description: A snapshot of the realtime limits for a monitoring set.
-  properties:
+  properties: &realtime-limit-snapshot-props
     snapshot-header:
       $ref: ./headers.yaml#/real-time-snapshot-header
     limits:
@@ -259,30 +280,28 @@ realtime-limits-snapshot:
       description: Real-time limits
       items:
         $ref: './realtime-limit-item.yaml#/normal'
-
-realtime-limits-detailed-snapshot:
-  type: object
-  description: A snapshot of the realtime limits for a monitoring set.
-  properties:
-    snapshot-header:
-      $ref: ./headers.yaml#/real-time-snapshot-header
-    limits:
-      <<: *max
-      description: Real-time limits including provenance.
-      items:
-        $ref: './realtime-limit-item.yaml#/detailed'
+  required:
+    - snapshot-header
+    - limits
 
 realtime-limits-snapshot-slim:
-  type: object
-  description: A snapshot of the realtime limits for a monitoring set.
-  properties:
-    snapshot-header:
-      $ref: ./headers.yaml#/real-time-snapshot-header
+  <<: *realtime-limit-snapshot
+  description: A slim snapshot of the realtime limits for a monitoring set.
+  properties: &realtime-limit-snapshot-slim-props
+    <<: *realtime-limit-snapshot-props
     limits:
       <<: *max
       description: Real-time limits
       items:
         $ref: 'array-max-emergency-ratings.yaml#/slim'
+
+realtime-limits-snapshot-slim-inputs-used:
+  <<: *realtime-limit-snapshot
+  description: |
+    A slim snapshot of the realtime limits for a monitoring set, including the
+    inputs used to determine the continuous limits.
+  properties:
+    <<: *realtime-limit-snapshot-slim-props
     inputs-used:
       <<: *inputs-used-slim
       items:
@@ -302,10 +321,37 @@ realtime-limits-snapshot-slim:
               type: number
               format: float
               nullable: true
-
   required:
     - snapshot-header
     - limits
+    - inputs-used
+
+realtime-limits-snapshot-elide-psr:
+  <<: *realtime-limit-snapshot
+  properties:
+    <<: *realtime-limit-snapshot-props
+    snapshot-header:
+      $ref: ./headers.yaml#/real-time-snapshot-header-elide-psr
+
+realtime-limits-detailed-snapshot-elide-psr:
+  <<: *realtime-limit-snapshot
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/real-time-snapshot-header-elide-psr
+    limits:
+      <<: *max
+      description: Real-time limits including provenance.
+      items:
+        $ref: './realtime-limit-item.yaml#/detailed'
+
+realtime-limits-detailed-snapshot:
+  <<: *realtime-limit-snapshot
+  description: A snapshot of the realtime limits for a monitoring set.
+  properties:
+    <<: *realtime-limit-snapshot-props
+    limits:
+     $ref: "#/realtime-limits-detailed-snapshot-elide-psr/properties/limits"
 
 realtime-proposal:
   type: object
@@ -432,25 +478,40 @@ seasonal-ratings-proposal-status:
     - incomplete-obligation-count
     - invalid-proposal-count
 
-seasonal-ratings-snapshot:
+seasonal-ratings-snapshot: &seasonal-rating-snapshot
   type: object
   description: A snapshot of the seasonal ratings for a monitoring set.
-  properties: &seasonal-rating-snapshot-props
+  properties: 
     snapshot-header:
       $ref: ./headers.yaml#/common-header
     ratings:
       <<: *max
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
+  required:
+    - snapshot-header
+    - ratings
+
 
 seasonal-ratings-snapshot-detailed:
+  <<: *seasonal-rating-snapshot
   description: A snapshot of the seasonal ratings for a monitoring set.
   properties:
-    <<: *seasonal-rating-snapshot-props
+    snapshot-header:
+      $ref: ./headers.yaml#/common-header
     ratings:
       <<: *max
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item-detailed
+
+seasonal-ratings-snapshot-detailed-elide-psr:
+  <<: *seasonal-rating-snapshot
+  description: A snapshot of the seasonal ratings for a monitoring set.
+  properties:
+    snapshot-header:
+      $ref: ./headers.yaml#/base-header
+    ratings:
+      $ref: "#/seasonal-ratings-snapshot-detailed/properties/ratings"
 
 temporary-aar-exception-set:
   type: array

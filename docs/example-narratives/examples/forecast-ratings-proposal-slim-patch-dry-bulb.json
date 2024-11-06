@@ -41,5 +41,15 @@
       [145, 150],
       [140, 145]
     ]
+  ],
+  "inputs-used": [
+    {
+      "name": "dry bulb temperature (Fahrenheit)",
+      "unit": "degF",
+      "values": [
+        [ 50, 51, 52, 53 ],
+        [ 46.1, 46.5, 47.1, 48 ]
+      ]
+    }
   ]
 }

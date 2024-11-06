@@ -104,7 +104,7 @@ patch:
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal"
         example:
           $ref: ../../example-narratives/examples/seasonal-ratings-proposals-patch.json
-      application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json:
+      application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power:
         schema:
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/seasonal-ratings-proposal-slim"
         example:

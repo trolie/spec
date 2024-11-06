@@ -5,8 +5,6 @@
       "provider": "UTILITY-A",
       "origin-id": "5aeacb25-9b65-4738-8a00-ac10afa63640"
     },
-    "begins": "2025-11-01T01:00:00-05:00",
-    "ends": "2025-11-01T05:00:00-05:00",
     "default-emergency-durations": [
       {
         "name": "emergency",
@@ -29,17 +27,15 @@
     ]
   },
   "ratings": [
-    [
-      [160, 170],
-      [155, 160],
-      [145, 150],
-      [140, 145]
-    ],
-    [
-      [160, 170],
-      [155, 160],
-      [145, 150],
-      [140, 145]
-    ]
-  ]
-}
+    [160, 170],
+    [155, 160]
+  ],
+  "inputs-used": [
+    {
+      "name": "dry bulb temperature (Fahrenheit)",
+      "unit": "degF",
+      "values": [
+        [ 50, 51]
+      ]
+    }
+  ]}

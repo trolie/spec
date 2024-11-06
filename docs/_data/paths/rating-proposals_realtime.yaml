@@ -82,6 +82,23 @@ post:
     data that is either completely missing, or is considered stale by the Clearinghouse Provider,
     likely due to simply not receiving a value within a reasonable period, such as an hour.  
 
+    There are two supported media types for a Real-Time Ratings proposals.
+
+    `application/vnd.trolie.rating-realtime-proposal.v1+json` allows the 
+    Ratings Provider to combine different limit types, such as
+    `apparent-power` (MVA) and `current` (MW), in a single proposal.
+
+    `application/vnd.trolie.rating-realtime-proposal-slim.v1+json` for
+    proposals that only require a single limit type, e.g., `apparent-power`.
+    Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
+    parameter. For example,
+    ```http
+    POST /ratings-proposals/realtime HTTP/1.1
+    Content-Type: application/vnd.trolie.rating-realtime-proposal-slim.v1+json; limit-type=apparent-power
+    ```
+    Note that this format is much more concise but requires significant care
+    in serialization/deserialization.  For details, see [Using Slim Media Types](../example-narratives/using-slim-media-types).
+
   tags: *tags
 
   requestBody:
@@ -92,11 +109,14 @@ post:
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal"
         example:
           $ref: ../../example-narratives/examples/realtime-proposal.json
-      application/vnd.trolie.rating-realtime-proposal-slim.v1+json:
+      application/vnd.trolie.rating-realtime-proposal-slim.v1+json; limit-type=apparent-power:
         schema: 
           $ref: "../components/schemas/array-max-monitored-elements.yaml#/realtime-proposal-slim"
-        example:
-          $ref: ../../example-narratives/examples/realtime-proposal-slim-patch.json
+        examples:
+          "No Inputs Provided":
+            summary: No Inputs Provided in the Real-Time Proposal
+            value:
+              $ref: ../../example-narratives/examples/realtime-proposal-slim-patch.json
   responses:
     '202':
       description: |
