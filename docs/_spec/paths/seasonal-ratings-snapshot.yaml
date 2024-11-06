@@ -6,7 +6,7 @@ get:
     - Seasonal
   parameters:
     - $ref: ../components/parameters/monitoring-set-filter.yaml
-    - $ref: ../components/parameters/facility-filter.yaml
+    - $ref: ../components/parameters/resource-id-filter.yaml
   responses:
     '200':
       description: OK

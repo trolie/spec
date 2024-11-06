@@ -8,7 +8,7 @@ current:
       - $ref: ../components/parameters/offset-period-start.yaml
       - $ref: ../components/parameters/period-end.yaml
       - $ref: ../components/parameters/monitoring-set-filter.yaml
-      - $ref: ../components/parameters/facility-filter.yaml
+      - $ref: ../components/parameters/resource-id-filter.yaml
       - $ref: ../components/parameters/static-only.yaml
     description: |
 
@@ -118,7 +118,7 @@ historical:
       - $ref: ../components/parameters/offset-period-start.yaml
       - $ref: ../components/parameters/period-end.yaml
       - $ref: ../components/parameters/monitoring-set-filter.yaml
-      - $ref: ../components/parameters/facility-filter.yaml
+      - $ref: ../components/parameters/resource-id-filter.yaml
       - $ref: ../components/parameters/static-only.yaml
       - name: period
         description: |
