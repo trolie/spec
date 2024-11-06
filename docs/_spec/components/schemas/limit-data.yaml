@@ -1,0 +1,11 @@
+type: object
+properties:
+  continuous-operating-limit:
+    $ref: ./limit.yaml
+  emergency-operating-limits:
+    $ref: ./array-max-emergency-durations.yaml#/limit-value-set
+  limiting-analysis:
+    $ref: ./limiting-analysis.yaml
+required:
+  - continuous-operating-limit
+  - emergency-operating-limits

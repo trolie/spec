@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 20
       - name: Redocly bundle
-        run: "npx --yes @redocly/cli bundle ./docs/_data/openapi-split.yaml -o ./docs/openapi.yaml"
+        run: "npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi.yaml"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.98.0
