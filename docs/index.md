@@ -6,7 +6,7 @@ nav_order: 1
 
 <img alt="TROLIE logo" src="images/TROLIE-icon-color.png" width="200" style="float:right"/>
 
-# {{site.data.openapi-split.info.title}}
+# Transmission Ratings and Operating Limits Information Exchange (TROLIE)
 
 
 <a href="https://lfenergy.org/projects/trolie/">
