@@ -8,7 +8,7 @@ forecast-limit-item: &limit
       type: array
       maxItems: 300
       items:
-        $ref: 'forecast-limit-period.yaml#/snapshot'
+        $ref: 'period-limit.yaml#/forecast-snapshot'
   required:
     - resource-id
     - periods
@@ -20,7 +20,7 @@ forecast-limit-item-detailed:
     periods:
       <<: *periods
       items:
-        $ref: 'forecast-limit-period.yaml#/snapshot-detailed'
+        $ref: 'period-limit.yaml#/forecast-snapshot-detailed'
 
 resource-forecast-proposal:
   <<: *limit
@@ -29,7 +29,7 @@ resource-forecast-proposal:
     periods:
       <<: *periods
       items:
-        $ref: 'forecast-limit-period.yaml#/proposal'
+        $ref: './period-limit.yaml#/forecast-proposal'
 
 resource-forecast-proposal-slim:
   <<: *periods
@@ -50,3 +50,19 @@ missing-forecast:
       <<: *periods
       items:
         $ref: ./period-start.yaml
+
+proposals-considered: &considered
+  type: array
+  maxItems: 1200 # 300 periods * 4 proposals per period
+  items:
+    $ref: 'period-limit.yaml#/forecast-provenance'
+
+temporary-aar-exceptions:
+  <<: *considered # 1200 active exceptions across a footprint in a 10-day window
+  items:
+    $ref: 'time-bound-static-ratings.yaml#/temporary-aar-exception-provenance'
+
+overrides:
+  <<: *considered # 1200 active overrides across a footprint in a 10-day window
+  items:
+    $ref: 'time-bound-static-ratings.yaml#/operator-override-limit-provenance'

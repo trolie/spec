@@ -1,0 +1,279 @@
+period: &period
+  type: object
+  properties: &period-props
+    period-start:
+      $ref: ./period-start.yaml
+    period-end:
+      $ref: ./period-start.yaml
+  required:
+    - period-start
+    - period-end
+
+limit-data: &limit-data
+  type: object
+  properties: &limit-data-properties
+    continuous-operating-limit:
+      $ref: ./limit.yaml
+    emergency-operating-limits:
+      $ref: ./array-max-emergency-durations.yaml#/limit-value-set
+    limiting-analysis:
+      $ref: ./limiting-analysis.yaml
+  required:
+    - continuous-operating-limit
+    - emergency-operating-limits
+
+forecast-snapshot: &forecast-snapshot
+  <<: *period
+  properties: &forecast-snapshot-props
+    <<: [*period-props, *limit-data-properties]
+  required: &forecast-snapshot-required
+    - period-start
+    - period-end
+    - continuous-operating-limit
+    - emergency-operating-limits
+  additionalProperties: false
+
+forecast-snapshot-detailed:
+  <<: *forecast-snapshot
+  properties:
+    <<: *forecast-snapshot-props
+    additional-data: &additional-data
+      type: object
+      description: |
+        Implementors may use this object to provide freeform extensions with
+        additional traceability / provenance data to be included with the limit.
+        Schema of this object is out of scope of the TROLIE specification.
+
+realtime-snapshot: &rt-normal
+  type: object
+  properties: &rt-normal-props
+    <<: *limit-data-properties
+    resource-id:
+      $ref: ./resource-id.yaml
+  required: &rt-normal-required
+    - resource-id
+    - continuous-operating-limit
+    - emergency-operating-limits
+  additionalProperties: false
+
+realtime-snapshot-detailed:
+  <<: *rt-normal
+  properties:
+    <<: *rt-normal-props
+    additional-data: *additional-data
+  required: *rt-normal-required
+
+proposal: &proposal
+  <<: *limit-data
+  properties: &proposal-props
+    <<: *limit-data-properties
+    current-source:
+      $ref: ./quality-class-current-source.yaml
+    inputs-used:
+      description: |
+
+        Optional list of quantities used as input to the ratings determination.
+        The particular information exchange determines which values may be expected
+        as well as the conventions used to represent those values. This property
+        is included to prescribe a way to include these inputs.
+
+      type: array
+      minItems: 1
+      maxItems: 50
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            format: free-text
+            maxLength: 50
+          value:
+            type: object
+            description: >
+              This could be any value: a bit, float, integer, string, etc.
+          unit:
+            type: string
+            description: |
+              If the `value` is dimensionless, this property should not be
+              provided. Since we are not specifying which inputs shall be
+              provided, we cannot specify a definitive list of units, but
+              implementors are encouraged to use UnitSymbol from CIM when
+              appropriate: The CIM may not include appropriate units for
+              all inputs, e.g., wind speed, degrees Fahrenheit, etc.
+            format: unit
+            maxLength: 50
+        required:
+          - name
+          - value
+
+real-time-proposal: &real-time-proposal
+  <<: *proposal
+  properties: &real-time-proposal-props
+    <<: [*rt-normal-props, *proposal-props]
+  required: *rt-normal-required
+  additionalProperties: false
+
+forecast-proposal: &forecast-proposal
+  <<: *proposal
+  title: Forecasted Period
+  description: |
+    A Forecasted Period contains proposed limits for a power system object,
+    e.g., a segment, that were forecasted for a particular Period in a Forecast
+    Window. The status of the proposal as determined by the Clearinghouse is
+    also included.
+  properties: &forecast-proposal-props
+    <<: [*period-props, *proposal-props]
+  required: *forecast-snapshot-required
+  additionalProperties: false
+
+provenance:
+  type: object
+  properties: &provenance-props
+    source:
+      $ref: ./data-provenance.yaml
+    proposal-disposition:
+      description: |
+
+        Despite a proposal being accepted by TROLIE, the downstream
+        Clearinghouse logic may still disqualify a proposal. This might
+        occur if, for example, the upper and lower reasonability limits are
+        not aligned between TROLIE and the Clearinghouse.  To aid
+        troubleshooting, the specification requires that TROLIE instances
+        explicitly indicate if the proposal was `Used` in the determination
+        of the limit or was `Rejected`.
+
+      type: string
+      enum:
+        - Used
+        - Rejected
+    resource-id:
+      $ref: ./resource-id.yaml
+  required:
+    - source
+    - proposal-disposition
+
+forecast-provenance:
+  <<: *forecast-proposal
+  description: >
+    Details a proposal that was considered by the Clearinghouse run.
+    If `resource-id` is not provided, the ratings data is assumed to be for the
+    overall facility.
+  properties:
+    <<: [*forecast-proposal-props, *provenance-props]
+  required:
+    - period-start
+    - period-end
+    - continuous-operating-limit
+    - emergency-operating-limits
+    - source
+    - proposal-disposition
+  additionalProperties: false
+
+real-time-provenance:
+  <<: *real-time-proposal
+  properties:
+    <<: [*real-time-proposal-props, *provenance-props]
+  required:
+    - resource-id
+    - continuous-operating-limit
+    - emergency-operating-limits
+    - source
+    - proposal-disposition
+  additionalProperties: false
+
+seasonal-proposal:
+  <<: *forecast-proposal
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  properties:
+    <<: *forecast-proposal-props
+    season-name:
+      $ref: ./season-name.yaml
+    day-night:
+      $ref: ./day-night.yaml
+  additionalProperties: false
+
+seasonal-proposal-slim:
+  type: array
+  title: Seasonal Period Proposal slim
+  maxItems: 20 # (max continuous + emergency ratings) * max num fields in limit type, e.g. MW and p.f.
+  minItems: 1
+  items:
+    type: number
+    title: Continuous and Emergency Ratings values
+    description: |
+
+      Each number in this array corresponds to a value of the continuous and
+      emergency ratings for a particular period.  The first values correspond to
+      the continuous (normal) rating and the subsequent values correspond to the
+      emergency ratings in order of decreasing duration.  The durations are
+      defined in the `proposal-header.default-emergency-durations` field.
+
+      The exact number of values in this array is further determined by the
+      `limit-type` parameter of the media type.
+      ```http
+      Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
+      ```
+      If the [limit-type](#tag/limit-type) is single valued, like
+      `apparent-power`, then the array will have a single value for each rating.
+      For example, if there was only one emergency duration defined, then the
+      array would have two values, e.g. `[50, 55]`, corresponding to a 50MVA
+      continuous rating and 55MVA emergency rating, respectively. A
+      single-valued limit type is anticipated to be the most common case in
+      practice.
+
+      However, if the [limit-type](#tag/limit-type) is `active-power` and the
+      Clearinghouse Provider has required both MW and power factor, e.g.,
+      `{"mw":1, "pf":1}`, then the array will have two values for each rating.
+      If we continue with the example of having only one emergency duration
+      defined, then the array would have four values.  Thus, instead of
+      `[normal_MVA, emergency_MVA]`, we would have `[normal_MW, normal_pf,
+      emergency_MW, emergency_pf]`, e.g., `[300, 1.0, 350, 1.0]`.
+
+seasonal-snapshot: &seasonal-snapshot
+  <<: *forecast-snapshot
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  properties: &seasonal-snapshot-props
+    <<: *forecast-snapshot-props
+    season-name:
+      $ref: ./season-name.yaml
+    day-night:
+      $ref: ./day-night.yaml
+  additionalProperties: false
+
+seasonal-snapshot-detailed:
+  <<: *seasonal-snapshot
+  description: Proposes the continuous and emergency ratings for the specified Season.
+  title: Seasonal Rating Proposal
+  properties:
+    <<: *seasonal-snapshot-props
+    proposals-considered:
+      description: |
+
+        The seasonal ratings proposals considered when determining the
+        seasonal ratings of a power system resource, e.g., a line or
+        transformer.
+
+      type: array
+      minItems: 1
+      maxItems: 10
+      items:
+        allOf:
+          - $ref: '#/proposal'
+          - type: object
+            properties:
+              source:
+                $ref: ./data-provenance.yaml
+              resource-id:
+                $ref: ./resource-id.yaml
+        required:
+          - source
+          - resource-id
+  required:
+    - proposals-considered
+    - period-start
+    - period-end
+    - continuous-operating-limit
+    - emergency-operating-limits
+  additionalProperties: false
