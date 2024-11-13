@@ -6,39 +6,43 @@ info:
     url: "images/TROLIE-horizontal-color.svg"
   description: |
 
-    Pursuant to FERC Order 881, Transmission Providers are required to support
-    Ambient Adjusted Ratings (AARs) for most Transmission Facilities in their
-    footprint.  In this context, Transmission Providers refers roughly to the
-    FERC definition of Transmission Provider as any public utility that owns,
-    operates, or controls facilities used for the transmission of electric
-    energy in interstate commerce.  This could be said to apply to any entity
-    that operates the transmission grid, including ISOs.
-    
-    For the purpose of this API, Transmission Provider may be assumed to be more
-    generic- it is really any entity that can receive AARs.  This API
-    specification supports the information exchange necessary to coordinate
-    forecasted and base facility ratings between a Transmission Provider and
-    Ratings Providers.  The Transmission Provider is assumed to be the host of
-    this information exchange.
+    This specification defines a set of operations for the exchange of power
+    system ratings and limits between entities that own and operate the electric
+    power system in North America. In particular, it is designed to support the
+    exchange of Ambient Adjusted Ratings (AARs), pursuant to FERC Order 881.  It
+    is being promulgated as a community standard to facilitate interoperability
+    in these exchanges.
 
-    A Ratings Provider is defined by this specification to be any entity that
-    has pre-coordinated with the Transmission Provider hosting this information
-    exchange to be the entity responsible for providing AARs on some set of
-    Transmission Facilities known to the Transmission Provider. That
-    pre-coordination is out-of-scope for this specification.  The language of
-    this API makes a strict distinction between the terms rating and limit.
+    The specification conceives of the exchange as being between two primary
+    entities: the Ratings Provider and the Clearinghouse Provider.
 
-    A limit is a validated value that is actively used to make operational
-    decisions on the power grid.  This could be limits used by the EMS or
-    real-time market in real-time, or it could be forecast limits used by
-    look-ahead processes such as EMS study applications or the day-ahead market.
+    A Ratings Provider is an entity that is responsible for providing ratings on
+    some set of power system resources, e.g., Transmission Facilities, typically
+    a Transmission Owner or Transmission Operator.  The ratings are provided to
+    a Clearinghouse Provider whose is responsible for determining the operating
+    limits of the power system resources. The Clearinghouse Provider may be a
+    Transmission Provider, a Regional Entity, a Reliability Coordinator, or some
+    combination of these entities.
 
-    A rating, in contrast, is a calculated value from some process that is input
-    to TROLIE (and by extension operating power systems at large) and may be
-    selected for use as a limit after validation and dependent on operating
-    conditions, time frame and the operational decisions being made.  Seasonal
-    ratings, forecast rating proposals, and real-time rating proposals are all
-    examples of ratings.
+    Adjacent Clearinghouse Providers exchange ratings in order to establish
+    operating limit values for the power system resources that are shared
+    between them.
+
+    A Ratings Provider is assumed by this specification to have pre-coordinated 
+    with a Clearinghouse Provider to identify the former's Ratings Obligation, i.e.,
+    the set of power system resources for which they will provide ratings. That
+    pre-coordination is out-of-scope for this specification.
+
+    Note that this API makes a strict distinction between the terms rating and
+    limit.  Colloquially, these terms are often used interchangeably.  However,
+    in the context of this specification, they have distinct meanings. At a
+    high-level, the specification defines an exchange where ratings go in and
+    limits come out.
+
+    That is, a Clearinghouse is a function for determining the operating limits
+    from ratings provided by Ratings Providers.  A provided rating is validated
+    and considered in the Clearinghouse when determining the limit of the power
+    system resource to which it applies.
 
     <img src="images/TROLIE Ratings Provider interactions.excalidraw.png" alt="Primary Interactions with Ratings Provider" />
 
