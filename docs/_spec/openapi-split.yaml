@@ -270,10 +270,6 @@ components:
         "application/problem+json":
           schema:
             $ref: '#/components/schemas/problem'
-        # helpful errors when the request doesn't specify a TROLIE media type
-        "application/json":
-          schema:
-            $ref: '#/components/schemas/problem'
     '401-empty':
       <<: *rate-limited
       description: Unauthorized
