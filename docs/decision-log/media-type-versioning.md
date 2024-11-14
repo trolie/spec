@@ -59,7 +59,7 @@ two adjacent Transmission Owners might choose to only share seasonal ratings.
 Enabling this kind of a la carte use of the specification by the community is
 desirable, and a [Conformance program](https://github.com/trolie/conformance) to
 provide clarity on what is implemented by various vendors was part of the
-project's original charter.
+project's original charter, with the goal of supporting incremental conformance; not every feature will be supported in every implementation, and incremental conformance is about ensuring that parts that are implemented have an unambiguous specification that can be verified with automated tests.
 
 ## Decision
 
@@ -126,7 +126,7 @@ Another example of a "bug fix" would be a spelling error or a property rename
 that results in better uniformity without impacting semantics.  The logic here
 is that these are bugs in the specification and implementations would not have
 committed to that error. The point is the spec is meant to serve the
-implementors, not the other way around; interop is the goal, not conformance.
+implementors, not the other way around; interop is the goal, not blind conformance.
 
 This may seem like playing fast and loose with the prescribed SemVer versioning
 strategy, but these bugs in the spec will be discovered as interop is achieved,
@@ -139,7 +139,7 @@ Pervasive use of versioned media types allow for different representations to be
 provided for the same resource. This allows the TROLIE 1.0 spec to be updated in
 the future efforts without breaking existing implementations. It also supports
 the Conformance program by providing granular delineation of the functionality
-supported by different implementations.
+supported by different implementations, supporting incremental conformance.
 
 When `1.0.0` is declared, a new branch called **1.0** will become the main branch of
 [github.com/trolie/spec](https://github.com/trolie/spec), and the version number
