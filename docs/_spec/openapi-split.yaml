@@ -44,7 +44,7 @@ info:
     and considered in the Clearinghouse when determining the limit of the power
     system resource to which it applies.
 
-    <img src="images/TROLIE Ratings Provider interactions.excalidraw.png" alt="Primary Interactions with Ratings Provider" />
+    <img src="images/interactions.excalidraw.png" alt="Primary Interactions with Ratings Provider" />
 
   version: 1.0.0-wip-realtime-stable
   contact:
