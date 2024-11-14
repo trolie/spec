@@ -14,35 +14,41 @@ info:
     in these exchanges.
 
     The specification conceives of the exchange as being between two primary
-    entities: the Ratings Provider and the Clearinghouse Provider.
+    entities:
 
-    A Ratings Provider is an entity that is responsible for providing ratings on
-    some set of power system resources, e.g., Transmission Facilities, typically
-    a Transmission Owner or Transmission Operator.  The ratings are provided to
-    a Clearinghouse Provider whose is responsible for determining the operating
-    limits of the power system resources. The Clearinghouse Provider may be a
-    Transmission Provider, a Regional Entity, a Reliability Coordinator, or some
-    combination of these entities.
+    * A [Ratings Provider](https://trolie.energy/concepts#ratings-provider) is
+     an entity that is responsible for providing ratings on some set of power
+     system resources, e.g., Transmission Facilities, typically a Transmission
+     Owner or Transmission Operator.  The ratings are provided to a
+     Clearinghouse Provider whose is responsible for determining the operating
+     limits of the power system resources.
+ 
+    * The [Clearinghouse Provider](https://trolie.energy/concepts#clearinghouse-provider) is
+      typically a Transmission Provider (FERC) and a Reliability Coordinator (NERC).
 
     Adjacent Clearinghouse Providers exchange ratings in order to establish
     operating limit values for the power system resources that are shared
     between them.
 
     A Ratings Provider is assumed by this specification to have pre-coordinated 
-    with a Clearinghouse Provider to identify the former's Ratings Obligation, i.e.,
-    the set of power system resources for which they will provide ratings. That
-    pre-coordination is out-of-scope for this specification.
+    with a Clearinghouse Provider to identify the former's Ratings Obligation,
+    i.e., the set of power system resources for which they will provide ratings.
+    Additionally, the Ratings Provider will have similarly pre-coordinated the
+    definition of their Monitoring Sets, i.e., their power system limits of
+    interest. The nature and method of pre-coordination is out-of-scope for this
+    specification.
 
     Note that this API makes a strict distinction between the terms rating and
     limit.  Colloquially, these terms are often used interchangeably.  However,
     in the context of this specification, they have distinct meanings. At a
     high-level, the specification defines an exchange where ratings go in and
-    limits come out.
+    limits come out. A Clearinghouse is a function for determining the operating
+    limits from the ratings it has on-hand, including those that are proposed by
+    Ratings Providers and any applicable time-bound static ratings.
 
-    That is, a Clearinghouse is a function for determining the operating limits
-    from ratings provided by Ratings Providers.  A provided rating is validated
-    and considered in the Clearinghouse when determining the limit of the power
-    system resource to which it applies.
+    This interaction diagram highlights the primary requests and responses that
+    are defined in this spec. Note that not all of the operations will be
+    supported by every implementation.
 
     <img src="images/interactions.excalidraw.png" alt="Primary Interactions with Ratings Provider" />
 
@@ -60,130 +66,112 @@ tags:
 
   - name: Real-Time
     description: |
+      If permitted by the Clearinghouse Provider, its Ratings Providers can use
+      these functions to exchange real-time ratings, supplementing or replacing
+      traditional telemetry protocols like ICCP.
 
-      At the discretion of the TROLIE server owner, Ratings Providers may use
-      these functions to exchange ratings within the current hour, either as an
-      alternative or supplement to traditional telemetry protocols such as ICCP.
-
-      These are assumed to be real-time ratings, based on measurements of
-      ambient conditions as opposed to forecasts.  These ratings will be used by
-      Transmission Providers in real-time grid operations processes, such as
-      state estimator and real-time markets.  The clearinghouse for real-time
-      ratings may be run more frequently than the one for forecast ratings to
-      adapt to real-world conditions.
+      These ratings are based on real-time measurements of ambient conditions
+      and will be used by Transmission Providers for real-time grid operations
+      processes, including state estimation and real-time markets.  The clearing
+      of real-time ratings may be more frequent than for forecast ratings, but
+      the frequency is the prerogative of the Clearinghouse Provider.
 
       These ratings may be either AARs or DLRs.
 
   - name: Forecasting
     description: |
-
-      The operations related to data exchange of forecasted ratings.
-
-      This data exchange specifically includes the 240-hour-ahead forecasted AAR
-      data exchange between Ratings Providers and Transmission Providers
-      mandated FERC order 881.  It includes the ability to submit rating
-      proposals, query back in-use limits, and monitor the health and validity
-      of the rating proposal submissions relative the Rating Provider's
-      obligations.
+      The Forecasting API operations define the exchange of forecasted ratings,
+      including the 240-hour-ahead forecasted AAR data exchange required by FERC
+      Order 881.  The operations support submitting rating proposals, querying
+      in-use limits, and monitoring the health and validity of submissions
+      against the Rating Provider's obligations.
 
   - name: Seasonal
     description: |
-
       Seasonal ratings are static ratings associated with extended durations,
-      typically months. These are used in both planning and operations.
-      
-      For Ratings Obligations with an AAR Exemption, the power system resource
-      will be generally operated to a seasonal rating. For Ratings Obligations
-      that *are* satisfied with dynamic ratings, a seasonal rating is still
-      required, because the seasonal rating is typically used as a recourse
-      rating when a dynamic rating is unavailable for any reason. For example, a
-      dynamic rating would likely not be available during a communication outage
-      or when determining a forecast rating for the power system resource beyond
-      the period for which a forecast has been provided, e.g., beyond the ten
-      day forecast required by FERC Order 881.
+      typically months. These are typically used in both planning and
+      operations.
 
-      A snapshot is provided of the resource ratings configured by the system,
-      as well as their relationship to upcoming seasons.
+      Power system resources that are exempt from providing AARs generally
+      operate at a seasonal rating. Even for resources using dynamic ratings, a
+      seasonal rating is still necessary. This acts as a recourse when a dynamic
+      rating is unavailable, for any reason.  For example, a dynamic rating
+      might be unavailable during communication outages or for forecasts beyond
+      the ten-day period required by FERC Order 881.
 
   - name: Seasonal Overrides
     description: |
+      A Seasonal Override instructs the system to use a temporary static rating
+      instead of any concurrent Seasonal Rating for a resource.
 
-      A Seasonal Override is an instruction to use a temporary static rating set
-      in lieu of any concurrent Seasonal Rating for a given resource.
-
-      A typical use case is a so-called "de-rate" due to temporary clearance
+      A typical use case is a so-called 'de-rate' due to a temporary clearance
       issue for a transmission facility that is exempt from providing AARs.
-      Exempt facilities normally operate against a seasonal rating, yet rather
-      than provide a seasonal ratings schedule update, the Ratings Provider
-      could send a Seasonal Override. During the provided duration of the
-      override, the Transmission Provider would operate to the Seasonal Override
-      rather than any ratings that would have been used from the seasonal rating
-      schedule.
 
-      In contrast, for a resource that is *not* exempt from providing AARs, the
-      Ratings Provider would issue a Temporary AAR Exception to the
-      Clearinghouse Provider to address a clearance issue or other temporary
-      operating condition that calls for a static rating.
+      Exempt facilities typically operate at a seasonal rating. However, instead
+      of updating the seasonal rating schedule, a Ratings Provider can send a
+      Seasonal Override.
+
+      During the override period, the Clearinghouse uses the Seasonal
+      Override rating instead of any scheduled seasonal ratings.
+
+      For resources required to provide AARs, a Ratings Provider would issue a
+      Temporary AAR Exception to address temporary conditions requiring a static
+      rating.
 
   - name: Temporary AAR Exceptions
-    description: >
+    description: |
+      A [Temporary AAR Exception](https://trolie.energy/concepts#temporary-aar-exception) is
+      provided by the Ratings Provider when a Ratings Obligation cannot be
+      fulfilled, due to some temporary operating condition impacting the related
+      power system resource.  This could occur in various scenarios:
 
-      A Temporary AAR Exception is an exception to the AAR process, due to some
-      unusual condition on the facility.  This could occur in various
-      scenarios:
+        * An equipment failure.
+        * An unforeseen condition on a related part of the power grid.
+        * Some ambient condition that is not part of the model is heating the
+          line, like a wildfire.
+        * Something in the surrounding environment is affecting the amount that a
+          line is allowed to sag. For example, this may occur for lines over
+          rivers when very large ships pass under them
 
-      * An equipment failure.
+      A Temporary AAR Exception serves two main purposes: documenting the reason
+      for the exception and providing a temporary rating value set. It is employed
+      in three distinct circumstances:
 
-      * An unforeseen condition on a related part of the power grid.
+      1. Firstly, Order 881 mandates documentation and archival of all use of
+       alternate ratings in lieu of AARs. Ratings Providers should continue to
+       provide real-time and forecast ratings for the affected resource, but
+       these should match the rating provided with the Temporary AAR Exception
+       while the latter is in effect. This temporary rating, and the reason that
+       it occurred, must be captured in history regardless of the provided
+       ratings.  The reason and the end date of the effective window may be
+       updated after the object has been created, up to a configurable threshold.
 
-      * Some ambient condition that is not part of the model is heating the
-        line.
+         If the Ratings Providers provides ratings that deviate from the static
+         Temporary AAR Exception rating, the Clearinghouse Provider must decide
+         whether to use those or the static rating. The Clearinghouse Provider
+         advise its Ratings Providers on how it will choose ahead of time. This
+         specification recommends using the dynamic rating provided, but it does
+         not mandate it.
 
-      * Something in the surrounding environment is effecting the amount that a
-      line is allowed to sag.  For example, this may occur for lines over rivers
-      when very large ships pass under them. 
+      2. Secondly, Temporary AAR Exceptions apply when the Clearinghouse
+        Provider is generating forecast rating proposals on behalf of the Ratings Provider, e.g., when lookup tables are provided ahead of time by the Ratings Provider.
+        Since there is no external ratings, the Clearinghouse Provider
+        wouldn't otherwise know that a temporary static rating is needed. 
 
-      The purpose and behavior of a temporary rating is two-fold.
-
-      First, according to FERC, all exceptions to normal rating must be
-      documented and kept with history.  The actual numbers for the forecasted
-      and real-time feeds may still continue through proposals submitted to
-      TROLIE. However, the presence of a temporary rating, and the reason that
-      it occurred, must be captured in history regardless of the actual numbers.
-      The Temporary AAR Exception may be held simply for that record-keeping
-      purpose.  It must also include a specific rating used during the incident,
-      which is typically a recourse rating.  The reason and the end
-      date of the effective window may be updated after the object has been
-      created, up to a configurable threshold.
-
-      If the targeted resource is getting AAR data feeds, then it _may_ be assumed
-      that those AAR data feeds from the Ratings Provider will simply reflect the
-      temporary condition.  The ClearingHouse Provider then may decide whether to use
-      the raw AAR data feeds or the ratings from the temporary AAR exception.  
-      
-      However, this doesn't always apply, leading to the
-      second usage.  Actual rating values must in Temporary AAR Exceptions
-      must be used when we cannot expect AAR feeds otherwise.  This
-      occurs in two scenarios:
-
-      1.  It is required when the Transmission Provider is generating forecast
-      rating proposals, from lookup tables for example.  There is no external
-      AAR data feed, and the Transmission Provider wouldn't otherwise know how
-      to forecast the ratings given this temporary condition.  For these
-      scenarios, a complete rating value set MUST be provided.
-
-      2.  For facilities where AAR data is provided, it is possible that the AAR
-      data feed could be down for some reason.  Therefore, this provides a
-      placeholder set of numbers until the AAR data feed is repaired.
+      3. Finally, for facilities where dynamic ratings are provided, it is
+        possible that a communications outage or other issue could prevent the
+        Clearinghouse Provider from receiving the dynamic ratings. In this case,
+        the Clearinghouse Provider would use a Temporary AAR Exception rating.
 
   - name: Monitoring Sets
-    description: >      
-      
-      Monitoring Sets are named sets of power system resources that may be used to
-      filter ratings and limits returned by queries against these APIs. How Monitoring
-      Sets are defined is beyond the scope of the TROLIE specification, and it is
-      assumed that the sender and receiver have predefined the appropriate Monitoring
-      Sets.  More on monitoring sets may be found at https://trolie.energy/concepts.html#monitoring-sets
+    description: |
+
+      [Monitoring Sets](https://trolie.energy/concepts#monitoring-sets) are
+      named sets of power system resources that may be used to filter ratings
+      and limits returned by queries against these APIs. How Monitoring Sets are
+      defined is beyond the scope of the TROLIE specification, and it is assumed
+      that the sender and receiver have predefined the appropriate Monitoring
+      Sets.
 
   - name: limit-type
     description: <SchemaDefinition schemaRef="#/components/schemas/limit" />
