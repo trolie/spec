@@ -25,7 +25,7 @@ aux_links:
     - "https://github.com/TROLIE/spec"
 
   "OpenAPI Specification":
-    - "/spec"
+    - "/spec-1.0"
 
 compress_html:
   ignore:
@@ -51,7 +51,7 @@ callouts:
 gh_edit_link: true
 gh_edit_link_text: "Edit this page on GitHub"
 gh_edit_repository: "https://github.com/TROLIE/spec"
-gh_edit_branch: "1.0.0-wip"
+gh_edit_branch: "1.0"
 gh_edit_source: docs
 gh_edit_view_mode: "tree"
 

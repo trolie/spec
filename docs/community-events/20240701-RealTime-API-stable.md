@@ -9,7 +9,7 @@ parent: Community Events
 
 <img src="../images/TROLIE-summer.jpg" style="float:right;padding-left:5px;box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3)" width="280" height="280"/>
 
-The specification of the [Real-Time Operations](/spec#tag/Real-Time) in
+The specification of the [Real-Time Operations](/spec-1.0#tag/Real-Time) in
 TROLIE OpenAPI specification is now considered stable, closing the [associated
 milestone](https://github.com/trolie/spec/milestone/2). Specifically, no further
 changes are anticipated to the media type schemas and resource semantics--the

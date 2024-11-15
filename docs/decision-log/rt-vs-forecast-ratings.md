@@ -116,5 +116,5 @@ rating if no such feed is available.
 ## Consequences
 
 TROLIE real-time operations are defined under the `Real-Time` tag of the TROLIE
-[specification](https://trolie.energy/spec#tag/Real-Time).  As mentioned above,
+[specification](https://trolie.energy/spec-1.0#tag/Real-Time).  As mentioned above,
 TROLIE servers may optionally implement these operations.

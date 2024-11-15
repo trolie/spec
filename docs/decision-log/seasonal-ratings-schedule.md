@@ -78,4 +78,4 @@ Provider's business rules and practices.
 
 ## Consequences
 
-Seasonal rating support is implemented in the TROLIE [specification](../spec#tag/Seasonal).
+Seasonal rating support is implemented in the TROLIE [specification](../spec-1.0#tag/Seasonal).

@@ -33,8 +33,8 @@ Taken together, we refer to this information as the provenance of the limit.
 ## How TROLIE Represents Provenance
 {:.no_toc}
 
-Whether you are obtaining a [Real-Time](../spec#tag/Real-Time/operation/getRealTimeLimits)
-or [Forecast Limits Snapshot](../spec#tag/Forecasting/operation/getLimitsForecastSnapshot),
+Whether you are obtaining a [Real-Time](../spec-1.0#tag/Real-Time/operation/getRealTimeLimits)
+or [Forecast Limits Snapshot](../spec-1.0#tag/Forecasting/operation/getLimitsForecastSnapshot),
 TROLIE specifies a detailed [media type](./media-types.md) that contains provenance information;
 these are
 * `application/vnd.trolie.realtime-limits-detailed-snapshot.v1+json` and
@@ -109,8 +109,8 @@ for a given power system resource. See [Conditional Ratings](../decision-log/con
 
 Similarly, the `source` object refers to the original Ratings Proposal message that contained
 this proposal. This is exactly the same information as is contained by `proposal-header.source`
-when submitting a [forecast](../spec#tag/Forecasting/operation/patchRatingForecastProposal)
-or [real-time proposal](../spec#tag/Real-Time/operation/postRealTimeProposal).
+when submitting a [forecast](../spec-1.0#tag/Forecasting/operation/patchRatingForecastProposal)
+or [real-time proposal](../spec-1.0#tag/Real-Time/operation/postRealTimeProposal).
 
 Next we have `proposal-disposition`. This field is an enumeration of two values:
 `Used` or `Rejected`. In context, this means either this proposal was

@@ -45,7 +45,7 @@ design.
 ## Schema Design Rationale
 
 The entire schema for [Forecast
-Proposals](https://trolie.energy/spec#tag/Forecasting/operation/patchRatingForecastProposal)
+Proposals](https://trolie.energy/spec-1.0#tag/Forecasting/operation/patchRatingForecastProposal)
 is certain worth scrutinizing, but for our immediate purposes, let's dilate on
 just the `ratings` object of the message.
 

@@ -23,9 +23,9 @@ TROLIE includes two kinds of temporary ratings objects:
 Temporary ratings, whether they be Temporary AAR Exceptions or Seasonal Overrides, are created in 
 much the same manner.  The following `input.json` example could be used to create either a 
 Temporary AAR Exception or Seasonal Override either by invoking 
-[createTemporaryAARException](../spec#tag/Temporary%20AAR%20Exceptions/operation/createTemporaryAARException)
+[createTemporaryAARException](../spec-1.0#tag/Temporary%20AAR%20Exceptions/operation/createTemporaryAARException)
 or 
-[createSeasonalOverride](../spec#tag/Seasonal%20Overrides/operation/createSeasonalOverride)
+[createSeasonalOverride](../spec-1.0#tag/Seasonal%20Overrides/operation/createSeasonalOverride)
 respectively:
 
 ```json
@@ -62,7 +62,7 @@ is given below:
 Once created, the temporary ratings may be updated.  This is often needed if the 
 anticipated end time changes, or if more detail needs to be added to the
 reason.  For the Temporary AAR Exception created above, this may be achieved by 
-invoking [updateTemporaryAARException](../spec#tag/Temporary%20AAR%20Exceptions/operation/updateTemporaryAARException).  
+invoking [updateTemporaryAARException](../spec-1.0#tag/Temporary%20AAR%20Exceptions/operation/updateTemporaryAARException).  
 
 Assuming the `output.json` file above was modified as desired, the Temporary
 AAR Exception may be updated with the following command.  Note that the ID
@@ -78,7 +78,7 @@ curl -d @output.json \
 
 Finally, the temporary rating may also have been created by mistake.  As long as it hasn't started
 yet, it may be deleted it using 
-[deleteTemporaryAARException](../spec#tag/Temporary%20AAR%20Exceptions/operation/deleteTemporaryAARException)
+[deleteTemporaryAARException](../spec-1.0#tag/Temporary%20AAR%20Exceptions/operation/deleteTemporaryAARException)
 This can be done with the following command:
 
 ```bash
@@ -92,9 +92,9 @@ end time to the current time.
 
 ## Searching for Temporary Ratings
 Temporary ratings that have been submitted to TROLIE may be searched, using either
-[getTemporaryAARExceptions](../spec#tag/Temporary%20AAR%20Exceptions/operation/getTemporaryAARExceptions)
+[getTemporaryAARExceptions](../spec-1.0#tag/Temporary%20AAR%20Exceptions/operation/getTemporaryAARExceptions)
 or 
-[getSeasonalOverrides](../spec#tag/Seasonal%20Overrides/operation/getSeasonalOverrides).  These 
+[getSeasonalOverrides](../spec-1.0#tag/Seasonal%20Overrides/operation/getSeasonalOverrides).  These 
 queries may be filtered with query parameters, including start/end time windows,
 monitoring sets and individual resources.  
 
