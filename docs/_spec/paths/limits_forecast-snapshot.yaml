@@ -12,44 +12,54 @@ current:
       - $ref: ../components/parameters/static-only.yaml
     description: |
 
-      Obtain the Limits Forecast the Transmission Provider is currently using in
-      Operations, relative to the current time.
+      Returns the latest Limits Forecast the clearinghouse has produced.
 
-      This operation uses media types to control verbosity of the data
-      fetched. The default media type,
-      `application/vnd.trolie.forecast-limits-snapshot.v1+json`, simply includes
-      the rating data. For applications that need it, the media type
-      `application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json` may be
-      requested, which also references the source proposals used to generate the
-      snapshot, as well as reporting data from the ratings clearing process.
+      This content of the response varies significantly based on the media type requested.
 
-      The `application/vnd.trolie.forecast-limits-snapshot.v1+json` and
-      `application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json` media
-      types support the `include-psr-header` parameter. This is a boolean
-      parameter that defaults to `true`. When set to `false`, the
+      * `application/vnd.trolie.forecast-limits-snapshot.v1+json` simply includes the limits.
+      * For use cases that require understanding *how* the limits were determined,
+        the media type `application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json`
+        is available; it contains the ratings proposals and other factors used to
+        generate the limits.
+
+      Both of these media types support the `include-psr-header` parameter. This
+      is a boolean parameter that defaults to `true`. When set to `false`, the
       `power-system-resource` header is omitted.  This can result in smaller
       payloads when the client already knows the resource ids in use by the
       Clearinghouse Provider.
+
       ```http
       GET /limits/forecast-snapshot HTTP/1.1
       Accept: application/vnd.trolie.forecast-limits-detailed-snapshot.v1+json; include-psr-header=false
       ```
 
-      Additionally, the `application/vnd.trolie.forecast-limits-snapshot-slim.v1+json`
-      media type may be used to request a more concise representation of the data.
-      The media type parameter `limit-type` is required to specify the type of limit
-      being requested. For example,
+      ### Slim Format
+
+      The `application/vnd.trolie.forecast-limits-snapshot-slim.v1+json` media type
+      may be used to request a more concise representation of the data.  The
+      media type parameter `limit-type` is required to specify the type of limit
+      being requested, for example:
+
       ```http
       GET /limits/forecast-snapshot HTTP/1.1
       Accept: application/vnd.trolie.forecast-limits-snapshot-slim.v1+json; limit-type=apparent-power
       ```
-      Note this format is much more concise but requires significant care in processing.
-      See [Using Slim Media Types](../example-narratives/using-slim-media-types) for more details.
+      Additionally, the `inputs-used` parameter may be set to `true` to include
+      the inputs used to generate the forecast.
+      ```http
+      GET /limits/forecast-snapshot HTTP/1.1
+      Accept: application/vnd.trolie.forecast-limits-snapshot-slim.v1+json; limit-type=apparent-power; inputs-used=true
+      ```
+
+      Note this format is much more concise but requires significant care in
+      processing.  See [Using Slim Media
+      Types](../example-narratives/using-slim-media-types) for more details.
 
       Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
       and the `ETag` of a previous `GET` response to poll this endpoint. Rate
       limiting is done on a per Ratings Provider basis, so requests from
-      independent clients used by the same provider count against the same quota.
+      independent clients used by the same provider count against the same
+      quota.
 
     responses: &responses
       '200':
