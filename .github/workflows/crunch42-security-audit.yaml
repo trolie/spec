@@ -18,7 +18,7 @@ jobs:
           node-version: 20
       - name: Bundle
         run: >-
-          npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi.yaml &&
+          npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
           rm ./docs/_spec/openapi-split.yaml
 
       - name: Audit API definition for security issues

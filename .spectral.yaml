@@ -60,6 +60,6 @@ overrides:
       # and to keep the individual responses DRY, we want
       # to keep the 201 in the root openapi file, so we
       # disable the unused component rule for this response
-      - "docs/openapi.yaml#/components/responses/201"
+      - "docs/openapi-1.0.yaml#/components/responses/201"
     rules:
       oas3-unused-component: "off"

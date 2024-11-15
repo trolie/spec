@@ -33,8 +33,8 @@ if [[ ("${1,,}" == "bundle") || ("${1,,}" == "start") ]]; then
     if [[ -n "$BUNDLE_PID" && -n "$(ps -p $BUNDLE_PID)" ]]; then
         kill $BUNDLE_PID
     fi
-    redocly bundle $DOCS_PATH/_spec/openapi-split.yaml -o $DOCS_PATH/openapi.yaml && \
-    npx @redocly/cli lint ./docs/openapi.yaml &
+    redocly bundle $DOCS_PATH/_spec/openapi-split.yaml -o $DOCS_PATH/openapi-1.0.yaml && \
+    npx @redocly/cli lint ./docs/openapi-1.0.yaml &
     export BUNDLE_PID=$!
 fi
 
