@@ -1,0 +1,6 @@
+{
+  "type": "//trolie.example.com/spec/client-errors/406/compression-required",
+  "title": "Not Acceptable: Accept-Encoding Required",
+  "status": 406,
+  "detail": "This resource must be compressed with one of the following algorithms: gzip, deflate, br."
+}

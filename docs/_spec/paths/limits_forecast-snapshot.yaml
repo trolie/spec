@@ -108,7 +108,7 @@ current:
       '404':
         $ref: '../openapi-split.yaml#/components/responses/404-empty'
       '406':
-        $ref: '../openapi-split.yaml#/components/responses/406-empty'
+        $ref: 'limits_realtime-snapshot.yaml#/global/get/responses/406'
       '429':
         $ref: '../openapi-split.yaml#/components/responses/429-empty'
       '500': &unexpected-error-empty
