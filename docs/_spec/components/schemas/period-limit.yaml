@@ -181,11 +181,11 @@ real-time-provenance:
     - proposal-disposition
   additionalProperties: false
 
-seasonal-proposal:
+seasonal-proposal: &seasonal-proposal
   <<: *forecast-proposal
   description: Proposes the continuous and emergency ratings for the specified Season.
   title: Seasonal Rating Proposal
-  properties:
+  properties: &seasonal-proposal-props
     <<: *forecast-proposal-props
     season-name:
       $ref: ./season-name.yaml
@@ -242,6 +242,18 @@ seasonal-snapshot: &seasonal-snapshot
       $ref: ./day-night.yaml
   additionalProperties: false
 
+seasonal-proposal-considered:
+  <<: *seasonal-proposal
+  properties:
+    <<: *seasonal-proposal-props
+    source:
+      $ref: ./data-provenance.yaml
+    resource-id:
+      $ref: ./resource-id.yaml
+  required:
+    - source
+    - resource-id
+
 seasonal-snapshot-detailed:
   <<: *seasonal-snapshot
   description: Proposes the continuous and emergency ratings for the specified Season.
@@ -259,17 +271,7 @@ seasonal-snapshot-detailed:
       minItems: 1
       maxItems: 10
       items:
-        allOf:
-          - $ref: '#/proposal'
-          - type: object
-            properties:
-              source:
-                $ref: ./data-provenance.yaml
-              resource-id:
-                $ref: ./resource-id.yaml
-        required:
-          - source
-          - resource-id
+        $ref: '#/seasonal-proposal-considered'
   required:
     - proposals-considered
     - period-start
