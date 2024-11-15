@@ -1,26 +1,23 @@
 get:
   operationId: getRealTimeProposalStatus
-  summary: Obtain the status of the Ratings Provider's Real-Time proposals
+  summary: Real-Time Proposals Status
   description: |
 
-    Used to obtain the status of real-time ratings proposals. The response is
-    implicitly restricted to the requesting Ratings Provider's obligation.
-    Accordingly, the caller can use this endpoint to check the state of their
-    proposal submission.
+    Retrieves the status of a real-time ratings proposal. The response is
+    limited to the requestor's current proposal.
 
-    Note that the same status object is returned for each
-    `postRealTimeProposal`, so this endpoint may seem redundant. However,
-    an anticipated use case for this `GET` endpoint is to support supervisor
-    processes that are setup by the client to independently ensure the provider's process for
-    rating submission if functioning properly. For example, the Rating Provider
-    might have one program responsible for producing and submitting Ratings
-    via `postRealTimeProposal`, while having a separate
-    monitoring job that checks this endpoint regularly.
+    Note this status resource is also returned for each `postRealTimeProposal`
+    call.  The anticipated use case for this endpoint is to monitoring proposal
+    submissions: Clients can use this operation to independently verify that
+    their proposal submission process is functioning correctly. This is
+    particularly useful for scenarios where a separate monitoring job is set up
+    to check the status of proposals.
 
-    Clients SHOULD perform Conditional `GET` using the `If-None-Match` header
-    and the `ETag` of a previous `GET` response to poll this endpoint. Rate
-    limiting is done on a per Ratings Provider basis, so requests from
-    independent clients used by the same provider count against the same quota.
+    Rate limiting is applied per Ratings Provider, meaning requests from
+    multiple clients associated with the same provider count towards the same
+    quota.  To optimize network traffic and server load, clients should perform
+    conditional GET requests with the `If-None-Match` header and the `ETag` from
+    a previous response.
 
   tags: &tags
     - Real-Time
@@ -59,45 +56,43 @@ post:
   summary: Submit Real-Time Rating Proposal
   description: |
 
-    At the discretion of the TROLIE server owner, Ratings Providers use 
-    this endpoint to submit ratings within the current hour.  
-    These are assumed to be real-time ratings, based on measurements
-    of ambient conditions as opposed to forecasts.  These ratings will be 
-    used by Transmission Providers in real-time grid operations processes, 
-    such as state estimator and real-time markets.  The clearinghouse for real-time ratings
-    may be run more frequently than the one for forecast ratings to adapt to real-world 
-    conditions.  
+    Some Clearinghouse Providers will support real-time ratings submissions
+    through this operation.
 
-    These ratings may be either AARs or DLRs.  
+    The API mechanics are different than forecasts, as there is no implicitly
+    created time window to modify.  Ratings providers simply `POST` new values
+    as they are measured and/or computed.
 
-    The API mechanics are different than forecasts, as there is no implicitly created
-    time window to modify.  Ratings providers simply `POST` new values as they are measured and computed.  
+    Rules for usage however are similar to forecasts; real-time proposals do not
+    have to contain every resource for which the Ratings Provider is
+    responsible.  Data may be broken into batches across the Rating Provider's
+    footprint.
 
-    Rules for usage however are similar to forecasts; real-time proposals do not have to contain
-    every resource for which the Ratings Provider is responsible.  Data may be broken into batches
-    across the Rating Provider's footprint.  
+    Status of the real-time proposals also includes an indication of incomplete
+    obligations, much like forecast.  However, the meaning of this is somewhat
+    different, as it simply indicates data that is either completely missing, or
+    is considered stale by the Clearinghouse Provider, likely due to simply not
+    receiving a value within a reasonable period, such as an hour.
 
-    Status of the real-time proposals also includes an indication of incomplete obligations, much
-    like forecast.  However, the meaning of this is somewhat different, as it simply indicates 
-    data that is either completely missing, or is considered stale by the Clearinghouse Provider,
-    likely due to simply not receiving a value within a reasonable period, such as an hour.  
+    There are two supported media types for Real-Time Ratings proposals.
 
-    There are two supported media types for a Real-Time Ratings proposals.
+    * `application/vnd.trolie.rating-realtime-proposal.v1+json` allows the Ratings
+      Provider to combine different limit types, such as `apparent-power` (MVA)
+      and `current` (MW), in a single proposal.
 
-    `application/vnd.trolie.rating-realtime-proposal.v1+json` allows the 
-    Ratings Provider to combine different limit types, such as
-    `apparent-power` (MVA) and `current` (MW), in a single proposal.
+    * `application/vnd.trolie.rating-realtime-proposal-slim.v1+json` for
+      proposals that only require a single limit type, e.g., `apparent-power`.
+      Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
+      parameter. For example,
 
-    `application/vnd.trolie.rating-realtime-proposal-slim.v1+json` for
-    proposals that only require a single limit type, e.g., `apparent-power`.
-    Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
-    parameter. For example,
-    ```http
-    POST /ratings-proposals/realtime HTTP/1.1
-    Content-Type: application/vnd.trolie.rating-realtime-proposal-slim.v1+json; limit-type=apparent-power
-    ```
-    Note that this format is much more concise but requires significant care
-    in serialization/deserialization.  For details, see [Using Slim Media Types](../example-narratives/using-slim-media-types).
+        ```http
+        POST /ratings-proposals/realtime HTTP/1.1
+        Content-Type: application/vnd.trolie.rating-realtime-proposal-slim.v1+json; limit-type=apparent-power
+        ```
+
+        Note that this format is much more concise but requires significant care
+        in serialization/deserialization.  For details, see [Using Slim Media
+        Types](../example-narratives/using-slim-media-types).
 
   tags: *tags
 
@@ -121,9 +116,15 @@ post:
     '202':
       description: |
 
-        Accepted. The update was accepted for later processing by the Clearinghouse.
-        Updates to ratings may need to undergo additional validation and
-        propagation to other systems.
+        Accepted. The update was accepted for later processing by the
+        Clearinghouse.  Updates to ratings may need to undergo additional
+        validation and propagation to other systems.
+
+        Be sure to check the `incomplete-obligation-count` value is zero; if it
+        is non-zero, the Clearinghouse Provider does not have a valid and
+        non-stale real-time rating for one or more Ratings Obligations.
+        Providers should impute recourse ratings as necessary to ensure their
+        proposals are complete, i.e., the entire Ratings Obligation is met.
 
       content:
         application/vnd.trolie.rating-realtime-proposal-status.v1+json:
@@ -147,25 +148,17 @@ post:
 
           Unprocessable Content. The Real-Time Ratings Proposal may 
           not utilize units that are not permitted by the
-          Clearinghouse Provider. Check the response for details. Ratings
-          Providers should impute recourse ratings as necessary to ensure their
-          proposals are complete, i.e., the entire Ratings Obligation is met.
+          Clearinghouse Provider. Check the response for details.
 
       content:
         application/problem+json:
           schema:
             $ref: '../openapi-split.yaml#/components/schemas/problem'
-          # ideally this would be examples (plural) and include both invalid units and incomplete proposal
-          # but `redocly bundle` extracts examples as standalone components/examples in the consolidated spec
-          # and unfortunately `redocly lint` then gives validation errors on those examples
-          #
-          #examples:
-          #  invalid-units:
-          #    $ref: '../../articles/examples/proposal-invalid-units.json'
-          #  incomplete-proposal:
-          #    $ref: '../../articles/examples/incomplete-proposal.json'
-          example:
-            $ref: '../../articles/examples/incomplete-proposal.json'
+          examples:
+            invalid-units:
+              summary: Invalid Units Provided in Real-Time Proposal
+              value:
+                $ref: '../../articles/examples/proposal-invalid-units.json'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/304/headers'
     '429': *rate-limit-hit
