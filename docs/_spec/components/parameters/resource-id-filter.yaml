@@ -1,6 +1,6 @@
-name: transmission-facility
+name: resource-id
 description: |
-  Only return limits for this transmission facility.  
+  Only return limits for this power system resource
 in: query
 required: false
 schema:
@@ -9,3 +9,6 @@ examples:
   circuit-id:
     summary: A typical AC line identifier
     value: "86753_1"
+  mrid:
+    summary: A unique identifier for a power system resource
+    value: "123456789012345678"

@@ -15,7 +15,7 @@ global:
       - Real-Time
     parameters: &params
       - $ref: ../components/parameters/monitoring-set-filter.yaml
-      - $ref: ../components/parameters/facility-filter.yaml
+      - $ref: ../components/parameters/resource-id-filter.yaml
     responses: &responses
       '200':
         description: The System Operating Limits snapshot is returned.
