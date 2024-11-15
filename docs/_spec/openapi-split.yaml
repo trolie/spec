@@ -95,7 +95,7 @@ tags:
       Power system resources that are exempt from providing AARs generally
       operate at a seasonal rating. Even for resources using dynamic ratings, a
       seasonal rating is still necessary. This acts as a recourse when a dynamic
-      rating is unavailable, for any reason.  For example, a dynamic rating
+      rating is unavailable.  For example, a dynamic rating
       might be unavailable during communication outages or for forecasts beyond
       the ten-day period required by FERC Order 881.
 
