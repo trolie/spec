@@ -10,7 +10,7 @@ parent: Decision Records
 ## Context
 
 The primary mandate of the TROLIE project is defined by its
-[Scope](https://github.com/trolie/spec/blob/1.0.0-wip/Scope.md).  Paramount to
+[Scope](https://github.com/trolie/spec/tree/HEAD/Scope.md).  Paramount to
 meeting that mandate is defining the [TROLIE 1.0 API
 specification](https://trolie.energy/spec), yet this is a [community
 specification](https://github.com/trolie/spec/blob/1.0.0-wip/Community_Specification_License.md)
