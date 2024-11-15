@@ -42,7 +42,7 @@ get:
     '403': &forbidden-empty
       $ref: '../openapi-split.yaml#/components/responses/403-empty'
     '406': &not-acceptable-empty
-      $ref: '../openapi-split.yaml#/components/responses/406-empty'
+      $ref: '../openapi-split.yaml#/components/responses/406-problem'
     '429': &rate-limit-hit
       $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': &unexpected-error-empty
