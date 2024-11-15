@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 1.0.0*
+      - 1.0*
   pull_request:
     branches:
-      - 1.0.0*
+      - 1.0*
 
 permissions:
   contents: read
@@ -27,5 +27,5 @@ jobs:
           node-version: 20
       - name: Lint
         run: >-
-          npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi.yaml &&
-          npx --yes @stoplight/spectral-cli lint docs/openapi.yaml --ruleset .spectral.yaml --verbose
+          npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
+          npx --yes @stoplight/spectral-cli lint docs/openapi-1.0.yaml --ruleset .spectral.yaml --verbose

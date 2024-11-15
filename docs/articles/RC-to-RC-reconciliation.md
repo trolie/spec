@@ -32,13 +32,13 @@ ratings independently, GLRs for these facilities must be resolved after clearing
 In terms of TROLIE mechanics, the initial output of each RC's clearinghouse is considered the 
 [Regionally Limiting Rating](../concepts.md#regionally-limiting-rating) or RLR.  Peer TROLIEs can continuously 
 poll each other for new RLRs using the 
-[getRegionalLimitsForecastSnapshot](../spec#tag/Forecasting/operation/getRegionalLimitsForecastSnapshot) 
+[getRegionalLimitsForecastSnapshot](../spec-1.0#tag/Forecasting/operation/getRegionalLimitsForecastSnapshot) 
 operation.  
 
 After receiving RLRs from all neighbors in addition to generating its own, the TROLIE instance can generate a regular
 snapshot that consists of [Globally Limiting Ratings](../concepts.md#globally-limiting-rating) or GLRs, that incorporate
 the most conservative RLRs for each facility.  Only these GLR snapshots should be visible via 
-[getLimitsForecastSnapshot](../spec#tag/Forecasting/operation/getLimitsForecastSnapshot), which represents the final
+[getLimitsForecastSnapshot](../spec-1.0#tag/Forecasting/operation/getLimitsForecastSnapshot), which represents the final
 ratings that may be used in key decisions such as markets, look-ahead unit commitment and dispatch, and outage
 coordination.  
 
@@ -78,7 +78,7 @@ sequenceDiagram
 Each of the steps above deserves some more context.  The following listing describes each event, referencing the 
 sequence numbers in the diagram above:
 
-1.  The RC TROLIE server needs to poll for new RLRs against Neighbor RC 1.  This leverages the [Conditional GET](./conditional-GET.md) pattern, against [getRegionalLimitsForecastSnapshot](../spec#tag/Forecasting/operation/getRegionalLimitsForecastSnapshot).  
+1.  The RC TROLIE server needs to poll for new RLRs against Neighbor RC 1.  This leverages the [Conditional GET](./conditional-GET.md) pattern, against [getRegionalLimitsForecastSnapshot](../spec-1.0#tag/Forecasting/operation/getRegionalLimitsForecastSnapshot).  
 2.  Same as #1 for Neighbor RC 2
 3.  Same as #1 for Neighbor RC 3
 4.  Ratings Providers submit proposals, or [LLRs](../concepts.md#locally-limiting-rating), to TROLIE to be processed by the clearinghouse.  
@@ -97,7 +97,7 @@ Real-time however is more of an eventually consistent flow, constantly convergin
 there is no "target" window for a given rating.  Rather, the value of the rating in use _now_ is 
 constantly being updated, based on the best knowledge a given RC has about the RLRs of the other 
 RC.  Like forecast, there is a dedicated operation 
-[getRegionalRealTimeLimits](../spec#tag/Real-Time/operation/getRegionalRealTimeLimits) to facilitate
+[getRegionalRealTimeLimits](../spec-1.0#tag/Real-Time/operation/getRegionalRealTimeLimits) to facilitate
 polling by the peers.  However, rather than wait for new RLR values, the clearinghouse can 
 immediately generate new GLRs.  
 
@@ -149,4 +149,4 @@ thorough functional validations that multiple TROLIEs are configured and behavin
 correctly.  Specifically, the following conditions must be true:
 
 * Since both TROLIEs are generating seam monitoring sets, these monitoring sets should represent the same set of resources.  The monitoring sets should have the same size, and each resource should have an alias that maps to the primary identifier or one of the aliases in the other monitoring set.  
-* For a given forecast window, the result of [getLimitsForecastSnapshot](../spec#tag/Forecasting/operation/getLimitsForecastSnapshot) (the GLRs) should be identical in each TROLIE.  
+* For a given forecast window, the result of [getLimitsForecastSnapshot](../spec-1.0#tag/Forecasting/operation/getLimitsForecastSnapshot) (the GLRs) should be identical in each TROLIE.  

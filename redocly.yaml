@@ -15,4 +15,4 @@ apis:
   trolie@dev:
     root: ./docs/_spec/openapi-split.yaml
   trolie@v1:
-    root: ./docs/openapi.yaml
+    root: ./docs/openapi-1.0.yaml

@@ -20,11 +20,11 @@ class="fa-solid fa-envelope"></i>](https://lists.lfenergy.org/g/trolie-general).
 
 {: .announcement }
 
-> **Latest Updates** <i class="fa-solid fa-bullhorn"></i>
-> 
-> Join us on Wednesday November 20th, 2024 at 1:30pm ET for the webinar [A Lap Around TROLIE 1.0](https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-a-lap-around-trolie-10/)!
+> **Latest Updates** 📢
 >
-> Read more in the [latest status update](./community-events/20240118-Pulling-into-the-Station.md).
+> [TROLIE 1.0.0 is released](./community-events/20241115-releasing-1.0.0)! 🎉
+>
+> Join us on Wednesday November 20th, 2024 at 1:30pm ET for the webinar [A Lap Around TROLIE 1.0](https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-a-lap-around-trolie-10/)!
 
 # Introduction
 
@@ -44,11 +44,12 @@ will help accelerate their implementation and simplify interoperability.
 
 The project’s specific aims are:
 
-* <i class="fa-solid fa-hammer"></i> In Progress: Define an API specification
+* ✅ Define an API specification
   for the exchange of ratings and ratings-related information to support
   organizations working to comply with FERC Order 881.
 
-* <i class="fa-solid fa-calendar-check"></i> TODO: A conformance program to
+* <i class="fa-solid fa-hammer"></i> In Progress: A [conformance
+  program](https://github.com/trolie/conformance) to
   provide vendors a means to demonstrate their compatibility with the above
   specification and signal their commitment to maintaining compatibility.
 

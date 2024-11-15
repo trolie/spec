@@ -19,13 +19,13 @@ Since our last [Community Post](../community_events.md), we've accomplished a lo
 
 * Defined [RC-to-RC rating reconciliation](../articles/RC-to-RC-reconciliation.md) and the underlying
   [monitoring set reconciliation pattern](../articles/peer-monitoring-sets.md)
-  which utilizes the affordances for [reading monitoring sets](https://trolie.energy/spec#tag/Monitoring-Sets)
+  which utilizes the affordances for [reading monitoring sets](https://trolie.energy/spec-1.0#tag/Monitoring-Sets)
 
 * Defined a ["slim" media type pattern](../articles/media-types.md#slim-media-types) that optimizes the most
   common ratings and limits exchanges
 
-* Defined operations for [temporary AAR exceptions](https://trolie.energy/spec#tag/Temporary-AAR-Exceptions)
-  and [seasonal overrides](https://trolie.energy/spec#tag/Seasonal-Overrides)
+* Defined operations for [temporary AAR exceptions](https://trolie.energy/spec-1.0#tag/Temporary-AAR-Exceptions)
+  and [seasonal overrides](https://trolie.energy/spec-1.0#tag/Seasonal-Overrides)
 
 * Incorporated myriad fixes and documentation improvements based on reviews with vendors.
 
@@ -51,7 +51,7 @@ scenarios.
 
 ### Managing Temporary AAR Exceptions and Seasonal Overrides
 
-Quoting the [specification](https://trolie.energy/spec#tag/Seasonal-Overrides):
+Quoting the [specification](https://trolie.energy/spec-1.0#tag/Seasonal-Overrides):
 
 > A Seasonal Override is an instruction to use a temporary static rating set in
 > lieu of any concurrent Seasonal Rating for a given segment.

@@ -37,8 +37,8 @@ TROLIE servers can mitigate some of this complexity by introspecting monitoring
 sets.  The Venn diagram below illustrates two [monitoring sets](../concepts.md#monitoring-sets) owned 
 by RCs (A and B), one in each of the other's TROLIE servers.  Each RC must coordinate creation of 
 monitoring sets in the other's TROLIE in order to monitor ratings, as described in the operations 
-[getLimitsForecastSnapshot](../spec#tag/Forecasting/operation/getLimitsForecastSnapshot) and
-[getRealTimeLimits](../spec#tag/Real-Time/operation/getRealTimeLimits).
+[getLimitsForecastSnapshot](../spec-1.0#tag/Forecasting/operation/getLimitsForecastSnapshot) and
+[getRealTimeLimits](../spec-1.0#tag/Real-Time/operation/getRealTimeLimits).
 
 ![Peers](../images/Seam.excalidraw.png)
 
@@ -53,7 +53,7 @@ The RC A TROLIE can gain insight by specifically being aware of the monitoring s
 RC B is using to monitor RC A's footprint.  This will be referred to as `B-out` in the following examples.  
 
 Visibility into the monitoring set itself in either system is exposed via the 
-[getMonitoringSet](../spec#tag/Monitoring-Sets/operation/getMonitoringSet) operation.  Given this capability, 
+[getMonitoringSet](../spec-1.0#tag/Monitoring-Sets/operation/getMonitoringSet) operation.  Given this capability, 
 TROLIE for RC A may do the following:
 
 * Automatically determine the overlapping aliases between models. 
@@ -120,7 +120,7 @@ Using monitoring set reconciliation however, any unique identifier may be shared
 one of the RCs maintaining an alias.  Alternatively, RCs that are using ICCP for real-time 
 communications must already coordinate point names for sending the ratings.  Using the point name as one of 
 the aliases allows it to be reused to map resources.  Consider the following example contents for monitoring sets
-as returned by [getMonitoringSet](../spec#tag/Monitoring-Sets/operation/getMonitoringSet) for `B-in` and `B-out` 
+as returned by [getMonitoringSet](../spec-1.0#tag/Monitoring-Sets/operation/getMonitoringSet) for `B-in` and `B-out` 
 respectively.  Note these examples are oversimplified for readability, as they both only contain a single resource:
 
 **`B-in`**:

@@ -71,7 +71,7 @@ curl -X GET \
 | `/limits/realtime-snapshot` | `application/vnd.trolie.realtime-limits-detailed-snapshot.v1+json` | Same as above but add details about how the limit were determined, including the ratings proposals that were considered. |
 
 **Note:** the [TROLIE
-spec](../spec#tag/Forecasting/operation/getLimitsForecastSnapshot) shows these
+spec](../spec-1.0#tag/Forecasting/operation/getLimitsForecastSnapshot) shows these
 media type options in two places for successful responses: the examples sidebar
 and the response schema section.
 

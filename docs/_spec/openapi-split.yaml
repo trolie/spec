@@ -52,7 +52,7 @@ info:
 
     <img src="images/interactions.excalidraw.png" alt="Primary Interactions with Ratings Provider" />
 
-  version: 1.0.0-wip-realtime-stable
+  version: 1.0.0
   contact:
     name: TROLIE Maintainers
     email: maintainers@trolie.energy

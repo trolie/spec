@@ -28,7 +28,7 @@ parameter.
   * `undervoltage-threshold-pu`
   * `undervoltage-threshold`
 
-These correspond to the valid [Limit Types](../spec#tag/limit-type).
+These correspond to the valid [Limit Types](../spec-1.0#tag/limit-type).
 
 Here's an example that requests a slim forecast limits snapshot
 ```http
@@ -55,7 +55,7 @@ new header field hours with the assumption that the begins header is the first
 entry and each subsequent entry represents the subsequent hour's forecast.
 
 This is discussed in further detail in the
-[spec](../spec#schema/seasonal-proposals-slim). Here we can breakdown a concrete
+[spec](../spec-1.0#schema/seasonal-proposals-slim). Here we can breakdown a concrete
 example. We'll start with a `curl` request, then discuss the HTTP request itself
 in two parts, the headers then the JSON payload.
 
@@ -75,7 +75,7 @@ curl -X PATCH \
 > required by the TROLIE specification for the
 > `application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json` media type, as
 > no default `limit-type` can be assumed. See [Limit
-> Types](../spec#tag/limit-type) for the other options defined in the spec.
+> Types](../spec-1.0#tag/limit-type) for the other options defined in the spec.
 
 {: .nb }
 > The `Accept` header in this example specifies one of the 
@@ -130,7 +130,7 @@ Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; lim
     // note all values are assumed to be MVA because the header in this example
     // Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
     // specifies the apparent-power limit type which has a single value of MVA
-    // see https://trolie.energy/spec#tag/limit-type
+    // see https://trolie.energy/spec-1.0#tag/limit-type
 
     [ // resource-id: 8badf00d
       [ // season-name: WINTER

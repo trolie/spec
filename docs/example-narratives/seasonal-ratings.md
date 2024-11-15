@@ -22,7 +22,7 @@ If a Transmission Owner is their own Ratings Provider, they must update their se
 and send them to their transmission provider at least annually.  
 
 TROLIE provides the
-[patchSeasonalRatingsProposal](../spec#tag/Seasonal/operation/patchSeasonalRatingsProposal)
+[patchSeasonalRatingsProposal](../spec-1.0#tag/Seasonal/operation/patchSeasonalRatingsProposal)
 operation for this purpose.
 
 **NOTE: Support for this function is an optional part of the TROLIE specification.  Transmission Owners / Rating Providers should check with their transmission provider for the method they specifically support for sending seasonal ratings to the transmission provider.**

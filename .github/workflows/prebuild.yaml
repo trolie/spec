@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 1.0.0*
+      - 1.0*
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
