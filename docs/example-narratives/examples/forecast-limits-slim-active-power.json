@@ -9,15 +9,15 @@
         },
         "default-emergency-durations": [
             {
-                "name": "lte",
+                "name": "LTE",
                 "duration-minutes": 240
             },
             {
-                "name": "ste",
+                "name": "STE",
                 "duration-minutes": 30
             },
             {
-                "name": "dal",
+                "name": "DAL",
                 "duration-minutes": 15
             }
         ],

@@ -53,5 +53,5 @@ Here's an example of the body of the response:
 
 The `proposals-considered` array contains the salient details of the ratings
 proposals that were considered.  Note that in this example the continuous,
-"lte", and "ste" limits were determined by UTILITY-A but the "dal" limit was set
+"LTE", and "STE" limits were determined by UTILITY-A but the "DAL" limit was set
 by UTILITY-B.
