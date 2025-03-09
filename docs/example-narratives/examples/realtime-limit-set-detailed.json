@@ -7,15 +7,15 @@
     },
     "default-emergency-durations": [
       {
-        "name": "lte",
+        "name": "LTE",
         "duration-minutes": 240
       },
       {
-        "name": "ste",
+        "name": "STE",
         "duration-minutes": 30
       },
       {
-        "name": "dal",
+        "name": "DAL",
         "duration-minutes": 5
       }
     ],
@@ -47,19 +47,19 @@
       },
       "emergency-operating-limits": [
         {
-          "duration-name": "lte",
+          "duration-name": "LTE",
           "limit": {
             "mva": 165
           }
         },
         {
-          "duration-name": "ste",
+          "duration-name": "STE",
           "limit": {
             "mva": 170
           }
         },
         {
-          "duration-name": "dal",
+          "duration-name": "DAL",
           "limit": {
             "mva": 175
           }
@@ -84,19 +84,19 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "lte",
+              "duration-name": "LTE",
               "limit": {
                 "mva": 165
               }
             },
             {
-              "duration-name": "ste",
+              "duration-name": "STE",
               "limit": {
                 "mva": 170
               }
             },
             {
-              "duration-name": "dal",
+              "duration-name": "DAL",
               "limit": {
                 "mva": 180
               }
@@ -116,19 +116,19 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "lte",
+              "duration-name": "LTE",
               "limit": {
                 "mva": 166
               }
             },
             {
-              "duration-name": "ste",
+              "duration-name": "STE",
               "limit": {
                 "mva": 171
               }
             },
             {
-              "duration-name": "dal",
+              "duration-name": "DAL",
               "limit": {
                 "mva": 175
               }
@@ -154,19 +154,19 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "lte",
+              "duration-name": "LTE",
               "limit": {
                 "mva": 165
               }
             },
             {
-              "duration-name": "ste",
+              "duration-name": "STE",
               "limit": {
                 "mva": 170
               }
             },
             {
-              "duration-name": "dal",
+              "duration-name": "DAL",
               "limit": {
                 "mva": 180
               }
@@ -181,7 +181,7 @@
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "lte",
+              "duration-name": "LTE",
               "limit": {
                 "mva": 165
               }

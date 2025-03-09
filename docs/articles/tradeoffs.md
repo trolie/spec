@@ -64,19 +64,19 @@ just the `ratings` object of the message.
           },
           "emergency-operating-limits": [
             {
-              "duration-name": "lte",
+              "duration-name": "LTE",
               "limit": {
                 "mva": 165
               }
             },
             {
-              "duration-name": "ste",
+              "duration-name": "STE",
               "limit": {
                 "mva": 170
               }
             },
             {
-              "duration-name": "dal",
+              "duration-name": "DAL",
               "limit": {
                 "mva": 170
               }
@@ -123,15 +123,15 @@ considerations that are addressed by the schema.
     "begins": "2025-11-01T01:00:00-05:00",
     "default-emergency-durations": [
       {
-        "name": "lte",
+        "name": "LTE",
         "duration-minutes": 240
       },
       {
-        "name": "ste",
+        "name": "STE",
         "duration-minutes": 30
       },
       {
-        "name": "dal",
+        "name": "DAL",
         "duration-minutes": 15
       }
     ],
