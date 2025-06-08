@@ -62,6 +62,18 @@ example of this response format is given below:
 {% include_relative examples/forecast-ratings-proposal-status-complete.json %}
 ```
 
+## Complete Forecasts and Splitting Forecast Submissions Across Multiple Requests
+For a particular [Forecast Window](forecast-windows.md), ratings providers are required to submit
+the complete forecast required by the Transmission Provider in a single call to 
+[patchRatingForecastProposal](../spec-1.0#tag/Forecasting/operation/patchRatingForecastProposal).  In
+other words, if the Transmission Provider requires 240 hours to be submitted, which is most common per the 
+FERC order, then _all_ 240 hours must be submitted on one request, or the TROLIE server will reject the 
+forecast.  The TROLIE specification _does_ allow for the rating proposal to be broken across requests
+in terms of resources.  For example, if a ratings provider is obligated to send ratings for 10 resources, 
+then they may choose to send forecasts for 5 of those resources in one request, then the other 5 resources in
+another.  However, each request must contain the complete set of 240 hours worth of ratings for the resources
+included within.  For more on the conventions of timestamps in forecast submissions, see
+[Time Conventions in TROLIE](../articles/time-conventions.md).  
 
 ## Invalid Forecasts for Individual Resources Should be Tolerated
 
