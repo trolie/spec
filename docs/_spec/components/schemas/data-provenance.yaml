@@ -4,7 +4,7 @@ description: |
   Provides information about where the associated representation came from. *No
   functional aspects of the exchange are contingent upon this data.* However,
   this information is meant to support debugging and application support use
-  cases, so it is required, and implementors are encouraged to provide
+  cases, so implementors are encouraged to provide
   meaningful values.
 
   * `provider` identifies that entity, e.g., a Ratings Provider or Clearinghouse
