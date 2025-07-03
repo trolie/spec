@@ -1,7 +1,21 @@
 name: id
-description: |
-  ID of the associated object
+description: | 
+  Opaque identifier for the object. Format of this identifier may
+  very depending on the implementation.
 in: path
 required: true
 schema:
   $ref: ../schemas/generic-identifier.yaml
+examples:
+  guid:
+    value: "123e4567-e89b-12d3-a456-426614174000"
+    description: |
+      Example of a UUIDv4 identifier for an object.
+  integer:
+    value: "42"
+    description: |
+      An example of using an integer identifier.
+  datetime:
+    value: "2030-10-01T12:00:00Z"
+    description: |
+      An example of using a timestamp identifier.
