@@ -22,9 +22,19 @@ class="fa-solid fa-envelope"></i>](https://lists.lfenergy.org/g/trolie-general).
 
 > **Latest Updates** 📢
 >
-> [TROLIE 1.0.0 is released](./community-events/20241115-releasing-1.0.0)! 🎉
+> <i class="fa-regular fa-bell"></i> 
+> ["Ask Me Anything" With Vendors and Implementers](https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-lf-energy-trolie-ask-me-anything-with-vendors-and-implementers/)
 >
-> Join us on Wednesday November 20th, 2024 at 1:30pm ET for the webinar [A Lap Around TROLIE 1.0](https://community.linuxfoundation.org/events/details/lfhq-lf-energy-presents-a-lap-around-trolie-10/)!
+> Join us on **Tuesday August 5th at 12pm EDT** for a discussion with community
+> members who are building clients and tools for interacting with TROLIE
+> implementations. This session is an open forum for anyone implementing ratings
+> integrations using the TROLIE specification. The goal of this workshop will be
+> about asking deep questions of specific implementations, and helping to work out
+> corner cases with a community of experts. The session will include experts
+> from MISO, SPP, ISO New England and GE Vernova.
+>
+> <i class='fa-brands fa-github fa-fw'></i> Also, check out the the latest release of
+> the [Java client SDK for TROLIE](https://github.com/trolie/java-client-sdk/releases/latest).
 
 # Introduction
 
