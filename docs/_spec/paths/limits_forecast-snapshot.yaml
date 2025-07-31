@@ -117,14 +117,24 @@ current:
         content:
           "application/problem+json":
             schema:
-              $ref: '../openapi-split.yaml#/components/schemas/problem'
+              type: object
+              allOf:
+                - properties:
+                    supported-values:
+                      type: array
+                      maxItems: 100
+                      items:
+                        $ref: '../components/parameters/temporal-resolution.yaml#/schema'
+                - $ref: '../openapi-split.yaml#/components/schemas/problem'
+              required:
+                - supported-values 
             example:
               type: "//trolie.example.com/spec/client-errors/422/unsupported-temporal-resolution"
               title: "Unsupported Temporal Resolution"
               status: 422
-              detail: "The requested `temporal_resolution` 'PT1M' is not supported. Please choose from the list of supported values."
-              instance: "/forecast?temporal_resolution=PT1M"
-              supported_values:
+              detail: "The requested `temporal-resolution` 'PT1M' is not supported. Please choose from the list of supported values."
+              instance: "/forecast?temporal-resolution=PT1M"
+              supported-values:
                 - PT1H
                 - P1D
                 - P1W

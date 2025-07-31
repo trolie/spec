@@ -16,7 +16,7 @@ description: |+
   When this parameter is provided, both `offset-period-start` and `period-end`
   are required.
 
-  Given `temporal_resolution` **R**, `offset-period-start` **S**, and
+  Given `temporal-resolution` **R**, `offset-period-start` **S**, and
   `period-end` **E**, both **S** and **E** must agree on each duration component
   to the right of (so smaller than) **R**. For example, this is a valid
   combination:
