@@ -1,6 +1,6 @@
 overvoltage-threshold-pu:
   type: object
-  title: Overvoltage Threshold per unit (nominal voltage assumed)
+  title: Overvoltage Threshold per unit
   description: >
     An upper limit to voltage for a transmission facility in per unit with
     the base voltage assumed to be the nominal voltage.
@@ -21,6 +21,7 @@ overvoltage-threshold:
   additionalProperties: false
   properties:
     kV-max: &voltage
+      description: The voltage in kilovolts.
       type: number
       format: int32
       minimum: 0
@@ -30,7 +31,7 @@ overvoltage-threshold:
 
 undervoltage-threshold-pu:
   type: object
-  title: Undervoltage Threshold per unit (nominal voltage assumed)
+  title: Undervoltage Threshold per unit
   description: >
     An lower limit to voltage for a transmission facility in per unit
     with the nominal voltage assumed to be the base voltage.
@@ -52,20 +53,50 @@ undervoltage-threshold:
   required:
     - kV-min
 
-current-with-kV:
+active-power:
   type: object
-  title: Current
-  description: Representation of a limit in amperes and associated voltage.
+  title: Active Power
   additionalProperties: false
-  properties:
-    amps:
+  properties: &active-power
+    mw:
       type: number
+      description: Active Power in megawatts
       format: float
       minimum: 1
-      maximum: 100000
+      maximum: 10000
     kV:
       <<: *voltage
-      description: The voltage in kilovolts for the current limit.
   required:
-    - amps
-    - kV
+    - mw
+
+active-power-with-power-factor:
+  type: object
+  title: Active Power and Power Factor
+  additionalProperties: false
+  properties:
+    <<: *active-power
+    pf:
+      type: number
+      description: Assumed power factor.
+      format: float
+      minimum: 0
+      maximum: 1
+  required:
+    - mw
+    - pf
+
+apparent-power:
+  type: object
+  title: Apparent Power
+  additionalProperties: false
+  properties:
+    mva:
+      type: number
+      description: Representation of a limit in megavolt-amperes (MVA).
+      format: float
+      minimum: 1
+      maximum: 10000
+    kV:
+      <<: *voltage
+  required:
+    - mva

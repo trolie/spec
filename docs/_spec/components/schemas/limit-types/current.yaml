@@ -1,8 +1,6 @@
 type: object
-title: Current (nominal voltage assumed)
-description: >-
-  Representation of a limit in amperes. Assumes that Clearinghouse Provider
-  has the nominal voltage in its model.
+title: Current
+description: Representation of a thermal limit in amperes.
 additionalProperties: false
 properties:
   amps:
