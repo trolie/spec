@@ -98,6 +98,20 @@
                             "duration-name": "DAL",
                             "limit": { "mva": 170 }
                         }
+                    ],
+                    "inputs-used": [
+                        {"name": "wind-speed",
+                         "unit": "mph",
+                         "value": 5.2
+                        },
+                        {"name": "wind-direction",
+                         "unit": "degrees",
+                         "value": 277.5
+                        },
+                        {"name": "temperature",
+                         "unit": "F",
+                         "value": 72.1
+                        }
                     ]
                 }
             ],

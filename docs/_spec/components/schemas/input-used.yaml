@@ -1,5 +1,4 @@
 value: &value
-  type: object
   description: >
     This could be any value: a bit, float, integer, string, etc.
 
