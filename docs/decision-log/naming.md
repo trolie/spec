@@ -66,7 +66,11 @@ negotiation as part of the specification.
 Implementers of TROLIE servers are encouraged to support CIM mRIDs. The
 benefits to functions of the CGMES such as cross-TSO schedule exchanges are
 obvious. TROLIE and other such exchanges will benefit from consistent use of
-these identifiers over time.  
+these identifiers over time.
+
+Moreover, a typical mRID is a UUIDv4, and the preferred representation of the
+same is a [URN](https://datatracker.ietf.org/doc/html/rfc9562):
+`urn:uuid:12345678-1234-5678-9012-123456789012`.
 
 ### Use of CIM NameTypes
 
