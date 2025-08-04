@@ -81,30 +81,7 @@ proposal: &proposal
       minItems: 1
       maxItems: 50
       items:
-        type: object
-        properties:
-          name:
-            type: string
-            format: free-text
-            maxLength: 50
-          value:
-            type: object
-            description: >
-              This could be any value: a bit, float, integer, string, etc.
-          unit:
-            type: string
-            description: |
-              If the `value` is dimensionless, this property should not be
-              provided. Since we are not specifying which inputs shall be
-              provided, we cannot specify a definitive list of units, but
-              implementors are encouraged to use UnitSymbol from CIM when
-              appropriate: The CIM may not include appropriate units for
-              all inputs, e.g., wind speed, degrees Fahrenheit, etc.
-            format: unit
-            maxLength: 50
-        required:
-          - name
-          - value
+       $ref: './input-used.yaml#/input'
 
 real-time-proposal: &real-time-proposal
   <<: *proposal

@@ -53,7 +53,7 @@ forecast-limits-snapshot-slim-inputs-used:
             maxLength: 50
           values: &inputs-used-slim-items-props-values
             <<: *max
-            description: >
+            description: |
               Since this is expected to be used for wind speed or temperature,
               we expect an array of numbers for each resource. An empty array
               is used to indicate that the inputs are not available for a
@@ -62,15 +62,7 @@ forecast-limits-snapshot-slim-inputs-used:
             items:
               $ref: ./array-max-forecast-periods.yaml#/resource-forecast-inputs
           unit:
-            type: string
-            description: |
-              Since we are not specifying which inputs shall be
-              provided, we cannot specify a definitive list of units, but
-              implementors are encouraged to use UnitSymbol from CIM when
-              appropriate: The CIM may not include appropriate units for
-              all inputs, e.g., wind speed, degrees Fahrenheit, etc.
-            format: unit
-            maxLength: 50
+            $ref: ./input-used.yaml#/unit
         required:
           - name
           - values

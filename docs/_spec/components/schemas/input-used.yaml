@@ -1,0 +1,34 @@
+value: &value
+  type: object
+  description: >
+    This could be any value: a bit, float, integer, string, etc.
+
+unit: &unit
+  type: string
+  description: |
+    If the `value` is dimensionless, this property should not be
+    provided. Since we are not specifying which inputs shall be
+    provided, we cannot specify a definitive list of units, but
+    implementors are encouraged to use UnitSymbol from CIM when
+    appropriate: The CIM may not include appropriate units for
+    all inputs, e.g., wind speed, degrees Fahrenheit, etc.
+  format: unit
+  maxLength: 50
+input:
+  type: object
+  properties:
+    name:
+      type: string
+      format: free-text
+      maxLength: 50
+    value:
+      <<: *value
+      description: |
+        The value of the input used in the ratings determination.
+        The type of this value is not specified, but implementors
+        are encouraged to use CIM types where appropriate.
+    unit:
+      <<: *unit
+  required:
+    - name
+    - value
