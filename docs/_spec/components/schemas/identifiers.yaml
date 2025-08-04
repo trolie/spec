@@ -1,0 +1,32 @@
+local: &local
+  type: string
+  maxLength: 500
+  pattern: ^(.){0,500}$
+  description: |
+    Contains a identifier that is unique for an object in the context of an
+    exchange between two grid operators.
+  example: "86753_1"
+
+global: &global
+  <<: *local
+  description: |
+    Contains a unique identifier for an object. This identifier may vary
+    depending on the implementation and context in which it is used.
+    It is intended to be used across different systems and applications.
+
+  example: "urn:uuid:123e4567-e89b-12d3-a456-426614174000"
+
+resource-id:
+  <<: *global
+  description: |
+    Contains a unique identifier for a power system resource, such as a
+    transmission facility, segment, interface, etc. This identifier is typically
+    used between reliability coordinators in operations.
+
+entity:
+  <<: *local
+  description: |
+    Contains a unique identifier for an entity, such as a grid operator or
+    organization. This identifier is typically used in the context of data
+    exchange between entities.
+  example: "org:naesb:weq:eir:MISO"

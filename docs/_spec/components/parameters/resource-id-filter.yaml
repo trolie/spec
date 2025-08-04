@@ -4,11 +4,11 @@ description: |
 in: query
 required: false
 schema:
-  $ref: ../schemas/generic-identifier.yaml
+  $ref: ../schemas/identifiers.yaml#/resource-id
 examples:
   circuit-id:
     summary: A typical AC line identifier
     value: "86753_1"
   mrid:
-    summary: A unique identifier for a power system resource
-    value: "123456789012345678"
+    summary: A CIM mrid for a power system resource
+    value: "urn:uuid:123e4567-e89b-12d3-a456-426614174000"

@@ -5,7 +5,7 @@ get:
   tags:
     - Seasonal
   parameters:
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
     - $ref: ../components/parameters/resource-id-filter.yaml
   responses:
     '200':

@@ -103,8 +103,8 @@ forecast-limits-detailed-snapshot-elide-psr: &forecast-limit-detailed
       items:
         type: object
         properties:
-          resource-id:
-            $ref: ./resource-id.yaml
+          resource-id: &resource-id
+            $ref: ./identifiers.yaml#/resource-id
           proposals-considered:
             $ref: './array-max-forecast-periods.yaml#/proposals-considered'
           temporary-aar-exceptions:
@@ -240,7 +240,7 @@ common-proposal-status:
             maxLength: 500
             example: The `resource-forecast-proposal` for `8badf00d` is incomplete.
           resource-id:
-            $ref: ./resource-id.yaml
+            <<: *resource-id
 
   required:
     - incomplete-obligation-count
@@ -368,7 +368,7 @@ realtime-limits-detailed-snapshot-elide-psr: &realtime-limit-detailed
         type: object
         properties:
           resource-id:
-            $ref: ./resource-id.yaml
+            $ref: ./identifiers.yaml#/resource-id
           proposals-considered: &considered
             type: array
             maxItems: 10

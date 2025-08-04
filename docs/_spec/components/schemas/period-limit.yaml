@@ -48,8 +48,8 @@ realtime-snapshot: &rt-normal
   type: object
   properties: &rt-normal-props
     <<: *limit-data-properties
-    resource-id:
-      $ref: ./resource-id.yaml
+    resource-id: &resource-id
+      $ref: ./identifiers.yaml#/resource-id
   required: &rt-normal-required
     - resource-id
     - continuous-operating-limit
@@ -147,7 +147,7 @@ provenance:
         - Used
         - Rejected
     resource-id:
-      $ref: ./resource-id.yaml
+      <<: *resource-id
   required:
     - source
     - proposal-disposition
@@ -249,7 +249,7 @@ seasonal-proposal-considered:
     source:
       $ref: ./data-provenance.yaml
     resource-id:
-      $ref: ./resource-id.yaml
+      <<: *resource-id
   required:
     - source
     - resource-id

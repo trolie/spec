@@ -14,7 +14,7 @@ global:
     tags:
       - Real-Time
     parameters: &params
-      - $ref: ../components/parameters/monitoring-set-filter.yaml
+      - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
       - $ref: ../components/parameters/resource-id-filter.yaml
     responses: &responses
       '200':

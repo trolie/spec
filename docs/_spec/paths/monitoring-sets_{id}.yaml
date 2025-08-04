@@ -5,7 +5,7 @@ get:
   tags: 
     - Monitoring Sets
   parameters:
-    - $ref: ../components/parameters/monitoring-set-id.yaml
+    - $ref: ../components/parameters/monitoring-set.yaml#/path-filter
   responses:
     '200':
       description: OK

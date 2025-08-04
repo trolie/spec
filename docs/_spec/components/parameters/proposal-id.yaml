@@ -4,4 +4,4 @@ description: |
 in: path
 required: true
 schema:
-  $ref: ../schemas/generic-identifier.yaml
+  $ref: ../schemas/identifiers.yaml#/local

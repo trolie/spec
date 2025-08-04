@@ -18,11 +18,11 @@ description: |
 
 properties:
   provider:
-    $ref: ./entity-id.yaml
+    $ref: ./identifiers.yaml#/entity
   last-updated:
     $ref: ./timestamp.yaml
   origin-id:
-    $ref: ./generic-identifier.yaml
+    $ref: ./identifiers.yaml#/local
 
 required:
   - provider
