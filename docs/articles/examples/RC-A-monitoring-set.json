@@ -7,7 +7,7 @@
   "id":"RC-B",
   "description": "RC B's Tier 1 facilities",
   "power-system-resources": [
-    { "resource-id": "e300d2c2-45bb-49f6-a3bc-a3e5d5a30ce6",
+    { "resource-id": "urn:uuid:e300d2c2-45bb-49f6-a3bc-a3e5d5a30ce6",
       "alternate-identifiers": [
         {
           "name": "MYSUBSTN.LN.12345", 
