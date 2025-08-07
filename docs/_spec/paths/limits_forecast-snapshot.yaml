@@ -7,7 +7,7 @@ current:
     parameters: &commonParams
       - $ref: ../components/parameters/offset-period-start.yaml
       - $ref: ../components/parameters/period-end.yaml
-      - $ref: ../components/parameters/monitoring-set-filter.yaml
+      - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
       - $ref: ../components/parameters/resource-id-filter.yaml
       - $ref: ../components/parameters/static-only.yaml
     description: |
@@ -127,7 +127,7 @@ historical:
     parameters: # cannot merge lists, only maps, so this is a copy from "current"
       - $ref: ../components/parameters/offset-period-start.yaml
       - $ref: ../components/parameters/period-end.yaml
-      - $ref: ../components/parameters/monitoring-set-filter.yaml
+      - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
       - $ref: ../components/parameters/resource-id-filter.yaml
       - $ref: ../components/parameters/static-only.yaml
       - name: period

@@ -43,7 +43,7 @@ temporary-aar-exception: &time-bound-static-limit
   properties: &time-bound-static-limit-props
     <<: *time-bound-static-rating-props
     id:
-      $ref: ./server-generated-id.yaml
+      $ref: ./identifiers.yaml#/local
   additionalProperties: false
   required:
     - id

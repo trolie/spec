@@ -4,11 +4,11 @@ description: |
 in: query
 required: false
 schema:
-  $ref: ../schemas/generic-identifier.yaml
+  $ref: ../schemas/identifiers.yaml#/local
 examples:
   mrid:
-    summary: An mrid
-    value: "3d5e54d7-534e-49f7-9379-98bddacd96a1"
+    summary: A CIM mrid
+    value: "urn:uuid:12345678-1234-5678-1234-123456789012"
   circuit-id:
     summary: A typical AC line identifier
     value: "86753_1"

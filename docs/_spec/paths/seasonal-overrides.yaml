@@ -13,7 +13,7 @@ get:
   parameters:
     - $ref: ../components/parameters/period-start-query.yaml
     - $ref: ../components/parameters/period-end.yaml
-    - $ref: ../components/parameters/monitoring-set-filter.yaml
+    - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
     - $ref: ../components/parameters/segment-filter.yaml
   responses:
     '200':

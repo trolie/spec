@@ -1,8 +1,0 @@
-type: string
-description: |
-
-  Contains a unique identifier for an object. 
-
-maxLength: 250
-pattern: ^(.){0,250}$
-example: "123e4567-e89b-12d3-a456-426614174000"

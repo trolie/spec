@@ -1,7 +1,7 @@
 type: object
 properties:
   resource-id:
-    $ref: ./resource-id.yaml
+    $ref: ./identifiers.yaml#/resource-id
   alternate-identifiers:
     type: array
     maxItems: 10
@@ -10,13 +10,13 @@ properties:
       type: object
       properties:
         name:
-          $ref: ./generic-identifier.yaml
+          $ref: ./identifiers.yaml#/local
         type:
           $ref: ./name-type.yaml
         authority:
-          $ref: ./generic-identifier.yaml
+          $ref: ./identifiers.yaml#/entity
         mrid:
-          $ref: ./generic-identifier.yaml
+          $ref: ./identifiers.yaml#/local
       required:
         - name
 required:

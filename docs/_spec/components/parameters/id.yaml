@@ -5,17 +5,31 @@ description: |
 in: path
 required: true
 schema:
-  $ref: ../schemas/generic-identifier.yaml
+  $ref: ../schemas/identifiers.yaml#/local
+
 examples:
-  guid:
-    value: "123e4567-e89b-12d3-a456-426614174000"
+  uuid:
+    value: "urn:uuid:123e4567-e89b-12d3-a456-426614174000"
+    description: Example of a UUIDv4 identifier for an object.
+  eic:
+    value: "urn:eic:10X1001A1001A515"
+    description: Example of an ENTSO-E Energy Identification Code for an object.
+  qualified-entity-code:
+    value: "org:naesb:weq:eir:MISO"
     description: |
-      Example of a UUIDv4 identifier for an object.
-  integer:
-    value: "42"
+      A fully-qualified representation of an entity code from the NAESB WEQ-022
+      Electric Industry Registry, currently implemented by the OATI webRegistry.
+      Note that this representation is not an industry standard identifier
+      format but is presented as an example of a structured identifier for such
+      entity codes. In this example, the identifier is for Midcontinent
+      Independent System Operator (MISO).
+  entity-code:
+    value: "MISO"
     description: |
-      An example of using an integer identifier.
-  datetime:
-    value: "2030-10-01T12:00:00Z"
-    description: |
-      An example of using a timestamp identifier.
+      A unqualified entity code from the NAESB WEQ-022 Electric Industry
+      Registry, currently implemented by the OATI webRegistry.  In this
+      example, the identifier is for Midcontinent Independent System Operator
+      (MISO).
+  ncr-id:
+    value: "NCR00826"
+    description: An example of a NERC Compliance Registry code for MISO.

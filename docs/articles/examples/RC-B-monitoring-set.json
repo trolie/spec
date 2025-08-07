@@ -10,7 +10,7 @@
     { "resource-id": "MYSUBST-LINE-5742",
       "alternate-identifiers": [
         {
-          "name": "a276c684-aa68-4799-8c00-44913c61e77a", 
+          "name": "urn:uuid:a276c684-aa68-4799-8c00-44913c61e77a", 
           "type": "CIMMRID",
           "authority": "RC-B"
         },

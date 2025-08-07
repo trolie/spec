@@ -1,0 +1,26 @@
+query-filter: &param
+  name: monitoring-set
+  description: |
+
+    Only return ratings or limits for facilities of the associated
+    `monitoring-set`. The identifier for a `monitoring-set` is pre-coordinated,
+    but using the NERC id of the associated Ratings Provider for the default
+    monitoring set is recommended.
+
+  in: query
+  required: false
+  schema:
+    $ref: ../schemas/identifiers.yaml#/local
+  examples:
+    name:
+      summary: A pre-coordinated name that nominates a `monitoring-set` for a specific entity or purpose.
+      value: "X-AMPL"
+    mrid:
+      summary: A pre-coordinated id that nominates a `monitoring-set`.
+      value: "urn:uuid:12345678-1234-5678-1234-123456789012"
+
+path-filter:
+  <<: *param
+  name: id
+  in: path
+  required: true

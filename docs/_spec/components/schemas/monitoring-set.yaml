@@ -12,7 +12,7 @@ properties:
   source:
     $ref: ./data-provenance.yaml
   id:
-    $ref: ./generic-identifier.yaml
+    $ref: ./identifiers.yaml#/local
   description:
     type: string
     format: free-form

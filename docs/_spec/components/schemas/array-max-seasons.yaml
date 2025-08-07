@@ -32,7 +32,7 @@ seasonal-proposals:
   additionalProperties: false
   properties:
     resource-id: &id
-      $ref: ./resource-id.yaml
+      $ref: ./identifiers.yaml#/resource-id
     periods:
       <<: *schedule
       items:

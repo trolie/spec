@@ -7,7 +7,7 @@
   "id":"UTILITY123",
   "description": "Lines in utility 123's footprint and immediate neighbors",
   "power-system-resources": [
-    { "resource-id": "01925421-0766-771a-a92d-1631a49f647c",
+    { "resource-id": "urn:uuid:01925421-0766-771a-a92d-1631a49f647c",
       "alternate-identifiers": [
         {
           "name": "MYSUBSTN.LN.12345",
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "resource-id": "01925421-b967-78de-a746-7497c5105939",
+      "resource-id": "urn:uuid:01925421-b967-78de-a746-7497c5105939",
       "alternate-identifiers": [
         {
           "name": "MYSUBSTN.LN.67890",

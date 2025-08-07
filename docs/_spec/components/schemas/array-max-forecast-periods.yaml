@@ -3,7 +3,7 @@ forecast-limit-item: &limit
   additionalProperties: false
   properties:
     resource-id: &id
-      $ref: ./resource-id.yaml
+      $ref: ./identifiers.yaml#/resource-id
     periods: &periods
       type: array
       maxItems: 300
