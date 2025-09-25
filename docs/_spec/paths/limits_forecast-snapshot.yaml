@@ -10,6 +10,7 @@ current:
       - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
       - $ref: ../components/parameters/resource-id-filter.yaml
       - $ref: ../components/parameters/static-only.yaml
+      - $ref: ../components/parameters/temporal-resolution.yaml
     description: |
 
       Returns the latest Limits Forecast the clearinghouse has produced.
@@ -109,6 +110,35 @@ current:
         $ref: '../openapi-split.yaml#/components/responses/404-empty'
       '406':
         $ref: 'limits_realtime-snapshot.yaml#/global/get/responses/406'
+      '422':
+        description: Unprocessable Content. The requested `temporal_resolution` is not supported.
+        headers:
+          $ref: '../openapi-split.yaml#/components/responses/304/headers' #rate-limited
+        content:
+          "application/problem+json":
+            schema:
+              type: object
+              allOf:
+                - properties:
+                    supported-values:
+                      type: array
+                      maxItems: 100
+                      items:
+                        $ref: '../components/parameters/temporal-resolution.yaml#/schema'
+                - $ref: '../openapi-split.yaml#/components/schemas/problem'
+              required:
+                - supported-values 
+            example:
+              type: "//trolie.example.com/spec/client-errors/422/unsupported-temporal-resolution"
+              title: "Unsupported Temporal Resolution"
+              status: 422
+              detail: "The requested `temporal-resolution` 'PT1M' is not supported. Please choose from the list of supported values."
+              instance: "/forecast?temporal-resolution=PT1M"
+              supported-values:
+                - PT1H
+                - P1D
+                - P1W
+                - P1M
       '429':
         $ref: '../openapi-split.yaml#/components/responses/429-empty'
       '500': &unexpected-error-empty
@@ -130,6 +160,7 @@ historical:
       - $ref: ../components/parameters/monitoring-set.yaml#/query-filter
       - $ref: ../components/parameters/resource-id-filter.yaml
       - $ref: ../components/parameters/static-only.yaml
+      - $ref: ../components/parameters/temporal-resolution.yaml
       - name: period
         description: |
           Returns the Forecast Limits snapshot for the period requested rather

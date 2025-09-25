@@ -1,0 +1,55 @@
+name: temporal-resolution
+description: |+
+  Specifies the time aggregation for the forecast using ISO 8601 Duration
+  syntax. If not provided, the API will default to hourly. Examples of values
+  that **may** be supported by a given implementation include:
+    * Hourly (default): PT1H
+    * Daily: P1D
+    * Weekly: P1W
+    * Monthly: P1M
+    * Yearly: P1Y
+    * Quarterly: P3M
+
+  If the API does not support the requested `temporal_resolution`, it will
+  return a `422 Unprocessable Content` response.
+
+  When this parameter is provided, both `offset-period-start` and `period-end`
+  are required.
+
+  Given `temporal-resolution` **R**, `offset-period-start` **S**, and
+  `period-end` **E**, both **S** and **E** must agree on each duration component
+  to the right of (so smaller than) **R**. For example, this is a valid
+  combination:
+
+  | parameter           | value                |
+  | :---                | :---                 |
+  | temporal-resolution | P1D (i.e. "daily")   |
+  | offset-period-start | 2025-01-01T01:00:00Z |
+  | period-end          | 2025-01-04T01:00:00Z |
+
+  However, this is not valid because the hours do not agree:
+  | parameter           | value                    |
+  | :---                | :---                     |
+  | temporal-resolution | P1D                      |
+  | offset-period-start | 2025-01-01T**01**:10:00Z |
+  | period-end          | 2025-01-04T**12**:00:00Z |
+
+  Note that the minutes do not agree either, but that is essentially
+  inconsequential since at the daily resolution the hours must first agree.
+
+  As discussed in their respective parameters, `offset-period-start` and
+  `period-end` nominate the **beginning** of the first and **end** of the last period
+  (interval), respectively. Given our valid example above, the first period in
+  the forecast would be for the 24-hours starting at `2025-01-01T01:00:00Z` and
+  ending at `2025-01-02T01:00:00Z`, and the final period would be for the
+  24-hour period starting at `2025-01-03T01:00:00Z` and ending at
+  `2025-01-04T01:00:00Z`.
+
+in: query
+required: false
+schema:
+  type: string
+  format: duration
+  maxLength: 10
+  default: PT1H
+  example: 'P1D'
