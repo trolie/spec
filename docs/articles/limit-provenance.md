@@ -106,14 +106,14 @@ Provider may have multiple [Ratings Obligations](../concepts.md#ratings-obligati
 for a given power system resource. See [Conditional Ratings](../decision-log/conditional-ratings.md) and
 [Directional Ratings](../decision-log/directional-ratings.md).
 
-Similarly, the `source` object refers to the original Ratings Proposal message that contained
+Next, the `source` object refers to the original Ratings Proposal message that contained
 this proposal. This is exactly the same information as is contained by `proposal-header.source`
 when submitting a [forecast](../spec-1.0#tag/Forecasting/operation/patchRatingForecastProposal)
 or [real-time proposal](../spec-1.0#tag/Real-Time/operation/postRealTimeProposal).
 
-Finally, we have the original ratings, i.e., the limits that were proposed. If
-these were most limiting, they might be reflected in the limit determined by the
-clearinghouse.
+Finally, we have the original ratings, i.e., the `continuous-operating-limit`
+and `emergency-operating-limits` that were proposed. If these were most
+limiting, they would be reflected in the limit determined by the clearinghouse.
 
 #### Scenario: Multiple Ratings Providers
 
