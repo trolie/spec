@@ -456,5 +456,7 @@ components:
             read:operating-snapshot: >-
               Read the ratings and limits snapshots in-use by the transmission
               provider
+            read:regional-operating-snapshot: Read a Regional Operating Snapshot
+            write:regional-operating-snapshot: Write a Regional Operating Snapshot
 security:
   - oauth2-primary-flow: []

@@ -79,7 +79,6 @@ Ratings Provider for the facility.
         "provider": "UTILITY-A",
         "origin-id": "8badf00d-UTILITY-A-correlation-id" // from original ratings proposal message
       },
-      "proposal-disposition": "Used",
       "continuous-operating-limit": { "mva": 150 },
       "emergency-operating-limits": [
           { "duration-name": "emergency",
@@ -107,21 +106,14 @@ Provider may have multiple [Ratings Obligations](../concepts.md#ratings-obligati
 for a given power system resource. See [Conditional Ratings](../decision-log/conditional-ratings.md) and
 [Directional Ratings](../decision-log/directional-ratings.md).
 
-Similarly, the `source` object refers to the original Ratings Proposal message that contained
+Next, the `source` object refers to the original Ratings Proposal message that contained
 this proposal. This is exactly the same information as is contained by `proposal-header.source`
 when submitting a [forecast](../spec-1.0#tag/Forecasting/operation/patchRatingForecastProposal)
 or [real-time proposal](../spec-1.0#tag/Real-Time/operation/postRealTimeProposal).
 
-Next we have `proposal-disposition`. This field is an enumeration of two values:
-`Used` or `Rejected`. In context, this means either this proposal was
-"Considered but Rejected" and so not eligible to be used by the clearinghouse
-(presumably it was invalid) **or** it was used by the clearinghouse, though
-crucially it may not have been the most limiting rating, so did not set the
-limit.
-
-Finally, we have the original ratings, i.e., the limits that were proposed. If
-these were most limiting, they might be reflected in the limit determined by the
-clearinghouse.
+Finally, we have the original ratings, i.e., the `continuous-operating-limit`
+and `emergency-operating-limits` that were proposed. If these were most
+limiting, they would be reflected in the limit determined by the clearinghouse.
 
 #### Scenario: Multiple Ratings Providers
 
@@ -142,14 +134,12 @@ entry in `proposals-considered` for a given limit. Let's seen an example:
         "provider": "UTILITY-A",
         "origin-id": "8badf00d-UTILITY-A-correlation-id"
       },
-      "proposal-disposition": "Used",
       "continuous-operating-limit": { "mva": 150 }
     },{ "resource-id": "8badf00d-UTILITY-B-SEG-id",
       "source":{
         "provider": "UTILITY-B",
         "origin-id": "8badf00d-UTILITY-B-correlation-id"
       },
-      "proposal-disposition": "Used",
       "continuous-operating-limit": { "mva": 140 }
     }
 ]}
@@ -161,9 +151,11 @@ rating. Another scenario should round out our understanding of `proposals-consid
 
 #### Scenario: Rejected Proposal
 
-It's possible that the Clearinghouse Provider initially accepted an
-[on-time proposal](./forecast-windows.md#on-time--202-accepted) but ultimately rejected
-it during clearing. This is indicated by `proposals-consider[].proposal-disposition = "Rejected"`.
+It's possible that the Clearinghouse Provider initially accepted an [on-time
+proposal](./forecast-windows.md#on-time--202-accepted) but ultimately rejected
+it during clearing. This can be inferred by requesting a `detailed` media type
+and reviewing the `proposals-considered` collection: The rejected proposal will
+not appear in this collection.
 
 #### Scenario: Transmission Provider Proposes a Recourse Rating
 
@@ -179,7 +171,6 @@ Ratings Obligation.
         "provider": "ISO-A",
         "origin-id": "8badf00d-ISO-A-correlation-id"
       },
-      "proposal-disposition": "Used",
       "continuous-operating-limit": { "mva": 110 }
     }
 ]}
