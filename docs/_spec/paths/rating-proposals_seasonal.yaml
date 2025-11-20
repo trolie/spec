@@ -88,7 +88,7 @@ patch:
       Clients *MUST* specify that [limit-type](#tag/limit-type) as a media type
       parameter. For example,
       ```http
-      PATCH /ratings-proposals/seasonal HTTP/1.1
+      PATCH /rating-proposals/seasonal HTTP/1.1
       Content-Type: application/vnd.trolie.seasonal-ratings-proposal-slim.v1+json; limit-type=apparent-power
       ```
       Note that this format is much more concise but requires significant care
