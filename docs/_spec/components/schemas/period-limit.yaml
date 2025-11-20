@@ -108,26 +108,10 @@ provenance:
   properties: &provenance-props
     source:
       $ref: ./data-provenance.yaml
-    proposal-disposition:
-      description: |
-
-        Despite a proposal being accepted by TROLIE, the downstream
-        Clearinghouse logic may still disqualify a proposal. This might
-        occur if, for example, the upper and lower reasonability limits are
-        not aligned between TROLIE and the Clearinghouse.  To aid
-        troubleshooting, the specification requires that TROLIE instances
-        explicitly indicate if the proposal was `Used` in the determination
-        of the limit or was `Rejected`.
-
-      type: string
-      enum:
-        - Used
-        - Rejected
     resource-id:
       <<: *resource-id
   required:
     - source
-    - proposal-disposition
 
 forecast-provenance:
   <<: *forecast-proposal
@@ -143,7 +127,6 @@ forecast-provenance:
     - continuous-operating-limit
     - emergency-operating-limits
     - source
-    - proposal-disposition
   additionalProperties: false
 
 real-time-provenance:
@@ -155,7 +138,6 @@ real-time-provenance:
     - continuous-operating-limit
     - emergency-operating-limits
     - source
-    - proposal-disposition
   additionalProperties: false
 
 seasonal-proposal: &seasonal-proposal

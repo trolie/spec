@@ -78,7 +78,6 @@
             "provider": "UTILITY-A",
             "origin-id": "8badf00d-UTILITY-A-correlation-id"
           },
-          "proposal-disposition": "Used",
           "continuous-operating-limit": {
             "mva": 150
           },
@@ -110,7 +109,6 @@
             "provider": "UTILITY-B",
             "origin-id": "8badf00d-UTILITY-B-correlation-id"
           },
-          "proposal-disposition": "Used",
           "continuous-operating-limit": {
             "mva": 150
           },
