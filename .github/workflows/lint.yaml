@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: 20
       - run: >-
-          npm -g install @redocly/cli &&
+          npm update -g &&
           npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
           npx @redocly/cli lint ./docs/openapi-1.0.yaml
       - name: Redocly API Stats
