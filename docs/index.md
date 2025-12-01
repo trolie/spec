@@ -61,3 +61,9 @@ The project’s specific aims are:
   development of clients of the API specification.  
 
 We are committed establishing a vendor-neutral specification and building an inclusive community.
+
+### TROLIE is supported and adopted by leading companies in the electric power industry of North America
+
+<div class="cards">
+  <a href="https://www.gevernova.com/software/products/gridos"><img src="images/GE_Vernova_Standard_RGB_Evergreen.svg" /></a>
+</div>

@@ -7,21 +7,8 @@
   grid-gap: 20px;
 }
 
-.card {
-  border: 1px solid #999999;
-  border-radius: 3px;
-
+.cards img {
   display: grid;
   grid-template-rows: auto;
 }
 
-.card img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-bottom: 1px solid #999999;
-}
-
-.card p {
-  padding: 1rem;
-}
