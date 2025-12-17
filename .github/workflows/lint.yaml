@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: 20
       - run: >-
-          npx --yes @redocly/cli bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
-          npx @redocly/cli lint ./docs/openapi-1.0.yaml
+          cd docs && npx --yes @redocly/cli bundle -d ./_spec/openapi-split.yaml -o ./openapi-1.0.yaml &&
+          npx @redocly/cli lint ./openapi-1.0.yaml
       - name: Redocly API Stats
         id: api_stats
         run: npx @redocly/cli stats ./docs/openapi-1.0.yaml > stats.txt 2>&1
