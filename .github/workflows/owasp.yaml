@@ -29,4 +29,5 @@ jobs:
         run: >-
           cd docs &&
           npx --yes @redocly/cli bundle -d ./_spec/openapi-split.yaml -o ./openapi-1.0.yaml &&
-          npx --yes @stoplight/spectral-cli lint openapi-1.0.yaml --ruleset .spectral.yaml --verbose
+          cd .. &&
+          npx --yes @stoplight/spectral-cli lint docs/openapi-1.0.yaml --ruleset .spectral.yaml --verbose
