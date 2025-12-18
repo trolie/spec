@@ -66,4 +66,5 @@ We are committed establishing a vendor-neutral specification and building an inc
 
 <div class="cards">
   <a href="https://www.gevernova.com/software/products/gridos"><img src="images/GE_Vernova_Standard_RGB_Evergreen.svg" /></a>
+  <a href="https://www.misoenergy.org/"><img src="images/misologo.webp" height="115px" /></a>
 </div>
