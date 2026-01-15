@@ -27,7 +27,6 @@ jobs:
           node-version: 20
       - name: Lint
         run: >-
-          cd docs &&
-          npx --yes @redocly/cli bundle -d ./_spec/openapi-split.yaml -o ./openapi-1.0.yaml &&
+          npx --yes @redocly/cli@2.11.1 bundle -d ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
           cp ../.spectral.yaml . &&
-          npx --yes @stoplight/spectral-cli lint docs/openapi-1.0.yaml --ruleset .spectral.yaml --verbose
+          npx --yes @stoplight/spectral-cli lint ./docs/openapi-1.0.yaml --ruleset .spectral.yaml --verbose

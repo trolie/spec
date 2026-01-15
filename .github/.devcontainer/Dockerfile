@@ -4,7 +4,7 @@ RUN set -eux; \
 	apt update -y -qq && apt install -y -qq ruby-full build-essential \
 	&& gem install bundler;
 
-RUN npm -g install @redocly/cli
+RUN npm -g install @redocly/cli@2.11.1
 
 USER node
 
