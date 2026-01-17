@@ -1,6 +1,6 @@
 {
     "name": "TROLIE devcontainer",
-    "image": "ghcr.io/trolie/spec-devcontainer:latest",
+    "image": "trolie-devcontainer",
     "customizations": {
         "vscode": {
             "extensions": [
