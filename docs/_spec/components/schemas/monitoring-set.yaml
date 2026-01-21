@@ -1,27 +1,39 @@
-type: object
-description: |
-  See https://trolie.energy/concepts.html#monitoring-sets for info on the 
-  monitoring set concept in TROLIE.  
+request: &request
+  type: object
+  description: |
+    Request body for creating a monitoring set. The server will assign an id
+    and source upon successful creation.
+  properties:
+    description: &description
+      type: string
+      format: free-form
+      description: |
+        A freeform text description of this monitoring set
+      maxLength: 1000
+    power-system-resources: &resources
+      $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
+  required:
+  - power-system-resources
 
-  This representation is intended to be enough for consumers to read it and tell where 
-  the monitoring set came from, using metadata such as a source and an optional description.  
-  It also includes the list of resources included in the monitoring set, as well as all
-  their known aliases.  
+response:
+  <<: *request
+  description: |
+    See https://trolie.energy/concepts.html#monitoring-sets for info on the 
+    monitoring set concept in TROLIE.  
 
-properties:
-  source:
-    $ref: ./data-provenance.yaml
-  id:
-    $ref: ./identifiers.yaml#/local
-  description:
-    type: string
-    format: free-form
-    description: |
-      A freeform text description of this monitoring set
-    maxLength: 1000
-  power-system-resources:
-    $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
-required:
-- source
-- id
-- power-system-resources
+    This representation is intended to be enough for consumers to read it and tell where 
+    the monitoring set came from, using metadata such as a source and an optional description.  
+    It also includes the list of resources included in the monitoring set, as well as all
+    their known aliases.  
+
+  properties:
+    source:
+      $ref: ./data-provenance.yaml
+    id:
+      $ref: ./identifiers.yaml#/local
+    description: *description
+    power-system-resources: *resources
+  required:
+  - source
+  - id
+  - power-system-resources

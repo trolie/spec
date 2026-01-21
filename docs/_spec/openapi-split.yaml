@@ -222,6 +222,8 @@ paths:
   /temporary-aar-exceptions/{id}:
     $ref: paths/temporary-aar-exceptions_{id}.yaml
 
+  /monitoring-sets:
+    $ref: paths/monitoring-sets.yaml
   /monitoring-sets/{id}:
     $ref: paths/monitoring-sets_{id}.yaml
   /default-monitoring-set:
@@ -448,6 +450,7 @@ components:
             read:seasonal-proposals: Read seasonal rating proposals
             read:temporary-aar-exceptions: Read temporary AAR exceptions
             read:seasonal-overrides: Read seasonal overrides
+            write:monitoring-sets: Write monitoring sets
             write:forecast-proposals: Submit forecasted ratings
             write:realtime-proposals: Submit realtime ratings
             write:seasonal-proposals: Submit seasonal ratings
