@@ -2,9 +2,9 @@ get:
   operationId: getMonitoringSet
   description: &get_desc Obtain a specific monitoring set by identifier.  
   summary: *get_desc
-  tags: 
+  tags:  &tags
     - Monitoring Sets
-  parameters:
+  parameters: &params
     - $ref: ../components/parameters/monitoring-set.yaml#/path-filter
   responses:
     '200':
@@ -12,7 +12,7 @@ get:
       content:
         application/vnd.trolie.monitoring-set.v1+json:
           schema:
-            $ref: ../components/schemas/monitoring-set.yaml
+            $ref: ../components/schemas/monitoring-set.yaml#/response
           example:
             $ref: ../../example-narratives/examples/monitoring-set-get.json
       headers:
@@ -35,7 +35,80 @@ get:
     '500': &unexpected-error-empty
       $ref: '../openapi-split.yaml#/components/responses/500-empty'
     default: *unexpected-error-empty
-
   security:
     - oauth2-primary-flow:
         - read:monitoring-sets
+
+put:
+  operationId: updateMonitoringSet
+  description: |
+    Update an existing monitoring set. Returns 403 Forbidden if the monitoring
+    set is read-only. Returns 404 Not Found if the monitoring set does not
+    exist or the principal does not have read access to it.
+  summary: Update an existing monitoring set
+  tags: *tags
+  parameters: *params
+  requestBody:
+    required: true
+    content:
+      application/vnd.trolie.monitoring-set.v1+json:
+        schema:
+          $ref: ../components/schemas/monitoring-set.yaml#/response
+        example:
+          $ref: ../../example-narratives/examples/monitoring-set-get.json
+  responses:
+    '204':
+      $ref: '../openapi-split.yaml#/components/responses/204'
+    '400': 
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401': 
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403': 
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '404': 
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
+    '406': 
+      $ref: '../openapi-split.yaml#/components/responses/406-problem'
+    '413':
+      $ref: '../openapi-split.yaml#/components/responses/413-empty'
+    '415':
+      $ref: '../openapi-split.yaml#/components/responses/415-problem'
+    '422':
+      $ref: '../openapi-split.yaml#/components/responses/422-problem'
+    '429':
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': *unexpected-error-empty
+    default: *unexpected-error-empty
+  security: &write-required
+    - oauth2-primary-flow:
+        - write:monitoring-sets
+
+delete:
+  operationId: deleteMonitoringSet
+  description: |
+
+    Delete a specific monitoring set by its identifier. Returns 403 Forbidden if
+    the monitoring set is read-only. Returns 404 Not Found if the monitoring set
+    does not exist or the principal does not have read access to it.  Returns
+    409 Conflict if the monitoring set is currently the authenticated
+    principal's default monitoring set.
+
+  summary: Delete a specific monitoring set by its identifier
+  tags: *tags
+  parameters: *params
+  responses:
+    '204':
+      $ref: '../openapi-split.yaml#/components/responses/204'
+    '400': 
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401': 
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403': 
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '404': 
+      $ref: '../openapi-split.yaml#/components/responses/404-empty'
+    '429':
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': *unexpected-error-empty
+    default: *unexpected-error-empty
+  security: *write-required

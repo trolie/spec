@@ -1,0 +1,47 @@
+post:
+  operationId: createMonitoringSet
+  description: |
+    Create a new monitoring set. The server will assign a unique identifier
+    and source info to the monitoring set upon creation.
+  summary: |
+    Create a new monitoring set
+  tags:
+    $ref: ./monitoring-sets_{id}.yaml#/get/tags
+  requestBody:
+    required: true
+    content:
+      application/vnd.trolie.monitoring-set-request.v1+json:
+        schema:
+          $ref: ../components/schemas/monitoring-set.yaml#/request
+  responses:
+    '201':
+      description: The monitoring set was created
+      content:
+        application/vnd.trolie.monitoring-set.v1+json:
+          schema:
+            $ref: ../components/schemas/monitoring-set.yaml#/response
+          example:
+            $ref: ../../example-narratives/examples/monitoring-set-get.json
+      headers:
+        $ref: '../openapi-split.yaml#/components/responses/201/headers'
+    '400':
+      $ref: '../openapi-split.yaml#/components/responses/400-problem'
+    '401':
+      $ref: '../openapi-split.yaml#/components/responses/401-empty'
+    '403':
+      $ref: '../openapi-split.yaml#/components/responses/403-empty'
+    '406':
+      $ref: '../openapi-split.yaml#/components/responses/406-problem'
+    '413':
+      $ref: '../openapi-split.yaml#/components/responses/413-empty'
+    '415':
+      $ref: '../openapi-split.yaml#/components/responses/415-problem'
+    '422':
+      $ref: '../openapi-split.yaml#/components/responses/422-problem'
+    '429':
+      $ref: '../openapi-split.yaml#/components/responses/429-empty'
+    '500': &unexpected-error-empty
+      $ref: '../openapi-split.yaml#/components/responses/500-empty'
+    default: *unexpected-error-empty
+  security:
+    $ref: ./monitoring-sets_{id}.yaml#/put/security
