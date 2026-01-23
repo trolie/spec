@@ -3,19 +3,24 @@ request: &request
   description: |
     Request body for creating a monitoring set. The server will assign an id
     and source upon successful creation.
-  properties:
-    description: &description
+  properties: &props
+    name:
+      type: string
+      description: A human-readable name for this monitoring set
+      maxLength: 255
+      minLength: 1
+    description:
       type: string
       format: free-form
-      description: |
-        A freeform text description of this monitoring set
+      description: A description of this monitoring set
       maxLength: 1000
-    power-system-resources: &resources
+    power-system-resources:
       $ref: ./array-max-monitored-elements.yaml#/named-power-system-resources
   required:
   - power-system-resources
+  - name
 
-response:
+response: &response_v1
   <<: *request
   description: |
     See https://trolie.energy/concepts.html#monitoring-sets for info on the 
@@ -27,13 +32,20 @@ response:
     their known aliases.  
 
   properties:
+    <<: *props
     source:
       $ref: ./data-provenance.yaml
     id:
       $ref: ./identifiers.yaml#/local
-    description: *description
-    power-system-resources: *resources
   required:
   - source
   - id
+  - power-system-resources
+
+response_v2:
+  <<: *response_v1
+  required:
+  - source
+  - id
+  - name
   - power-system-resources
