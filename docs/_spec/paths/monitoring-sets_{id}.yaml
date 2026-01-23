@@ -10,14 +10,9 @@ get:
     '200':
       description: OK
       content:
-        application/vnd.trolie.monitoring-set.v1+json:
-          schema:
-            $ref: ../components/schemas/monitoring-set.yaml#/response
-          example:
-            $ref: ../../example-narratives/examples/monitoring-set-get.json
+        $ref: './monitoring-sets.yaml#/post/responses/201/content'
       headers:
         $ref: '../openapi-split.yaml#/components/responses/204/headers'
-
     '304':
       $ref: '../openapi-split.yaml#/components/responses/304'
     '400': 
