@@ -3,7 +3,9 @@ post:
   description: |
 
     Create a new monitoring set. The server will assign a unique identifier and
-    source info to the monitoring set upon creation.
+    source info to the monitoring set upon creation. This information will be
+    available in the monitoring set `source` header and in the HTTP `Location`
+    header.
 
     A 409 Conflict may be returned depending on the implementation. For example,
     if the monitoring set id that would be generated conflicts with an existing
@@ -27,6 +29,11 @@ post:
             $ref: ../components/schemas/monitoring-set.yaml#/response
           example:
             $ref: ../../example-narratives/examples/monitoring-set-get.json
+        application/vnd.trolie.monitoring-set.v2+json:
+          schema:
+            $ref: ../components/schemas/monitoring-set.yaml#/response_v2
+          example:
+            $ref: ../../example-narratives/examples/monitoring-set-get-v2.json
       headers:
         $ref: '../openapi-split.yaml#/components/responses/201/headers'
     '400':
