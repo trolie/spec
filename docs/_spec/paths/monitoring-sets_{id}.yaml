@@ -43,6 +43,10 @@ put:
     Returns 404 Not Found if the monitoring set does not exist or the principal
     does not have read access to it.
 
+    A 409 Conflict may be returned depending on the implementation. For example,
+    a provided `alternate-identifiers` entry may conflict with existing
+    identifiers.
+
     A 422 Unprocessable Entity may be returned if the request body is
     semantically invalid. For example, if any of the power system resources
     defined in the monitoring set cannot be found; you cannot monitor a facility
@@ -72,6 +76,8 @@ put:
       $ref: '../openapi-split.yaml#/components/responses/404-empty'
     '406': 
       $ref: '../openapi-split.yaml#/components/responses/406-problem'
+    '409': &conflict
+      $ref: './monitoring-sets.yaml#/post/responses/409'
     '413':
       $ref: '../openapi-split.yaml#/components/responses/413-empty'
     '415':
@@ -110,8 +116,7 @@ delete:
       $ref: '../openapi-split.yaml#/components/responses/403-empty'
     '404': 
       $ref: '../openapi-split.yaml#/components/responses/404-empty'
-    '409':
-      $ref: './monitoring-sets.yaml#/post/responses/409'
+    '409': *conflict
     '429':
       $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': *unexpected-error-empty
