@@ -42,9 +42,17 @@ get:
 put:
   operationId: updateMonitoringSet
   description: |
-    Update an existing monitoring set. Returns 403 Forbidden if the monitoring
-    set is read-only. Returns 404 Not Found if the monitoring set does not
-    exist or the principal does not have read access to it.
+
+    Update an existing monitoring set.
+    Returns 403 Forbidden if the monitoring set is read-only.
+    Returns 404 Not Found if the monitoring set does not exist or the principal
+    does not have read access to it.
+
+    A 422 Unprocessable Entity may be returned if the request body is
+    semantically invalid. For example, if any of the power system resources
+    defined in the monitoring set cannot be found; you cannot monitor a facility
+    that does not exist.
+
   summary: Update an existing monitoring set
   tags: *tags
   parameters: *params
@@ -90,8 +98,8 @@ delete:
     Delete a specific monitoring set by its identifier. Returns 403 Forbidden if
     the monitoring set is read-only. Returns 404 Not Found if the monitoring set
     does not exist or the principal does not have read access to it.  Returns
-    409 Conflict if the monitoring set is currently the authenticated
-    principal's default monitoring set.
+    409 Conflict if the monitoring set cannot be deleted, for example, if it is
+    currently the authenticated principal's default monitoring set.
 
   summary: Delete a specific monitoring set by its identifier
   tags: *tags
@@ -107,6 +115,8 @@ delete:
       $ref: '../openapi-split.yaml#/components/responses/403-empty'
     '404': 
       $ref: '../openapi-split.yaml#/components/responses/404-empty'
+    '409':
+      $ref: './monitoring-sets.yaml#/post/responses/409'
     '429':
       $ref: '../openapi-split.yaml#/components/responses/429-empty'
     '500': *unexpected-error-empty
