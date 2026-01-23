@@ -1,8 +1,19 @@
 request: &request
   type: object
   description: |
-    Request body for creating a monitoring set. The server will assign an id
-    and source upon successful creation.
+
+    Request body for creating a monitoring set. The server will assign an id and
+    source upon successful creation.
+    
+    Note that any `alternate-identifiers` supplied in the request should be
+    should be used by the server to define an alternate identifier for the
+    associated with a power system resource. In this way monitoring sets can be
+    used to introduce use case specific names for existing power system
+    resources. The details of how alternate identifiers are managed and resolved
+    are are out of scope for this specification. In particular how the
+    `authority` of an alternate identifier is validated is
+    implementation-specific and out of scope for this specification..
+
   properties: &props
     name:
       type: string
