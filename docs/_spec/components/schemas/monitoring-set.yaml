@@ -9,6 +9,7 @@ request: &request
       description: A human-readable name for this monitoring set
       maxLength: 255
       minLength: 1
+      pattern: '^[a-zA-Z0-9 _-]{1,255}$'
     description:
       type: string
       format: free-form
