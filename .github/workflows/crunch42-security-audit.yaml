@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Pin styled-components
+        run: npm install --global styled-components@6.1.19
       - name: Bundle
         run: >-
           npx --yes @redocly/cli@1.8.2 bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
