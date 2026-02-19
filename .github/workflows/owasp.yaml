@@ -26,8 +26,8 @@ jobs:
         with:
           node-version: 20
       - name: Pin styled-components
-        run: npm install --global styled-components@6.1.19
+        run: npm install --global styled-components@6.1.19 @redocly/cli@1.8.2
       - name: Lint
         run: >-
-          npx --yes @redocly/cli@1.8.2 bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
+          redocly bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml &&
           npx --yes @stoplight/spectral-cli lint docs/openapi-1.0.yaml --ruleset .spectral.yaml --verbose

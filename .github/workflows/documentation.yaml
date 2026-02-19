@@ -28,9 +28,9 @@ jobs:
         with:
           node-version: 20
       - name: Pin styled-components
-        run: npm install --global styled-components@6.1.19
+        run: npm install --global styled-components@6.1.19 @redocly/cli@1.8.2
       - name: Redocly bundle
-        run: "npx --yes @redocly/cli@1.8.2 bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml"
+        run: "redocly bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.98.0
