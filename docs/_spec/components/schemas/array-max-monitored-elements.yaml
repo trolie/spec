@@ -190,7 +190,7 @@ common-proposal-status:
         case for this set is debugging and troubleshooting.
 
       minItems: 0
-      maxItems: 10
+      maxItems: 100
       items:
         $ref: ./names.yaml
 
