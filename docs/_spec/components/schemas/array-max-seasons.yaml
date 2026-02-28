@@ -78,16 +78,6 @@ seasonal-rating-snapshot-item:
       items:
         $ref: './period-limit.yaml#/seasonal-snapshot'
 
-seasonal-rating-snapshot-item-detailed:
-  type: object
-  additionalProperties: false
-  properties:
-    resource-id: *id
-    periods:
-      <<: *schedule
-      items:
-        $ref: './period-limit.yaml#/seasonal-snapshot-detailed'
-
 seasonal-rating-snapshot-provenance-item:
   type: object
   additionalProperties: false

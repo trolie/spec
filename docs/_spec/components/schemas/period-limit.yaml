@@ -189,7 +189,7 @@ seasonal-proposal-slim:
       `[normal_MVA, emergency_MVA]`, we would have `[normal_MW, normal_pf,
       emergency_MW, emergency_pf]`, e.g., `[300, 1.0, 350, 1.0]`.
 
-seasonal-snapshot: &seasonal-snapshot
+seasonal-snapshot:
   <<: *forecast-snapshot
   description: Proposes the continuous and emergency ratings for the specified Season.
   title: Seasonal Rating Proposal
@@ -216,19 +216,6 @@ seasonal-proposal-considered:
     - period-end
     - continuous-operating-limit
     - emergency-operating-limits
-
-seasonal-snapshot-detailed:
-  <<: *seasonal-snapshot
-  description: Proposes the continuous and emergency ratings for the specified Season.
-  title: Seasonal Rating Proposal
-  properties:
-    <<: *seasonal-snapshot-props
-  required:
-    - period-start
-    - period-end
-    - continuous-operating-limit
-    - emergency-operating-limits
-  additionalProperties: false
 
 seasonal-proposals-considered:
   description: |
