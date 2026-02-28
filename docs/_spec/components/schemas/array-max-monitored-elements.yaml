@@ -529,6 +529,15 @@ seasonal-ratings-snapshot-detailed:
       <<: *max
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item-detailed
+    provenance:
+      <<: *max
+      description: Set of seasonal ratings provenance information
+      items:
+        $ref: './array-max-seasons.yaml#/seasonal-rating-snapshot-provenance-item'
+  required:
+    - snapshot-header
+    - ratings
+    - provenance
 
 seasonal-ratings-snapshot-detailed-elide-psr:
   <<: *seasonal-rating-snapshot
@@ -538,6 +547,14 @@ seasonal-ratings-snapshot-detailed-elide-psr:
       $ref: ./headers.yaml#/base-header
     ratings:
       $ref: "#/seasonal-ratings-snapshot-detailed/properties/ratings"
+    provenance:
+      description: Set of seasonal ratings provenance information
+      items:
+        $ref: './array-max-seasons.yaml#/seasonal-rating-snapshot-provenance-item'
+  required:
+    - snapshot-header
+    - ratings
+    - provenance
 
 temporary-aar-exception-set:
   type: array
