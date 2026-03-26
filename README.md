@@ -28,6 +28,10 @@ There are three roles for contributors: Maintainers, Editors, and Participants. 
 
 All contributions to the TROLIE Specification 1.0 Working Group are done under the [Community Specification Contributor License Agreement](Contributor_License_Agreement.md).
 
+## Adopters
+
+An list of companies that have adopted the TROLIE specification is at [ADOPTERS.md](ADOPTERS.md).  
+
 ### Compiling the Site and Specification Locally
 
 The `docs/` folder contains a Jekyll site for the GH Pages along with the yaml
