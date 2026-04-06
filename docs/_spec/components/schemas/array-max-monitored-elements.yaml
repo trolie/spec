@@ -508,36 +508,38 @@ seasonal-ratings-proposal-status:
 seasonal-ratings-snapshot: &seasonal-rating-snapshot
   type: object
   description: A snapshot of the seasonal ratings for a monitoring set.
-  properties: 
+  properties: &seasonal-rating-snapshot-props
     snapshot-header:
-      $ref: ./headers.yaml#/common-header
+      $ref: ./headers.yaml#/seasonal-snapshot-header
     ratings:
       <<: *max
+      description: Set of seasonal ratings
       items:
         $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item
   required:
     - snapshot-header
     - ratings
 
-seasonal-ratings-snapshot-detailed:
+seasonal-ratings-snapshot-detailed: &seasonal-rating-snapshot-detailed
   <<: *seasonal-rating-snapshot
-  description: A snapshot of the seasonal ratings for a monitoring set.
-  properties:
-    snapshot-header:
-      $ref: ./headers.yaml#/common-header
-    ratings:
+  properties: &seasonal-rating-snapshot-detailed-props
+    <<: *seasonal-rating-snapshot-props
+    provenance:
       <<: *max
+      description: Set of seasonal ratings provenance information
       items:
-        $ref: ./array-max-seasons.yaml#/seasonal-rating-snapshot-item-detailed
+        $ref: './array-max-seasons.yaml#/seasonal-rating-snapshot-provenance-item'
+  required:
+    - snapshot-header
+    - ratings
+    - provenance
 
 seasonal-ratings-snapshot-detailed-elide-psr:
-  <<: *seasonal-rating-snapshot
-  description: A snapshot of the seasonal ratings for a monitoring set.
+  <<: *seasonal-rating-snapshot-detailed
   properties:
+    <<: *seasonal-rating-snapshot-detailed-props
     snapshot-header:
-      $ref: ./headers.yaml#/base-header
-    ratings:
-      $ref: "#/seasonal-ratings-snapshot-detailed/properties/ratings"
+      $ref: ./headers.yaml#/seasonal-snapshot-header-elide-psr
 
 temporary-aar-exception-set:
   type: array
