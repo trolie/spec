@@ -39,9 +39,9 @@ Content-Type: application/vnd.trolie.forecast-limits-snapshot.v1+json
 Server: trolie.example.com
 Date: Wed, 29 Feb 2024 12:00:00 GMT
 ETag: "d41d8cd98f00b204e9800998ecf8427e"
-X-Rate-Limit-Limit: 100
-X-Rate-Limit-Remaining: 98
-X-Rate-Limit-Reset: 3600
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 98
+X-RateLimit-Reset: 3600
 
 {... response body in Brotli compressed format ...}
 ```
@@ -73,15 +73,15 @@ HTTP/1.1 304 Not Modified
 ETag: "d41d8cd98f00b204e9800998ecf8427e"
 Server: trolie.example.com
 Date: Wed, 29 Feb 2024 12:03:20 GMT
-X-Rate-Limit-Limit: 100
-X-Rate-Limit-Remaining: 97
-X-Rate-Limit-Reset: 3400
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 97
+X-RateLimit-Reset: 3400
 ```
 
 {: .nb }
 
 > <i class="fa-solid fa-triangle-exclamation"></i> **Note**:
-> The `X-Rate-Limit-Remaining` is decremented here, since
+> The `X-RateLimit-Remaining` is decremented here, since
 > rate limiting is applied in all circumstances, including
 > 3XX and 4XX responses.
 
@@ -93,9 +93,9 @@ Content-Type: application/vnd.trolie.forecast-limits-snapshot.v1+json
 Server: trolie.example.com
 Date: Wed, 29 Feb 2024 12:03:20 GMT
 ETag: "123e4567e89b12d3a456426614174000"
-X-Rate-Limit-Limit: 100
-X-Rate-Limit-Remaining: 97
-X-Rate-Limit-Reset: 3400
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 97
+X-RateLimit-Reset: 3400
 Content-Encoding: br
 
 {... response body in Brotli compressed format ...}
