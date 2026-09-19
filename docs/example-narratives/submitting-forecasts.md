@@ -91,9 +91,9 @@ Content-Type: application/vnd.trolie.rating-forecast-proposal-status.v1+json
 Server: trolie.example.com
 Date: Wed, 29 Feb 2024 12:03:20 GMT
 ETag: "123e4567e89b12d3a456426614174000"
-X-Rate-Limit-Limit: 100
-X-Rate-Limit-Remaining: 97
-X-Rate-Limit-Reset: 3400
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 97
+X-RateLimit-Reset: 3400
 
 
 {% include_relative examples/forecast-ratings-proposal-status.json %}

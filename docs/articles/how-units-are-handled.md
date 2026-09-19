@@ -51,9 +51,9 @@ HTTP/1.1 422 Unprocessable Entity
 Content-Type: application/problem+json
 Server: trolie.example.com
 Date: Wed, 6 May 2025 12:00:00 GMT
-X-Rate-Limit-Limit: 100
-X-Rate-Limit-Remaining: 98
-X-Rate-Limit-Reset: 3600
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 98
+X-RateLimit-Reset: 3600
 
 {% include_relative examples/proposal-invalid-units.json %}
 ```
@@ -105,9 +105,9 @@ HTTP/1.1 422 Unprocessable Entity
 Content-Type: application/problem+json
 Server: trolie.example.com
 Date: Wed, 1 Nov 2025 12:00:00 GMT
-X-Rate-Limit-Limit: 100
-X-Rate-Limit-Remaining: 98
-X-Rate-Limit-Reset: 3600
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 98
+X-RateLimit-Reset: 3600
 
 {
   "type": "//trolie.example.com/spec/client-errors/422/invalid-units",
