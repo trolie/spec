@@ -196,3 +196,13 @@ seasonal-proposal-header-slim:
     - default-emergency-durations
     - power-system-resources
     - default-seasonal-schedule
+
+seasonal-snapshot-header:
+  <<: *common-header
+  description: Details about the snapshot provided by the Clearinghouse provider.
+
+seasonal-snapshot-header-elide-psr:
+  <<: *base-header
+  description: |
+    Details about the snapshot provided by the Clearinghouse provider. The
+    `power-system-resources` property is omitted from this header.

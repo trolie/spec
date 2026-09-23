@@ -78,12 +78,13 @@ seasonal-rating-snapshot-item:
       items:
         $ref: './period-limit.yaml#/seasonal-snapshot'
 
-seasonal-rating-snapshot-item-detailed:
+seasonal-rating-snapshot-provenance-item:
   type: object
   additionalProperties: false
   properties:
     resource-id: *id
-    periods:
-      <<: *schedule
-      items:
-        $ref: './period-limit.yaml#/seasonal-snapshot-detailed'
+    proposals-considered:
+      $ref: './period-limit.yaml#/seasonal-proposals-considered'
+  required:
+    - resource-id
+    - proposals-considered

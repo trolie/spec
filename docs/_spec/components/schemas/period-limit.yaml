@@ -189,7 +189,7 @@ seasonal-proposal-slim:
       `[normal_MVA, emergency_MVA]`, we would have `[normal_MW, normal_pf,
       emergency_MW, emergency_pf]`, e.g., `[300, 1.0, 350, 1.0]`.
 
-seasonal-snapshot: &seasonal-snapshot
+seasonal-snapshot:
   <<: *forecast-snapshot
   description: Proposes the continuous and emergency ratings for the specified Season.
   title: Seasonal Rating Proposal
@@ -212,29 +212,17 @@ seasonal-proposal-considered:
   required:
     - source
     - resource-id
-
-seasonal-snapshot-detailed:
-  <<: *seasonal-snapshot
-  description: Proposes the continuous and emergency ratings for the specified Season.
-  title: Seasonal Rating Proposal
-  properties:
-    <<: *seasonal-snapshot-props
-    proposals-considered:
-      description: |
-
-        The seasonal ratings proposals considered when determining the
-        seasonal ratings of a power system resource, e.g., a line or
-        transformer.
-
-      type: array
-      minItems: 1
-      maxItems: 10
-      items:
-        $ref: '#/seasonal-proposal-considered'
-  required:
-    - proposals-considered
     - period-start
     - period-end
     - continuous-operating-limit
     - emergency-operating-limits
-  additionalProperties: false
+
+seasonal-proposals-considered:
+  description: |
+    The proposals considered when determining the
+    seasonal ratings of a power system resource, e.g., a line or
+    transformer.
+  type: array
+  maxItems: 48 # 12 periods * 4 proposals per period
+  items:
+    $ref: '#/seasonal-proposal-considered'
