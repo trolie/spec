@@ -1,6 +1,6 @@
 get:
   operationId: getSeasonalRatingsSnapshot
-  description: Retrieve the nominal and seasonal ratings.
+  description: Retrieve seasonal ratings.
   summary: Get Seasonal Ratings
   tags:
     - Seasonal
