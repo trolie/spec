@@ -33,9 +33,9 @@ jobs:
         run: "redocly bundle ./docs/_spec/openapi-split.yaml -o ./docs/openapi-1.0.yaml"
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.98.0
+        uses: ruby/setup-ruby@v1.333.0
         with:
-          ruby-version: '3.1'
+          ruby-version: '3.4.11'
           working-directory: docs
       - name: Setup Pages
         uses: actions/configure-pages@v4
